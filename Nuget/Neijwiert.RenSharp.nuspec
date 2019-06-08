@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Neijwiert.RenSharp</id>
+    <version>1.0.0.0</version>
+    <authors>Neijwiert</authors>
+    <owners>Neijwiert</owners>
+    <license type="expression">Apache-2.0</license>
+    <projectUrl>https://github.com/Neijwiert/RenSharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>C++/CLI wrapper for Command and Conquer Renegade Dragonade FDS manager</description>
+    <releaseNotes>First release.</releaseNotes>
+    <copyright>Copyright 2019 Neijwiert</copyright>
+    <tags>RenSharp Renegade</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="RenSharpNuget\readme.txt" target="" />
+	<file src="RenSharpNuget\da_RenSharp.dll" target="content\net472\da_RenSharp.dll" />
+	<file src="RenSharpNuget\ManagedRenSharp.dll" target="content\net472\ManagedRenSharp.dll" />
+	<file src="RenSharpNuget\ManagedScripts.dll" target="lib\net472\ManagedScripts.dll" />
+  </files>
+</package>
