@@ -1,0 +1,82 @@
+/*
+Copyright 2019 Neijwiert
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+#include "stdafx.h"
+#include "MMoveablePhysDefClass.h"
+
+namespace RenSharp
+{
+	MoveablePhysDefClass::MoveablePhysDefClass(IntPtr pointer)
+		: DynamicPhysDefClass(pointer)
+	{
+
+	}
+
+	IntPtr MoveablePhysDefClass::MoveablePhysDefClassPointer::get()
+	{
+		return IntPtr(InternalMoveablePhysDefClassPointer);
+	}
+
+	float MoveablePhysDefClass::Mass::get()
+	{
+		return InternalMoveablePhysDefClassPointer->Mass;
+	}
+
+	void MoveablePhysDefClass::Mass::set(float value)
+	{
+		InternalMoveablePhysDefClassPointer->Mass = value;
+	}
+
+	float MoveablePhysDefClass::GravScale::get()
+	{
+		return InternalMoveablePhysDefClassPointer->GravScale;
+	}
+
+	void MoveablePhysDefClass::GravScale::set(float value)
+	{
+		InternalMoveablePhysDefClassPointer->GravScale = value;
+	}
+
+	float MoveablePhysDefClass::Elasticity::get()
+	{
+		return InternalMoveablePhysDefClassPointer->Elasticity;
+	}
+
+	void MoveablePhysDefClass::Elasticity::set(float value)
+	{
+		InternalMoveablePhysDefClassPointer->Elasticity = value;
+	}
+
+	int MoveablePhysDefClass::CinematicCollisionMode::get()
+	{
+		return InternalMoveablePhysDefClassPointer->CinematicCollisionMode;
+	}
+
+	void MoveablePhysDefClass::CinematicCollisionMode::set(int value)
+	{
+		InternalMoveablePhysDefClassPointer->CinematicCollisionMode = value;
+	}
+
+	::DynamicPhysDefClass *MoveablePhysDefClass::InternalDynamicPhysDefClassPointer::get()
+	{
+		return InternalMoveablePhysDefClassPointer;
+	}
+
+	::MoveablePhysDefClass *MoveablePhysDefClass::InternalMoveablePhysDefClassPointer::get()
+	{
+		return reinterpret_cast<::MoveablePhysDefClass *>(Pointer.ToPointer());
+	}
+}

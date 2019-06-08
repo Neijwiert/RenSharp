@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{4ACFACE9-232A-4D1D-9575-E87DBBD02A2E}</ProjectGuid>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>ManagedScripts</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)temp\$(ProjectName)\$(Configuration)\</IntDir>
+    <LinkKeyFile>ManagedScriptsKeyName.snk</LinkKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)temp\$(ProjectName)\$(Configuration)\</IntDir>
+    <LinkKeyFile>ManagedScriptsKeyName.snk</LinkKeyFile>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DAPLUGIN;_CRT_SECURE_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;EXAMPLEPLUGIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalIncludeDirectories>.;..\MemoryManager;..\scripts;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+      <AdditionalOptions>/ignore:4248</AdditionalOptions>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>DAPLUGIN;_CRT_SECURE_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEPLUGIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalIncludeDirectories>.;..\MemoryManager;..\scripts;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+      <AdditionalOptions>/ignore:4248</AdditionalOptions>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="AbstractUnmanagedObject.h" />
+    <ClInclude Include="McPurchaseResponseEvent.h" />
+    <ClInclude Include="CriticalUnmanagedContainer.h" />
+    <ClInclude Include="Misc.h" />
+    <ClInclude Include="FatalRenSharpException.h" />
+    <ClInclude Include="IChatCommandInterface.h" />
+    <ClInclude Include="IKeyHookInterface.h" />
+    <ClInclude Include="IUnmanagedAttachable.h" />
+    <ClInclude Include="Imports.h" />
+    <ClInclude Include="ITimerInterface.h" />
+    <ClInclude Include="IUnmanagedContainer.h" />
+    <ClInclude Include="IUnmanagedObject.h" />
+    <ClInclude Include="MAABoxClass.h" />
+    <ClInclude Include="MAABTreeCull.h" />
+    <ClInclude Include="MAAPlaneClass.h" />
+    <ClInclude Include="Maction.h" />
+    <ClInclude Include="MAirFactoryGameObj.h" />
+    <ClInclude Include="MAirFactoryGameObjDef.h" />
+    <ClInclude Include="MAirStripGameObj.h" />
+    <ClInclude Include="MAirStripGameObjDef.h" />
+    <ClInclude Include="MAnimCollisionManagerClass.h" />
+    <ClInclude Include="MAnimControlClass.h" />
+    <ClInclude Include="MArmedGameObj.h" />
+    <ClInclude Include="MArmedGameObjDef.h" />
+    <ClInclude Include="MArmorWarheadManager.h" />
+    <ClInclude Include="MAudibleSoundClass.h" />
+    <ClInclude Include="MAudibleSoundDefinitionClass.h" />
+    <ClInclude Include="Maudiocallback.h" />
+    <ClInclude Include="MAudioCallbackListClass.h" />
+    <ClInclude Include="MBaseControllerClass.h" />
+    <ClInclude Include="MBaseGameObj.h" />
+    <ClInclude Include="MBaseGameObjDef.h" />
+    <ClInclude Include="MBaseGameObjSList.h" />
+    <ClInclude Include="MBeaconGameObj.h" />
+    <ClInclude Include="MBeaconGameObjDef.h" />
+    <ClInclude Include="MBeaconGameObjSList.h" />
+    <ClInclude Include="Mboxrenderobjclass.h" />
+    <ClInclude Include="MBufferedFileClass.h" />
+    <ClInclude Include="MBuildingAggregateClass.h" />
+    <ClInclude Include="MBuildingAggregateClassRefMultiListClass.h" />
+    <ClInclude Include="MBuildingAggregateDefClass.h" />
+    <ClInclude Include="MBuildingGameObj.h" />
+    <ClInclude Include="MBuildingGameObjDef.h" />
+    <ClInclude Include="MBuildingGameObjPtrDynamicVectorClass.h" />
+    <ClInclude Include="MBuildingGameObjSList.h" />
+    <ClInclude Include="MC4GameObj.h" />
+    <ClInclude Include="MC4GameObjDef.h" />
+    <ClInclude Include="MC4GameObjSList.h" />
+    <ClInclude Include="MCastResultStruct.h" />
+    <ClInclude Include="MChunkClass.h" />
+    <ClInclude Include="MCinematicGameObj.h" />
+    <ClInclude Include="MCinematicGameObjDef.h" />
+    <ClInclude Include="McNetEvent.h" />
+    <ClInclude Include="MCollideableObjClassDynamicVectorClass.h" />
+    <ClInclude Include="Mcoltest.h" />
+    <ClInclude Include="Mcoltype.h" />
+    <ClInclude Include="MCombatManager.h" />
+    <ClInclude Include="MComCenterGameObj.h" />
+    <ClInclude Include="MComCenterGameObjDef.h" />
+    <ClInclude Include="MCommandLineParser.h" />
+    <ClInclude Include="MCompressedVisTableClassPtrSimpleDynVecClass.h" />
+    <ClInclude Include="MConnectionAcceptanceFilter.h" />
+    <ClInclude Include="MConnectionRequest.h" />
+    <ClInclude Include="MConsoleFunctionClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MConstDefinitionClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MConstructionYardGameObj.h" />
+    <ClInclude Include="MConstructionYardGameObjDef.h" />
+    <ClInclude Include="MConstWeaponDefinitionClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MControlClass.h" />
+    <ClInclude Include="MConversationClass.h" />
+    <ClInclude Include="McPlayer.h" />
+    <ClInclude Include="McPlayerKill.h" />
+    <ClInclude Include="McPlayerPtrDynamicVectorClass.h" />
+    <ClInclude Include="McPlayerSList.h" />
+    <ClInclude Include="MCriticalSectionClass.h" />
+    <ClInclude Include="McScTextObj.h" />
+    <ClInclude Include="McTeam.h" />
+    <ClInclude Include="MCullableClass.h" />
+    <ClInclude Include="MCullSystemClass.h" />
+    <ClInclude Include="Mda.h" />
+    <ClInclude Include="MDACrateFactoryClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MDACrateModifierClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MDACrateModifierFactoryClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MDADamageEventStructSList.h" />
+    <ClInclude Include="MDADamageTableStructDynamicVectorClass.h" />
+    <ClInclude Include="MDAGameFeatureClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MDamageableGameObj.h" />
+    <ClInclude Include="MDamageableGameObjDef.h" />
+    <ClInclude Include="MDamageZoneGameObj.h" />
+    <ClInclude Include="MDamageZoneGameObjDef.h" />
+    <ClInclude Include="MDAPlayerObserverChatCommandStructPtrDynamicVectorClass.h" />
+    <ClInclude Include="MDAPlayerObserverClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MDAPlayerObserverKeyHookStructPtrDynamicVectorClass.h" />
+    <ClInclude Include="MDAPlayerObserverTimerStructPtrDynamicVectorClass.h" />
+    <ClInclude Include="MDAVehicleSpawnPointClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="Mda_ban.h" />
+    <ClInclude Include="Mda_building.h" />
+    <ClInclude Include="Mda_c4beacon.h" />
+    <ClInclude Include="Mda_characterrefunds.h" />
+    <ClInclude Include="Mda_chatcommand.h" />
+    <ClInclude Include="Mda_chatsounds.h" />
+    <ClInclude Include="Mda_crate.h" />
+    <ClInclude Include="Mda_cratemanager.h" />
+    <ClInclude Include="Mda_damagelog.h" />
+    <ClInclude Include="Mda_disable.h" />
+    <ClInclude Include="Mda_domination.h" />
+    <ClInclude Include="Mda_donate.h" />
+    <ClInclude Include="Mda_event.h" />
+    <ClInclude Include="Mda_game.h" />
+    <ClInclude Include="Mda_gamefeature.h" />
+    <ClInclude Include="Mda_gamelog.h" />
+    <ClInclude Include="Mda_gamemode.h" />
+    <ClInclude Include="Mda_gameobj.h" />
+    <ClInclude Include="Mda_gameobjobservers.h" />
+    <ClInclude Include="Mda_gamespy.h" />
+    <ClInclude Include="Mda_infammo.h" />
+    <ClInclude Include="Mda_killmessages.h" />
+    <ClInclude Include="Mda_levelcleaner.h" />
+    <ClInclude Include="Mda_log.h" />
+    <ClInclude Include="Mda_loot.h" />
+    <ClInclude Include="Mda_nodemanager.h" />
+    <ClInclude Include="Mda_parachutes.h" />
+    <ClInclude Include="Mda_pointsdistribution.h" />
+    <ClInclude Include="Mda_radio.h" />
+    <ClInclude Include="Mda_rtc.h" />
+    <ClInclude Include="Mda_shotgun.h" />
+    <ClInclude Include="Mda_soldier.h" />
+    <ClInclude Include="Mda_spawnprotection.h" />
+    <ClInclude Include="Mda_spawnsystem.h" />
+    <ClInclude Include="Mda_squad.h" />
+    <ClInclude Include="Mda_ssgm.h" />
+    <ClInclude Include="Mda_taunt.h" />
+    <ClInclude Include="Mda_team.h" />
+    <ClInclude Include="Mda_teleporter.h" />
+    <ClInclude Include="Mda_translation.h" />
+    <ClInclude Include="Mda_vehicle.h" />
+    <ClInclude Include="Mda_vehicleownership.h" />
+    <ClInclude Include="Mda_vehiclequeue.h" />
+    <ClInclude Include="Mda_vehicleshells.h" />
+    <ClInclude Include="Mda_vehiclespawn.h" />
+    <ClInclude Include="Mda_weapons.h" />
+    <ClInclude Include="MDecorationPhysClass.h" />
+    <ClInclude Include="MDecorationPhysDefClass.h" />
+    <ClInclude Include="MDefaultConnectionAcceptanceFilter.h" />
+    <ClInclude Include="MDefenseObjectClass.h" />
+    <ClInclude Include="MDefinitionFactoryClass.h" />
+    <ClInclude Include="MDefinitionMgrClass.h" />
+    <ClInclude Include="MDynamicPhysClass.h" />
+    <ClInclude Include="MDynamicPhysDefClass.h" />
+    <ClInclude Include="MDynamicShadowManagerClass.h" />
+    <ClInclude Include="MEngine.h" />
+    <ClInclude Include="Mda_player.h" />
+    <ClInclude Include="Mda_settings.h" />
+    <ClInclude Include="Mda_token.h" />
+    <ClInclude Include="MDefenseObjectDefClass.h" />
+    <ClInclude Include="MDefinition.h" />
+    <ClInclude Include="MDialogueClass.h" />
+    <ClInclude Include="MDialogueOptionClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MEditable.h" />
+    <ClInclude Include="Mengine_io.h" />
+    <ClInclude Include="Mengine_tt.h" />
+    <ClInclude Include="Mengine_ttdef.h" />
+    <ClInclude Include="Mengine_vector.h" />
+    <ClInclude Include="MFileFactoryListClass.h" />
+    <ClInclude Include="MFrustumClass.h" />
+    <ClInclude Include="MGameData.h" />
+    <ClInclude Include="MGameDefinition.h" />
+    <ClInclude Include="MGameObjCustomTimerClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MGameObjManager.h" />
+    <ClInclude Include="MGameObjObserverClassPtrSimpleDynVecClass.h" />
+    <ClInclude Include="MGameObjObserverTimerClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MGridCull.h" />
+    <ClInclude Include="MHarvesterClass.h" />
+    <ClInclude Include="MHashTemplateClass.h" />
+    <ClInclude Include="MHashTemplateIterator.h" />
+    <ClInclude Include="MHTreeClass.h" />
+    <ClInclude Include="MHumanStateClass.h" />
+    <ClInclude Include="MInt32DynamicVectorClass.h" />
+    <ClInclude Include="MIntSimpleDynVecClass.h" />
+    <ClInclude Include="Minttest.h" />
+    <ClInclude Include="MLightPhysClass.h" />
+    <ClInclude Include="MLightPhysClassRefMultiListClass.h" />
+    <ClInclude Include="MLineSegClass.h" />
+    <ClInclude Include="MMaterialEffectClass.h" />
+    <ClInclude Include="MMaterialEffectClassRefMultiListClass.h" />
+    <ClInclude Include="MMatrix3.h" />
+    <ClInclude Include="MMatrix3D.h" />
+    <ClInclude Include="MMatrix3DDynamicVectorClass.h" />
+    <ClInclude Include="Mmatrix4.h" />
+    <ClInclude Include="MMeshClass.h" />
+    <ClInclude Include="MMixFileCreatorFileInfoStructDynamicVectorClass.h" />
+    <ClInclude Include="MMixFileFactoryClass.h" />
+    <ClInclude Include="MMixFileFactoryClassAddInfoStructDynamicVectorClass.h" />
+    <ClInclude Include="MMixFileFactoryClassFileInfoStructDynamicVectorClass.h" />
+    <ClInclude Include="MMoveablePhysClass.h" />
+    <ClInclude Include="MMoveablePhysDefClass.h" />
+    <ClInclude Include="Mmultilist.h" />
+    <ClInclude Include="MMuzzleRecoilClass.h" />
+    <ClInclude Include="MNavalFactoryGameObj.h" />
+    <ClInclude Include="MNavalFactoryGameObjDef.h" />
+    <ClInclude Include="MNetworkObjectClass.h" />
+    <ClInclude Include="Mobboxclass.h" />
+    <ClInclude Include="MOffenseObjectClass.h" />
+    <ClInclude Include="MParameter.h" />
+    <ClInclude Include="MPersist.h" />
+    <ClInclude Include="MPersistantSurfaceEmitterClassPtrVectorClass.h" />
+    <ClInclude Include="MPersistFactoryClass.h" />
+    <ClInclude Include="MPhysClass.h" />
+    <ClInclude Include="MPhysClassMultiListClass.h" />
+    <ClInclude Include="MPhysClassRefMultiListClass.h" />
+    <ClInclude Include="Mphyscoltest.h" />
+    <ClInclude Include="MPhysControllerClass.h" />
+    <ClInclude Include="MPhysDefClass.h" />
+    <ClInclude Include="MPhysicalGameObj.h" />
+    <ClInclude Include="MPhysicalGameObjDef.h" />
+    <ClInclude Include="MPhysicalGameObjPtrDynamicVectorClass.h" />
+    <ClInclude Include="MPhysicsSceneClass.h" />
+    <ClInclude Include="Mphysinttest.h" />
+    <ClInclude Include="MPhysObserverClass.h" />
+    <ClInclude Include="Mplane.h" />
+    <ClInclude Include="MPlayerDataClass.h" />
+    <ClInclude Include="MPostLoadableClass.h" />
+    <ClInclude Include="MPowerPlantGameObj.h" />
+    <ClInclude Include="MPowerPlantGameObjDef.h" />
+    <ClInclude Include="MPowerUpGameObj.h" />
+    <ClInclude Include="MPowerUpGameObjDef.h" />
+    <ClInclude Include="MProjectorManagerClass.h" />
+    <ClInclude Include="Mprototypeclass.h" />
+    <ClInclude Include="MPurchaseSettingsDefClass.h" />
+    <ClInclude Include="MQuaternion.h" />
+    <ClInclude Include="MRawFileClass.h" />
+    <ClInclude Include="Mrect.h" />
+    <ClInclude Include="MReferenceableClass.h" />
+    <ClInclude Include="MReferencerClass.h" />
+    <ClInclude Include="MRefineryGameObj.h" />
+    <ClInclude Include="MRefineryGameObjDef.h" />
+    <ClInclude Include="MRenderObjClass.h" />
+    <ClInclude Include="MRenderObjClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MRenderObjClassRefMultiListClass.h" />
+    <ClInclude Include="MRepairBayGameObj.h" />
+    <ClInclude Include="MRepairBayGameObjDef.h" />
+    <ClInclude Include="MSamSiteGameObj.h" />
+    <ClInclude Include="MSamSiteGameObjDef.h" />
+    <ClInclude Include="MSaveLoadSubSystemClass.h" />
+    <ClInclude Include="MSCAnnouncement.h" />
+    <ClInclude Include="MSceneClass.h" />
+    <ClInclude Include="MScriptableGameObj.h" />
+    <ClInclude Include="MScriptableGameObjDef.h" />
+    <ClInclude Include="MScriptableGameObjPtrSimpleDynVecClass.h" />
+    <ClInclude Include="Mscripts.h" />
+    <ClInclude Include="MScriptZoneGameObj.h" />
+    <ClInclude Include="MScriptZoneGameObjDef.h" />
+    <ClInclude Include="MScriptZoneGameObjSList.h" />
+    <ClInclude Include="MSimpleDefinitionFactoryClass.h" />
+    <ClInclude Include="MSimpleFileFactoryClass.h" />
+    <ClInclude Include="MSimpleGameObj.h" />
+    <ClInclude Include="MSimpleGameObjDef.h" />
+    <ClInclude Include="MSimplePersistFactoryClass.h" />
+    <ClInclude Include="MSList.h" />
+    <ClInclude Include="MSmartGameObj.h" />
+    <ClInclude Include="MSmartGameObjDef.h" />
+    <ClInclude Include="MSmartGameObjSList.h" />
+    <ClInclude Include="MSoldierFactoryGameObj.h" />
+    <ClInclude Include="MSoldierFactoryGameObjDef.h" />
+    <ClInclude Include="MSoldierGameObj.h" />
+    <ClInclude Include="MSoldierGameObjDef.h" />
+    <ClInclude Include="MSoldierGameObjPtrVectorClass.h" />
+    <ClInclude Include="MSoldierGameObjSList.h" />
+    <ClInclude Include="MSound3DClass.h" />
+    <ClInclude Include="MSoundBufferClass.h" />
+    <ClInclude Include="MSoundSceneObjClass.h" />
+    <ClInclude Include="MSoundSceneObjClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MSpawnerClass.h" />
+    <ClInclude Include="MSpawnerDefClass.h" />
+    <ClInclude Include="MSpecialEffectsGameObj.h" />
+    <ClInclude Include="MSpecialEffectsGameObjDef.h" />
+    <ClInclude Include="MSphereClass.h" />
+    <ClInclude Include="MStaticAnimPhysClass.h" />
+    <ClInclude Include="MStaticAnimPhysDefClass.h" />
+    <ClInclude Include="MStaticPhysClass.h" />
+    <ClInclude Include="MStaticPhysClassRefMultiListClass.h" />
+    <ClInclude Include="MStaticPhysDefClass.h" />
+    <ClInclude Include="MStealthEffectClass.h" />
+    <ClInclude Include="Mstraw.h" />
+    <ClInclude Include="MStringClassDynamicVectorClass.h" />
+    <ClInclude Include="MStringClassGameDefinitionHashTemplateClass.h" />
+    <ClInclude Include="MStringClassSimpleDynVecClass.h" />
+    <ClInclude Include="MStringClassTDBObjClassPtrHashTemplateClass.h" />
+    <ClInclude Include="MSuperweaponGameObj.h" />
+    <ClInclude Include="MSuperweaponGameObjDef.h" />
+    <ClInclude Include="MSysTimeClass.h" />
+    <ClInclude Include="MTDBCategoryClass.h" />
+    <ClInclude Include="MTDBObjClass.h" />
+    <ClInclude Include="MTDBObjClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MTeamPurchaseSettingsDefClass.h" />
+    <ClInclude Include="MTexProjectClassMultiListClass.h" />
+    <ClInclude Include="MTexProjectClassTypedAABTreeCullSystemClass.h" />
+    <ClInclude Include="MTexProjectClassTypedGridCullSystemClass.h" />
+    <ClInclude Include="MTransitionGameObj.h" />
+    <ClInclude Include="MTransitionGameObjDef.h" />
+    <ClInclude Include="MTransitionDataClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MTransitionInstanceClass.h" />
+    <ClInclude Include="MTransitionInstanceClassPtrDynamicVectorClass.h" />
+    <ClInclude Include="MTranslateDBClass.h" />
+    <ClInclude Include="MTwiddlerClass.h" />
+    <ClInclude Include="MUInt32ConstWeaponDefinitionClassPtrDynamicVectorClassHashTemplateClass.h" />
+    <ClInclude Include="MUInt32ConstWeaponDefinitionClassPtrHashTemplateClass.h" />
+    <ClInclude Include="Muint32SimpleVecClass.h" />
+    <ClInclude Include="MUndergroundEffectClass.h" />
+    <ClInclude Include="Mvector2.h" />
+    <ClInclude Include="MVector3.h" />
+    <ClInclude Include="MVector3DynamicVectorClass.h" />
+    <ClInclude Include="MVector3i.h" />
+    <ClInclude Include="MVector3PtrDynamicVectorClass.h" />
+    <ClInclude Include="Mvector4.h" />
+    <ClInclude Include="MVehicleFactoryGameObj.h" />
+    <ClInclude Include="MVehicleFactoryGameObjDef.h" />
+    <ClInclude Include="MVehicleGameObj.h" />
+    <ClInclude Include="MVehicleGameObjDef.h" />
+    <ClInclude Include="MVehicleGameObjSList.h" />
+    <ClInclude Include="MVisTableClass.h" />
+    <ClInclude Include="MVisTableClassMultiListClass.h" />
+    <ClInclude Include="MVisTableClassPtrSimpleVecClass.h" />
+    <ClInclude Include="MVisTableMgrClass.h" />
+    <ClInclude Include="MWarFactoryGameObj.h" />
+    <ClInclude Include="MWarFactoryGameObjDef.h" />
+    <ClInclude Include="MWeaponBagClass.h" />
+    <ClInclude Include="MWeaponClass.h" />
+    <ClInclude Include="Mweaponmgr.h" />
+    <ClInclude Include="MWideStringClassDynamicVectorClass.h" />
+    <ClInclude Include="MWidgetUserClass.h" />
+    <ClInclude Include="MWWAudioClass.h" />
+    <ClInclude Include="Mwwmath.h" />
+    <ClInclude Include="RenSharpChatCommandClass.h" />
+    <ClInclude Include="RenSharpChatCommandManager.h" />
+    <ClInclude Include="RenSharpChatCommandStruct.h" />
+    <ClInclude Include="RenSharpConsoleFunctionClass.h" />
+    <ClInclude Include="RenSharpCrateClass.h" />
+    <ClInclude Include="RenSharpCrateFactoryClass.h" />
+    <ClInclude Include="RenSharpCrateModifierClass.h" />
+    <ClInclude Include="RenSharpCrateModifierFactoryClass.h" />
+    <ClInclude Include="RenSharpEventClass.h" />
+    <ClInclude Include="RenSharpGameFeatureClass.h" />
+    <ClInclude Include="RenSharpGameFeatureEventClass.h" />
+    <ClInclude Include="RenSharpGameFeatureEventClassPlayerDataFactory.h" />
+    <ClInclude Include="RenSharpGameFeatureFactoryClass.h" />
+    <ClInclude Include="RenSharpGameModeClass.h" />
+    <ClInclude Include="RenSharpGameModeEventClass.h" />
+    <ClInclude Include="RenSharpGameModeEventClassPlayerDataFactory.h" />
+    <ClInclude Include="RenSharpGameModeFactoryClass.h" />
+    <ClInclude Include="RenSharpGameObjObserverClass.h" />
+    <ClInclude Include="RenSharpIgnoreAttribute.h" />
+    <ClInclude Include="RenSharpKeyHookClass.h" />
+    <ClInclude Include="RenSharpKeyHookManager.h" />
+    <ClInclude Include="RenSharpKeyHookStruct.h" />
+    <ClInclude Include="RenSharpNodeClass.h" />
+    <ClInclude Include="RenSharpNullGameModeFactoryClass.h" />
+    <ClInclude Include="RenSharpPlayerDataClass.h" />
+    <ClInclude Include="RenSharpPlayerDataFactoryClass.h" />
+    <ClInclude Include="RenSharpPlayerObserverClass.h" />
+    <ClInclude Include="RenSharpTimerManager.h" />
+    <ClInclude Include="RenSharpTimerStruct.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="UnmanagedContainer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="McPurchaseResponseEvent.cpp" />
+    <ClCompile Include="MAABTreeCull.cpp" />
+    <ClCompile Include="AbstractUnmanagedObject.cpp" />
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="CriticalUnmanagedContainer.cpp" />
+    <ClCompile Include="Misc.cpp" />
+    <ClCompile Include="FatalRenSharpException.cpp" />
+    <ClCompile Include="IChatCommandInterface.cpp" />
+    <ClCompile Include="IKeyHookInterface.cpp" />
+    <ClCompile Include="IUnmanagedAttachable.cpp" />
+    <ClCompile Include="Imports.cpp" />
+    <ClCompile Include="ITimerInterface.cpp" />
+    <ClCompile Include="IUnmanagedContainer.cpp" />
+    <ClCompile Include="IUnmanagedObject.cpp" />
+    <ClCompile Include="MAABoxClass.cpp" />
+    <ClCompile Include="MAAPlaneClass.cpp" />
+    <ClCompile Include="Maction.cpp" />
+    <ClCompile Include="MAirFactoryGameObj.cpp" />
+    <ClCompile Include="MAirFactoryGameObjDef.cpp" />
+    <ClCompile Include="MAirStripGameObj.cpp" />
+    <ClCompile Include="MAirStripGameObjDef.cpp" />
+    <ClCompile Include="MAnimCollisionManagerClass.cpp" />
+    <ClCompile Include="MAnimControlClass.cpp" />
+    <ClCompile Include="MArmedGameObj.cpp" />
+    <ClCompile Include="MArmedGameObjDef.cpp" />
+    <ClCompile Include="MArmorWarheadManager.cpp" />
+    <ClCompile Include="MAudibleSoundClass.cpp" />
+    <ClCompile Include="MAudibleSoundDefinitionClass.cpp" />
+    <ClCompile Include="Maudiocallback.cpp" />
+    <ClCompile Include="MAudioCallbackListClass.cpp" />
+    <ClCompile Include="MBaseControllerClass.cpp" />
+    <ClCompile Include="MBaseGameObj.cpp" />
+    <ClCompile Include="MBaseGameObjDef.cpp" />
+    <ClCompile Include="MBaseGameObjSList.cpp" />
+    <ClCompile Include="MBeaconGameObj.cpp" />
+    <ClCompile Include="MBeaconGameObjDef.cpp" />
+    <ClCompile Include="MBeaconGameObjSList.cpp" />
+    <ClCompile Include="Mboxrenderobjclass.cpp" />
+    <ClCompile Include="MBufferedFileClass.cpp" />
+    <ClCompile Include="MBuildingAggregateClass.cpp" />
+    <ClCompile Include="MBuildingAggregateClassRefMultiListClass.cpp" />
+    <ClCompile Include="MBuildingAggregateDefClass.cpp" />
+    <ClCompile Include="MBuildingGameObj.cpp" />
+    <ClCompile Include="MBuildingGameObjDef.cpp" />
+    <ClCompile Include="MBuildingGameObjPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MBuildingGameObjSList.cpp" />
+    <ClCompile Include="MC4GameObj.cpp" />
+    <ClCompile Include="MC4GameObjDef.cpp" />
+    <ClCompile Include="MC4GameObjSList.cpp" />
+    <ClCompile Include="MCastResultStruct.cpp" />
+    <ClCompile Include="MChunkClass.cpp" />
+    <ClCompile Include="MCinematicGameObj.cpp" />
+    <ClCompile Include="MCinematicGameObjDef.cpp" />
+    <ClCompile Include="McNetEvent.cpp" />
+    <ClCompile Include="MCollideableObjClassDynamicVectorClass.cpp" />
+    <ClCompile Include="Mcoltest.cpp" />
+    <ClCompile Include="Mcoltype.cpp" />
+    <ClCompile Include="MCombatManager.cpp" />
+    <ClCompile Include="MComCenterGameObj.cpp" />
+    <ClCompile Include="MComCenterGameObjDef.cpp" />
+    <ClCompile Include="MCommandLineParser.cpp" />
+    <ClCompile Include="MCompressedVisTableClassPtrSimpleDynVecClass.cpp" />
+    <ClCompile Include="MConnectionAcceptanceFilter.cpp" />
+    <ClCompile Include="MConnectionRequest.cpp" />
+    <ClCompile Include="MConsoleFunctionClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MConstDefinitionClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MConstructionYardGameObj.cpp" />
+    <ClCompile Include="MConstructionYardGameObjDef.cpp" />
+    <ClCompile Include="MConstWeaponDefinitionClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MControlClass.cpp" />
+    <ClCompile Include="MConversationClass.cpp" />
+    <ClCompile Include="McPlayer.cpp" />
+    <ClCompile Include="McPlayerKill.cpp" />
+    <ClCompile Include="McPlayerPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="McPlayerSList.cpp" />
+    <ClCompile Include="MCriticalSectionClass.cpp" />
+    <ClCompile Include="McScTextObj.cpp" />
+    <ClCompile Include="McTeam.cpp" />
+    <ClCompile Include="MCullableClass.cpp" />
+    <ClCompile Include="MCullSystemClass.cpp" />
+    <ClCompile Include="Mda.cpp" />
+    <ClCompile Include="MDACrateFactoryClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MDACrateModifierClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MDACrateModifierFactoryClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MDADamageEventStructSList.cpp" />
+    <ClCompile Include="MDADamageTableStructDynamicVectorClass.cpp" />
+    <ClCompile Include="MDAGameFeatureClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MDamageableGameObj.cpp" />
+    <ClCompile Include="MDamageableGameObjDef.cpp" />
+    <ClCompile Include="MDamageZoneGameObj.cpp" />
+    <ClCompile Include="MDamageZoneGameObjDef.cpp" />
+    <ClCompile Include="MDAPlayerObserverChatCommandStructPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MDAPlayerObserverClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MDAPlayerObserverKeyHookStructPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MDAPlayerObserverTimerStructPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MDAVehicleSpawnPointClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="Mda_ban.cpp" />
+    <ClCompile Include="Mda_building.cpp" />
+    <ClCompile Include="Mda_c4beacon.cpp" />
+    <ClCompile Include="Mda_characterrefunds.cpp" />
+    <ClCompile Include="Mda_chatcommand.cpp" />
+    <ClCompile Include="Mda_chatsounds.cpp" />
+    <ClCompile Include="Mda_crate.cpp" />
+    <ClCompile Include="Mda_cratemanager.cpp" />
+    <ClCompile Include="Mda_damagelog.cpp" />
+    <ClCompile Include="Mda_disable.cpp" />
+    <ClCompile Include="Mda_domination.cpp" />
+    <ClCompile Include="Mda_donate.cpp" />
+    <ClCompile Include="Mda_event.cpp" />
+    <ClCompile Include="Mda_game.cpp" />
+    <ClCompile Include="Mda_gamefeature.cpp" />
+    <ClCompile Include="Mda_gamelog.cpp" />
+    <ClCompile Include="Mda_gamemode.cpp" />
+    <ClCompile Include="Mda_gameobj.cpp" />
+    <ClCompile Include="Mda_gameobjobservers.cpp" />
+    <ClCompile Include="Mda_gamespy.cpp" />
+    <ClCompile Include="Mda_infammo.cpp" />
+    <ClCompile Include="Mda_killmessages.cpp" />
+    <ClCompile Include="Mda_levelcleaner.cpp" />
+    <ClCompile Include="Mda_log.cpp" />
+    <ClCompile Include="Mda_loot.cpp" />
+    <ClCompile Include="Mda_nodemanager.cpp" />
+    <ClCompile Include="Mda_parachutes.cpp" />
+    <ClCompile Include="Mda_pointsdistribution.cpp" />
+    <ClCompile Include="Mda_radio.cpp" />
+    <ClCompile Include="Mda_rtc.cpp" />
+    <ClCompile Include="Mda_shotgun.cpp" />
+    <ClCompile Include="Mda_soldier.cpp" />
+    <ClCompile Include="Mda_spawnprotection.cpp" />
+    <ClCompile Include="Mda_spawnsystem.cpp" />
+    <ClCompile Include="Mda_squad.cpp" />
+    <ClCompile Include="Mda_ssgm.cpp" />
+    <ClCompile Include="Mda_taunt.cpp" />
+    <ClCompile Include="Mda_team.cpp" />
+    <ClCompile Include="Mda_teleporter.cpp" />
+    <ClCompile Include="Mda_translation.cpp" />
+    <ClCompile Include="Mda_vehicle.cpp" />
+    <ClCompile Include="Mda_vehicleownership.cpp" />
+    <ClCompile Include="Mda_vehiclequeue.cpp" />
+    <ClCompile Include="Mda_vehicleshells.cpp" />
+    <ClCompile Include="Mda_vehiclespawn.cpp" />
+    <ClCompile Include="Mda_weapons.cpp" />
+    <ClCompile Include="MDecorationPhysClass.cpp" />
+    <ClCompile Include="MDecorationPhysDefClass.cpp" />
+    <ClCompile Include="MDefaultConnectionAcceptanceFilter.cpp" />
+    <ClCompile Include="MDefenseObjectClass.cpp" />
+    <ClCompile Include="MDefinitionFactoryClass.cpp" />
+    <ClCompile Include="MDefinitionMgrClass.cpp" />
+    <ClCompile Include="MDynamicPhysClass.cpp" />
+    <ClCompile Include="MDynamicPhysDefClass.cpp" />
+    <ClCompile Include="MDynamicShadowManagerClass.cpp" />
+    <ClCompile Include="MEngine.cpp" />
+    <ClCompile Include="Mda_player.cpp" />
+    <ClCompile Include="Mda_settings.cpp" />
+    <ClCompile Include="Mda_token.cpp" />
+    <ClCompile Include="MDefenseObjectDefClass.cpp" />
+    <ClCompile Include="MDefinition.cpp" />
+    <ClCompile Include="MDialogueClass.cpp" />
+    <ClCompile Include="MDialogueOptionClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MEditable.cpp" />
+    <ClCompile Include="Mengine_io.cpp" />
+    <ClCompile Include="Mengine_tt.cpp" />
+    <ClCompile Include="Mengine_ttdef.cpp" />
+    <ClCompile Include="Mengine_vector.cpp" />
+    <ClCompile Include="MFileFactoryListClass.cpp" />
+    <ClCompile Include="MFrustumClass.cpp" />
+    <ClCompile Include="MGameData.cpp" />
+    <ClCompile Include="MGameDefinition.cpp" />
+    <ClCompile Include="MGameObjCustomTimerClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MGameObjManager.cpp" />
+    <ClCompile Include="MGameObjObserverClassPtrSimpleDynVecClass.cpp" />
+    <ClCompile Include="MGameObjObserverTimerClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MGridCull.cpp" />
+    <ClCompile Include="MHarvesterClass.cpp" />
+    <ClCompile Include="MHashTemplateClass.cpp" />
+    <ClCompile Include="MHashTemplateIterator.cpp" />
+    <ClCompile Include="MHTreeClass.cpp" />
+    <ClCompile Include="MHumanStateClass.cpp" />
+    <ClCompile Include="MInt32DynamicVectorClass.cpp" />
+    <ClCompile Include="MIntSimpleDynVecClass.cpp" />
+    <ClCompile Include="Minttest.cpp" />
+    <ClCompile Include="MLightPhysClass.cpp" />
+    <ClCompile Include="MLightPhysClassRefMultiListClass.cpp" />
+    <ClCompile Include="MLineSegClass.cpp" />
+    <ClCompile Include="MMaterialEffectClass.cpp" />
+    <ClCompile Include="MMaterialEffectClassRefMultiListClass.cpp" />
+    <ClCompile Include="MMatrix3.cpp" />
+    <ClCompile Include="MMatrix3D.cpp" />
+    <ClCompile Include="MMatrix3DDynamicVectorClass.cpp" />
+    <ClCompile Include="Mmatrix4.cpp" />
+    <ClCompile Include="MMeshClass.cpp" />
+    <ClCompile Include="MMixFileCreatorFileInfoStructDynamicVectorClass.cpp" />
+    <ClCompile Include="MMixFileFactoryClass.cpp" />
+    <ClCompile Include="MMixFileFactoryClassAddInfoStructDynamicVectorClass.cpp" />
+    <ClCompile Include="MMixFileFactoryClassFileInfoStructDynamicVectorClass.cpp" />
+    <ClCompile Include="MMoveablePhysClass.cpp" />
+    <ClCompile Include="MMoveablePhysDefClass.cpp" />
+    <ClCompile Include="Mmultilist.cpp" />
+    <ClCompile Include="MMuzzleRecoilClass.cpp" />
+    <ClCompile Include="MNavalFactoryGameObj.cpp" />
+    <ClCompile Include="MNavalFactoryGameObjDef.cpp" />
+    <ClCompile Include="MNetworkObjectClass.cpp" />
+    <ClCompile Include="Mobboxclass.cpp" />
+    <ClCompile Include="MOffenseObjectClass.cpp" />
+    <ClCompile Include="MParameter.cpp" />
+    <ClCompile Include="MPersist.cpp" />
+    <ClCompile Include="MPersistantSurfaceEmitterClassPtrVectorClass.cpp" />
+    <ClCompile Include="MPersistFactoryClass.cpp" />
+    <ClCompile Include="MPhysClass.cpp" />
+    <ClCompile Include="MPhysClassMultiListClass.cpp" />
+    <ClCompile Include="MPhysClassRefMultiListClass.cpp" />
+    <ClCompile Include="Mphyscoltest.cpp" />
+    <ClCompile Include="MPhysControllerClass.cpp" />
+    <ClCompile Include="MPhysDefClass.cpp" />
+    <ClCompile Include="MPhysicalGameObj.cpp" />
+    <ClCompile Include="MPhysicalGameObjDef.cpp" />
+    <ClCompile Include="MPhysicalGameObjPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MPhysicsSceneClass.cpp" />
+    <ClCompile Include="Mphysinttest.cpp" />
+    <ClCompile Include="MPhysObserverClass.cpp" />
+    <ClCompile Include="Mplane.cpp" />
+    <ClCompile Include="MPlayerDataClass.cpp" />
+    <ClCompile Include="MPostLoadableClass.cpp" />
+    <ClCompile Include="MPowerPlantGameObj.cpp" />
+    <ClCompile Include="MPowerPlantGameObjDef.cpp" />
+    <ClCompile Include="MPowerUpGameObj.cpp" />
+    <ClCompile Include="MPowerUpGameObjDef.cpp" />
+    <ClCompile Include="MProjectorManagerClass.cpp" />
+    <ClCompile Include="Mprototypeclass.cpp" />
+    <ClCompile Include="MPurchaseSettingsDefClass.cpp" />
+    <ClCompile Include="MQuaternion.cpp" />
+    <ClCompile Include="MRawFileClass.cpp" />
+    <ClCompile Include="Mrect.cpp" />
+    <ClCompile Include="MReferenceableClass.cpp" />
+    <ClCompile Include="MReferencerClass.cpp" />
+    <ClCompile Include="MRefineryGameObj.cpp" />
+    <ClCompile Include="MRefineryGameObjDef.cpp" />
+    <ClCompile Include="MRenderObjClass.cpp" />
+    <ClCompile Include="MRenderObjClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MRenderObjClassRefMultiListClass.cpp" />
+    <ClCompile Include="MRepairBayGameObj.cpp" />
+    <ClCompile Include="MRepairBayGameObjDef.cpp" />
+    <ClCompile Include="MSamSiteGameObj.cpp" />
+    <ClCompile Include="MSamSiteGameObjDef.cpp" />
+    <ClCompile Include="MSaveLoadSubSystemClass.cpp" />
+    <ClCompile Include="MSCAnnouncement.cpp" />
+    <ClCompile Include="MSceneClass.cpp" />
+    <ClCompile Include="MScriptableGameObj.cpp" />
+    <ClCompile Include="MScriptableGameObjDef.cpp" />
+    <ClCompile Include="MScriptableGameObjPtrSimpleDynVecClass.cpp" />
+    <ClCompile Include="Mscripts.cpp" />
+    <ClCompile Include="MScriptZoneGameObj.cpp" />
+    <ClCompile Include="MScriptZoneGameObjDef.cpp" />
+    <ClCompile Include="MScriptZoneGameObjSList.cpp" />
+    <ClCompile Include="MSimpleDefinitionFactoryClass.cpp" />
+    <ClCompile Include="MSimpleFileFactoryClass.cpp" />
+    <ClCompile Include="MSimpleGameObj.cpp" />
+    <ClCompile Include="MSimpleGameObjDef.cpp" />
+    <ClCompile Include="MSimplePersistFactoryClass.cpp" />
+    <ClCompile Include="MSList.cpp" />
+    <ClCompile Include="MSmartGameObj.cpp" />
+    <ClCompile Include="MSmartGameObjDef.cpp" />
+    <ClCompile Include="MSmartGameObjSList.cpp" />
+    <ClCompile Include="MSoldierFactoryGameObj.cpp" />
+    <ClCompile Include="MSoldierFactoryGameObjDef.cpp" />
+    <ClCompile Include="MSoldierGameObj.cpp" />
+    <ClCompile Include="MSoldierGameObjDef.cpp" />
+    <ClCompile Include="MSoldierGameObjPtrVectorClass.cpp" />
+    <ClCompile Include="MSoldierGameObjSList.cpp" />
+    <ClCompile Include="MSound3DClass.cpp" />
+    <ClCompile Include="MSoundBufferClass.cpp" />
+    <ClCompile Include="MSoundSceneObjClass.cpp" />
+    <ClCompile Include="MSoundSceneObjClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MSpawnerClass.cpp" />
+    <ClCompile Include="MSpawnerDefClass.cpp" />
+    <ClCompile Include="MSpecialEffectsGameObj.cpp" />
+    <ClCompile Include="MSpecialEffectsGameObjDef.cpp" />
+    <ClCompile Include="MSphereClass.cpp" />
+    <ClCompile Include="MStaticAnimPhysClass.cpp" />
+    <ClCompile Include="MStaticAnimPhysDefClass.cpp" />
+    <ClCompile Include="MStaticPhysClass.cpp" />
+    <ClCompile Include="MStaticPhysClassRefMultiListClass.cpp" />
+    <ClCompile Include="MStaticPhysDefClass.cpp" />
+    <ClCompile Include="MStealthEffectClass.cpp" />
+    <ClCompile Include="Mstraw.cpp" />
+    <ClCompile Include="MStringClassDynamicVectorClass.cpp" />
+    <ClCompile Include="MStringClassGameDefinitionHashTemplateClass.cpp" />
+    <ClCompile Include="MStringClassSimpleDynVecClass.cpp" />
+    <ClCompile Include="MStringClassTDBObjClassPtrHashTemplateClass.cpp" />
+    <ClCompile Include="MSuperweaponGameObj.cpp" />
+    <ClCompile Include="MSuperweaponGameObjDef.cpp" />
+    <ClCompile Include="MSysTimeClass.cpp" />
+    <ClCompile Include="MTDBCategoryClass.cpp" />
+    <ClCompile Include="MTDBObjClass.cpp" />
+    <ClCompile Include="MTDBObjClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MTeamPurchaseSettingsDefClass.cpp" />
+    <ClCompile Include="MTexProjectClassMultiListClass.cpp" />
+    <ClCompile Include="MTexProjectClassTypedAABTreeCullSystemClass.cpp" />
+    <ClCompile Include="MTexProjectClassTypedGridCullSystemClass.cpp" />
+    <ClCompile Include="MTransitionGameObj.cpp" />
+    <ClCompile Include="MTransitionGameObjDef.cpp" />
+    <ClCompile Include="MTransitionDataClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MTransitionInstanceClass.cpp" />
+    <ClCompile Include="MTransitionInstanceClassPtrDynamicVectorClass.cpp" />
+    <ClCompile Include="MTranslateDBClass.cpp" />
+    <ClCompile Include="MTwiddlerClass.cpp" />
+    <ClCompile Include="MUInt32ConstWeaponDefinitionClassPtrDynamicVectorClassHashTemplateClass.cpp" />
+    <ClCompile Include="MUInt32ConstWeaponDefinitionClassPtrHashTemplateClass.cpp" />
+    <ClCompile Include="Muint32SimpleVecClass.cpp" />
+    <ClCompile Include="MUndergroundEffectClass.cpp" />
+    <ClCompile Include="Mvector2.cpp" />
+    <ClCompile Include="MVector3.cpp" />
+    <ClCompile Include="MVector3DynamicVectorClass.cpp" />
+    <ClCompile Include="MVector3i.cpp" />
+    <ClCompile Include="MVector3PtrDynamicVectorClass.cpp" />
+    <ClCompile Include="Mvector4.cpp" />
+    <ClCompile Include="MVehicleFactoryGameObj.cpp" />
+    <ClCompile Include="MVehicleFactoryGameObjDef.cpp" />
+    <ClCompile Include="MVehicleGameObj.cpp" />
+    <ClCompile Include="MVehicleGameObjDef.cpp" />
+    <ClCompile Include="MVehicleGameObjSList.cpp" />
+    <ClCompile Include="MVisTableClass.cpp" />
+    <ClCompile Include="MVisTableClassMultiListClass.cpp" />
+    <ClCompile Include="MVisTableClassPtrSimpleVecClass.cpp" />
+    <ClCompile Include="MVisTableMgrClass.cpp" />
+    <ClCompile Include="MWarFactoryGameObj.cpp" />
+    <ClCompile Include="MWarFactoryGameObjDef.cpp" />
+    <ClCompile Include="MWeaponBagClass.cpp" />
+    <ClCompile Include="MWeaponClass.cpp" />
+    <ClCompile Include="Mweaponmgr.cpp" />
+    <ClCompile Include="MWideStringClassDynamicVectorClass.cpp" />
+    <ClCompile Include="MWidgetUserClass.cpp" />
+    <ClCompile Include="MWWAudioClass.cpp" />
+    <ClCompile Include="Mwwmath.cpp" />
+    <ClCompile Include="RenSharpChatCommandClass.cpp" />
+    <ClCompile Include="RenSharpChatCommandManager.cpp" />
+    <ClCompile Include="RenSharpChatCommandStruct.cpp" />
+    <ClCompile Include="RenSharpConsoleFunctionClass.cpp" />
+    <ClCompile Include="RenSharpCrateClass.cpp" />
+    <ClCompile Include="RenSharpCrateFactoryClass.cpp" />
+    <ClCompile Include="RenSharpCrateModifierClass.cpp" />
+    <ClCompile Include="RenSharpCrateModifierFactoryClass.cpp" />
+    <ClCompile Include="RenSharpEventClass.cpp" />
+    <ClCompile Include="RenSharpGameFeatureClass.cpp" />
+    <ClCompile Include="RenSharpGameFeatureEventClass.cpp" />
+    <ClCompile Include="RenSharpGameFeatureEventClassPlayerDataFactory.cpp" />
+    <ClCompile Include="RenSharpGameFeatureFactoryClass.cpp" />
+    <ClCompile Include="RenSharpGameModeClass.cpp" />
+    <ClCompile Include="RenSharpGameModeEventClass.cpp" />
+    <ClCompile Include="RenSharpGameModeEventClassPlayerDataFactory.cpp" />
+    <ClCompile Include="RenSharpGameModeFactoryClass.cpp" />
+    <ClCompile Include="RenSharpGameObjObserverClass.cpp" />
+    <ClCompile Include="RenSharpIgnoreAttribute.cpp" />
+    <ClCompile Include="RenSharpKeyHookClass.cpp" />
+    <ClCompile Include="RenSharpKeyHookManager.cpp" />
+    <ClCompile Include="RenSharpKeyHookStruct.cpp" />
+    <ClCompile Include="RenSharpNodeClass.cpp" />
+    <ClCompile Include="RenSharpNullGameModeFactoryClass.cpp" />
+    <ClCompile Include="RenSharpPlayerDataClass.cpp" />
+    <ClCompile Include="RenSharpPlayerDataFactoryClass.cpp" />
+    <ClCompile Include="RenSharpPlayerObserverClass.cpp" />
+    <ClCompile Include="RenSharpTimerManager.cpp" />
+    <ClCompile Include="RenSharpTimerStruct.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="UnmanagedContainer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MemoryManager\MemoryManager.vcxproj">
+      <Project>{2fef1c76-9e4a-4921-b2d3-e536da918810}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\scripts\scripts.vcxproj">
+      <Project>{9b549c98-0bf4-4092-ae2a-ad7f780f8405}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\shared\shared.vcxproj">
+      <Project>{6636e311-e860-4f52-9d23-fe38e38d6020}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ManagedScriptsKeyName.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="version.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

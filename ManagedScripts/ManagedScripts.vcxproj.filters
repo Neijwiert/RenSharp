@@ -1,0 +1,2273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\DA Core">
+      <UniqueIdentifier>{c73f3986-0ba1-4771-b794-91f448aa91f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DA Core">
+      <UniqueIdentifier>{7d859214-a2b2-40c0-8582-986397117cac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DA Crates">
+      <UniqueIdentifier>{b779b9f2-e2e9-4c0e-90df-0da6ad526be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DA Crates">
+      <UniqueIdentifier>{19be8f29-e80f-41bf-9efd-177f8594eb63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DA Engine">
+      <UniqueIdentifier>{6d3e704f-ab60-4ef5-a310-752ab03429bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DA Engine">
+      <UniqueIdentifier>{62dc0b9b-9bba-460b-bd54-05f2a2a9b945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DA Game Features">
+      <UniqueIdentifier>{426d36d0-e4e1-46ba-9d1b-f8f43df153a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DA Game Features">
+      <UniqueIdentifier>{1e7e66af-d941-4afc-9a47-713f5ec23788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DA Game Mode Framework">
+      <UniqueIdentifier>{fd430359-5944-4cb1-aff3-77000edc0f3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DA Game Mode Framework">
+      <UniqueIdentifier>{ab1e4bce-d9db-4efa-8bc9-2bd765eb8c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DA Game Modes">
+      <UniqueIdentifier>{e6261837-a8dc-4ec9-a8e8-8f27e39bead8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DA Game Modes">
+      <UniqueIdentifier>{f1c8371d-1a29-49e3-8404-f62b3e8b414a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenSharp Generic Implementations">
+      <UniqueIdentifier>{f1f065a9-ef0d-4bfc-9253-df1673c48739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenSharp Generic Implementations">
+      <UniqueIdentifier>{b85ff0c7-7088-4f6b-9d32-879eeac27120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{998b9d5a-6556-43d1-8181-6cdae3e812da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenSharp Core">
+      <UniqueIdentifier>{58ce3273-4c1d-4fd5-9615-049c00991704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{be2fd5af-700b-4ebe-a924-6a69bbf45f0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenSharp Core">
+      <UniqueIdentifier>{fd335c43-900d-4705-a122-31bbd565e039}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MConnectionAcceptanceFilter.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mstraw.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MVector3.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MNetworkObjectClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPostLoadableClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MChunkClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Maudiocallback.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MReferenceableClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPersist.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBaseGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MReferencerClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPersistFactoryClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysObserverClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysicalGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MArmedGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MEditable.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDefinition.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBaseGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDefenseObjectDefClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDamageableGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDialogueClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSoldierGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPowerUpGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSimpleGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mweaponmgr.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MWeaponClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MConnectionRequest.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mobboxclass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MMatrix3.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mvector4.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MQuaternion.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MMatrix3D.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mmatrix4.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mplane.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSphereClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MEngine.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MScriptZoneGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mmultilist.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSoundSceneObjClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mscripts.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MLineSegClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAABoxClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mvector2.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MFrustumClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MCullSystemClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MCullableClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MRenderObjClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAnimControlClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysDefClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MCinematicGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MCinematicGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mrect.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MMuzzleRecoilClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MControlClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Maction.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MMaterialEffectClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MStealthEffectClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysControllerClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MTransitionGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAudibleSoundClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MArmorWarheadManager.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSound3DClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MUndergroundEffectClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPowerPlantGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSoldierFactoryGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAirStripGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MWarFactoryGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MComCenterGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MRepairBayGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MStaticPhysClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MStaticAnimPhysClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBuildingAggregateClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mcoltype.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MCastResultStruct.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mcoltest.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MConstructionYardGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAirFactoryGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MNavalFactoryGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSuperweaponGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDynamicPhysClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDecorationPhysClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MLightPhysClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPowerPlantGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSoldierFactoryGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MWarFactoryGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MHarvesterClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MComCenterGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSuperweaponGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Minttest.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MMeshClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mphysinttest.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mphyscoltest.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MMoveablePhysClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSList.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MHashTemplateClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MHashTemplateIterator.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MGameDefinition.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDynamicPhysDefClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDynamicShadowManagerClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MStaticPhysDefClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAnimCollisionManagerClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="McNetEvent.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="McScTextObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSCAnnouncement.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MProjectorManagerClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MStaticAnimPhysDefClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDecorationPhysDefClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSceneClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MHTreeClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mprototypeclass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mboxrenderobjclass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSoundBufferClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MWWAudioClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAudibleSoundDefinitionClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MGameObjManager.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSaveLoadSubSystemClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBuildingAggregateDefClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MParameter.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAABTreeCull.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAAPlaneClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAudioCallbackListClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MRawFileClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBufferedFileClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MCommandLineParser.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MConversationClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDamageZoneGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDefinitionFactoryClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MFileFactoryListClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MGridCull.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MMixFileFactoryClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MWidgetUserClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysicsSceneClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MVisTableClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MVisTableClassMultiListClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MVisTableMgrClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="McPlayerKill.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="McPurchaseResponseEvent.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSamSiteGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSamSiteGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSimpleDefinitionFactoryClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSimpleFileFactoryClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MCriticalSectionClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSimplePersistFactoryClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSpawnerDefClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSpawnerClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSpecialEffectsGameObjDef.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSpecialEffectsGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSysTimeClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MTDBCategoryClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MTDBObjClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MTransitionGameObj.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MTranslateDBClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MTwiddlerClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDefaultConnectionAcceptanceFilter.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MVector3i.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mwwmath.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_ban.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_building.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_c4beacon.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_chatcommand.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_damagelog.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_disable.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_event.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_game.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_gamefeature.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_gamemode.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_gameobj.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_gameobjobservers.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_log.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_player.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_settings.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_soldier.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_ssgm.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_team.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_token.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_translation.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_vehicle.h">
+      <Filter>Header Files\DA Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_crate.h">
+      <Filter>Header Files\DA Crates</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_cratemanager.h">
+      <Filter>Header Files\DA Crates</Filter>
+    </ClInclude>
+    <ClInclude Include="MAirFactoryGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MAirStripGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MArmedGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBaseControllerClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBeaconGameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBeaconGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBuildingGameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MBuildingGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MC4GameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MC4GameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MCombatManager.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MConstructionYardGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="McPlayer.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="McTeam.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDamageableGameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDamageZoneGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDefenseObjectClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MDefinitionMgrClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mengine_io.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mengine_tt.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mengine_ttdef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mengine_vector.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MGameData.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MHumanStateClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MMoveablePhysDefClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MNavalFactoryGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MOffenseObjectClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysicalGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPlayerDataClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPowerUpGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPurchaseSettingsDefClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MRefineryGameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MRefineryGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MRepairBayGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MScriptableGameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MScriptableGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MScriptZoneGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSimpleGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSmartGameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSmartGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MSoldierGameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MTeamPurchaseSettingsDefClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MTransitionInstanceClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MVehicleFactoryGameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MVehicleFactoryGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MVehicleGameObj.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MVehicleGameObjDef.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MWeaponBagClass.h">
+      <Filter>Header Files\DA Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_characterrefunds.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_chatsounds.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_donate.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_gamelog.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_gamespy.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_infammo.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_killmessages.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_loot.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_parachutes.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_pointsdistribution.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_radio.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_rtc.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_spawnprotection.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_squad.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_taunt.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_vehicleownership.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_vehiclequeue.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_vehicleshells.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_weapons.h">
+      <Filter>Header Files\DA Game Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_levelcleaner.h">
+      <Filter>Header Files\DA Game Mode Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_nodemanager.h">
+      <Filter>Header Files\DA Game Mode Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_spawnsystem.h">
+      <Filter>Header Files\DA Game Mode Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_teleporter.h">
+      <Filter>Header Files\DA Game Mode Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_vehiclespawn.h">
+      <Filter>Header Files\DA Game Mode Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_domination.h">
+      <Filter>Header Files\DA Game Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="Mda_shotgun.h">
+      <Filter>Header Files\DA Game Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="MBaseGameObjSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MBeaconGameObjSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MBuildingAggregateClassRefMultiListClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MBuildingGameObjPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MBuildingGameObjSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MC4GameObjSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MCompressedVisTableClassPtrSimpleDynVecClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MConsoleFunctionClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MConstDefinitionClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MConstWeaponDefinitionClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="McPlayerPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="McPlayerSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDACrateFactoryClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDACrateModifierClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDACrateModifierFactoryClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDADamageEventStructSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDADamageTableStructDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDAGameFeatureClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDAPlayerObserverChatCommandStructPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDAPlayerObserverClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDAPlayerObserverKeyHookStructPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDAPlayerObserverTimerStructPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDAVehicleSpawnPointClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MDialogueOptionClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MGameObjCustomTimerClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MGameObjObserverClassPtrSimpleDynVecClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MGameObjObserverTimerClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MInt32DynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MIntSimpleDynVecClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MLightPhysClassRefMultiListClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MMaterialEffectClassRefMultiListClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MMatrix3DDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MMixFileCreatorFileInfoStructDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MMixFileFactoryClassAddInfoStructDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MMixFileFactoryClassFileInfoStructDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysClassMultiListClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysClassRefMultiListClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MPhysicalGameObjPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MRenderObjClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MRenderObjClassRefMultiListClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MScriptableGameObjPtrSimpleDynVecClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MScriptZoneGameObjSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MSmartGameObjSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MSoldierGameObjPtrVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MSoldierGameObjSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MSoundSceneObjClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MStaticPhysClassRefMultiListClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MStringClassDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MStringClassGameDefinitionHashTemplateClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MStringClassSimpleDynVecClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MStringClassTDBObjClassPtrHashTemplateClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MTDBObjClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MTexProjectClassMultiListClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MTexProjectClassTypedAABTreeCullSystemClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MTexProjectClassTypedGridCullSystemClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MTransitionDataClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MTransitionInstanceClassPtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MUInt32ConstWeaponDefinitionClassPtrDynamicVectorClassHashTemplateClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MUInt32ConstWeaponDefinitionClassPtrHashTemplateClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="Muint32SimpleVecClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MVector3DynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MVector3PtrDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MVehicleGameObjSList.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MVisTableClassPtrSimpleVecClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MWideStringClassDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MCollideableObjClassDynamicVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MPersistantSurfaceEmitterClassPtrVectorClass.h">
+      <Filter>Header Files\RenSharp Generic Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractUnmanagedObject.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CriticalUnmanagedContainer.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="FatalRenSharpException.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IChatCommandInterface.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IKeyHookInterface.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Imports.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ITimerInterface.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IUnmanagedAttachable.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IUnmanagedContainer.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IUnmanagedObject.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpChatCommandClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpChatCommandManager.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpChatCommandStruct.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpConsoleFunctionClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpCrateClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpCrateFactoryClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpCrateModifierClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpCrateModifierFactoryClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpEventClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpGameFeatureClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpGameFeatureEventClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpGameFeatureEventClassPlayerDataFactory.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpGameFeatureFactoryClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpGameModeClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpGameModeEventClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpGameModeEventClassPlayerDataFactory.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpGameModeFactoryClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpGameObjObserverClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpIgnoreAttribute.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpKeyHookClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpKeyHookManager.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpKeyHookStruct.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpNodeClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpNullGameModeFactoryClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpPlayerDataClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpPlayerDataFactoryClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpPlayerObserverClass.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpTimerManager.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenSharpTimerStruct.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="UnmanagedContainer.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MConnectionAcceptanceFilter.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mstraw.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MVector3.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MNetworkObjectClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPostLoadableClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MChunkClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Maudiocallback.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MReferenceableClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPersist.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBaseGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MReferencerClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPersistFactoryClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDamageableGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysObserverClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysicalGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MArmedGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MEditable.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDefinition.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBaseGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDefenseObjectDefClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDialogueClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSoldierGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPowerUpGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSimpleGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mweaponmgr.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MWeaponClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MConnectionRequest.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBuildingGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mobboxclass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MMatrix3.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mvector4.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MQuaternion.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MMatrix3D.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mmatrix4.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mplane.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSphereClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MEngine.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBuildingGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MScriptZoneGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mmultilist.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSoundSceneObjClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mscripts.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MLineSegClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAABoxClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mvector2.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MFrustumClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MCullSystemClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MCullableClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MRenderObjClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAnimControlClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysDefClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MCinematicGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MCinematicGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mrect.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MMuzzleRecoilClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MControlClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Maction.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MMaterialEffectClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MStealthEffectClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysControllerClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MTransitionGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAudibleSoundClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MArmorWarheadManager.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSound3DClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MUndergroundEffectClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPowerPlantGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSoldierFactoryGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAirStripGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MWarFactoryGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MComCenterGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MRepairBayGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MStaticPhysClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MStaticAnimPhysClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBuildingAggregateClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mcoltype.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MCastResultStruct.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mcoltest.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MConstructionYardGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAirFactoryGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MNavalFactoryGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSuperweaponGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDynamicPhysClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDecorationPhysClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MLightPhysClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPowerPlantGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSoldierFactoryGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MWarFactoryGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MHarvesterClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MComCenterGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSuperweaponGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Minttest.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MMeshClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mphysinttest.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mphyscoltest.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MMoveablePhysClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSList.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MHashTemplateClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MHashTemplateIterator.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MGameDefinition.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDynamicPhysDefClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDynamicShadowManagerClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MStaticPhysDefClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAnimCollisionManagerClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="McNetEvent.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="McScTextObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSCAnnouncement.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MProjectorManagerClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MStaticAnimPhysDefClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDecorationPhysDefClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSceneClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MHTreeClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mprototypeclass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mboxrenderobjclass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSoundBufferClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MWWAudioClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAudibleSoundDefinitionClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MGameObjManager.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSaveLoadSubSystemClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBuildingAggregateDefClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MParameter.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAAPlaneClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAudioCallbackListClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MRawFileClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBufferedFileClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MCommandLineParser.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MConversationClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDamageZoneGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDefinitionFactoryClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAABTreeCull.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MFileFactoryListClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MGridCull.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MMixFileFactoryClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MWidgetUserClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysicsSceneClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MVisTableClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MVisTableClassMultiListClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MVisTableMgrClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="McPlayerKill.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="McPurchaseResponseEvent.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSamSiteGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSamSiteGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSimpleDefinitionFactoryClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSimpleFileFactoryClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MCriticalSectionClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSimplePersistFactoryClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSpawnerDefClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSpawnerClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSpecialEffectsGameObjDef.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSpecialEffectsGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSysTimeClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MTDBCategoryClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MTDBObjClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MTransitionGameObj.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MTranslateDBClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MTwiddlerClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDefaultConnectionAcceptanceFilter.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MVector3i.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mwwmath.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_ban.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_building.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_c4beacon.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_chatcommand.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_damagelog.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_disable.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_event.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_game.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_gamefeature.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_gamemode.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_gameobj.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_gameobjobservers.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_log.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_player.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_settings.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_soldier.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_ssgm.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_team.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_token.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_translation.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_vehicle.cpp">
+      <Filter>Source Files\DA Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_crate.cpp">
+      <Filter>Source Files\DA Crates</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_cratemanager.cpp">
+      <Filter>Source Files\DA Crates</Filter>
+    </ClCompile>
+    <ClCompile Include="MAirFactoryGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MAirStripGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MArmedGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBaseControllerClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBeaconGameObj.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MBeaconGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MC4GameObj.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MC4GameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MCombatManager.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MConstructionYardGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="McPlayer.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="McTeam.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDamageableGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDamageZoneGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDefenseObjectClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MDefinitionMgrClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mengine_io.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mengine_tt.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mengine_ttdef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mengine_vector.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MGameData.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MHumanStateClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MMoveablePhysDefClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MNavalFactoryGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MOffenseObjectClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysicalGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPlayerDataClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPowerUpGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MPurchaseSettingsDefClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MRefineryGameObj.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MRefineryGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MRepairBayGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MScriptableGameObj.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MScriptableGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MScriptZoneGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSimpleGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSmartGameObj.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSmartGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MSoldierGameObj.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MTeamPurchaseSettingsDefClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MTransitionInstanceClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MVehicleFactoryGameObj.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MVehicleFactoryGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MVehicleGameObj.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MVehicleGameObjDef.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MWeaponBagClass.cpp">
+      <Filter>Source Files\DA Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_characterrefunds.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_chatsounds.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_donate.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_gamelog.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_gamespy.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_infammo.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_killmessages.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_loot.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_parachutes.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_pointsdistribution.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_radio.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_rtc.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_spawnprotection.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_squad.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_taunt.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_vehicleownership.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_vehiclequeue.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_vehicleshells.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_weapons.cpp">
+      <Filter>Source Files\DA Game Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_levelcleaner.cpp">
+      <Filter>Source Files\DA Game Mode Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_nodemanager.cpp">
+      <Filter>Source Files\DA Game Mode Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_spawnsystem.cpp">
+      <Filter>Source Files\DA Game Mode Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_teleporter.cpp">
+      <Filter>Source Files\DA Game Mode Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_vehiclespawn.cpp">
+      <Filter>Source Files\DA Game Mode Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_domination.cpp">
+      <Filter>Source Files\DA Game Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="Mda_shotgun.cpp">
+      <Filter>Source Files\DA Game Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="MBaseGameObjSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MBeaconGameObjSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MBuildingAggregateClassRefMultiListClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MBuildingGameObjPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MBuildingGameObjSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MC4GameObjSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MCollideableObjClassDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MCompressedVisTableClassPtrSimpleDynVecClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MConsoleFunctionClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MConstDefinitionClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MConstWeaponDefinitionClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="McPlayerPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="McPlayerSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDACrateFactoryClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDACrateModifierClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDACrateModifierFactoryClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDADamageEventStructSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDADamageTableStructDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDAGameFeatureClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDAPlayerObserverChatCommandStructPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDAPlayerObserverClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDAPlayerObserverKeyHookStructPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDAPlayerObserverTimerStructPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDAVehicleSpawnPointClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MDialogueOptionClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MGameObjCustomTimerClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MGameObjObserverClassPtrSimpleDynVecClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MGameObjObserverTimerClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MInt32DynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MIntSimpleDynVecClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MLightPhysClassRefMultiListClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MMaterialEffectClassRefMultiListClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MMatrix3DDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MMixFileCreatorFileInfoStructDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MMixFileFactoryClassAddInfoStructDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MMixFileFactoryClassFileInfoStructDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MPersistantSurfaceEmitterClassPtrVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysClassMultiListClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysClassRefMultiListClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MPhysicalGameObjPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MRenderObjClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MRenderObjClassRefMultiListClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MScriptableGameObjPtrSimpleDynVecClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MScriptZoneGameObjSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MSmartGameObjSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MSoldierGameObjPtrVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MSoldierGameObjSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MSoundSceneObjClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MStaticPhysClassRefMultiListClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MStringClassDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MStringClassGameDefinitionHashTemplateClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MStringClassSimpleDynVecClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MStringClassTDBObjClassPtrHashTemplateClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MTDBObjClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MTexProjectClassMultiListClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MTexProjectClassTypedAABTreeCullSystemClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MTexProjectClassTypedGridCullSystemClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MTransitionDataClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MTransitionInstanceClassPtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MUInt32ConstWeaponDefinitionClassPtrDynamicVectorClassHashTemplateClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MUInt32ConstWeaponDefinitionClassPtrHashTemplateClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MVector3DynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MVector3PtrDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MVehicleGameObjSList.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MVisTableClassPtrSimpleVecClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MWideStringClassDynamicVectorClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractUnmanagedObject.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CriticalUnmanagedContainer.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="FatalRenSharpException.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="IChatCommandInterface.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="IKeyHookInterface.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Imports.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ITimerInterface.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="IUnmanagedAttachable.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="IUnmanagedContainer.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="IUnmanagedObject.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpChatCommandClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpChatCommandManager.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpChatCommandStruct.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpConsoleFunctionClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpCrateClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpCrateFactoryClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpCrateModifierClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpCrateModifierFactoryClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpEventClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpGameFeatureClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpGameFeatureEventClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpGameFeatureEventClassPlayerDataFactory.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpGameFeatureFactoryClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpGameModeClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpGameModeEventClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpGameModeEventClassPlayerDataFactory.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpGameModeFactoryClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpGameObjObserverClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpIgnoreAttribute.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpKeyHookClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpKeyHookManager.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpKeyHookStruct.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpNodeClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpNullGameModeFactoryClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpPlayerDataClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpPlayerDataFactoryClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpPlayerObserverClass.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpTimerManager.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpTimerStruct.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="UnmanagedContainer.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Muint32SimpleVecClass.cpp">
+      <Filter>Source Files\RenSharp Generic Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="Misc.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ManagedScriptsKeyName.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="version.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

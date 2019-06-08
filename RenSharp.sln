@@ -1,0 +1,64 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scripts", "scripts\scripts.vcxproj", "{9B549C98-0BF4-4092-AE2A-AD7F780F8405}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6636E311-E860-4F52-9D23-FE38E38D6020} = {6636E311-E860-4F52-9D23-FE38E38D6020}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemoryManager", "MemoryManager\MemoryManager.vcxproj", "{2FEF1C76-9E4A-4921-B2D3-E536DA918810}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shared", "shared\shared.vcxproj", "{6636E311-E860-4F52-9D23-FE38E38D6020}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenSharp", "RenSharp\RenSharp.vcxproj", "{214EAE6B-D3A6-4D46-9964-51736E3CBCAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedRenSharp", "ManagedRenSharp\ManagedRenSharp.csproj", "{A4BEDEFE-D081-4846-8041-994EE4884725}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManagedScripts", "ManagedScripts\ManagedScripts.vcxproj", "{4ACFACE9-232A-4D1D-9575-E87DBBD02A2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenSharpExamplePlugin", "RenSharpExamplePlugin\RenSharpExamplePlugin.csproj", "{3CDD2EF1-54D9-4024-9FB9-78A30822895C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B549C98-0BF4-4092-AE2A-AD7F780F8405}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9B549C98-0BF4-4092-AE2A-AD7F780F8405}.Release|Win32.ActiveCfg = Release|Win32
+		{9B549C98-0BF4-4092-AE2A-AD7F780F8405}.Release|Win32.Build.0 = Release|Win32
+		{2FEF1C76-9E4A-4921-B2D3-E536DA918810}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2FEF1C76-9E4A-4921-B2D3-E536DA918810}.Release|Win32.ActiveCfg = Release|Win32
+		{2FEF1C76-9E4A-4921-B2D3-E536DA918810}.Release|Win32.Build.0 = Release|Win32
+		{6636E311-E860-4F52-9D23-FE38E38D6020}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6636E311-E860-4F52-9D23-FE38E38D6020}.Release|Win32.ActiveCfg = Release|Win32
+		{6636E311-E860-4F52-9D23-FE38E38D6020}.Release|Win32.Build.0 = Release|Win32
+		{214EAE6B-D3A6-4D46-9964-51736E3CBCAB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{214EAE6B-D3A6-4D46-9964-51736E3CBCAB}.Debug|Win32.Build.0 = Debug|Win32
+		{214EAE6B-D3A6-4D46-9964-51736E3CBCAB}.Release|Win32.ActiveCfg = Release|Win32
+		{214EAE6B-D3A6-4D46-9964-51736E3CBCAB}.Release|Win32.Build.0 = Release|Win32
+		{A4BEDEFE-D081-4846-8041-994EE4884725}.Debug|Win32.ActiveCfg = Debug|x86
+		{A4BEDEFE-D081-4846-8041-994EE4884725}.Debug|Win32.Build.0 = Debug|x86
+		{A4BEDEFE-D081-4846-8041-994EE4884725}.Release|Win32.ActiveCfg = Release|x86
+		{A4BEDEFE-D081-4846-8041-994EE4884725}.Release|Win32.Build.0 = Release|x86
+		{4ACFACE9-232A-4D1D-9575-E87DBBD02A2E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4ACFACE9-232A-4D1D-9575-E87DBBD02A2E}.Debug|Win32.Build.0 = Debug|Win32
+		{4ACFACE9-232A-4D1D-9575-E87DBBD02A2E}.Release|Win32.ActiveCfg = Release|Win32
+		{4ACFACE9-232A-4D1D-9575-E87DBBD02A2E}.Release|Win32.Build.0 = Release|Win32
+		{3CDD2EF1-54D9-4024-9FB9-78A30822895C}.Debug|Win32.ActiveCfg = Debug|x86
+		{3CDD2EF1-54D9-4024-9FB9-78A30822895C}.Debug|Win32.Build.0 = Debug|x86
+		{3CDD2EF1-54D9-4024-9FB9-78A30822895C}.Release|Win32.ActiveCfg = Release|x86
+		{3CDD2EF1-54D9-4024-9FB9-78A30822895C}.Release|Win32.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {79E73B65-BAAB-449E-8278-A2423D5FA5FD}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal
