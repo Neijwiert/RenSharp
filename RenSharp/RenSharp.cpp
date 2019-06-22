@@ -30,7 +30,7 @@ limitations under the License.
 // We need this boolean to stop the FDS gracefully the same way 'quit' does
 REF_DEF2(bool, cGameData::IsManualExit, 0x0082F125, 0x0082E30D);
 
-static LPCWSTR AppDomainManagerTypeAssemblyName = L"ManagedRenSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c2f4cb925e8b2a8a";
+static LPCWSTR AppDomainManagerTypeAssemblyName = L"ManagedRenSharp, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c2f4cb925e8b2a8a";
 static LPCWSTR AppDomainManagerTypeName = L"RenSharp.RenSharpAppDomainManager";
 
 BOOL WINAPI ConsoleCtrlHandlerRoutine(_In_ DWORD dwCtrlType)

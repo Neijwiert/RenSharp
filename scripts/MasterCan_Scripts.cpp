@@ -1,9 +1,9 @@
-//MasterCan's Scripts for Public TT Release - v1
+//MasterCan's Scripts for Public TT Release - v3
 //Made by The Unstoppable (MasterCan)
-//This version includes 14 scripts.
+//This version includes 40 scripts.
 
-//14 Working
-//0 Buggy
+//39 Working
+//1 Buggy
 //0 Not Working
 //0 Not Tested
 
@@ -18,13 +18,13 @@
 #include "engine_player.h"
 #include "engine_io.h"
 #include "engine_obj.h"
-//#include "gmgame.h" DA
-//#include "gmplugin.h" DA
 #include "WeaponClass.h"
 #include "SoldierGameObj.h"
 #include "WeaponBagClass.h"
 #include "VehicleGameObj.h"
+#include "SimpleGameObj.h"
 #include "BuildingGameObj.h"
+#include "PowerupGameObj.h"
 #include "cPlayer.h"
 #include <string>
 #include <vector>
@@ -40,15 +40,12 @@ class MC_Teleport : public ScriptImpClass
 		//TeleportSound: The sound that will be played after teleportation done.
 		//Changelog: 1.0 - First Release
 		//           1.1 - Gonna Make This Two-Way Teleportation
-		if (Commands->Find_Object(Get_Int_Parameter("BoxID")))
+		if (enterer->As_SoldierGameObj() || enterer->As_VehicleGameObj())
 		{
-			if (enterer->As_SoldierGameObj() || enterer->As_VehicleGameObj())
+			Commands->Set_Position(enterer, Commands->Get_Position(Commands->Find_Object(Get_Int_Parameter("ArrowID"))));
+			if (Get_Parameter("TeleportSound"))
 			{
-				Commands->Set_Position(enterer, Commands->Get_Position(Commands->Find_Object(Get_Int_Parameter("ArrowID"))));
-				if (Get_Parameter("TeleportSound"))
-				{
-					Create_2D_WAV_Sound_Player(enterer, Get_Parameter("TeleportSound"));
-				}
+				Create_2D_WAV_Sound_Player(enterer, Get_Parameter("TeleportSound"));
 			}
 		}
 	}
@@ -503,6 +500,7 @@ class MC_IonExplosion_When_Death : public ScriptImpClass
 	{
 		Vector3 Pos = Commands->Get_Position(obj);
 		Create_Explosion_Extended("Explosion_IonCannonBeacon", Pos, obj);
+		Commands->Create_Object("Beacon_Ion_Cannon_Anim_Post", Commands->Get_Position(obj));
 		Destroy_Script();
 	}
 };
@@ -792,6 +790,7 @@ class MC_Open_Nod_PT : public ScriptImpClass
 	}
 };
 
+
 class MC_Objective_Message_Sender : public ScriptImpClass
 {
 	static StringClass Underscore_To_Space(StringClass strtext)
@@ -877,8 +876,19 @@ public:
 	GameObject *This;
 	int StarTrigger;
 	int CustomTriggerID;
+
+	void Send_Debug_Message(const char *String)
+	{
+		if (Get_Int_Parameter("Debug") == 1)
+		{
+			Send_Message(255, 255, 255, StringClass::getFormattedString("[MCDBG] %s", String));
+			Console_Output(StringClass::getFormattedString("[MCDBG] %s\n", String));
+		}
+	}
+
 	void Created(GameObject *obj)
 	{
+
 		CustomTriggerID = 7236527;
 		Message = StringClass::getFormattedString("%s", Get_Parameter("Message"));
 		Order = Get_Int_Parameter("ObjectiveOrder");
@@ -886,32 +896,36 @@ public:
 		StarTrigger = Get_Int_Parameter("StarTrigger");
 		Listener = Commands->Find_Object(Get_Int_Parameter("Listener"));
 		This = obj;
-		if (std::string(OverType).find("NONE") != std::string::npos)
+		Send_Debug_Message(StringClass::getFormattedString("Over Type is %s", OverType));
+		if (!strstr(OverType, "NONE"))
 		{
 			ParameterObject = Commands->Find_Object(Get_Int_Parameter("ParameterObject"));
 			if (ParameterObject)
 			{
 				if (std::string(OverType).find("KILLOBJECT") != std::string::npos)
 				{
+					Send_Debug_Message("Created listener with type KILLOBJECT.");
 					Attach_Script_Once(ParameterObject, "MC_Objective_Listener", StringClass::getFormattedString("%i,%s,%i,%i", Commands->Get_ID(obj), OverType, CustomTriggerID, StarTrigger));
 				}
 				else if (std::string(OverType).find("ENTER") != std::string::npos)
 				{
+					Send_Debug_Message("Created listener with type ENTER.");
 					Attach_Script_Once(ParameterObject, "MC_Objective_Listener", StringClass::getFormattedString("%i,%s,%i,%i", Commands->Get_ID(obj), OverType, CustomTriggerID, StarTrigger));
 				}
 				else if (std::string(OverType).find("POKE") != std::string::npos)
 				{
+					Send_Debug_Message("Created listener with type POKE.");
 					Attach_Script_Once(ParameterObject, "MC_Objective_Listener", StringClass::getFormattedString("%i,%s,%i,%i", Commands->Get_ID(obj), OverType, CustomTriggerID, StarTrigger));
 				}
 				else
 				{
-
+					Send_Debug_Message("Can't create listener. Event is unknown.");
 				}
 			}
 		}
 		else
 		{
-
+			Send_Debug_Message("Created listener with type NONE.");
 		}
 		//MC_Objective_Controller::Scripts->Add_Head(this); //FIX
 		Commands->Start_Timer(obj, this, 2.0f, 129);
@@ -941,8 +955,18 @@ class MC_Objective_Controller : public ScriptImpClass
 
 public:
 
+	void Send_Debug_Message(const char *String)
+	{
+		if (Get_Int_Parameter("Debug") == 1)
+		{
+			Send_Message(255, 255, 255, StringClass::getFormattedString("[MCDBG] %s", String));
+			Console_Output(StringClass::getFormattedString("[MCDBG] %s\n", String));
+		}
+	}
+
 	void Created(GameObject *obj)
 	{
+		Send_Debug_Message("Controller created.");
 		ObjectiveMessageSender = Commands->Find_Object(Get_Int_Parameter("MessageObject"));
 		//Objectives = /*&std::vector<GameObject*>();*/ &DynamicVectorClass<GameObject*>();
 		Scripts = (SList<MC_Objective>());
@@ -953,13 +977,16 @@ public:
 		{
 			int ObjectID = stoi(Objects[i]);
 			GameObject *obj = Commands->Find_Object(ObjectID);
-			Objectives.Insert(0, obj); //Crashing server. Needs fix. ||||-|||| Tried: Add(obj) | Insert(0, obj)
+			Objectives.Insert(0, obj);
 		}
+		Send_Debug_Message(StringClass::getFormattedString("%i objectives found and included.", Objects.size()));
 		//Starting first objective.
 		CurrentObjective = Get_Objective(0);
+		Send_Debug_Message("Started first objective.");
 		if (CurrentObjective)
 		{
 			Attach_Script_V(ObjectiveMessageSender, "MC_Objective_Message_Sender", CurrentObjective->Message);
+			Send_Debug_Message("Attached message sender.");
 		}
 		else
 		{
@@ -974,15 +1001,18 @@ public:
 		{
 			if (Current_Objective == param)
 			{
+				Send_Debug_Message("Received finish objective custom from listener.");
 				CurrentObjective = Get_Objective(Current_Objective + 1);
 				if (CurrentObjective)
 				{
 					Current_Objective++;
+					Send_Debug_Message("Found a new objective to start.");
 					Commands->Send_Custom_Event(obj, ObjectiveMessageSender, 734638724, 0, 0.0f);
 					Commands->Start_Timer(obj, this, 0.2f, 1);
 				}
 				else
 				{
+					Send_Debug_Message("No new objectives detected.");
 					Commands->Send_Custom_Event(obj, ObjectiveMessageSender, 734638724, 0, 0.0f);
 					Commands->Start_Timer(obj, this, 0.2f, 2);
 				}
@@ -997,6 +1027,7 @@ public:
 			if (!Is_Script_Attached(ObjectiveMessageSender, "MC_Objective_Message_Sender"))
 			{
 				Attach_Script_V(ObjectiveMessageSender, "MC_Objective_Message_Sender", StringClass::getFormattedString("%s", CurrentObjective->Message));
+				Send_Debug_Message("Started a new objective.");
 			}
 			else
 			{
@@ -1008,9 +1039,11 @@ public:
 			if (!Is_Script_Attached(ObjectiveMessageSender, "MC_Objective_Message_Sender"))
 			{
 				GameObject *NoObjective = Commands->Create_Object("Daves Arrow", Vector3(0.0f, 0.0f, 0.0f));
+				Commands->Set_Model(NoObjective, "NULL");
 				Attach_Script_V(NoObjective, "MC_Objective", "There_are_no_new_objectives_detected._Game_might_be_ended.,%i,NONE,0,%i,0", Current_Objective, Commands->Get_ID(obj));
 				Objectives.Insert(0, NoObjective);
-				Attach_Script_V(ObjectiveMessageSender, "MC_Objective_Message_Sender", StringClass::getFormattedString(""));
+				Attach_Script_V(ObjectiveMessageSender, "MC_Objective_Message_Sender", StringClass::getFormattedString("There_are_no_new_objectives_detected._Game_might_be_ended."));
+				Send_Debug_Message("Attached no objectives message.");
 			}
 			else
 			{
@@ -1090,8 +1123,18 @@ class MC_Objective_Listener : public ScriptImpClass
 	const char *TriggerType;
 	int CustomToSend;
 	int OnlyStarTriggered;
+	void Send_Debug_Message(const char *String)
+	{
+		if (Get_Int_Parameter("Debug") == 1)
+		{
+			Send_Message(255, 255, 255, StringClass::getFormattedString("[MCDBG] %s", String));
+			Console_Output(StringClass::getFormattedString("[MCDBG] %s\n", String));
+		}
+	}
+
 	void Created(GameObject *obj)
 	{
+		Send_Debug_Message(StringClass::getFormattedString("LISTENER: Created listener at %i...", Commands->Get_ID(obj)));
 		Objective = Commands->Find_Object(Get_Int_Parameter("Objective"));
 		TriggerType = Get_Parameter("Trigger");
 		CustomToSend = Get_Int_Parameter("CustomID");
@@ -1164,6 +1207,7 @@ class MC_Objective_Listener : public ScriptImpClass
 			{
 				if (type == 4222957) //Destroy listener if objective cancelled.
 				{
+					Send_Debug_Message(StringClass::getFormattedString("LISTENER: Received end objective event from Controller. Destroying listener at %i...", Commands->Get_ID(obj)));
 					Destroy_Script();
 				}
 			}
@@ -1197,15 +1241,665 @@ class MC_Destroy_When_Objective_Completed : public ScriptImpClass
 	}
 };
 
+class MC_Select_Weapon_On_Zone_Enter : public ScriptImpClass
+{
+	void Entered(GameObject *obj, GameObject *enterer)
+	{
+		Commands->Select_Weapon(enterer, Get_Parameter("WeaponPreset"));
+	}
+};
+
+class MC_Select_Weapon_On_Zone_Exit : public ScriptImpClass
+{
+	void Exited(GameObject *obj, GameObject *exiter)
+	{
+		Commands->Select_Weapon(exiter, Get_Parameter("WeaponPreset"));
+	}
+};
+
+class MC_Select_Weapon_On_Zone : public ScriptImpClass
+{
+	void Entered(GameObject *obj, GameObject *enterer)
+	{
+		Commands->Select_Weapon(enterer, Get_Parameter("EnterWeaponPreset"));
+	}
+
+	void Exited(GameObject *obj, GameObject *exiter)
+	{
+		Commands->Select_Weapon(exiter, Get_Parameter("ExitWeaponPreset"));
+	}
+};
+
+class MC_Chinook_Reinforcements_Paradrop : public ScriptImpClass
+{
+	//Taken from Single Player scriot M03_Chinook_ParaDrop and modified to drop 3 different soldiers.
+public:
+	void Register_Auto_Save_Variables()
+	{
+		Auto_Save_Variable(&this->nodTransportHelicopterObjId, sizeof(this->nodTransportHelicopterObjId), 1);
+		Auto_Save_Variable(&this->chinookKilled, sizeof(this->chinookKilled), 2);
+		Auto_Save_Variable(&this->paratrooperIndex, sizeof(this->paratrooperIndex), 3);
+	}
+
+private:
+	int nodTransportHelicopterObjId;
+	bool chinookKilled;
+	int paratrooperIndex;
+	GameObject *presetObj1;
+	GameObject *presetObj2;
+	GameObject *presetObj3;
+	GameObject *nodTransportHelicopterObj;
+	GameObject *MaintrajectoryObj;
+	int SoundObj;
+
+	void Send_Debug_Message(const char *String, ...)
+	{
+		if (Get_Int_Parameter("Debug") == 1)
+		{
+			Send_Message(255, 255, 255, StringClass::getFormattedString("[MCDBG] %s", String));
+			Console_Output(StringClass::getFormattedString("[MCDBG] %s\n", String));
+		}
+	}
+
+	bool Check_Object(GameObject *obj)
+	{
+		if (obj)
+		{
+			if (obj->As_SmartGameObj())
+			{
+				if (obj->As_SoldierGameObj())
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	void Created(GameObject *obj)
+	{
+		presetObj1 = 0;
+		presetObj2 = 0;
+		presetObj3 = 0;
+		Vector3 pos = Commands->Get_Position(obj);
+		float facing = Commands->Get_Facing(obj);
+		Send_Debug_Message("Chinook Drop script is now initializing...");
+		GameObject *MaintrajectoryObj = Commands->Create_Object("Generic_Cinematic", pos);
+		Commands->Set_Model(MaintrajectoryObj, "X5D_Chinookfly");
+		Commands->Set_Facing(MaintrajectoryObj, facing);
+		Commands->Set_Animation(MaintrajectoryObj, "X5D_Chinookfly.X5D_Chinookfly", false, NULL, 0.0f, -1.0f, false);
+		Send_Debug_Message("Created main Trajectory object.");
+		if (Get_Object_Type(obj) == 0)
+		{
+
+			Send_Debug_Message("Creating Nod Chinook...");
+			nodTransportHelicopterObj = Commands->Create_Object("Nod_Transport_Helicopter_Flyover", pos);
+			Set_Max_Health(nodTransportHelicopterObj, 100000.0f);
+			Set_Max_Shield_Strength(nodTransportHelicopterObj, 100000.0f);
+			Commands->Set_Health(nodTransportHelicopterObj, 100000.0f);
+			Commands->Set_Shield_Strength(nodTransportHelicopterObj, 100000.0f);
+			Commands->Set_Facing(nodTransportHelicopterObj, facing);
+			Commands->Disable_Physical_Collisions(nodTransportHelicopterObj);
+			Commands->Set_Animation(nodTransportHelicopterObj, "v_Nod_trnspt.v_Nod_trnspt", true, NULL, 0.0f, -1.0f, false);
+			Commands->Attach_To_Object_Bone(nodTransportHelicopterObj, MaintrajectoryObj, "BN_Chinook_1");
+			Send_Debug_Message("Chinook creation succesful.");
+		}
+		else
+		{
+			Send_Debug_Message("Creating GDI Chinook...");
+			nodTransportHelicopterObj = Commands->Create_Object("GDI_Transport_Helicopter_Flyover", pos);
+			Set_Max_Health(nodTransportHelicopterObj, 100000.0f);
+			Set_Max_Shield_Strength(nodTransportHelicopterObj, 100000.0f);
+			Commands->Set_Health(nodTransportHelicopterObj, 100000.0f);
+			Commands->Set_Shield_Strength(nodTransportHelicopterObj, 100000.0f);
+			Commands->Set_Facing(nodTransportHelicopterObj, facing);
+			Commands->Disable_Physical_Collisions(nodTransportHelicopterObj);
+			Commands->Set_Animation(nodTransportHelicopterObj, "v_GDI_trnspt.v_GDI_trnspt", true, NULL, 0.0f, -1.0f, false);
+			Commands->Attach_To_Object_Bone(nodTransportHelicopterObj, MaintrajectoryObj, "BN_Chinook_1");
+			Send_Debug_Message("Chinook creation succesful.");
+		}
+		Send_Debug_Message("Finishing initialization...");
+		this->chinookKilled = false;
+		this->paratrooperIndex = 0;
+
+		int objId = Commands->Get_ID(obj);
+		char buffer[16];
+		sprintf(buffer, "%d", objId);
+		Commands->Attach_Script(nodTransportHelicopterObj, "M03_Reinforcement_Chinook", buffer);
+
+		this->nodTransportHelicopterObjId = Commands->Get_ID(nodTransportHelicopterObj);
+		Send_Debug_Message("Starting timers...");
+		Commands->Start_Timer(obj, this, 300 / 30.0f, 0);
+		Commands->Start_Timer(obj, this, 169 / 30.0f, 1);
+		Commands->Start_Timer(obj, this, 179 / 30.0f, 2);
+		Commands->Start_Timer(obj, this, 198 / 30.0f, 3);
+		Commands->Start_Timer(obj, this, 145 / 30.0f, 4);
+		Commands->Start_Timer(obj, this, 155 / 30.0f, 5);
+		Commands->Start_Timer(obj, this, 165 / 30.0f, 6);
+		Commands->Start_Timer(obj, this, 25 / 30.0f, 7);
+		Commands->Start_Timer(obj, this, 280 / 30.0f, 8);
+		Send_Debug_Message("Script is now enabled and playing cinematic...");
+	}
+
+	void Custom(GameObject *obj, int type, int param, GameObject *sender)
+	{
+		if (type == 23000 && param == 23000)
+		{
+			this->chinookKilled = true;
+		}
+
+		if (type == 15730)
+		{
+			GameObject *Attach = Commands->Find_Object(param);
+			if (Attach)
+			{
+				presetObj1 = Attach;
+				Send_Debug_Message(StringClass::getFormattedString("Object at Slot 1 has changed to object ID %i by a custom.", param));
+			}
+			else
+			{
+				Send_Debug_Message(StringClass::getFormattedString("Object at Slot 1 was tried to change with object %i but object was unable to found.", param));
+			}
+		}
+		if (type == 15731)
+		{
+			GameObject *Attach = Commands->Find_Object(param);
+			if (Attach)
+			{
+				presetObj2 = Attach;
+				Send_Debug_Message(StringClass::getFormattedString("Object at Slot 2 has changed to object ID %i by a custom.", param));
+			}
+			else
+			{
+				Send_Debug_Message(StringClass::getFormattedString("Object at Slot 2 was tried to change with object %i but object was unable to found.", param));
+			}
+		}
+		if (type == 15732)
+		{
+			GameObject *Attach = Commands->Find_Object(param);
+			if (Attach)
+			{
+				presetObj3 = Attach;
+				Send_Debug_Message(StringClass::getFormattedString("Object at Slot 3 has changed to object ID %i by a custom.", param));
+			}
+			else
+			{
+				Send_Debug_Message(StringClass::getFormattedString("Object at Slot 3 was tried to change with object %i but object was unable to found.", param));
+			}
+		}
+	}
+
+	void Timer_Expired(GameObject *obj, int number)
+	{
+		Vector3 pos = Commands->Get_Position(obj);
+		const char *preset1 = Get_Parameter("FirstPreset");
+		const char *preset2 = Get_Parameter("SecondPreset");
+		const char *preset3 = Get_Parameter("ThirdPreset");
+		float facing = Commands->Get_Facing(obj);
+
+		if (number == 0)
+		{
+			Send_Debug_Message("Cinematic ended and now scripts is being detached...");
+			Commands->Send_Custom_Event(0, presetObj1, 1248753, 0, 0.0f);
+			Commands->Send_Custom_Event(0, presetObj2, 1248753, 0, 0.0f);
+			Commands->Send_Custom_Event(0, presetObj3, 1248753, 0, 0.0f);
+			Send_Debug_Message("Cinematic played successfully! Detaching script...");
+			Destroy_Script();
+		}
+
+		else if (number == 8)
+		{
+			GameObject *nodTransportHelicopterObj = Commands->Find_Object(this->nodTransportHelicopterObjId);
+			if (nodTransportHelicopterObj)
+			{
+				Commands->Destroy_Object(nodTransportHelicopterObj);
+				Send_Debug_Message("Destroyed Chinook.");
+			}
+			else
+			{
+				Send_Debug_Message("Couldn't destroy Chinook: Object did not found.");
+			}
+		}
+
+		else if (number == 7)
+		{
+			if (nodTransportHelicopterObj)
+			{
+				Commands->Enable_Engine(nodTransportHelicopterObj, true);
+				Send_Debug_Message("Enabled Chinook engine.");
+			}
+			else
+			{
+				Send_Debug_Message("Couldn't enable Chinook engine: Object did not found.");
+			}
+		}
+
+		else if (number == 1)
+		{
+			if (this->paratrooperIndex > 0)
+			{
+				if (presetObj1)
+				{
+					GameObject *cinObj = Commands->Create_Object("Generic_Cinematic", pos);
+					Commands->Set_Facing(cinObj, facing);
+					Commands->Set_Model(cinObj, "X5D_Parachute");
+					Commands->Set_Animation(cinObj, "X5D_Parachute.X5D_ParaC_1", false, NULL, 0.0f, -1.0f, false);
+					Commands->Create_3D_Sound_At_Bone("parachute_open", cinObj, "ROOTTRANSFORM");
+					Commands->Attach_Script(cinObj, "M03_No_More_Parachute", "");
+					Send_Debug_Message("Enabled chute for the object at slot 1.");
+				}
+				else
+				{
+					Send_Debug_Message("Couldn't enabled chute for the object at slot 1: Object did not found.");
+				}
+			}
+		}
+
+		else if (number == 2)
+		{
+			if (this->paratrooperIndex > 1)
+			{
+				if (presetObj2)
+				{
+					GameObject *cinObj = Commands->Create_Object("Generic_Cinematic", pos);
+					Commands->Set_Facing(cinObj, facing);
+					Commands->Set_Model(cinObj, "X5D_Parachute");
+					Commands->Set_Animation(cinObj, "X5D_Parachute.X5D_ParaC_2", false, NULL, 0.0f, -1.0f, false);
+					Commands->Create_3D_Sound_At_Bone("parachute_open", cinObj, "ROOTTRANSFORM");
+					Commands->Attach_Script(cinObj, "M03_No_More_Parachute", "");
+					Send_Debug_Message("Enabled chute for the object at slot 2.");
+				}
+				else
+				{
+					Send_Debug_Message("Couldn't enabled chute for the object at slot 2: Object did not found.");
+				}
+			}
+		}
+
+		else if (number == 3)
+		{
+			if (this->paratrooperIndex == 3)
+			{
+				if (presetObj3)
+				{
+					GameObject *cinObj = Commands->Create_Object("Generic_Cinematic", pos);
+					Commands->Set_Facing(cinObj, facing);
+					Commands->Set_Model(cinObj, "X5D_Parachute");
+					Commands->Set_Animation(cinObj, "X5D_Parachute.X5D_ParaC_3", false, NULL, 0.0f, -1.0f, false);
+					Commands->Create_3D_Sound_At_Bone("parachute_open", cinObj, "ROOTTRANSFORM");
+					Commands->Attach_Script(cinObj, "M03_No_More_Parachute", "");
+					Send_Debug_Message("Enabled chute for the object at slot 3.");
+				}
+				else
+				{
+					Send_Debug_Message("Couldn't enabled chute for the object at slot 3: Object did not found.");
+				}
+			}
+		}
+
+		else if (number == 4)
+		{
+			if (!this->chinookKilled)
+			{
+				if (Is_Valid_Preset(preset1) || presetObj1)
+				{
+					Send_Debug_Message("Initializing drop animation for object at slot 1...");
+					GameObject *trajectoryObj = Commands->Create_Object("Generic_Cinematic", pos);
+					Commands->Set_Model(trajectoryObj, "X5D_Box01");
+					Commands->Set_Facing(trajectoryObj, facing);
+					Commands->Set_Animation(trajectoryObj, "X5D_Box01.X5D_Box01", false, NULL, 0.0f, -1.0f, false);
+					Send_Debug_Message("<Slot 1> Animation created! Attaching object...");
+					if (!presetObj1)
+					{
+						presetObj1 = Commands->Create_Object_At_Bone(trajectoryObj, preset1, "Box01");
+						Send_Debug_Message("<Slot 1> The object have been created.");
+					}
+					else
+					{
+						Send_Debug_Message("<Slot 1> Object is already attached by a custom event!");
+					}
+
+					if (presetObj1)
+					{
+						if (Check_Object(presetObj1))
+						{
+							Commands->Set_Facing(presetObj1, facing);
+							Send_Debug_Message("<Slot 1> Facing adjusted.");
+							Attach_Script_Once(presetObj1, "DB_Innate_Soldier", "0.5,0,0,0");
+							Attach_Script_Once(presetObj1, "MC_Unkillable_Until_Custom", "1248753");
+							Commands->Attach_Script(presetObj1, "RMV_Trigger_Killed", "1144444, 1000, 1000");
+							Commands->Attach_Script(presetObj1, "M03_Killed_Sound", "");
+							Commands->Attach_Script(presetObj1, "DLS_Volcano_Stumble", "");
+							Send_Debug_Message("<Slot 1> Scripts attached.");
+							Commands->Set_Animation(presetObj1, "s_a_human.H_A_X5D_ParaT_1", false, NULL, 0.0f, -1.0f, false);
+							Send_Debug_Message("<Slot 1> Animation set.");
+						}
+						Commands->Attach_To_Object_Bone(presetObj1, trajectoryObj, "Box01");
+						Send_Debug_Message("<Slot 1> Object attached to trajectory.");
+					}
+					Send_Debug_Message("<Slot 1> This slot has completed it's initialization.");
+				}
+				else
+				{
+					Send_Debug_Message("Initialization of slot 1 has cancelled: Invalid preset and object is nothing, object cannot be useable.");
+				}
+				this->paratrooperIndex++;
+			}
+		}
+
+		else if (number == 5)
+		{
+			if (!this->chinookKilled)
+			{
+				if (Is_Valid_Preset(preset2) || presetObj2)
+				{
+					Send_Debug_Message("Initializing drop animation for object at slot 2...");
+					GameObject *trajectoryObj = Commands->Create_Object("Generic_Cinematic", pos);
+					Commands->Set_Model(trajectoryObj, "X5D_Box02");
+					Commands->Set_Facing(trajectoryObj, facing);
+					Commands->Set_Animation(trajectoryObj, "X5D_Box02.X5D_Box02", false, NULL, 0.0f, -1.0f, false);
+					Send_Debug_Message("<Slot 2> Animation created! Attaching object...");
+					if (!presetObj2)
+					{
+						presetObj2 = Commands->Create_Object_At_Bone(trajectoryObj, preset2, "Box02");
+						Send_Debug_Message("<Slot 2> The object have been created.");
+					}
+					else
+					{
+						Send_Debug_Message("<Slot 2> Object is already attached by a custom event!");
+					}
+
+					if (presetObj2)
+					{
+						if (Check_Object(presetObj2))
+						{
+							Commands->Set_Facing(presetObj2, facing);
+							Send_Debug_Message("<Slot 2> Facing adjusted.");
+							Attach_Script_Once(presetObj2, "DB_Innate_Soldier", "0.5,0,0,0");
+							Attach_Script_Once(presetObj2, "MC_Unkillable_Until_Custom", "1248753");
+							Commands->Attach_Script(presetObj2, "RMV_Trigger_Killed", "1144444, 1000, 1000");
+							Commands->Attach_Script(presetObj2, "M03_Killed_Sound", "");
+							Commands->Attach_Script(presetObj2, "DLS_Volcano_Stumble", "");
+							Send_Debug_Message("<Slot 2> Scripts attached.");
+							Commands->Set_Animation(presetObj2, "s_a_human.H_A_X5D_ParaT_2", false, NULL, 0.0f, -1.0f, false);
+							Send_Debug_Message("<Slot 2> Animation set.");
+						}
+						Commands->Attach_To_Object_Bone(presetObj2, trajectoryObj, "Box02");
+						Send_Debug_Message("<Slot 2> Object attached to trajectory.");
+					}
+					Send_Debug_Message("<Slot 2> This slot has completed it's initialization.");
+				}
+				else
+				{
+					Send_Debug_Message("Initialization of slot 2 has cancelled: Invalid preset and object is nothing, object cannot be useable.");
+				}
+				this->paratrooperIndex++;
+			}
+		}
+
+		else if (number == 6)
+		{
+			if (!this->chinookKilled)
+			{
+				if (Is_Valid_Preset(preset3) || presetObj3)
+				{
+					Send_Debug_Message("Initializing drop animation for object at slot 3...");
+					GameObject *trajectoryObj = Commands->Create_Object("Generic_Cinematic", pos);
+					Commands->Set_Model(trajectoryObj, "X5D_Box03");
+					Commands->Set_Facing(trajectoryObj, facing);
+					Commands->Set_Animation(trajectoryObj, "X5D_Box03.X5D_Box03", false, NULL, 0.0f, -1.0f, false);
+					Send_Debug_Message("<Slot 3> Animation created! Attaching object...");
+
+					if (!presetObj3)
+					{
+						presetObj3 = Commands->Create_Object_At_Bone(trajectoryObj, preset3, "Box03");
+						Send_Debug_Message("<Slot 3> The object have been created.");
+					}
+					else
+					{
+						Send_Debug_Message("<Slot 3> Object is already attached by a custom event!");
+					}
+
+					if (presetObj3)
+					{
+						if (Check_Object(presetObj3))
+						{
+							Commands->Set_Facing(presetObj3, facing);
+							Send_Debug_Message("<Slot 3> Facing adjusted.");
+							Attach_Script_Once(presetObj3, "DB_Innate_Soldier", "0.5,0,0,0");
+							Attach_Script_Once(presetObj3, "MC_Unkillable_Until_Custom", "1248753");
+							Commands->Attach_Script(presetObj3, "RMV_Trigger_Killed", "1144444, 1000, 1000");
+							Commands->Attach_Script(presetObj3, "M03_Killed_Sound", "");
+							Commands->Attach_Script(presetObj3, "DLS_Volcano_Stumble", "");
+							Send_Debug_Message("<Slot 3> Scripts attached.");
+							Commands->Set_Animation(presetObj3, "s_a_human.H_A_X5D_ParaT_3", false, NULL, 0.0f, -1.0f, false);
+							Send_Debug_Message("<Slot 3> Animation set.");
+						}
+						Commands->Attach_To_Object_Bone(presetObj3, trajectoryObj, "Box03");
+						Send_Debug_Message("<Slot 3> Object attached to trajectory.");
+					}
+					Send_Debug_Message("<Slot 3> This slot has completed it's initialization.");
+				}
+				else
+				{
+					Send_Debug_Message("Initialization of slot 3 has cancelled: Invalid preset and object is nothing, object cannot be useable.");
+				}
+				this->paratrooperIndex++;
+			}
+		}
+	}
+};
+
+class MC_Unkillable_Until_Custom : public ScriptImpClass
+{
+	void Custom(GameObject *obj, int type, int param, GameObject *sender)
+	{
+		if (type == Get_Int_Parameter("Message"))
+		{
+			Destroy_Script();
+		}
+	}
+
+	void Damaged(GameObject *obj, GameObject *damager, float amount)
+	{
+		float maxHealth = Commands->Get_Max_Health(obj);
+		Commands->Set_Health(obj, maxHealth);
+	}
+};
+
+class MC_AttachScript_On_Kill : public ScriptImpClass
+{
+	void Killed(GameObject *obj, GameObject *killer)
+	{
+		Attach_Script_Once(Commands->Find_Object(Get_Int_Parameter("ObjectID")), Get_Parameter("Script"), Get_Parameter("Parameters"));
+		Destroy_Script();
+	}
+
+	void Destroyed(GameObject *obj)
+	{
+		Attach_Script_Once(Commands->Find_Object(Get_Int_Parameter("ObjectID")), Get_Parameter("Script"), Get_Parameter("Parameters"));
+		Destroy_Script();
+	}
+};
+
+class MC_AttachScript_Interval_Self : public ScriptImpClass
+{
+	const char *Script;
+	const char *Parameters;
+	float Interval;
+	int LoopCount;
+	int Looped;
+	void Created(GameObject *obj)
+	{
+		Script = Get_Parameter("Script");
+		Parameters = Get_Parameter("Parameters");
+		Commands->Start_Timer(obj, this, Interval, 234245);
+		LoopCount = Get_Int_Parameter("LoopCount");
+		Looped = 0;
+	}
+
+	void Timer_Expired(GameObject *obj, int number)
+	{
+		if (number == 234245)
+		{
+			Attach_Script_Once(obj, Script, Parameters);
+			if (LoopCount != -1)
+			{
+				if (Looped >= LoopCount)
+				{
+					Destroy_Script();
+				}
+				else
+				{
+					Commands->Start_Timer(obj, this, Interval, 234245);
+				}
+			}
+			else
+			{
+				Commands->Start_Timer(obj, this, Interval, 234245);
+			}
+		}
+	}
+};
+
+class MC_AttachScript_Interval : public ScriptImpClass
+{
+	const char *Script;
+	const char *Parameters;
+	GameObject *Target;
+	float Interval;
+	int LoopCount;
+	int Looped;
+	void Created(GameObject *obj)
+	{
+		Target = Commands->Find_Object(Get_Int_Parameter("ObjectID"));
+		Script = Get_Parameter("Script");
+		Parameters = Get_Parameter("Parameters");
+		Commands->Start_Timer(obj, this, Interval, 234244);
+		LoopCount = Get_Int_Parameter("LoopCount");
+		Looped = 0;
+
+	}
+
+	void Timer_Expired(GameObject *obj, int number)
+	{
+		if (number == 234244)
+		{
+			Attach_Script_Once(Target, Script, Parameters);
+			if (LoopCount != -1)
+			{
+				if (Looped >= LoopCount)
+				{
+					Destroy_Script();
+				}
+				else
+				{
+					Commands->Start_Timer(obj, this, Interval, 234244);
+				}
+			}
+			else
+			{
+				Commands->Start_Timer(obj, this, Interval, 234244);
+			}
+		}
+	}
+};
+
+class MC_Object_Follower_AI : public ScriptImpClass
+{
+	int TargetChangeCustom;
+	int DestroyScriptCustom;
+	GameObject *TargetObject;
+
+	void Created(GameObject *obj)
+	{
+		TargetChangeCustom = Get_Int_Parameter("TargetChangeCustomID");
+		DestroyScriptCustom = Get_Int_Parameter("DestroyScriptCustomID");
+	}
+
+	void Custom(GameObject *obj, int type, int param, GameObject *sender)
+	{
+		if (type == TargetChangeCustom)
+		{
+			GameObject *Target = Commands->Find_Object(param);
+			if (Target)
+			{
+				TargetObject = Target;
+				ActionParamsStruct Parameters;
+				Parameters.Set_Basic(this, 100.0f, 20000);
+				Parameters.Set_Movement(Target, 0.8f, 2.5f);
+			}
+		}
+		else if (type == DestroyScriptCustom)
+		{
+			Destroy_Script();
+		}
+	}
+
+	void Timer_Expired(GameObject *obj, int number)
+	{
+		if (number == 12314178)
+		{
+			if (TargetObject)
+			{
+				ActionParamsStruct Parameters;
+				Parameters.Set_Basic(this, 100.0f, 20000);
+				Parameters.Set_Movement(TargetObject, 0.8f, 2.5f);
+			}
+		}
+	}
+};
+
+class MC_Private_Color_Message_On_Poke : public ScriptImpClass
+{
+	bool Pokeable;
+	void Created(GameObject *obj)
+	{
+		Pokeable = true;
+		Commands->Enable_HUD_Pokable_Indicator(obj, true);
+	}
+
+	void Timer_Expired(GameObject *obj, int number)
+	{
+		if (number == 1)
+		{
+			Pokeable = true;
+			Commands->Enable_HUD_Pokable_Indicator(obj, true);
+		}
+	}
+
+	void Poked(GameObject *obj, GameObject *poker)
+	{
+		if (Pokeable)
+		{
+			Send_Message_Player(poker, Get_Int_Parameter("Red"), Get_Int_Parameter("Green"), Get_Int_Parameter("Blue"), Get_Parameter("Message"));
+			Pokeable = false;
+			Commands->Enable_HUD_Pokable_Indicator(obj, false);
+			Commands->Start_Timer(obj, this, 5.0f, 1);
+		}
+	}
+};
+
 /* NotTest: Not tested yet */
 /* Working: Completely working */
 /* HasBugs: Has at least 1 bug */
 /* NotWork: Not working. Going to be fixed */
 /* Working */ ScriptRegistrant<MC_Stop_Vehicle_Engine> MC_Stop_Vehicle_Engine_Registrant("MC_Stop_Vehicle_Engine", "Duration=0:float");
 /* Working */ ScriptRegistrant<MC_Vehicle_Purchase_Terminal> MC_Vehicle_Purchase_Terminal_Registrant("MC_Vehicle_Purchase_Terminal", "Team=0:int,SpawnerID=0:int,VehiclePreset:string,Credits=400:int");
-/* Working */ ScriptRegistrant<MC_Character_Purchase_Terminal> MC_Character_Purchase_Terminal_Registrant("MC_Character_Purchase_Terminal", "Team=0:int,SpawnerID=0:int,CharacterPreset:string,Credits=400:int");
-/* Working */ ScriptRegistrant<MC_HUD_Message_Zone> MC_HUD_Message_Zone_Registrant("MC_HUD_Message_Zone", "BoxID=0:int,Message=YourMessage:string,Sound=SoundName.wav:string,Red=16.0:float,Green=255.0:float,Blue=16.0:float");
-/* Working */ ScriptRegistrant<MC_Teleport> MC_Teleport_Registrant("MC_Teleport", "BoxID=0:int,ArrowID=0:int,TeleportSound=SoundName.wav:string");
+/* Working */ ScriptRegistrant<MC_Character_Purchase_Terminal> MC_Character_Purchase_Terminal_Registrant("MC_Character_Purchase_Terminal", "Team=0:int,CharacterPreset:string,Credits=400:int");
+/* Working */ ScriptRegistrant<MC_HUD_Message_Zone> MC_HUD_Message_Zone_Registrant("MC_HUD_Message_Zone", "Message=YourMessage:string,Sound=SoundName.wav:string,Red=16.0:float,Green=255.0:float,Blue=16.0:float");
+/* Working */ ScriptRegistrant<MC_Teleport> MC_Teleport_Registrant("MC_Teleport", "ArrowID=0:int,TeleportSound=SoundName.wav:string");
 /* Working */ ScriptRegistrant<MC_Change_Vehicle_Weapon> MC_Change_Vehicle_Weapon_Registrant("MC_Change_Vehicle_Weapon", "Preset=Weapon:string,Rounds=1:int");
 /* Working */ ScriptRegistrant<MC_Change_Vehicle_Weapon_Zone> MC_Change_Vehicle_Weapon_Zone_Registrant("MC_Change_Vehicle_Weapon_Zone", "Preset=Weapon:string,Rounds=1:int");
 /* Working */ ScriptRegistrant<MC_Grant_Weapon> MC_Grant_Weapon_Registrant("MC_Grant_Weapon", "Preset=Weapon:string,Rounds=1:int");
@@ -1229,7 +1923,16 @@ class MC_Destroy_When_Objective_Completed : public ScriptImpClass
 /* Working */ ScriptRegistrant<MC_Spectate_Zone> MC_Spectate_Zone_Registrant("MC_Spectate_Zone", "");
 /* HasBugs */ ScriptRegistrant<MC_Beacon_Block_Zone> MC_Beacon_Block_Zone_Registrant("MC_Beacon_Block_Zone", "Red=16:int,Green=255:int,Blue=16:int,BlockMessage:string");
 /* Working */ ScriptRegistrant<MC_Objective_Message_Sender> MC_Objective_Message_Sender_Registrant("MC_Objective_Message_Sender", "Message=Use_Underscore_For_Space:string");
-/* Working */ ScriptRegistrant<MC_Objective_Controller> MC_Objective_Controller_Registrant("MC_Objective_Controller", "Objectives=Objective-Objects-IDs-Here-Minus-Is-Delimeter:string,MessageObject=100000:int");
-/* Working */ ScriptRegistrant<MC_Objective_Listener> MC_Objective_Listener_Registrant("MC_Objective_Listener", "Objective=100000:int,Trigger:string,CustomID:int,OnlyStarCanTrigger:int");
-/* Working */ ScriptRegistrant<MC_Objective> MC_Objective_Registrant("MC_Objective", "Message=Use_Underscore_For_Space:string,ObjectiveOrder=0:int,ObjectiveCompleteType=Must_be_KILLOBJECT_ENTER_POKE_or_NONE:string,StarTrigger=0:int,Listener=100000:int,ParameterObject=100000:int");
+/* Working */ ScriptRegistrant<MC_Objective_Controller> MC_Objective_Controller_Registrant("MC_Objective_Controller", "Objectives=Objective-Objects-IDs-Here-Minus-Is-Delimeter:string,MessageObject=100000:int,Debug=1:int");
+/* Working */ ScriptRegistrant<MC_Objective_Listener> MC_Objective_Listener_Registrant("MC_Objective_Listener", "Objective=100000:int,Trigger:string,CustomID:int,OnlyStarCanTrigger:int,Debug=1:int");
+/* Working */ ScriptRegistrant<MC_Objective> MC_Objective_Registrant("MC_Objective", "Message=Use_Underscore_For_Space:string,ObjectiveOrder=0:int,ObjectiveCompleteType=Must_be_KILLOBJECT_ENTER_POKE_or_NONE:string,StarTrigger=0:int,Listener=100000:int,ParameterObject=100000:int,Debug=1:int");
 /* Working */ ScriptRegistrant<MC_Destroy_When_Objective_Completed> MC_Destroy_When_Objective_Completed_Registrant("MC_Destroy_When_Objective_Completed", "ObjectiveArrow=100000:int");
+/* Working */ ScriptRegistrant<MC_Select_Weapon_On_Zone> MC_Select_Weapon_On_Zone_Registrant("MC_Select_Weapon_On_Zone", "EnterWeaponPreset:string,ExitWeaponPreset:string");
+/* Working */ ScriptRegistrant<MC_Select_Weapon_On_Zone_Enter> MC_Select_Weapon_On_Zone_Enter_Registrant("MC_Select_Weapon_On_Zone_Enter", "WeaponPreset:string");
+/* Working */ ScriptRegistrant<MC_Select_Weapon_On_Zone_Exit> MC_Select_Weapon_On_Zone_Exit_Registrant("MC_Select_Weapon_On_Zone_Exit", "WeaponPreset:string");
+/* Working */ ScriptRegistrant<MC_Chinook_Reinforcements_Paradrop> MC_Chinook_Reinforcements_Paradrop_Registrant("MC_Chinook_Reinforcements_Paradrop", "FirstPreset:string,SecondPreset:string,ThirdPreset:string,Debug=1:int");
+/* Working */ ScriptRegistrant<MC_Unkillable_Until_Custom> MC_Unkillable_Until_Custom_Registrant("MC_Unkillable_Until_Custom", "Message:int");
+/* Working */ ScriptRegistrant<MC_AttachScript_On_Kill> MC_AttachScript_On_Kill_Registrant("MC_AttachScript_On_Kill", "ObjectID:int,Script:string,Parameters:string");
+/* Working */ ScriptRegistrant<MC_AttachScript_Interval_Self> MC_AttachScript_Interval_Self_Registrant("MC_AttachScript_Interval_Self", "Script:string,Parameters:string,LoopCount=-1:int");
+/* Working */ ScriptRegistrant<MC_AttachScript_Interval> MC_AttachScript_Interval_Registrant("MC_AttachScript_Interval", "ObjectID:int,Script:string,Parameters:string,LoopCount=-1:int");
+/* Working */ ScriptRegistrant<MC_Private_Color_Message_On_Poke> MC_Private_Color_Message_On_Poke_Registrant("MC_Private_Color_Message_On_Poke", "Red=255:int,Green=255:int,Blue=255:int,Message=Message:string");

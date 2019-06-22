@@ -1864,6 +1864,8 @@ void JMG_Rp2_Hostile_Mutant_AI::Created(GameObject *obj)
 }
 void JMG_Rp2_Hostile_Mutant_AI::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (seen->As_SmartGameObj() && seen->As_SmartGameObj()->Is_Stealthed() && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 900)
 		return;
 	if (Is_Script_Attached(seen,"JMG_Bear_Hunter_AI_Ignore"))
@@ -2172,6 +2174,8 @@ void JMG_Bear_Hunt_Mutant_Attacker::Created(GameObject *obj)
 }
 void JMG_Bear_Hunt_Mutant_Attacker::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (seen->As_SmartGameObj() && seen->As_SmartGameObj()->Is_Stealthed() && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 900)
 		return;
 	if (Is_Script_Attached(seen,"JMG_Bear_Hunter_AI_Ignore"))
@@ -2468,6 +2472,8 @@ void JMG_Security_Camera_Behavior::Created(GameObject *obj)
 }
 void JMG_Security_Camera_Behavior::Enemy_Seen(GameObject *obj,GameObject *seen)
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (Is_Script_Attached(seen,"JMG_Security_Camera_Behavior_Ignore"))
 		return;
 	if (!JmgUtility::CanSeeStealth(stealthModeOverride,obj,seen))
@@ -3286,6 +3292,8 @@ void JMG_Bear_Hunt_Final_Boss::Created(GameObject *obj)
 }
 void JMG_Bear_Hunt_Final_Boss::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (seen->As_SmartGameObj() && seen->As_SmartGameObj()->Is_Stealthed() && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 900)
 		return;
 	if (Is_Script_Attached(seen,"JMG_Bear_Hunter_AI_Ignore_Up_To_25_Meters") && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 625)
@@ -3671,6 +3679,8 @@ void JMG_Bear_Hunter_Player_Assist_AI::Created(GameObject *obj)
 }
 void JMG_Bear_Hunter_Player_Assist_AI::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	int seenId = Commands->Get_ID(seen);
 	if (!enemyId || enemyId == seenId || !lastSeen || JmgUtility::SimpleDistance(Commands->Get_Position(seen),Commands->Get_Position(obj)) < enemyDistance)
 	{
@@ -4330,6 +4340,8 @@ void JMG_AI_Follow_Player_When_Near::Created(GameObject *obj)
 }
 void JMG_AI_Follow_Player_When_Near::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (seen->As_SmartGameObj() && seen->As_SmartGameObj()->Is_Stealthed() && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 900)
 		return;
 	if (targetId && lastSeenTime)
@@ -4491,6 +4503,8 @@ void JMG_Bear_Hunter_Engineer_Follow_Player_When_Near::Created(GameObject *obj)
 }
 void JMG_Bear_Hunter_Engineer_Follow_Player_When_Near::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (Get_Vehicle(obj) || Is_Script_Attached(seen,"JMG_Bear_Hunter_Engineer_Ignore"))
 		return;
 	if (seen->As_SmartGameObj() && seen->As_SmartGameObj()->Is_Stealthed() && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 900)
@@ -4737,6 +4751,8 @@ void JMG_Bear_Hunter_Engineer_AI::Created(GameObject *obj)
 }
 void JMG_Bear_Hunter_Engineer_AI::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (seen->As_SmartGameObj() && seen->As_SmartGameObj()->Is_Stealthed() && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 900)
 		return;
 	if (Is_Script_Attached(seen,"JMG_Bear_Hunter_AI_Ignore_Up_To_25_Meters") && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 625)
@@ -5230,6 +5246,8 @@ void JMG_Bear_Hunter_Giant_Deer_Boss::Created(GameObject *obj)
 }
 void JMG_Bear_Hunter_Giant_Deer_Boss::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (seen->As_SmartGameObj() && seen->As_SmartGameObj()->Is_Stealthed() && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 900)
 		return;
 	if (Is_Script_Attached(seen,"JMG_Bear_Hunter_AI_Ignore"))
@@ -5689,6 +5707,8 @@ void JMG_Bear_Hunter_Guardian_Aircraft::Created(GameObject *obj)
 }
 void JMG_Bear_Hunter_Guardian_Aircraft::Enemy_Seen(GameObject *obj,GameObject *seen)
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (!_stricmp(Get_Skin(seen),"Blamo") || !_stricmp(Get_Shield_Type(seen),"Blamo") || !Commands->Get_Health(seen))
 		return;
 	if (Is_Script_Attached(seen,"JMG_Bear_Hunter_Player_Vehicle"))
@@ -6020,6 +6040,8 @@ void JMG_Bear_Hunter_Camera_Behavior::Created(GameObject *obj)
 void JMG_Bear_Hunter_Camera_Behavior::Enemy_Seen(GameObject *obj,GameObject *seen)
 {
 	if (!cameraActive)
+		return;
+	if (!Commands->Get_Health(seen))
 		return;
 	int seenID = Commands->Get_ID(seen);
 	if (!EnemyID)
@@ -6415,6 +6437,8 @@ void JMG_Wandering_AI::Created(GameObject *obj)
 }
 void JMG_Wandering_AI::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (seen->As_SmartGameObj() && seen->As_SmartGameObj()->Is_Stealthed() && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 900)
 		return;
 	if (Is_Script_Attached(seen,"JMG_Bear_Hunter_AI_Ignore"))
@@ -6734,6 +6758,10 @@ void JMG_Wandering_AI_Controller::Destroyed(GameObject *obj)
 	JMG_Wandering_AI_Controller::setup = false;
 	JMG_Wandering_AI_Controller::wanderPoints.Empty_List();
 }
+void JMG_Wandering_AI_Controller::Detach(GameObject *obj)
+{
+	Destroyed(obj);
+}
 void JMG_Wandering_AI_Wander_Point::Created(GameObject *obj)
 {
 	if (!JMG_Wandering_AI_Controller::setup)
@@ -6758,6 +6786,47 @@ void JMG_Wandering_AI_Wander_Point_Dont_Remove::Created(GameObject *obj)
 	Rp2SimplePositionSystem::SimplePositionNode *node = new Rp2SimplePositionSystem::SimplePositionNode(obj);
 	node->value = Get_Int_Parameter("GroupId");
 	JMG_Wandering_AI_Controller::wanderPoints += node;
+}
+void JMG_Wandering_AI_Wander_Point_Mobile::Created(GameObject *obj)
+{
+	if (!JMG_Wandering_AI_Controller::setup)
+	{
+		Console_Input("msg JMG_Wandering_AI_Wander_Point_Mobile ERROR:: Make sure you have the script JMG_Wandering_AI_Controller placed on the map!");
+		return;
+	}
+	Commands->Start_Timer(obj,this,0.25f,1);
+}
+void JMG_Wandering_AI_Wander_Point_Mobile::Timer_Expired(GameObject *obj,int number)
+{
+	if (number == 1)
+	{
+		node = new Rp2SimplePositionSystem::SimplePositionNode(obj);
+		node->value = Get_Int_Parameter("GroupId");
+		faceObjectId = Get_Int_Parameter("FaceObjectID");
+		JMG_Wandering_AI_Controller::wanderPoints += node;
+		Commands->Start_Timer(obj,this,0.1f,2);
+	}
+	if (number == 2)
+	{
+		if (!JMG_Wandering_AI_Controller::setup)
+		{
+			Destroy_Script();
+			return;
+		}
+		node->position = Commands->Get_Position(obj);
+		if (faceObjectId)
+		{
+			GameObject *target = Commands->Find_Object(faceObjectId);
+			Vector3 facePos = Commands->Get_Position(target);
+			Vector3 myPos = Commands->Get_Position(obj);
+			facePos.X -= myPos.X;
+			facePos.Y -= myPos.Y;
+			node->facing = atan2(facePos.Y,facePos.X)*(180.0f/PI);
+		}
+		else
+			node->facing = Commands->Get_Facing(obj);
+		Commands->Start_Timer(obj,this,0.1f,2);
+	}
 }
 void JMG_Utility_Custom_Spawn_System_Controller::Destroyed(GameObject *obj)
 {
@@ -6997,6 +7066,8 @@ void JMG_Bear_Hunter_Wolf::Created(GameObject *obj)
 }
 void JMG_Bear_Hunter_Wolf::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (seen->As_SmartGameObj() && seen->As_SmartGameObj()->Is_Stealthed() && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 900)
 		return;
 	if (Is_Script_Attached(seen,"JMG_Bear_Hunter_AI_Ignore"))
@@ -7767,6 +7838,8 @@ void JMG_Bear_Hunter_AI_Avoid_Enemies::Created(GameObject *obj)
 }
 void JMG_Bear_Hunter_AI_Avoid_Enemies::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (fleeTime < originalFleeTime)
 		setRetreatLocation(obj,seen);
 }
@@ -7902,6 +7975,7 @@ ScriptRegistrant<JMG_Wandering_AI> JMG_Wandering_AI_Registrant("JMG_Wandering_AI
 ScriptRegistrant<JMG_Wandering_AI_Controller> JMG_Wandering_AI_Controller_Registrant("JMG_Wandering_AI_Controller","");
 ScriptRegistrant<JMG_Wandering_AI_Wander_Point> JMG_Wandering_AI_Wander_Point_Registrant("JMG_Wandering_AI_Wander_Point","GroupId:int");
 ScriptRegistrant<JMG_Wandering_AI_Wander_Point_Dont_Remove> JMG_Wandering_AI_Wander_Point_Dont_Remove_Registrant("JMG_Wandering_AI_Wander_Point_Dont_Remove","GroupId:int");
+ScriptRegistrant<JMG_Wandering_AI_Wander_Point_Mobile> JMG_Wandering_AI_Wander_Point_Mobile_Registrant("JMG_Wandering_AI_Wander_Point_Mobile","GroupId:int,FaceObjectID:int");
 ScriptRegistrant<JMG_Utility_Custom_Spawn_System_Controller> JMG_Utility_Custom_Spawn_System_Controller_Registrant("JMG_Utility_Custom_Spawn_System_Controller","");
 ScriptRegistrant<JMG_Utility_Custom_Spawn_System_Point> JMG_Utility_Custom_Spawn_System_Point_Registrant("JMG_Utility_Custom_Spawn_System_Point","GroupId:int");
 ScriptRegistrant<JMG_Utility_Custom_Spawn_System> JMG_Utility_Custom_Spawn_System_Registrant("JMG_Utility_Custom_Spawn_System","Spawn_Point_Group=-1:int,Max_Spawned_At_Once=1:int,Spawn_Limit=-1:int,Respawn_Delay=10.0:float,Random_Delay=0.0:float,Delay_First_Spawn=0:int,Starts_Enabled=1:int,Enable_Message=403401,Disable_Message=403400,Preset0=null:string,Preset1=null:string,Preset2=null:string,Preset3=null:String,Preset4=null:string,Preset5=null:string,Preset6=null:string,Preset7=null:string,Preset8=null:string,Preset9=null:string,Chance0=0:int,Chance1=0:int,Chance2=0:int,Chance3=0:int,Chance4=0:int,Chance5=0:int,Chance6=0:int,Chance7=0:int,Chance8=0:int,Chance9=0:int");

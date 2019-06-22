@@ -359,7 +359,7 @@ namespace RenSharp
 
 	String ^Engine::RenSharpVersion::get()
 	{
-		return "1.0";
+		return "1.1";
 	}
 
 	String ^Engine::StripPathFromFilename(String ^filename)
@@ -3286,7 +3286,20 @@ namespace RenSharp
 
 	uint32 Engine::GetPathfindDistance(Vector3 start, Vector3 dest, PathfindDistanceDelegate ^callback, ISmartGameObj ^pathObj, Object ^data)
 	{
-		if (::Get_Pathfind_Distance == nullptr)
+		return GetPathfindDistanceAsync(pathObj, dest, callback, data);
+	}
+
+	uint32 Engine::GetPathfindDistance(Vector3 start, Vector3 dest, PathfindDistanceDelegate^ callback, ISmartGameObj^ pathObj)
+	{
+#pragma warning(push)
+#pragma warning(disable : 4947)
+		return GetPathfindDistance(start, dest, callback, pathObj, nullptr);
+#pragma warning(pop) 
+	}
+
+	uint32 Engine::GetPathfindDistanceAsync(ISmartGameObj^ pathObj, Vector3 dest, PathfindDistanceDelegate^ callback, Object^ data)
+	{
+		if (::Get_Pathfind_Distance_Async == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
@@ -3299,26 +3312,23 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("pathObj");
 		}
 
-		::Vector3 startVec;
 		::Vector3 destVec;
 
-		Vector3::ManagedToUnmanagedVector3(start, startVec);
 		Vector3::ManagedToUnmanagedVector3(dest, destVec);
 
-		uint32 *managedId = Imports::CreateUInt32();
+		uint32* managedId = Imports::CreateUInt32();
 		uint32 storedManagedId = currentPathfindDistanceRequestId++;
 		try
 		{
 			(*managedId) = storedManagedId;
-			PathfindDistanceRequest ^newRequest = gcnew PathfindDistanceRequest(callback, data);
+			PathfindDistanceRequest^ newRequest = gcnew PathfindDistanceRequest(callback, data);
 
 			pathfindDistanceRequests->Add(storedManagedId, newRequest);
 
-			uint32 unmanagedId = ::Get_Pathfind_Distance(
-				startVec,
+			uint32 unmanagedId = ::Get_Pathfind_Distance_Async(
+				reinterpret_cast<::SmartGameObj*>(pathObj->SmartGameObjPointer.ToPointer()),
 				destVec,
-				reinterpret_cast<::PathfindDistanceCallback>(Marshal::GetFunctionPointerForDelegate(internalPathfindCallbackDelegate).ToPointer()),
-				reinterpret_cast<::SmartGameObj *>(pathObj->SmartGameObjPointer.ToPointer()),
+				reinterpret_cast<::PathfindDistanceCallback>(Marshal::GetFunctionPointerForDelegate(internalPathfindCallbackDelegate).ToPointer()),			
 				managedId);
 
 			newRequest->UnmanagedId = unmanagedId;
@@ -3335,7 +3345,7 @@ namespace RenSharp
 
 			return storedManagedId;
 		}
-		catch (Exception ^)
+		catch (Exception^)
 		{
 			// It might've called the delegate already, prevent double deletion
 			if (pathfindDistanceRequests->Remove(storedManagedId))
@@ -3348,9 +3358,39 @@ namespace RenSharp
 		}
 	}
 
-	uint32 Engine::GetPathfindDistance(Vector3 start, Vector3 dest, PathfindDistanceDelegate^ callback, ISmartGameObj^ pathObj)
+	uint32 Engine::GetPathfindDistanceAsync(ISmartGameObj^ pathObj, Vector3 dest, PathfindDistanceDelegate^ callback)
 	{
-		return GetPathfindDistance(start, dest, callback, pathObj, nullptr);
+		return GetPathfindDistanceAsync(pathObj, dest, callback, nullptr);
+	}
+
+	bool Engine::GetPathfindDistanceBlocking(ISmartGameObj^ pathObj, Vector3 dest, [Out] float% distanceResult, [Out] PathfindDistanceResult% pathfindResult)
+	{
+		if (::Get_Pathfind_Distance_Blocking == nullptr)
+		{
+			throw gcnew NotSupportedException("Pointer to function is null.");
+		}
+		else if (pathObj == nullptr || pathObj->SmartGameObjPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("pathObj");
+		}
+
+		::Vector3 destVec;
+
+		Vector3::ManagedToUnmanagedVector3(dest, destVec);
+
+		float tmpDistanceResult;
+		::PathfindDistanceResult tmpPathfindResult;
+
+		bool result = ::Get_Pathfind_Distance_Blocking(
+			reinterpret_cast<::SmartGameObj*>(pathObj->SmartGameObjPointer.ToPointer()),
+			destVec,
+			tmpDistanceResult,
+			tmpPathfindResult);
+
+		distanceResult = tmpDistanceResult;
+		pathfindResult = static_cast<PathfindDistanceResult>(tmpPathfindResult);
+
+		return result;
 	}
 
 	bool Engine::CancelGetPathfindDistance(uint32 id)
@@ -13751,6 +13791,26 @@ static ::cPlayer* NickSavePlayer = nullptr;
 	void Engine::GetPathfindDistancePointer::set(IntPtr value)
 	{
 		::Get_Pathfind_Distance = reinterpret_cast<::gpd>(value.ToPointer());
+	}
+
+	IntPtr Engine::GetPathfindDistanceAsyncPointer::get()
+	{
+		return IntPtr(::Get_Pathfind_Distance_Async);
+	}
+
+	void Engine::GetPathfindDistanceAsyncPointer::set(IntPtr value)
+	{
+		::Get_Pathfind_Distance_Async = reinterpret_cast<::gpda>(value.ToPointer());
+	}
+
+	IntPtr Engine::GetPathfindDistanceBlockingPointer::get()
+	{
+		return IntPtr(::Get_Pathfind_Distance_Blocking);
+	}
+
+	void Engine::GetPathfindDistanceBlockingPointer::set(IntPtr value)
+	{
+		::Get_Pathfind_Distance_Blocking = reinterpret_cast<::gpdb>(value.ToPointer());
 	}
 
 	IntPtr Engine::CancelGetPathfindDistancePointer::get()

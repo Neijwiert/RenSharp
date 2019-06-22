@@ -169,6 +169,16 @@ namespace RenSharp
 		InternalAudibleSoundDefinitionClassPointer->Set_Virtual_Channel(value);
 	}
 
+	float AudibleSoundDefinitionClass::LogicalDropoffRadius::get()
+	{
+		return InternalAudibleSoundDefinitionClassPointer->Get_Logical_DropOff_Radius();
+	}
+
+	int AudibleSoundDefinitionClass::LogicalType::get()
+	{
+		return InternalAudibleSoundDefinitionClassPointer->Get_Logical_Type();
+	}
+
 	::DefinitionClass *AudibleSoundDefinitionClass::InternalDefinitionClassPointer::get()
 	{
 		return InternalAudibleSoundDefinitionClassPointer;

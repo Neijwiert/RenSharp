@@ -72,22 +72,22 @@ namespace RenSharp
 				return JumpVelocity;
 			}
 
-			bool &GetUseInnateBehavior()
+			bool &_GetUseInnateBehavior()
 			{
 				return UseInnateBehavior;
 			}
 
-			float &GetInnateAggressiveness()
+			float &_GetInnateAggressiveness()
 			{
 				return InnateAggressiveness;
 			}
 
-			float &GetInnateTakeCoverProbability()
+			float &_GetInnateTakeCoverProbability()
 			{
 				return InnateTakeCoverProbability;
 			}
 
-			bool &GetInnateIsStationary()
+			bool &_GetInnateIsStationary()
 			{
 				return InnateIsStationary;
 			}
@@ -219,6 +219,62 @@ namespace RenSharp
 		isUnsquishable = value;
 	}
 
+	bool SoldierGameObjDef::UseInnateBehavior::get()
+	{
+		return InternalSoldierGameObjDefPointer->GetInnateBehavior();
+	}
+
+	void SoldierGameObjDef::UseInnateBehavior::set(bool value)
+	{
+		auto helper = reinterpret_cast<SoldierGameObjDefHelper*>(InternalSoldierGameObjDefPointer);
+
+		auto& useInnateBehavior = helper->_GetUseInnateBehavior();
+
+		useInnateBehavior = value;
+	}
+
+	float SoldierGameObjDef::InnateAggressiveness::get()
+	{
+		return InternalSoldierGameObjDefPointer->GetInnateAggressiveness();
+	}
+
+	void SoldierGameObjDef::InnateAggressiveness::set(float value)
+	{
+		auto helper = reinterpret_cast<SoldierGameObjDefHelper*>(InternalSoldierGameObjDefPointer);
+
+		auto& innateAggressiveness = helper->_GetInnateAggressiveness();
+
+		innateAggressiveness = value;
+	}
+
+	float SoldierGameObjDef::InnateTakeCoverProbability::get()
+	{
+		return InternalSoldierGameObjDefPointer->GetInnateTakeCoverProbability();
+	}
+
+	void SoldierGameObjDef::InnateTakeCoverProbability::set(float value)
+	{
+		auto helper = reinterpret_cast<SoldierGameObjDefHelper*>(InternalSoldierGameObjDefPointer);
+
+		auto& innateTakeCoverProbability = helper->_GetInnateTakeCoverProbability();
+
+		innateTakeCoverProbability = value;
+	}
+
+	bool SoldierGameObjDef::InnateIsStationary::get()
+	{
+		return InternalSoldierGameObjDefPointer->GetInnateIsStationary();
+	}
+
+	void SoldierGameObjDef::InnateIsStationary::set(bool value)
+	{
+		auto helper = reinterpret_cast<SoldierGameObjDefHelper*>(InternalSoldierGameObjDefPointer);
+
+		auto& innateIsStationary = helper->_GetInnateIsStationary();
+
+		innateIsStationary = value;
+	}
+
 	::SmartGameObjDef *SoldierGameObjDef::InternalSmartGameObjDefPointer::get()
 	{
 		return InternalSoldierGameObjDefPointer;
@@ -263,78 +319,6 @@ namespace RenSharp
 		auto &jumpVelocity = helper->GetJumpVelocity();
 
 		jumpVelocity = value;
-	}
-
-	bool SoldierGameObjDef::UseInnateBehavior::get()
-	{
-		auto helper = reinterpret_cast<SoldierGameObjDefHelper *>(InternalSoldierGameObjDefPointer);
-
-		auto &useInnateBehavior = helper->GetUseInnateBehavior();
-
-		return useInnateBehavior;
-	}
-
-	void SoldierGameObjDef::UseInnateBehavior::set(bool value)
-	{
-		auto helper = reinterpret_cast<SoldierGameObjDefHelper *>(InternalSoldierGameObjDefPointer);
-
-		auto &useInnateBehavior = helper->GetUseInnateBehavior();
-
-		useInnateBehavior = value;
-	}
-
-	float SoldierGameObjDef::InnateAggressiveness::get()
-	{
-		auto helper = reinterpret_cast<SoldierGameObjDefHelper *>(InternalSoldierGameObjDefPointer);
-
-		auto &innateAggressiveness = helper->GetInnateAggressiveness();
-
-		return innateAggressiveness;
-	}
-
-	void SoldierGameObjDef::InnateAggressiveness::set(float value)
-	{
-		auto helper = reinterpret_cast<SoldierGameObjDefHelper *>(InternalSoldierGameObjDefPointer);
-
-		auto &innateAggressiveness = helper->GetInnateAggressiveness();
-
-		innateAggressiveness = value;
-	}
-
-	float SoldierGameObjDef::InnateTakeCoverProbability::get()
-	{
-		auto helper = reinterpret_cast<SoldierGameObjDefHelper *>(InternalSoldierGameObjDefPointer);
-
-		auto &innateTakeCoverProbability = helper->GetInnateTakeCoverProbability();
-
-		return innateTakeCoverProbability;
-	}
-
-	void SoldierGameObjDef::InnateTakeCoverProbability::set(float value)
-	{
-		auto helper = reinterpret_cast<SoldierGameObjDefHelper *>(InternalSoldierGameObjDefPointer);
-
-		auto &innateTakeCoverProbability = helper->GetInnateTakeCoverProbability();
-
-		innateTakeCoverProbability = value;
-	}
-
-	bool SoldierGameObjDef::InnateIsStationary::get()
-	{
-		auto helper = reinterpret_cast<SoldierGameObjDefHelper *>(InternalSoldierGameObjDefPointer);
-
-		auto &innateIsStationary = helper->GetInnateIsStationary();
-
-		return innateIsStationary;
-	}
-
-	void SoldierGameObjDef::InnateIsStationary::set(bool value)
-	{
-		auto helper = reinterpret_cast<SoldierGameObjDefHelper *>(InternalSoldierGameObjDefPointer);
-
-		auto &innateIsStationary = helper->GetInnateIsStationary();
-
-		innateIsStationary = value;
 	}
 
 	String ^SoldierGameObjDef::FirstPersonHands::get()

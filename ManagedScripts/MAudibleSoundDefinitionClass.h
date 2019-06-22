@@ -105,6 +105,16 @@ namespace RenSharp
 			int get();
 			void set(int value);
 		}
+
+		property float LogicalDropoffRadius
+		{
+			float get();
+		}
+
+		property int LogicalType
+		{
+			int get();
+		}
 	};
 
 	public ref class AudibleSoundDefinitionClass : public DefinitionClass, public IAudibleSoundDefinitionClass
@@ -182,6 +192,16 @@ namespace RenSharp
 			{
 				virtual int get() sealed;
 				virtual void set(int value) sealed;
+			}
+
+			property float LogicalDropoffRadius
+			{
+				virtual float get() sealed;
+			}
+
+			property int LogicalType
+			{
+				virtual int get() sealed;
 			}
 
 		protected:

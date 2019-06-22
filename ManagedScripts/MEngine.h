@@ -418,8 +418,16 @@ namespace RenSharp
 			static void ForceVelocityUpdate(IScriptableGameObj ^obj);
 			static void ForceVelocityUpdatePlayer(IScriptableGameObj ^player, IScriptableGameObj ^obj);
 			static void SetCameraHostNetwork(IScriptableGameObj ^obj);
+
+			[Obsolete("Use Get_Pathfind_Distance_Async in stead")]
 			static uint32 GetPathfindDistance(Vector3 start, Vector3 dest, PathfindDistanceDelegate^ callback, ISmartGameObj^ pathObj, Object^ data);
+
+			[Obsolete("Use Get_Pathfind_Distance_Async in stead")]
 			static uint32 GetPathfindDistance(Vector3 start, Vector3 dest, PathfindDistanceDelegate ^callback, ISmartGameObj ^pathObj);
+
+			static uint32 GetPathfindDistanceAsync(ISmartGameObj^ pathObj, Vector3 dest, PathfindDistanceDelegate^ callback , Object^ data);
+			static uint32 GetPathfindDistanceAsync(ISmartGameObj^ pathObj, Vector3 dest, PathfindDistanceDelegate^ callback);
+			static bool GetPathfindDistanceBlocking(ISmartGameObj^ pathObj, Vector3 dest, [Out] float% distanceResult, [Out] PathfindDistanceResult% pathfindResult);
 			static bool CancelGetPathfindDistance(uint32 id);
 			static void KillAllBuildingsByTeam(int team);
 			static void SetOccupantsFade(IScriptableGameObj ^obj, Color color);
@@ -1881,6 +1889,18 @@ namespace RenSharp
 			}
 
 			static property IntPtr GetPathfindDistancePointer
+			{
+				IntPtr get();
+				void set(IntPtr value);
+			}
+
+			static property IntPtr GetPathfindDistanceAsyncPointer
+			{
+				IntPtr get();
+				void set(IntPtr value);
+			}
+
+			static property IntPtr GetPathfindDistanceBlockingPointer
 			{
 				IntPtr get();
 				void set(IntPtr value);

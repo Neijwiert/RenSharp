@@ -226,7 +226,9 @@ SCRIPTS_API fvu Force_Velocity_Update;
 SCRIPTS_API fvup Force_Velocity_Update_Player;
 SCRIPTS_API schn Set_Camera_Host_Network;
 SCRIPTS_API gpd Get_Pathfind_Distance;
+SCRIPTS_API gpda Get_Pathfind_Distance_Async;
 SCRIPTS_API cgpd Cancel_Get_Pathfind_Distance;
+SCRIPTS_API gpdb Get_Pathfind_Distance_Blocking;
 
 SCRIPTS_API bool Can_Team_Build_Vehicle(int Team)
 {

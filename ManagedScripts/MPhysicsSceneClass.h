@@ -339,16 +339,6 @@ namespace RenSharp
 				return StaticPolyBudget;
 			}
 
-			float& GetmapStaticPolyBudget()
-			{
-				return mapStaticPolyBudget;
-			}
-
-			float& GetmapDynamicPolyBudget()
-			{
-				return mapDynamicPolyBudget;
-			}
-
 			::RefMultiListClass<::PhysClass>& GetObjList()
 			{
 				return ObjList;
@@ -1061,18 +1051,6 @@ namespace RenSharp
 			{
 				int get();
 				void set(int value);
-			}
-
-			property float MapStaticPolyBudget
-			{
-				float get();
-				void set(float value);
-			}
-
-			property float MapDynamicPolyBudget
-			{
-				float get();
-				void set(float value);
 			}
 
 			property IRefMultiListClass<IPhysClass^>^ ObjList

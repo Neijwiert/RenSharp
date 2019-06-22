@@ -3217,6 +3217,7 @@ class JMG_Wandering_AI_Controller : public ScriptImpClass {
 	void Created(GameObject *obj);
 	void Timer_Expired(GameObject *obj,int number);
 	void Destroyed(GameObject *obj);
+	void Detach(GameObject *obj);
 public:
 	static int aiIgnorePlayers[128];
 	static float soundAttentionWhoreNotify;
@@ -3238,6 +3239,12 @@ class JMG_Wandering_AI_Wander_Point : public ScriptImpClass {
 };
 class JMG_Wandering_AI_Wander_Point_Dont_Remove : public ScriptImpClass {
 	void Created(GameObject *obj);
+};
+class JMG_Wandering_AI_Wander_Point_Mobile : public ScriptImpClass {
+	Rp2SimplePositionSystem::SimplePositionNode *node;
+	int faceObjectId;
+	void Created(GameObject *obj);
+	void Timer_Expired(GameObject *obj,int number);
 };
 class JMG_Utility_Custom_Spawn_System_Controller : public ScriptImpClass {
 	void Destroyed(GameObject *obj);

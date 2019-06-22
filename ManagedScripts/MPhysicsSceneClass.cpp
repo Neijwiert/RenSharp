@@ -1562,42 +1562,6 @@ namespace RenSharp
 		staticPolyBudget = value;
 	}
 
-	float PhysicsSceneClass::MapStaticPolyBudget::get()
-	{
-		auto helper = reinterpret_cast<PhysicsSceneClassHelper*>(InternalPhysicsSceneClassPointer);
-
-		auto& mapStaticPolyBudget = helper->GetmapStaticPolyBudget();
-
-		return mapStaticPolyBudget;
-	}
-
-	void PhysicsSceneClass::MapStaticPolyBudget::set(float value)
-	{
-		auto helper = reinterpret_cast<PhysicsSceneClassHelper*>(InternalPhysicsSceneClassPointer);
-
-		auto& mapStaticPolyBudget = helper->GetmapStaticPolyBudget();
-
-		mapStaticPolyBudget = value;
-	}
-
-	float PhysicsSceneClass::MapDynamicPolyBudget::get()
-	{
-		auto helper = reinterpret_cast<PhysicsSceneClassHelper*>(InternalPhysicsSceneClassPointer);
-
-		auto& mapDynamicPolyBudget = helper->GetmapDynamicPolyBudget();
-
-		return mapDynamicPolyBudget;
-	}
-
-	void PhysicsSceneClass::MapDynamicPolyBudget::set(float value)
-	{
-		auto helper = reinterpret_cast<PhysicsSceneClassHelper*>(InternalPhysicsSceneClassPointer);
-
-		auto& mapDynamicPolyBudget = helper->GetmapDynamicPolyBudget();
-
-		mapDynamicPolyBudget = value;
-	}
-
 	IRefMultiListClass<IPhysClass^>^ PhysicsSceneClass::ObjList::get()
 	{
 		auto helper = reinterpret_cast<PhysicsSceneClassHelper*>(InternalPhysicsSceneClassPointer);

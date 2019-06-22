@@ -64,6 +64,26 @@ namespace RenSharp
 		{
 			bool get();
 		}
+
+		property bool UseInnateBehavior
+		{
+			bool get();
+		}
+
+		property float InnateAggressiveness
+		{
+			float get();
+		}
+
+		property float InnateTakeCoverProbability
+		{
+			float get();
+		}
+
+		property bool InnateIsStationary
+		{
+			bool get();
+		}
 	};
 
 	public ref class SoldierGameObjDef : public SmartGameObjDef, public ISoldierGameObjDef
@@ -121,6 +141,38 @@ namespace RenSharp
 					void set(bool value);
 			}
 
+			property bool UseInnateBehavior
+			{
+				virtual bool get() sealed;
+
+				protected:
+					void set(bool value);
+			}
+
+			property float InnateAggressiveness
+			{
+				virtual float get() sealed;
+
+				protected:
+					void set(float value);
+			}
+
+			property float InnateTakeCoverProbability
+			{
+				virtual float get() sealed;
+
+				protected:
+					void set(float value);
+			}
+
+			property bool InnateIsStationary
+			{
+				virtual bool get() sealed;
+
+				protected:
+					void set(bool value);
+			}
+
 		protected:
 			property ::SmartGameObjDef *InternalSmartGameObjDefPointer
 			{
@@ -142,30 +194,6 @@ namespace RenSharp
 			{
 				float get();
 				void set(float value);
-			}
-
-			property bool UseInnateBehavior
-			{
-				bool get();
-				void set(bool value);
-			}
-
-			property float InnateAggressiveness
-			{
-				float get();
-				void set(float value);
-			}
-
-			property float InnateTakeCoverProbability
-			{
-				float get();
-				void set(float value);
-			}
-
-			property bool InnateIsStationary
-			{
-				bool get();
-				void set(bool value);
 			}
 
 			property String ^FirstPersonHands

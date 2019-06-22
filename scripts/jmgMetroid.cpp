@@ -810,6 +810,8 @@ void JMG_Metroid_Move_To_Random_Ambush_Spot::Created(GameObject *obj)
 }
 void JMG_Metroid_Move_To_Random_Ambush_Spot::Enemy_Seen(GameObject *obj,GameObject *seen)
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (!EnemySeen)
 		currentEnemyID = Commands->Get_ID(seen);
 	EnemySeen = 5;
@@ -1532,6 +1534,8 @@ void JMG_Metroid_Boss_Turret::Created(GameObject *obj)
 }
 void JMG_Metroid_Boss_Turret::Enemy_Seen(GameObject *obj,GameObject *seen)
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	if (seen->As_VehicleGameObj())
 	{
 		int SeatCount = Get_Vehicle_Seat_Count(seen);
@@ -2492,6 +2496,8 @@ void JMG_Metroid_AI_Hunt_Attack::Created(GameObject *obj)
 }
 void JMG_Metroid_AI_Hunt_Attack::Enemy_Seen(GameObject *obj,GameObject *seen)
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	int seenID = Commands->Get_ID(seen);
 	if (!EnemyID || seenID == EnemyID)
 	{
@@ -3412,6 +3418,8 @@ void JMG_Metroid_AI_Hunt_Equipment::Created(GameObject *obj)
 }
 void JMG_Metroid_AI_Hunt_Equipment::Enemy_Seen(GameObject *obj,GameObject *seen)
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	int seenID = Commands->Get_ID(seen);
 	if (!EnemyID || seenID == EnemyID)
 	{
@@ -3553,6 +3561,8 @@ void JMG_Metroid_Base_Defense::Enemy_Seen(GameObject *obj,GameObject *seen)
 	GameObject *vehicle = Get_Vehicle(seen);
 	if (vehicle)
 		seen = vehicle;
+	if (!Commands->Get_Health(seen))
+		return;
 	float distance = JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen));
 	int seenId = Commands->Get_ID(seen);
 	if (!enemyID && distance >= MinDist && distance <= MaxDist)
@@ -3613,6 +3623,8 @@ void JMG_Metroid_Camera_Behavior::Created(GameObject *obj)
 }
 void JMG_Metroid_Camera_Behavior::Enemy_Seen(GameObject *obj,GameObject *seen)
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	int seenID = Commands->Get_ID(seen);
 	if (!EnemyID)
 	{
@@ -3781,6 +3793,8 @@ void JMG_Metroid_AI_Snow_Mini_Boss::Created(GameObject *obj)
 }
 void JMG_Metroid_AI_Snow_Mini_Boss::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	int SeenID = Commands->Get_ID(seen);
 	if (!currentTargetID || !LastSeen)
 	{
@@ -4923,6 +4937,8 @@ void JMG_Metroid_AI_Forest_Mini_Boss::Created(GameObject *obj)
 }
 void JMG_Metroid_AI_Forest_Mini_Boss::Enemy_Seen(GameObject *obj,GameObject *seen)	
 {
+	if (!Commands->Get_Health(seen))
+		return;
 	int SeenID = Commands->Get_ID(seen);
 	if (!currentTargetID || !LastSeen)
 	{

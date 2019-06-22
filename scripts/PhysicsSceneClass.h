@@ -250,7 +250,9 @@ public:
 	void Post_Load_Level_Dynamic_Data(void);
 	void Set_Polygon_Budgets(int static_count,int dynamic_count);
 	void Get_Polygon_Budgets(int * static_count,int * dynamic_count);
+#ifdef TT_EXPORTS
 	void Refresh_Polygon_Budgets();
+#endif
 	void Set_Update_Only_Visible_Objects(bool b) { UpdateOnlyVisibleObjects=b; }
 	bool Get_Update_Only_Visible_Objects() { return UpdateOnlyVisibleObjects; }
 	virtual void Add_Render_Object(RenderObjClass * obj);
@@ -391,7 +393,7 @@ protected:
 	static bool AllowCollisionFlags[NUM_COLLISION_FLAGS];
 	int DynamicPolyBudget;
 	int StaticPolyBudget;
-#ifndef TTLE_EXPORTS
+#ifdef TT_EXPORTS
 	float mapStaticPolyBudget;
 	float mapDynamicPolyBudget;
 #endif

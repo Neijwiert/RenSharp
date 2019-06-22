@@ -364,6 +364,8 @@ bool SCRIPTSAPI Set_Script_Commands(ScriptCommandsClass* commands)
 	Set_Camera_Host_Network = (schn)Address(tt,"Set_Camera_Host_Network");
 	Get_Pathfind_Distance = (gpd)Address(tt,"Get_Pathfind_Distance");
 	Cancel_Get_Pathfind_Distance = (cgpd)Address(tt,"Cancel_Get_Pathfind_Distance");
+	Get_Pathfind_Distance_Async = (gpda)Address(tt, "Get_Pathfind_Distance_Async");
+	Get_Pathfind_Distance_Blocking = (gpdb)Address(tt, "Get_Pathfind_Distance_Blocking");
 	
 	DA::Init();
 

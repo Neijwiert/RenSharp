@@ -94,8 +94,8 @@ struct PathfindDistanceRequest
 
 	}
 
-	PathfindDistanceRequest(const Vector3 &start, const Vector3 &dest, PathfindDistanceCallback callback, void *data) :
-		Id(0), Start(start), Dest(dest), PathSolver(nullptr), Result(PATHFIND_DISTANCE_INVALID_RESULT), Distance(0.0f), Callback(callback), Data(data)
+	PathfindDistanceRequest(uint32 id, const Vector3& start, const Vector3& dest, PathSolveClass* solver, PathfindDistanceCallback callback, void* data) :
+		Id(id), Start(start), Dest(dest), PathSolver(solver), Result(PATHFIND_DISTANCE_INVALID_RESULT), Distance(0.0f), Callback(callback), Data(data)
 	{
 
 	}
@@ -112,7 +112,6 @@ struct PathfindDistanceRequest
 
 	void Do_Callback()
 	{
-		PathSolver = nullptr;
 		Callback((*this));
 	}
 
