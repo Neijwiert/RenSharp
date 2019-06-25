@@ -582,7 +582,7 @@ namespace RenSharp
 
 	::PhysicsSceneClass* PhysicsSceneClass::InternalPhysicsSceneClassPointer::get()
 	{
-		return InternalPhysicsSceneClassPointer;
+		return reinterpret_cast<::PhysicsSceneClass*>(Pointer.ToPointer());
 	}
 
 	IRefMultiListClass<IPhysClass^>^ PhysicsSceneClass::VisibleStaticObjectList::get()
