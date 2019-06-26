@@ -174,7 +174,7 @@ namespace RenSharp
 		UnmanagedToManagedVector3(thisVec);
 	}
 
-	void Vector3::Mul(Vector3 other)
+	Vector3 Vector3::Mul(Vector3 other)
 	{
 		::Vector3 thisVec;
 		::Vector3 otherVec;
@@ -182,9 +182,12 @@ namespace RenSharp
 		ManagedToUnmanagedVector3(thisVec);
 		ManagedToUnmanagedVector3(other, otherVec);
 
-		thisVec.mul(otherVec);
+		::Vector3 tmp = thisVec.mul(otherVec);
 
-		UnmanagedToManagedVector3(thisVec);
+		Vector3 result;
+		Vector3::UnmanagedToManagedVector3(tmp, result);
+
+		return result;
 	}
 
 	void Vector3::UpdateMin(Vector3 a)

@@ -52,7 +52,7 @@ namespace RenSharp
 			void RotateY(float sAngle, float cAngle);
 			void RotateZ(float angle);
 			void RotateZ(float sAngle, float cAngle);
-			void Mul(Vector3 other);
+			Vector3 Mul(Vector3 other);
 			void UpdateMin(Vector3 a);
 			void UpdateMax(Vector3 a);
 			void CapAbsoluteTo(Vector3 a);
