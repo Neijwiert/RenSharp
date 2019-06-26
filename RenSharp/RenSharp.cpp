@@ -244,7 +244,7 @@ bool RenSharpRootEventClass::Is_Shutting_Down() const
 
 void RenSharpRootEventClass::Game_Over_Event()
 {
-	if (!shutdown && The_Game()->Get_Win_Type() == cGameData::WinTypeEnum::WIN_TYPE_SHUTDOWN)
+	if (!shutdown && The_Game()->Get_Win_Type() == cGameData::WinTypeEnum::WIN_TYPE_SHUTDOWN && cGameData::Is_Manual_Exit())
 	{
 		Shutdown();
 	}
