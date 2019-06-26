@@ -28,7 +28,7 @@ namespace RenSharp
 
         public override bool Activate(IcPlayer player, IDATokenClass text, TextMessageEnum chatType)
         {
-            Engine.SendMessage(Engine.ColorWhite, $"RenSharp {Engine.RenSharpVersion} with Dragonade {DA.Version} and Scripts {Engine.GetTTVersion().ToString("0.0", CultureInfo.InvariantCulture)}");
+            DA.HostMessage($"RenSharp {Engine.RenSharpVersion} with Dragonade {DA.Version} and Scripts {Engine.GetTTVersion().ToString("0.0", CultureInfo.InvariantCulture)}");
 
             return false;
         }
