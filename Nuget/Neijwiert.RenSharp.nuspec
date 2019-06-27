@@ -2,14 +2,21 @@
 <package >
   <metadata>
     <id>Neijwiert.RenSharp</id>
-    <version>1.1.0.0</version>
+    <version>1.2.0.0</version>
     <authors>Neijwiert</authors>
     <owners>Neijwiert</owners>
     <license type="expression">Apache-2.0</license>
     <projectUrl>https://github.com/Neijwiert/RenSharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C++/CLI wrapper for Command and Conquer Renegade Dragonade FDS manager</description>
-    <releaseNotes>Updated to Dragonade 1.99.</releaseNotes>
+    <releaseNotes>
+	- Fixed infinite recursion in PhysicsSceneClass
+	- Fixed Vector3::Mul
+	- Fixed critical bug: RenSharp shuts down when manually gameover is requested.
+	- Changed the !rensharp output to host chat
+	- Added AdjustX/Y/ZTranslation methods to Matrix3D. These were missing.
+	- Added several engine calls related to Beacons and C4.
+	</releaseNotes>
     <copyright>Copyright 2019 Neijwiert</copyright>
     <tags>RenSharp Renegade</tags>
     <dependencies>
