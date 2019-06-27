@@ -455,6 +455,36 @@ namespace RenSharp
 		UnmanagedToManagedMatrix3D(thisMat);
 	}
 
+	void Matrix3D::AdjustXTranslation(float x)
+	{
+		::Matrix3D thisMat;
+		ManagedToUnmanagedMatrix3D(thisMat);
+
+		thisMat.Adjust_X_Translation(x);
+
+		UnmanagedToManagedMatrix3D(thisMat);
+	}
+
+	void Matrix3D::AdjustYTranslation(float y)
+	{
+		::Matrix3D thisMat;
+		ManagedToUnmanagedMatrix3D(thisMat);
+
+		thisMat.Adjust_Y_Translation(y);
+
+		UnmanagedToManagedMatrix3D(thisMat);
+	}
+
+	void Matrix3D::AdjustZTranslation(float z)
+	{
+		::Matrix3D thisMat;
+		ManagedToUnmanagedMatrix3D(thisMat);
+
+		thisMat.Adjust_Z_Translation(z);
+
+		UnmanagedToManagedMatrix3D(thisMat);
+	}
+
 	void Matrix3D::MakeIdentity()
 	{
 		::Matrix3D thisMat;

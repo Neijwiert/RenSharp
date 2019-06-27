@@ -84,6 +84,9 @@ namespace RenSharp
 			void SetRotation(Quaternion rotation);
 			void SetRotation(Matrix3 m);
 			void AdjustTranslation(Vector3 t);
+			void AdjustXTranslation(float x);
+			void AdjustYTranslation(float y);
+			void AdjustZTranslation(float z);
 			void MakeIdentity();
 			void Translate(float x, float y, float z);
 			void Translate(Vector3 t);
