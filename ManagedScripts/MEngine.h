@@ -85,6 +85,10 @@ namespace RenSharp
 	interface class IcGameDataSkirmish;
 	interface class IcGameDataCnC;
 	interface class IcGameDataSinglePlayer;
+	interface class IBeaconGameObjDef;
+	interface class IPlayerDataClass;
+	interface class IC4GameObj;
+	value class Matrix3;
 
 	// Custom stuff
 	public delegate void PathfindDistanceDelegate(uint32 id, Vector3 start, Vector3 dest, PathfindDistanceResult result, float distance, Object ^data);
@@ -247,6 +251,47 @@ namespace RenSharp
 			literal int EXEServer = EXE_SERVER;
 			literal int EXELevelEdit = EXE_LEVELEDIT;
 			literal int EXEUnitialised = EXE_UNINITIALISED;
+
+			// Custom stuff
+			static void SetBeaconOwner(IBeaconGameObj^ beacon, ISoldierGameObj^ owner);
+
+			// Sets the detonation time for the beacon. This cannot be bigger than the definition's detonation time
+			static void SetBeaconDetonateTime(IBeaconGameObj^ beacon, float detonateTime);
+
+			// Creates an instantly armed beacon defined by weaponDef at transform. playerData is optional, but if not set when the beacon detonates will not create an explosion (but will do the effects)
+			static IBeaconGameObj^ CreateBeacon(IWeaponDefinitionClass^ weaponDef, Matrix3D transform, IPlayerDataClass^ playerData, bool usePrimaryAmmo);
+			static IBeaconGameObj^ CreateBeacon(IWeaponDefinitionClass^ weaponDef, Vector3 position, IPlayerDataClass^ playerData, bool usePrimaryAmmo);
+			static IBeaconGameObj^ CreateBeacon(String^ weaponPresetName, Matrix3D transform, IPlayerDataClass^ playerData, bool usePrimaryAmmo);
+			static IBeaconGameObj^ CreateBeacon(String^ weaponPresetName, Vector3 position, IPlayerDataClass^ playerData, bool usePrimaryAmmo);
+
+			static void SetC4Owner(IC4GameObj^ c4, ISoldierGameObj^ owner);
+
+			// For timed it sets the detonation time.
+			// For proxies it sets the 'check' time until it scans for enemy players. Will only set it once.
+			// For remotes it does nothing
+			static void SetC4TriggerTime(IC4GameObj^ c4, float triggerTime);
+
+			// Sets flag that its attached to the mct which does more damage when it explodes (if its attached to a building)
+			static void SetC4AttachedToMCT(IC4GameObj^ c4, bool isAttachedToMCT);
+
+			// Instantly creates a c4 at transform with set velocity. playerData is optional. Will create an explosion even if data is null
+			// detonationMode can be 1,2,3. This will determine the c4 selection stuff inside the ammodef
+			static IC4GameObj^ CreateC4(IAmmoDefinitionClass^ ammoDef, Matrix3D transform, Vector3 velocity, IPlayerDataClass^ playerData, int detonationMode);
+			static IC4GameObj^ CreateC4(String^ ammoPresetName, Matrix3D transform, Vector3 velocity, IPlayerDataClass^ playerData, int detonationMode);
+			static IC4GameObj^ CreateC4(IAmmoDefinitionClass^ ammoDef, Vector3 position, Vector3 velocity, IPlayerDataClass^ playerData, int detonationMode);
+			static IC4GameObj^ CreateC4(String^ ammoPresetName, Vector3 position, Vector3 velocity, IPlayerDataClass^ playerData, int detonationMode);
+
+			// Same as above, but it will stay put and not move
+			static IC4GameObj^ CreateC4(IAmmoDefinitionClass^ ammoDef, Matrix3D transform, IPlayerDataClass^ playerData, int detonationMode);
+			static IC4GameObj^ CreateC4(String^ ammoPresetName, Matrix3D transform, IPlayerDataClass^ playerData, int detonationMode);
+			static IC4GameObj^ CreateC4(IAmmoDefinitionClass^ ammoDef, Vector3 position, IPlayerDataClass^ playerData, int detonationMode);
+			static IC4GameObj^ CreateC4(String^ ammoPresetName, Vector3 position, IPlayerDataClass^ playerData, int detonationMode);
+
+			// Same as above, but will internally register as being attached to building. You can also set the mct flag to make it do extra damage
+			static IC4GameObj^ CreateC4(IAmmoDefinitionClass^ ammoDef, Matrix3D transform, IBuildingGameObj^ attachToObj, bool isAttachedToMCT, IPlayerDataClass^ playerData, int detonationMode);
+			static IC4GameObj^ CreateC4(IAmmoDefinitionClass^ ammoDef, Vector3 position, IBuildingGameObj^ attachToObj, bool isAttachedToMCT, IPlayerDataClass^ playerData, int detonationMode);
+			static IC4GameObj^ CreateC4(String^ ammoPresetName, Matrix3D transform, IBuildingGameObj^ attachToObj, bool isAttachedToMCT, IPlayerDataClass^ playerData, int detonationMode);
+			static IC4GameObj^ CreateC4(String^ ammoPresetName, Vector3 position, IBuildingGameObj^ attachToObj, bool isAttachedToMCT, IPlayerDataClass^ playerData, int detonationMode);
 
 			// engine_common.h
 			static void ConsoleInput(String ^input, ...array<Object ^> ^args);

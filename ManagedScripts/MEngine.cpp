@@ -35,14 +35,25 @@ limitations under the License.
 #include <engine_game.h>
 #include <da_string.h>
 #include <Crc32.h>
+#include <ReferencerClass.h>
+#include <MoveablePhysClass.h>
 
 RENEGADE_FUNCTION
 ::cTeam* Internal_Find_Team(int team)
 AT2(0x0041DA10, 0x0041DA10);
 
+RENEGADE_FUNCTION
+void Internal_Create_Animation_Name(StringClass& target, const char* animation, const char* model)
+AT2(0x006DB000, 0x006DA8A0);
+
 ::cTeam* Internal_Find_Team_Wrapper(int team)
 {
 	return Internal_Find_Team(team);
+}
+
+void Internal_Create_Animation_Name_Wrapper(StringClass& target, const char* animation, const char* model)
+{
+	Internal_Create_Animation_Name(target, animation, model);
 }
 
 #pragma warning(pop) 
@@ -86,6 +97,11 @@ AT2(0x0041DA10, 0x0041DA10);
 #include "Mda_player.h"
 #include "Mda_cratemanager.h"
 #include "Mda_nodemanager.h"
+#include "MBeaconGameObjDef.h"
+#include "MPlayerDataClass.h"
+#include "MPersist.h"
+#include "MC4GameObj.h"
+#include "MRenderObjClass.h"
 
 using namespace System::Collections::Generic;
 using namespace System::Runtime::InteropServices;
@@ -207,6 +223,738 @@ namespace RenSharp
 		}
 
 		return AsManagedConsoleFunction(function->ConsoleFunctionClassPointer);
+	}
+
+#pragma managed(push, off)
+
+	struct BeaconGameObjWeaponDef
+	{
+		typedef const ::WeaponDefinitionClass* (::BeaconGameObj::* type);
+		friend type get(BeaconGameObjWeaponDef);
+	};
+
+	template struct Rob<BeaconGameObjWeaponDef, &::BeaconGameObj::WeaponDef>;
+
+	struct BeaconGameObjPlayer
+	{
+		typedef ::PlayerDataClass* (::BeaconGameObj::* type);
+		friend type get(BeaconGameObjPlayer);
+	};
+
+	template struct Rob<BeaconGameObjPlayer, &::BeaconGameObj::Player>;
+
+	struct BeaconGameObjArmTime
+	{
+		typedef float (::BeaconGameObj::* type);
+		friend type get(BeaconGameObjArmTime);
+	};
+
+	template struct Rob<BeaconGameObjArmTime, &::BeaconGameObj::ArmTime>;
+
+	struct BeaconGameObjState
+	{
+		typedef int(::BeaconGameObj::* type);
+		friend type get(BeaconGameObjState);
+	};
+
+	template struct Rob<BeaconGameObjState, & ::BeaconGameObj::State>;
+
+	struct BeaconGameObjOwner
+	{
+		typedef ReferencerClass (::BeaconGameObj::* type);
+		friend type get(BeaconGameObjOwner);
+	};
+
+	template struct Rob<BeaconGameObjOwner, &::BeaconGameObj::Owner>;
+
+	struct BeaconGameObjDetonateTime
+	{
+		typedef float(::BeaconGameObj::* type);
+		friend type get(BeaconGameObjDetonateTime);
+	};
+
+	template struct Rob<BeaconGameObjDetonateTime, & ::BeaconGameObj::DetonateTime>;
+
+#pragma managed(pop)
+
+	void Engine::SetBeaconOwner(IBeaconGameObj^ beacon, ISoldierGameObj^ owner)
+	{
+		if (beacon == nullptr || beacon->BeaconGameObjPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("beacon");
+		}
+
+		::SoldierGameObj* ownerPtr;
+		if (owner == nullptr || owner->SoldierGameObjPointer.ToPointer() == nullptr)
+		{
+			ownerPtr = nullptr;
+		}
+		else
+		{
+			ownerPtr = reinterpret_cast<::SoldierGameObj*>(owner->SoldierGameObjPointer.ToPointer());
+		}
+
+		::BeaconGameObj* beaconPtr = reinterpret_cast<::BeaconGameObj*>(beacon->BeaconGameObjPointer.ToPointer());
+
+		auto& bPlayer = (*beaconPtr).*get(BeaconGameObjPlayer());
+		auto& bOwner = (*beaconPtr).*get(BeaconGameObjOwner());
+
+		if (ownerPtr == nullptr)
+		{
+			beaconPtr->Set_Player_Type(beaconPtr->Get_Definition().DefaultPlayerType);
+			bPlayer = nullptr;
+			bOwner = nullptr;
+		}
+		else
+		{
+			beaconPtr->Set_Player_Type(ownerPtr->Get_Player_Type());
+			bPlayer = ownerPtr->Get_Player_Data();
+			bOwner = ownerPtr;
+		}
+
+		beaconPtr->Set_Object_Dirty_Bit(::NetworkObjectClass::BIT_RARE, true);
+	}
+
+	void Engine::SetBeaconDetonateTime(IBeaconGameObj^ beacon, float detonateTime)
+	{
+		if (beacon == nullptr || beacon->BeaconGameObjPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("beacon");
+		}
+
+		::BeaconGameObj* beaconPtr = reinterpret_cast<::BeaconGameObj*>(beacon->BeaconGameObjPointer.ToPointer());
+
+		auto& bArmTime = (*beaconPtr).*get(BeaconGameObjDetonateTime());
+
+		bArmTime = detonateTime;
+	}
+
+	IBeaconGameObj^ Engine::CreateBeacon(IWeaponDefinitionClass^ weaponDef, Matrix3D transform, IPlayerDataClass^ playerData, bool usePrimaryAmmo)
+	{
+		if (weaponDef == nullptr || weaponDef->WeaponDefinitionClassPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("weaponDef");
+		}
+
+		int ammoDefId;
+		if (usePrimaryAmmo)
+		{
+			ammoDefId = weaponDef->PrimaryAmmoDefID;
+		}
+		else
+		{
+			ammoDefId = weaponDef->SecondaryAmmoDefID;
+		}
+
+		::AmmoDefinitionClass* ammoDefPtr = static_cast<::AmmoDefinitionClass*>(::DefinitionMgrClass::Find_Definition(ammoDefId, false));
+		if (ammoDefPtr == nullptr || ammoDefPtr->Get_Class_ID() != 45058)
+		{
+			return nullptr;
+		}
+
+		::BeaconGameObjDef* beaconDefPtr = static_cast<::BeaconGameObjDef*>(::DefinitionMgrClass::Find_Definition(ammoDefPtr->BeaconDefID, false));
+		if (beaconDefPtr == nullptr || beaconDefPtr->Get_Class_ID() != 12310)
+		{
+			return nullptr;
+		}
+
+		::BaseGameObj* baseObj = static_cast<::BaseGameObj*>(beaconDefPtr->Create());
+		if (baseObj == nullptr)
+		{
+			return nullptr;
+		}
+
+		::PhysicalGameObj *physicalObj = baseObj->As_PhysicalGameObj();
+		if (physicalObj == nullptr)
+		{
+			baseObj->Set_Delete_Pending();
+
+			return nullptr;
+		}
+
+		::BeaconGameObj* beaconObj = physicalObj->As_BeaconGameObj();
+		if (beaconObj == nullptr)
+		{
+			beaconObj->Set_Delete_Pending();
+
+			return nullptr;
+		}
+
+		::Matrix3D mat;
+		Matrix3D::ManagedToUnmanagedMatrix3D(transform, mat);
+		beaconObj->Set_Transform(mat);
+
+		auto& bWeaponDef = (*beaconObj).*get(BeaconGameObjWeaponDef());
+		auto& bPlayer = (*beaconObj).*get(BeaconGameObjPlayer());
+		auto& bArmTime = (*beaconObj).*get(BeaconGameObjArmTime());
+		auto& bState = (*beaconObj).*get(BeaconGameObjState());
+		auto& bOwner = (*beaconObj).*get(BeaconGameObjOwner());
+
+		bWeaponDef = reinterpret_cast<::WeaponDefinitionClass*>(weaponDef->WeaponDefinitionClassPointer.ToPointer());
+		bPlayer = (playerData == nullptr || playerData->PlayerDataClassPointer.ToPointer() == nullptr ? nullptr : reinterpret_cast<::PlayerDataClass*>(playerData->PlayerDataClassPointer.ToPointer()));
+		bArmTime = 0.0f;
+		bState = static_cast<int>(BeaconGameObj::BeaconState::StateDeploying);
+
+		if (bPlayer != nullptr)
+		{
+			for (auto it = ::GameObjManager::StarGameObjList.Head(); it != nullptr; it = it->Next())
+			{
+				::SoldierGameObj* star = it->Data();
+				if (star != nullptr && star->Get_Player_Data() == bPlayer)
+				{
+					beaconObj->Set_Player_Type(star->Get_Player_Type());
+					bOwner = star;
+
+					break;
+				}
+			}
+		}
+
+		beaconObj->Set_Object_Dirty_Bit(::NetworkObjectClass::BIT_RARE, true);
+
+		beaconObj->Think(); // Force state update
+
+		// Start observers
+		beaconObj->Post_Re_Init();
+
+		return gcnew BeaconGameObj(IntPtr(beaconObj));
+	}
+
+	IBeaconGameObj^ Engine::CreateBeacon(IWeaponDefinitionClass^ weaponDef, Vector3 position, IPlayerDataClass^ playerData, bool usePrimaryAmmo)
+	{
+		Matrix3D transform(true);
+		transform.Translation = position;
+
+		return CreateBeacon(weaponDef, transform, playerData, usePrimaryAmmo);
+	}
+
+	IBeaconGameObj^ Engine::CreateBeacon(String^ weaponPresetName, Matrix3D transform, IPlayerDataClass^ playerData, bool usePrimaryAmmo)
+	{
+		if (weaponPresetName == nullptr)
+		{
+			throw gcnew ArgumentNullException("weaponPresetName");
+		}
+
+		IntPtr weaponPresetNameHandle = Marshal::StringToHGlobalAnsi(weaponPresetName);
+		try
+		{
+			::WeaponDefinitionClass* weaponDefPtr = static_cast<::WeaponDefinitionClass*>(::DefinitionMgrClass::Find_Named_Definition(
+				reinterpret_cast<char*>(weaponPresetNameHandle.ToPointer()),
+				false));
+			if (weaponDefPtr == nullptr || weaponDefPtr->Get_Class_ID() != 45057)
+			{
+				return nullptr;
+			}
+
+			return CreateBeacon(gcnew WeaponDefinitionClass(IntPtr(weaponDefPtr)), transform, playerData, usePrimaryAmmo);
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(weaponPresetNameHandle);
+		}
+	}
+
+	IBeaconGameObj^ Engine::CreateBeacon(String^ weaponPresetName, Vector3 position, IPlayerDataClass^ playerData, bool usePrimaryAmmo)
+	{
+		Matrix3D transform(true);
+		transform.Translation = position;
+
+		return CreateBeacon(weaponPresetName, transform, playerData, usePrimaryAmmo);
+	}
+
+#pragma managed(push, off)
+
+	struct C4GameObjDetonationMode
+	{
+		typedef int(::C4GameObj::* type);
+		friend type get(C4GameObjDetonationMode);
+	};
+
+	template struct Rob<C4GameObjDetonationMode, &::C4GameObj::DetonationMode>;
+
+	struct C4GameObjAttached
+	{
+		typedef bool(::C4GameObj::* type);
+		friend type get(C4GameObjAttached);
+	};
+
+	template struct Rob<C4GameObjAttached, &::C4GameObj::attached>;
+
+	struct C4GameObjAmmoDef
+	{
+		typedef const ::AmmoDefinitionClass* (::C4GameObj::* type);
+		friend type get(C4GameObjAmmoDef);
+	};
+
+	template struct Rob<C4GameObjAmmoDef, &::C4GameObj::AmmoDef>;
+
+	struct C4GameObjPlayer
+	{
+		typedef ::PlayerDataClass* (::C4GameObj::* type);
+		friend type get(C4GameObjPlayer);
+	};
+
+	template struct Rob<C4GameObjPlayer, &::C4GameObj::Player>;
+
+	struct C4GameObjAttachObject
+	{
+		typedef ::ReferencerClass (::C4GameObj::* type);
+		friend type get(C4GameObjAttachObject);
+	};
+
+	template struct Rob<C4GameObjAttachObject, &::C4GameObj::attachObject>;
+
+	struct C4GameObjAttachLocation
+	{
+		typedef ::Vector3 (::C4GameObj::* type);
+		friend type get(C4GameObjAttachLocation);
+	};
+
+	template struct Rob<C4GameObjAttachLocation, &::C4GameObj::AttachLocation>;
+
+	struct C4GameObjAttachBoneIndex
+	{
+		typedef int(::C4GameObj::* type);
+		friend type get(C4GameObjAttachBoneIndex);
+	};
+
+	template struct Rob<C4GameObjAttachBoneIndex, &::C4GameObj::AttachBoneIndex>;
+
+	struct C4GameObjIsAttachedToMCT
+	{
+		typedef bool(::C4GameObj::* type);
+		friend type get(C4GameObjIsAttachedToMCT);
+	};
+
+	template struct Rob<C4GameObjIsAttachedToMCT, &::C4GameObj::IsAttachedToMCT>;
+
+	struct C4GameObjAttachedToDynamic
+	{
+		typedef bool(::C4GameObj::* type);
+		friend type get(C4GameObjAttachedToDynamic);
+	};
+
+	template struct Rob<C4GameObjAttachedToDynamic, &::C4GameObj::attachedToDynamic>;
+
+	struct C4GameObjTriggerTime
+	{
+		typedef float(::C4GameObj::* type);
+		friend type get(C4GameObjTriggerTime);
+	};
+
+	template struct Rob<C4GameObjTriggerTime, &::C4GameObj::TriggerTime>;
+
+	struct C4GameObjOwner
+	{
+		typedef ReferencerClass (::C4GameObj::* type);
+		friend type get(C4GameObjOwner);
+	};
+
+	template struct Rob<C4GameObjOwner, &::C4GameObj::Owner>;
+
+#pragma managed(pop)
+
+	void Engine::SetC4Owner(IC4GameObj^ c4, ISoldierGameObj^ owner)
+	{
+		if (c4 == nullptr || c4->C4GameObjPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("c4");
+		}
+
+		::SoldierGameObj* ownerPtr;
+		if (owner == nullptr || owner->SoldierGameObjPointer.ToPointer() == nullptr)
+		{
+			ownerPtr = nullptr;
+		}
+		else
+		{
+			ownerPtr = reinterpret_cast<::SoldierGameObj*>(owner->SoldierGameObjPointer.ToPointer());
+		}
+
+		::C4GameObj* c4Ptr = reinterpret_cast<::C4GameObj*>(c4->C4GameObjPointer.ToPointer());
+
+		auto& c4Player = (*c4Ptr).*get(C4GameObjPlayer());
+		auto& c4Owner = (*c4Ptr).*get(C4GameObjOwner());
+
+		if (ownerPtr == nullptr)
+		{
+			c4Ptr->Set_Player_Type(c4Ptr->Get_Definition().DefaultPlayerType);
+			c4Player = nullptr;
+			c4Owner = nullptr;
+		}
+		else
+		{
+			c4Ptr->Set_Player_Type(ownerPtr->Get_Player_Type());
+			c4Player = ownerPtr->Get_Player_Data();
+			c4Owner = ownerPtr;
+		}
+
+		c4Ptr->Set_Object_Dirty_Bit(::NetworkObjectClass::BIT_RARE, true);
+	}
+
+	void Engine::SetC4TriggerTime(IC4GameObj^ c4, float triggerTime)
+	{
+		if (c4 == nullptr || c4->C4GameObjPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("c4");
+		}
+
+		::C4GameObj* c4Ptr = reinterpret_cast<::C4GameObj*>(c4->C4GameObjPointer.ToPointer());
+		if (c4Ptr->Get_Ammo_Def()->AmmoType == ::AmmoDefinitionClass::AMMO_TYPE_C4_REMOTE)
+		{
+			return;
+		}
+
+		auto& c4TriggerTime = (*c4Ptr).*get(C4GameObjTriggerTime());
+
+		c4TriggerTime = triggerTime;
+	}
+
+	void Engine::SetC4AttachedToMCT(IC4GameObj^ c4, bool isAttachedToMCT)
+	{
+		if (c4 == nullptr || c4->C4GameObjPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("c4");
+		}
+
+		::C4GameObj* c4Ptr = reinterpret_cast<::C4GameObj*>(c4->C4GameObjPointer.ToPointer());
+		if (c4Ptr->Get_Ammo_Def()->AmmoType != ::AmmoDefinitionClass::AMMO_TYPE_C4_TIMED)
+		{
+			return;
+		}
+
+		auto& c4IsAttachedToMCT = (*c4Ptr).*get(C4GameObjIsAttachedToMCT());
+
+		c4IsAttachedToMCT = isAttachedToMCT;
+
+		c4Ptr->Set_Object_Dirty_Bit(::NetworkObjectClass::BIT_RARE, true);
+	}
+
+	IC4GameObj^ Engine::CreateC4(IAmmoDefinitionClass^ ammoDef, Matrix3D transform, Vector3 velocity, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		if (ammoDef == nullptr || ammoDef->AmmoDefinitionClassPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("ammoDef");
+		}
+		else if (detonationMode < 1 || detonationMode > 3)
+		{
+			throw gcnew ArgumentOutOfRangeException("detonationMode");
+		}
+
+		int c4PresetId = ammoDef->C4Preset;
+		if (c4PresetId <= 0)
+		{
+			c4PresetId = ::Get_Definition_ID("Tossed C4");
+		}
+
+		::C4GameObjDef* c4ObjDefPtr = static_cast<::C4GameObjDef*>(::DefinitionMgrClass::Find_Definition(c4PresetId, false));
+		if (c4ObjDefPtr == nullptr || c4ObjDefPtr->Get_Class_ID() != 12294)
+		{
+			return nullptr;
+		}
+
+		::BaseGameObj* baseObj = static_cast<::BaseGameObj*>(c4ObjDefPtr->Create());
+		if (baseObj == nullptr)
+		{
+			return nullptr;
+		}
+
+		::PhysicalGameObj* physicalObj = baseObj->As_PhysicalGameObj();
+		if (physicalObj == nullptr)
+		{
+			baseObj->Set_Delete_Pending();
+
+			return nullptr;
+		}
+
+		::C4GameObj* c4Obj = physicalObj->As_C4GameObj();
+		if (c4Obj == nullptr)
+		{
+			baseObj->Set_Delete_Pending();
+
+			return nullptr;
+		}
+
+		::Matrix3D mat;
+		Matrix3D::ManagedToUnmanagedMatrix3D(transform, mat);
+		c4Obj->Set_Transform(mat);
+
+		::AmmoDefinitionClass* ammoDefPtr = reinterpret_cast<::AmmoDefinitionClass*>(ammoDef->AmmoDefinitionClassPointer.ToPointer());
+		::PhysClass* physObj = c4Obj->Peek_Physical_Object();
+
+		if (!ammoDefPtr->ModelName.Is_Empty())
+		{
+			::Commands->Set_Model(c4Obj, ammoDefPtr->ModelName.Peek_Buffer());
+
+			if (ammoDefPtr->C4Animation)
+			{
+				::StringClass animName;
+				Internal_Create_Animation_Name_Wrapper(animName, ammoDefPtr->ModelName.Peek_Buffer(), ammoDefPtr->ModelName.Peek_Buffer());
+				if (!animName.Is_Empty())
+				{
+					::Commands->Set_Animation(c4Obj, animName.Peek_Buffer(), true, nullptr, 0.0f, -1.0f, false);
+				}
+			}
+		}
+
+		auto& c4AmmoDef = (*c4Obj).*get(C4GameObjAmmoDef());
+		auto& c4DetonationMode = (*c4Obj).*get(C4GameObjDetonationMode());
+		auto& c4Player = (*c4Obj).*get(C4GameObjPlayer());
+		auto& c4TriggerTime = (*c4Obj).*get(C4GameObjTriggerTime());
+		auto& c4Owner = (*c4Obj).*get(C4GameObjOwner());
+
+		auto& c4Attached = (*c4Obj).*get(C4GameObjAttached());
+		auto& c4AttachObject = (*c4Obj).*get(C4GameObjAttachObject());
+		auto& c4AttachLocation = (*c4Obj).*get(C4GameObjAttachLocation());
+		auto& c4AttachBoneIndex = (*c4Obj).*get(C4GameObjAttachBoneIndex());
+		auto& c4IsAttachedToMCT = (*c4Obj).*get(C4GameObjIsAttachedToMCT());
+		auto& c4AttachedToDynamic = (*c4Obj).*get(C4GameObjAttachedToDynamic());
+
+		c4AmmoDef = ammoDefPtr;
+		c4DetonationMode = detonationMode;
+		c4Player = (playerData == nullptr || playerData->PlayerDataClassPointer.ToPointer() == nullptr ? nullptr : reinterpret_cast<::PlayerDataClass*>(playerData->PlayerDataClassPointer.ToPointer()));
+
+		if (ammoDef->AmmoType != ::AmmoDefinitionClass::AMMO_TYPE_C4_REMOTE)
+		{
+			switch (detonationMode)
+			{
+				case 2:
+					c4TriggerTime = ammoDef->C4TriggerTime2;
+					break;
+				case 3:
+					c4TriggerTime = ammoDef->C4TriggerTime3;
+					break;
+				default:
+					c4TriggerTime = ammoDef->C4TriggerTime1;
+					break;
+			}
+		}
+
+		c4Attached = false;
+		c4AttachObject = nullptr;
+		c4AttachLocation = ::Vector3();
+		c4AttachBoneIndex = 0;
+		c4IsAttachedToMCT = false;
+		c4AttachedToDynamic = false;
+
+		::PhysClass* physC4Obj = c4Obj->Peek_Physical_Object();
+		physC4Obj->Set_Collision_Group(::Collision_Group_Type::C4_COLLISION_GROUP);
+
+		if (c4Player != nullptr)
+		{
+			for (auto it = ::GameObjManager::StarGameObjList.Head(); it != nullptr; it = it->Next())
+			{
+				::SoldierGameObj* star = it->Data();
+				if (star != nullptr && star->Get_Player_Data() == c4Player)
+				{
+					c4Obj->Set_Player_Type(star->Get_Player_Type());
+					c4Owner = star;
+
+					break;
+				}
+			}
+		}
+
+		if (ammoDefPtr->C4TimingSound1ID != 0)
+		{
+			const char* c4TimingSound1Name = ::Get_Definition_Name(ammoDefPtr->C4TimingSound1ID);
+			if (c4TimingSound1Name != nullptr)
+			{
+				::Commands->Create_Sound(c4TimingSound1Name, mat.Get_Translation(), c4Owner.Get_Ptr());
+			}
+		}
+
+		if (physC4Obj->As_ProjectileClass() != nullptr)
+		{
+			::Vector3 tmp;
+			Vector3::ManagedToUnmanagedVector3(velocity, tmp);
+			physC4Obj->As_MoveablePhysClass()->Set_Velocity(tmp);
+		}
+
+		c4Obj->Set_Object_Dirty_Bit(::NetworkObjectClass::BIT_RARE, true);
+
+		// Start observers
+		c4Obj->Post_Re_Init();
+
+		return gcnew C4GameObj(IntPtr(c4Obj));
+	}
+
+	IC4GameObj^ Engine::CreateC4(String^ ammoPresetName, Matrix3D transform, Vector3 velocity, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		if (ammoPresetName == nullptr)
+		{
+			throw gcnew ArgumentNullException("ammoPresetName");
+		}
+
+		IntPtr ammoPresetNameHandle = Marshal::StringToHGlobalAnsi(ammoPresetName);
+		try
+		{
+			::AmmoDefinitionClass* ammoDefPtr = static_cast<::AmmoDefinitionClass*>(::DefinitionMgrClass::Find_Named_Definition(
+				reinterpret_cast<char*>(ammoPresetNameHandle.ToPointer()),
+				false));
+			if (ammoDefPtr == nullptr || ammoDefPtr->Get_Class_ID() != 45058)
+			{
+				return nullptr;
+			}
+
+			return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, velocity, playerData, detonationMode);
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(ammoPresetNameHandle);
+		}
+	}
+
+	IC4GameObj^ Engine::CreateC4(IAmmoDefinitionClass^ ammoDef, Vector3 position, Vector3 velocity, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		Matrix3D transform(true);
+		transform.Translation = position;
+
+		return CreateC4(ammoDef, transform, velocity, playerData, detonationMode);
+	}
+
+	IC4GameObj^ Engine::CreateC4(String^ ammoPresetName, Vector3 position, Vector3 velocity, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		Matrix3D transform(true);
+		transform.Translation = position;
+
+		return CreateC4(ammoPresetName, transform, velocity, playerData, detonationMode);
+	}
+
+	IC4GameObj^ Engine::CreateC4(IAmmoDefinitionClass^ ammoDef, Matrix3D transform, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		IC4GameObj^ c4Obj = CreateC4(ammoDef, transform, Vector3(0.0f, 0.0f, 0.0f), playerData, detonationMode);
+		if (c4Obj == nullptr)
+		{
+			return nullptr;
+		}
+
+		::C4GameObj* c4ObjPtr = reinterpret_cast<::C4GameObj*>(c4Obj->C4GameObjPointer.ToPointer());
+
+		auto& c4Attached = (*c4ObjPtr).*get(C4GameObjAttached());
+
+		c4Attached = true;
+
+		c4ObjPtr->Peek_Physical_Object()->Enable_User_Control(true);
+		c4ObjPtr->Set_Object_Dirty_Bit(::NetworkObjectClass::BIT_RARE, true);
+
+		return c4Obj;
+	}
+
+	IC4GameObj^ Engine::CreateC4(String^ ammoPresetName, Matrix3D transform, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		if (ammoPresetName == nullptr)
+		{
+			throw gcnew ArgumentNullException("ammoPresetName");
+		}
+
+		IntPtr ammoPresetNameHandle = Marshal::StringToHGlobalAnsi(ammoPresetName);
+		try
+		{
+			::AmmoDefinitionClass* ammoDefPtr = static_cast<::AmmoDefinitionClass*>(::DefinitionMgrClass::Find_Named_Definition(
+				reinterpret_cast<char*>(ammoPresetNameHandle.ToPointer()),
+				false));
+			if (ammoDefPtr == nullptr || ammoDefPtr->Get_Class_ID() != 45058)
+			{
+				return nullptr;
+			}
+
+			return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, playerData, detonationMode);
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(ammoPresetNameHandle);
+		}
+	}
+
+	IC4GameObj^ Engine::CreateC4(IAmmoDefinitionClass^ ammoDef, Vector3 position, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		Matrix3D transform(true);
+		transform.Translation = position;
+
+		return CreateC4(ammoDef, transform, playerData, detonationMode);
+	}
+
+	IC4GameObj^ Engine::CreateC4(String^ ammoPresetName, Vector3 position, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		Matrix3D transform(true);
+		transform.Translation = position;
+
+		return CreateC4(ammoPresetName, transform, playerData, detonationMode);
+	}
+
+	IC4GameObj^ Engine::CreateC4(IAmmoDefinitionClass^ ammoDef, Matrix3D transform, IBuildingGameObj^ attachToObj, bool isAttachedToMCT, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		if (attachToObj == nullptr || attachToObj->BuildingGameObjPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("attachToObj");
+		}
+
+		IC4GameObj^ c4Obj = CreateC4(ammoDef, transform, Vector3(0.0f, 0.0f, 0.0f), playerData, detonationMode);
+		if (c4Obj == nullptr)
+		{
+			return nullptr;
+		}
+
+		::C4GameObj* c4ObjPtr = reinterpret_cast<::C4GameObj*>(c4Obj->C4GameObjPointer.ToPointer());
+
+		auto& c4Attached = (*c4ObjPtr).*get(C4GameObjAttached());
+		auto& c4AttachObject = (*c4ObjPtr).*get(C4GameObjAttachObject());
+		auto& c4IsAttachedToMCT = (*c4ObjPtr).*get(C4GameObjIsAttachedToMCT());
+		auto& c4AttachLocation = (*c4ObjPtr).*get(C4GameObjAttachLocation());
+
+		c4Attached = true;
+		c4AttachObject = reinterpret_cast<::BuildingGameObj*>(attachToObj->BuildingGameObjPointer.ToPointer());
+		c4IsAttachedToMCT = isAttachedToMCT;
+		Vector3::ManagedToUnmanagedVector3(transform.Translation, c4AttachLocation);
+
+		c4ObjPtr->Peek_Physical_Object()->Enable_User_Control(true);
+
+		c4ObjPtr->Set_Object_Dirty_Bit(::NetworkObjectClass::BIT_RARE, true);
+
+		return c4Obj;
+	}
+
+	IC4GameObj^ Engine::CreateC4(IAmmoDefinitionClass^ ammoDef, Vector3 position, IBuildingGameObj^ attachToObj, bool isAttachedToMCT, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		Matrix3D transform(true);
+		transform.Translation = position;
+
+		return CreateC4(ammoDef, transform, attachToObj, isAttachedToMCT, playerData, detonationMode);
+	}
+
+	IC4GameObj^ Engine::CreateC4(String^ ammoPresetName, Matrix3D transform, IBuildingGameObj^ attachToObj, bool isAttachedToMCT, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		if (ammoPresetName == nullptr)
+		{
+			throw gcnew ArgumentNullException("ammoPresetName");
+		}
+
+		IntPtr ammoPresetNameHandle = Marshal::StringToHGlobalAnsi(ammoPresetName);
+		try
+		{
+			::AmmoDefinitionClass* ammoDefPtr = static_cast<::AmmoDefinitionClass*>(::DefinitionMgrClass::Find_Named_Definition(
+				reinterpret_cast<char*>(ammoPresetNameHandle.ToPointer()),
+				false));
+			if (ammoDefPtr == nullptr || ammoDefPtr->Get_Class_ID() != 45058)
+			{
+				return nullptr;
+			}
+
+			return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, attachToObj, isAttachedToMCT, playerData, detonationMode);
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(ammoPresetNameHandle);
+		}
+	}
+
+	IC4GameObj^ Engine::CreateC4(String^ ammoPresetName, Vector3 position, IBuildingGameObj^ attachToObj, bool isAttachedToMCT, IPlayerDataClass^ playerData, int detonationMode)
+	{
+		Matrix3D transform(true);
+		transform.Translation = position;
+
+		return CreateC4(ammoPresetName, transform, attachToObj, isAttachedToMCT, playerData, detonationMode);
 	}
 
 	void Engine::ConsoleInput(String ^input, ...array<Object ^> ^args)
