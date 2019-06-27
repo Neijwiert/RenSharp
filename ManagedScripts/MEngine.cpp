@@ -1107,7 +1107,7 @@ namespace RenSharp
 
 	String ^Engine::RenSharpVersion::get()
 	{
-		return "1.1";
+		return "1.2";
 	}
 
 	String ^Engine::StripPathFromFilename(String ^filename)
