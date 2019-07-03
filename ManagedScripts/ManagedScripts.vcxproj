@@ -94,6 +94,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AbstractUnmanagedObject.h" />
+    <ClInclude Include="BaseRenegadeDispatcherOperation.h" />
+    <ClInclude Include="IPriorityQueue.h" />
+    <ClInclude Include="IPriorityQueueNode.h" />
     <ClInclude Include="McPurchaseResponseEvent.h" />
     <ClInclude Include="CriticalUnmanagedContainer.h" />
     <ClInclude Include="Misc.h" />
@@ -426,6 +429,11 @@
     <ClInclude Include="MWidgetUserClass.h" />
     <ClInclude Include="MWWAudioClass.h" />
     <ClInclude Include="Mwwmath.h" />
+    <ClInclude Include="PriorityQueue.h" />
+    <ClInclude Include="PriorityQueueNode.h" />
+    <ClInclude Include="RenegadeDispatcher.h" />
+    <ClInclude Include="RenegadeDispatcherOperationStatus.h" />
+    <ClInclude Include="RenegadeDispatcherTaskOperation.h" />
     <ClInclude Include="RenSharpChatCommandClass.h" />
     <ClInclude Include="RenSharpChatCommandManager.h" />
     <ClInclude Include="RenSharpChatCommandStruct.h" />
@@ -453,6 +461,7 @@
     <ClInclude Include="RenSharpPlayerDataClass.h" />
     <ClInclude Include="RenSharpPlayerDataFactoryClass.h" />
     <ClInclude Include="RenSharpPlayerObserverClass.h" />
+    <ClInclude Include="RenSharpThreadManager.h" />
     <ClInclude Include="RenSharpTimerManager.h" />
     <ClInclude Include="RenSharpTimerStruct.h" />
     <ClInclude Include="Resource.h" />
@@ -460,6 +469,9 @@
     <ClInclude Include="UnmanagedContainer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseRenegadeDispatcherOperation.cpp" />
+    <ClCompile Include="IPriorityQueue.cpp" />
+    <ClCompile Include="IPriorityQueueNode.cpp" />
     <ClCompile Include="McPurchaseResponseEvent.cpp" />
     <ClCompile Include="MAABTreeCull.cpp" />
     <ClCompile Include="AbstractUnmanagedObject.cpp" />
@@ -794,6 +806,11 @@
     <ClCompile Include="MWidgetUserClass.cpp" />
     <ClCompile Include="MWWAudioClass.cpp" />
     <ClCompile Include="Mwwmath.cpp" />
+    <ClCompile Include="PriorityQueue.cpp" />
+    <ClCompile Include="PriorityQueueNode.cpp" />
+    <ClCompile Include="RenegadeDispatcher.cpp" />
+    <ClCompile Include="RenegadeDispatcherOperationStatus.cpp" />
+    <ClCompile Include="RenegadeDispatcherTaskOperation.cpp" />
     <ClCompile Include="RenSharpChatCommandClass.cpp" />
     <ClCompile Include="RenSharpChatCommandManager.cpp" />
     <ClCompile Include="RenSharpChatCommandStruct.cpp" />
@@ -821,6 +838,7 @@
     <ClCompile Include="RenSharpPlayerDataClass.cpp" />
     <ClCompile Include="RenSharpPlayerDataFactoryClass.cpp" />
     <ClCompile Include="RenSharpPlayerObserverClass.cpp" />
+    <ClCompile Include="RenSharpThreadManager.cpp" />
     <ClCompile Include="RenSharpTimerManager.cpp" />
     <ClCompile Include="RenSharpTimerStruct.cpp" />
     <ClCompile Include="stdafx.cpp">

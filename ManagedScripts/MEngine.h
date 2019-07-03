@@ -89,6 +89,7 @@ namespace RenSharp
 	interface class IPlayerDataClass;
 	interface class IC4GameObj;
 	value class Matrix3;
+	ref class RenegadeDispatcher;
 
 	// Custom stuff
 	public delegate void PathfindDistanceDelegate(uint32 id, Vector3 start, Vector3 dest, PathfindDistanceResult result, float distance, Object ^data);
@@ -105,6 +106,7 @@ namespace RenSharp
 
 			// Custom stuff
 			static Generic::IDictionary<IntPtr, IRenSharpConsoleFunctionClass^> ^managedConsoleFunctions;
+			static RenegadeDispatcher^ dispatcher;
 
 			// engine_tt.h
 			ref class PathfindDistanceRequest
@@ -158,6 +160,7 @@ namespace RenSharp
 			static void InternalPathfindDistanceCallback(::PathfindDistanceRequest *result);
 
 		public:
+			static bool Init();
 			static void Shutdown();
 
 			// Custom stuff
@@ -1042,6 +1045,11 @@ namespace RenSharp
 			static property String ^RenSharpVersion
 			{
 				String ^get();
+			}
+
+			static property RenegadeDispatcher^ Dispatcher
+			{
+				RenegadeDispatcher^ get();
 			}
 
 			// engine_tt.h

@@ -40,6 +40,15 @@ namespace RenSharp
         {
             try
             {
+                if (!Engine.Init())
+                {
+                    return false;
+                }
+
+                var threadManager = new RenSharpThreadManager();
+                threadManager.AttachToUnmanagedObject();
+                threadManager.RegisterManagedObject();
+
                 var timerManager = new RenSharpTimerManager();
                 timerManager.AttachToUnmanagedObject();
                 timerManager.RegisterManagedObject();

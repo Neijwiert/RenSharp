@@ -102,11 +102,13 @@ void Internal_Create_Animation_Name_Wrapper(StringClass& target, const char* ani
 #include "MPersist.h"
 #include "MC4GameObj.h"
 #include "MRenderObjClass.h"
+#include "RenegadeDispatcher.h"
 
 using namespace System::Collections::Generic;
 using namespace System::Runtime::InteropServices;
 
 constexpr int ConsoleOutputBufferSize = 256;
+constexpr std::int64_t InitialDispatcherQueueSize = 512;
 
 namespace RenSharp
 {
@@ -119,6 +121,13 @@ namespace RenSharp
 		currentPathfindDistanceRequestId = 1;
 		pathfindDistanceRequests = gcnew Generic::Dictionary<uint32, PathfindDistanceRequest ^>();
 		internalPathfindCallbackDelegate = gcnew InternalPathfindDistanceDelegate(InternalPathfindDistanceCallback);
+	}
+
+	bool Engine::Init()
+	{
+		dispatcher = gcnew RenegadeDispatcher(Thread::CurrentThread, InitialDispatcherQueueSize);
+
+		return true;
 	}
 
 	void Engine::Shutdown()
@@ -1108,6 +1117,11 @@ namespace RenSharp
 	String ^Engine::RenSharpVersion::get()
 	{
 		return "1.2";
+	}
+
+	RenegadeDispatcher^ Engine::Dispatcher::get()
+	{
+		return dispatcher;
 	}
 
 	String ^Engine::StripPathFromFilename(String ^filename)

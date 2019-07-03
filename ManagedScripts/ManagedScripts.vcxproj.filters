@@ -1164,6 +1164,33 @@
     <ClInclude Include="Misc.h">
       <Filter>Header Files\RenSharp Core</Filter>
     </ClInclude>
+    <ClInclude Include="RenSharpThreadManager.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IPriorityQueueNode.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PriorityQueueNode.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IPriorityQueue.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PriorityQueue.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenegadeDispatcherOperationStatus.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseRenegadeDispatcherOperation.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenegadeDispatcher.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenegadeDispatcherTaskOperation.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -2259,6 +2286,33 @@
       <Filter>Source Files\RenSharp Generic Implementations</Filter>
     </ClCompile>
     <ClCompile Include="Misc.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenSharpThreadManager.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="IPriorityQueueNode.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PriorityQueueNode.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="IPriorityQueue.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PriorityQueue.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenegadeDispatcherOperationStatus.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseRenegadeDispatcherOperation.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenegadeDispatcher.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenegadeDispatcherTaskOperation.cpp">
       <Filter>Source Files\RenSharp Core</Filter>
     </ClCompile>
   </ItemGroup>
