@@ -22,7 +22,7 @@ namespace RenSharp
 {
 	ref class RenSharpTimerStruct;
 
-	public ref class RenSharpTimerManager : public RenSharpEventClass
+	public ref class RenSharpTimerManager sealed : public RenSharpEventClass
 	{
 		private:
 			bool disposedResources;

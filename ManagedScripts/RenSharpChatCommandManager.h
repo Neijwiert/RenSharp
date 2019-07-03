@@ -24,7 +24,7 @@ namespace RenSharp
 {
 	ref class RenSharpChatCommandClass;
 
-	public ref class RenSharpChatCommandManager : public RenSharpEventClass
+	public ref class RenSharpChatCommandManager sealed : public RenSharpEventClass
 	{
 		private:
 			enum class CheckChatCommandResult

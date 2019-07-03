@@ -24,7 +24,7 @@ namespace RenSharp
 {
 	ref class RenSharpKeyHookClass;
 
-	public ref class RenSharpKeyHookManager : public RenSharpEventClass
+	public ref class RenSharpKeyHookManager sealed : public RenSharpEventClass
 	{
 		private:
 			enum class CheckKeyHookResult
