@@ -204,7 +204,6 @@ void RenSharpRootEventClass::Shutdown(bool fatal)
 					rsInterface = nullptr;
 				}
 				
-				// Ignore releasing resources since we cannot gracefully shutdown it anyway
 				delete hostControl;
 				hostControl = nullptr;
 			}
@@ -212,21 +211,18 @@ void RenSharpRootEventClass::Shutdown(bool fatal)
 			clrRuntimeHost->Stop();
 		}
 
-		// Ignore releasing resources since we cannot gracefully shutdown it anyway
 		clrRuntimeHost->Release();
 		clrRuntimeHost = nullptr;
 	}
 
 	if (runtimeInfo != nullptr)
 	{
-		// Ignore releasing resources since we cannot gracefully shutdown it anyway
 		runtimeInfo->Release();
 		runtimeInfo = nullptr;
 	}
 
 	if (metaHost != nullptr)
 	{
-		// Ignore releasing resources since we cannot gracefully shutdown it anyway
 		metaHost->Release();
 		metaHost = nullptr;
 	}
