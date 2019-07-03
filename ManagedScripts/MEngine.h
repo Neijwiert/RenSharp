@@ -159,6 +159,9 @@ namespace RenSharp
 
 			static void InternalPathfindDistanceCallback(::PathfindDistanceRequest *result);
 
+			// w3d.h
+			static array<String^>^ surfaceTypeStrings;
+
 		public:
 			static bool Init();
 			static void Shutdown();
@@ -2096,6 +2099,12 @@ namespace RenSharp
 			{
 				int get();
 				void set(int value);
+			}
+
+			// w3d.h
+			static property array<String^>^ SurfaceTypeStrings
+			{
+				array<String^>^ get();
 			}
 
 		internal:

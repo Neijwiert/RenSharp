@@ -37,6 +37,7 @@ limitations under the License.
 #include <Crc32.h>
 #include <ReferencerClass.h>
 #include <MoveablePhysClass.h>
+#include <w3d.h>
 
 RENEGADE_FUNCTION
 ::cTeam* Internal_Find_Team(int team)
@@ -121,6 +122,16 @@ namespace RenSharp
 		currentPathfindDistanceRequestId = 1;
 		pathfindDistanceRequests = gcnew Generic::Dictionary<uint32, PathfindDistanceRequest ^>();
 		internalPathfindCallbackDelegate = gcnew InternalPathfindDistanceDelegate(InternalPathfindDistanceCallback);
+
+		surfaceTypeStrings = gcnew array<String^>(sizeof(::SURFACE_TYPE_STRINGS) / sizeof(::SURFACE_TYPE_STRINGS[0]));
+		for (int x = 0; x < surfaceTypeStrings->Length; x++)
+		{
+			auto currentString = ::SURFACE_TYPE_STRINGS[x];
+			if (currentString != nullptr)
+			{
+				surfaceTypeStrings[x] = gcnew String(currentString);
+			}
+		}
 	}
 
 	bool Engine::Init()
@@ -14817,6 +14828,11 @@ static ::cPlayer* NickSavePlayer = nullptr;
 	void Engine::Exe::set(int value)
 	{
 		::Exe = value;
+	}
+
+	array<String^>^ Engine::SurfaceTypeStrings::get()
+	{
+		return surfaceTypeStrings;
 	}
 
 	void Engine::RegisterManagedConsoleFunction(IRenSharpConsoleFunctionClass^ function)

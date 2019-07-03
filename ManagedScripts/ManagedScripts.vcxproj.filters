@@ -1191,6 +1191,9 @@
     <ClInclude Include="RenegadeDispatcherTaskOperation.h">
       <Filter>Header Files\RenSharp Core</Filter>
     </ClInclude>
+    <ClInclude Include="Mw3d.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -2314,6 +2317,9 @@
     </ClCompile>
     <ClCompile Include="RenegadeDispatcherTaskOperation.cpp">
       <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mw3d.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

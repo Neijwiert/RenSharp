@@ -420,6 +420,7 @@
     <ClInclude Include="MVisTableClassMultiListClass.h" />
     <ClInclude Include="MVisTableClassPtrSimpleVecClass.h" />
     <ClInclude Include="MVisTableMgrClass.h" />
+    <ClInclude Include="Mw3d.h" />
     <ClInclude Include="MWarFactoryGameObj.h" />
     <ClInclude Include="MWarFactoryGameObjDef.h" />
     <ClInclude Include="MWeaponBagClass.h" />
@@ -797,6 +798,7 @@
     <ClCompile Include="MVisTableClassMultiListClass.cpp" />
     <ClCompile Include="MVisTableClassPtrSimpleVecClass.cpp" />
     <ClCompile Include="MVisTableMgrClass.cpp" />
+    <ClCompile Include="Mw3d.cpp" />
     <ClCompile Include="MWarFactoryGameObj.cpp" />
     <ClCompile Include="MWarFactoryGameObjDef.cpp" />
     <ClCompile Include="MWeaponBagClass.cpp" />
