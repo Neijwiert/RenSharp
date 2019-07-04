@@ -106,7 +106,8 @@ namespace RenSharp
 
 			// Custom stuff
 			static Generic::IDictionary<IntPtr, IRenSharpConsoleFunctionClass^> ^managedConsoleFunctions;
-			static RenegadeDispatcher^ dispatcher;
+			static Threading::Thread^ renegadeThread;
+			static Generic::IDictionary<Threading::Thread^,RenegadeDispatcher^>^ dispatchers;
 
 			// engine_tt.h
 			ref class PathfindDistanceRequest
@@ -1048,6 +1049,11 @@ namespace RenSharp
 			static property String ^RenSharpVersion
 			{
 				String ^get();
+			}
+
+			static property Threading::Thread^ RenegadeThread
+			{
+				Threading::Thread^ get();
 			}
 
 			static property RenegadeDispatcher^ Dispatcher
@@ -2110,6 +2116,7 @@ namespace RenSharp
 		internal:
 			// Custom stuff
 			static void RegisterManagedConsoleFunction(IRenSharpConsoleFunctionClass^ function);
-			static void UnregisterManagedConsoleFunction(IRenSharpConsoleFunctionClass^ function);
+			static void UnregisterManagedConsoleFunction(IRenSharpConsoleFunctionClass^ function);		
+			static void ProcessDispatcherOperations();
 	};
 }

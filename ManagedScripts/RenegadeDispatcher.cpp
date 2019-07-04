@@ -20,12 +20,16 @@ limitations under the License.
 
 namespace RenSharp
 {
-	RenegadeDispatcher::RenegadeDispatcher(Threading::Thread^ renegadeThread, std::int32_t queueInitialSize)
-		: queue(gcnew PriorityQueue<BaseRenegadeDispatcherOperation^>(queueInitialSize)), currentOperationId(1), renegadeThread(renegadeThread)
+	RenegadeDispatcher::RenegadeDispatcher(Threading::Thread^ renegadeThread, Threading::Thread^ owner, std::int32_t queueInitialSize)
+		: queue(gcnew PriorityQueue<BaseRenegadeDispatcherOperation^>(queueInitialSize)), currentOperationId(1), renegadeThread(renegadeThread), owner(owner), maxQueueSize(-1)
 	{
 		if (renegadeThread == nullptr)
 		{
 			throw gcnew ArgumentNullException("renegadeThread");
+		}
+		else if (owner == nullptr)
+		{
+			throw gcnew ArgumentNullException("owner");
 		}
 	}
 
@@ -61,12 +65,12 @@ namespace RenSharp
 		return (Thread::CurrentThread->Equals(renegadeThread));
 	}
 
-	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::InvokeAsync(Action^ action, std::uint32_t priority, Nullable<CancellationToken>^ cancellationToken)
+	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::InvokeAsync(Action^ action, std::uint32_t priority, Nullable<CancellationToken> cancellationToken)
 	{
 		Task^ task;
-		if (cancellationToken->HasValue)
+		if (cancellationToken.HasValue)
 		{
-			task = gcnew Task(action, cancellationToken->Value);
+			task = gcnew Task(action, cancellationToken.Value);
 		}
 		else
 		{
@@ -77,110 +81,139 @@ namespace RenSharp
 			this,
 			Interlocked::Increment(currentOperationId),
 			queue,
-			priority, 
+			priority,
 			task);
 
-		Monitor::Enter(queue);
+		Monitor::Enter(this);
 		try
 		{
-			queue->EnqueueItem(newOperation, priority);
+			Monitor::Enter(queue);
+			try
+			{
+				if (
+					(maxQueueSize > 0 && queue->Count >= maxQueueSize) ||
+					!queue->EnqueueItem(newOperation, priority))
+				{
+					return nullptr;
+				}
+			}
+			finally
+			{
+				Monitor::Exit(queue);
+			}
 		}
 		finally
 		{
-			Monitor::Exit(queue);
+			Monitor::Exit(this);
 		}
 
-		return newOperation;
+		return newOperation;	
 	}
 
 	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::InvokeAsync(Action^ action, std::uint32_t priority)
 	{
-		return InvokeAsync(action, priority, nullptr);
+		return InvokeAsync(action, priority, Nullable<CancellationToken>());
 	}
 
 	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::InvokeAsync(Action^ action)
 	{
-		return InvokeAsync(action, 0, nullptr);
+		return InvokeAsync(action, 0, Nullable<CancellationToken>());
 	}
 
-	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::Invoke(Action^ action, std::uint32_t priority, Nullable<CancellationToken>^ cancellationToken)
+	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::Invoke(Action^ action, std::uint32_t priority, Nullable<CancellationToken> cancellationToken)
 	{
-		RenegadeDispatcherTaskOperation<Task^>^ newOperation;
 		if (CheckAccess())
 		{
-			Task^ task;
-			if (cancellationToken->HasValue)
-			{
-				task = gcnew Task(action, cancellationToken->Value);
-			}
-			else
-			{
-				task = gcnew Task(action);
-			}
-
-			newOperation = gcnew RenegadeDispatcherTaskOperation<Task^>(this, Interlocked::Increment(currentOperationId), queue, priority, task);
-
-			newOperation->Invoke();
+			throw gcnew InvalidOperationException("On the Renegade thread");
 		}
-		else
+
+		RenegadeDispatcherTaskOperation<Task^>^ newOperation = InvokeAsync(action, priority, cancellationToken);
+		if (newOperation == nullptr)
 		{
-			newOperation = InvokeAsync(action, priority, cancellationToken);
-			newOperation->Wait();
+			return nullptr;
 		}
+
+		newOperation->Wait();
 
 		return newOperation;
 	}
 
 	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::Invoke(Action^ action, std::uint32_t priority)
 	{
-		return Invoke(action, priority, nullptr);
+		return Invoke(action, priority, Nullable<CancellationToken>());
 	}
 
 	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::Invoke(Action^ action)
 	{
-		return Invoke(action, 0, nullptr);
+		return Invoke(action, 0, Nullable<CancellationToken>());
 	}
 
-	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::Invoke(Action^ action, TimeSpan timeout, std::uint32_t priority, Nullable<CancellationToken>^ cancellationToken)
+	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::Invoke(Action^ action, TimeSpan timeout, std::uint32_t priority, Nullable<CancellationToken> cancellationToken)
 	{
-		RenegadeDispatcherTaskOperation<Task^>^ newOperation;
 		if (CheckAccess())
 		{
-			Task^ task;
-			if (cancellationToken->HasValue)
-			{
-				task = gcnew Task(action, cancellationToken->Value);
-			}
-			else
-			{
-				task = gcnew Task(action);
-			}
-
-			newOperation = gcnew RenegadeDispatcherTaskOperation<Task^>(this, Interlocked::Increment(currentOperationId), queue, priority, task);
-
-			newOperation->Invoke();
+			throw gcnew InvalidOperationException("On the Renegade thread");
 		}
-		else
+
+		RenegadeDispatcherTaskOperation<Task^>^ newOperation = InvokeAsync(action, priority, cancellationToken);
+		if (newOperation == nullptr)
 		{
-			newOperation = InvokeAsync(action, priority, cancellationToken);
-			newOperation->Wait(timeout);
+			return nullptr;
 		}
+
+		newOperation->Wait(timeout);
 
 		return newOperation;
 	}
 
 	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::Invoke(Action^ action, TimeSpan timeout, std::uint32_t priority)
 	{
-		return Invoke(action, timeout, priority, nullptr);
+		return Invoke(action, timeout, priority, Nullable<CancellationToken>());
 	}
 
 	RenegadeDispatcherTaskOperation<Task^>^ RenegadeDispatcher::Invoke(Action^ action, TimeSpan timeout)
 	{
-		return Invoke(action, timeout, 0, nullptr);
+		return Invoke(action, timeout, 0, Nullable<CancellationToken>());
 	}
 
 	Threading::Thread^ RenegadeDispatcher::RenegadeThread::get()
 	{
 		return renegadeThread;
+	}
+
+	Threading::Thread^ RenegadeDispatcher::Owner::get()
+	{
+		return owner;
+	}
+
+	int RenegadeDispatcher::MaxQueueSize::get()
+	{
+		Monitor::Enter(this);
+		try
+		{
+			return maxQueueSize;
+		}
+		finally
+		{
+			Monitor::Exit(this);
+		}
+	}
+
+	void RenegadeDispatcher::MaxQueueSize::set(int value)
+	{
+		Monitor::Enter(this);
+		try
+		{
+			maxQueueSize = value;
+		}
+		finally
+		{
+			Monitor::Exit(this);
+		}
+	}
+
+	int RenegadeDispatcher::CurrentQueueCount::get()
+	{
+		return queue->Count;
 	}
 }

@@ -28,6 +28,6 @@ namespace RenSharp
 
 	void RenSharpThreadManager::Think()
 	{
-		Engine::Dispatcher->ProcessOperation();
+		Engine::ProcessDispatcherOperations();
 	}
 }

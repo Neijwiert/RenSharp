@@ -132,11 +132,13 @@ namespace RenSharp
 				surfaceTypeStrings[x] = gcnew String(currentString);
 			}
 		}
+
+		dispatchers = gcnew Generic::Dictionary<Threading::Thread^, RenegadeDispatcher^>();
 	}
 
 	bool Engine::Init()
 	{
-		dispatcher = gcnew RenegadeDispatcher(Thread::CurrentThread, InitialDispatcherQueueSize);
+		renegadeThread = Threading::Thread::CurrentThread;
 
 		return true;
 	}
@@ -1130,9 +1132,34 @@ namespace RenSharp
 		return "1.2";
 	}
 
+	Threading::Thread^ Engine::RenegadeThread::get()
+	{
+		return renegadeThread;
+	}
+
 	RenegadeDispatcher^ Engine::Dispatcher::get()
 	{
-		return dispatcher;
+		if (Threading::Thread::CurrentThread->Equals(renegadeThread))
+		{
+			throw gcnew InvalidOperationException("On the Renegade thread");
+		}
+
+		Monitor::Enter(dispatchers);
+		try
+		{
+			RenegadeDispatcher^ dispatcher;
+			if (!dispatchers->TryGetValue(Threading::Thread::CurrentThread, dispatcher))
+			{
+				dispatcher = gcnew RenegadeDispatcher(renegadeThread, Threading::Thread::CurrentThread, InitialDispatcherQueueSize);
+				dispatchers->Add(Threading::Thread::CurrentThread, dispatcher);
+			}
+
+			return dispatcher;
+		}
+		finally
+		{
+			Monitor::Exit(dispatchers);
+		}
 	}
 
 	String ^Engine::StripPathFromFilename(String ^filename)
@@ -14857,5 +14884,36 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 
 		managedConsoleFunctions->Remove(function->ConsoleFunctionClassPointer);
+	}
+
+	void Engine::ProcessDispatcherOperations()
+	{
+		Monitor::Enter(dispatchers);
+		try
+		{
+			Collections::Generic::ICollection<Threading::Thread^>^ dispatchersToRemove = gcnew Collections::Generic::LinkedList<Threading::Thread^>();
+			for each (auto threadDispatcherPair in dispatchers)
+			{
+				auto currentThread = threadDispatcherPair.Key;
+				auto currentDispatcher = threadDispatcherPair.Value;
+
+				if ((currentThread->ThreadState == Threading::ThreadState::Aborted || currentThread->ThreadState == Threading::ThreadState::Stopped) &&
+					(currentDispatcher->CurrentQueueCount <= 1))
+				{
+					dispatchersToRemove->Add(currentThread);
+				}
+				
+				currentDispatcher->ProcessOperation();
+			}
+
+			for each (auto threadToRemove in dispatchersToRemove)
+			{
+				dispatchers->Remove(threadToRemove);
+			}
+		}
+		finally
+		{
+			Monitor::Exit(dispatchers);
+		}
 	}
 }
