@@ -227,10 +227,7 @@ void RenSharpRootEventClass::Shutdown(bool fatal)
 		metaHost = nullptr;
 	}
 
-	if (fatal)
-	{
-		cGameData::Set_Manual_Exit(true);
-	}
+	cGameData::Set_Manual_Exit(true);
 }
 
 bool RenSharpRootEventClass::Is_Shutting_Down() const
