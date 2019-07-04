@@ -36,7 +36,7 @@ namespace RenSharp
 
 		bool TryTakeFirstItem([Out] T% result);
 
-		void EnqueueItem(T item, std::uint32_t priority);
+		bool EnqueueItem(T item, std::uint32_t priority);
 
 		property std::int32_t Count
 		{

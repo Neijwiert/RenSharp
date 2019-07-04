@@ -193,11 +193,17 @@ namespace RenSharp
 				return true;
 			}
 
-			virtual void EnqueueItem(T item, std::uint32_t priority)
+			virtual bool EnqueueItem(T item, std::uint32_t priority)
 			{
 				if (nodeCount == nodes->Length)
 				{
-					Resize(nodes->Length * 2);
+					auto newSize = (nodes->LongLength * 2);
+					if (newSize > int::MaxValue)
+					{
+						return false;
+					}
+
+					Resize(static_cast<int>(newSize));
 				}
 
 				std::int32_t insertionIndex = 0;
@@ -222,6 +228,8 @@ namespace RenSharp
 
 				nodes[insertionIndex] = gcnew PriorityQueueNode<T>(item, priority);
 				nodeCount++;
+
+				return true;
 			}
 
 			property std::int32_t Count
