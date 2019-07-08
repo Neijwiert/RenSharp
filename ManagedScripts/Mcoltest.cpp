@@ -1946,7 +1946,7 @@ namespace RenSharp
 		Vector3 move,
 		CastResultStruct res,
 		RenSharp::CollisionType collisionType)
-		: CollisionTestClass(res, collisionType)
+		: CollisionTestClass(res, collisionType), box(obbox), move(move)
 	{
 		Vector3 maxExtent;
 
