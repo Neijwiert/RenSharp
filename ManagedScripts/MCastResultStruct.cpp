@@ -19,6 +19,14 @@ limitations under the License.
 
 namespace RenSharp
 {
+	CastResultStruct::CastResultStruct(bool reset)
+	{
+		if (reset)
+		{
+			Reset();
+		}
+	}
+	
 	CastResultStruct::CastResultStruct(IntPtr pointer)
 	{
 		if (pointer.ToPointer() == nullptr)

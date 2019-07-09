@@ -44,6 +44,7 @@ namespace RenSharp
 			bool ComputeContactPoint;
 			Vector3 ContactPoint;
 
+			CastResultStruct(bool reset);
 			CastResultStruct(IntPtr pointer);
 
 			void Reset();
