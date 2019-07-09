@@ -51,8 +51,8 @@ namespace RenSharp
 			return false;
 		}
 
-		IDAGameObjObserverClass^ otherThis1 = dynamic_cast<IDAGameObjObserverClass^>(other);
-		if (otherThis1 != nullptr && daGameObjObserverClassPointer.Equals(otherThis1->DAGameObjObserverClassPointer))
+		IGameObjObserverClass^ otherThis1 = dynamic_cast<IGameObjObserverClass^>(other);
+		if (otherThis1 != nullptr && daGameObjObserverClassPointer.Equals(otherThis1->GameObjObserverClassPointer))
 		{
 			return true;
 		}

@@ -248,7 +248,7 @@ namespace RenSharp
 		auto otherReferenceableGameObj = dynamic_cast<IReferenceableClass<IScriptableGameObj ^> ^>(other);
 		if (otherReferenceableGameObj != nullptr)
 		{
-			if (referenceableGameObj->Pointer.Equals(otherReferenceableGameObj->Pointer))
+			if (referenceableGameObj->Equals(otherReferenceableGameObj))
 			{
 				return true;
 			}
@@ -257,7 +257,7 @@ namespace RenSharp
 		auto otherAudioCallbackClass = dynamic_cast<IAudioCallbackClass ^>(other);
 		if (otherAudioCallbackClass != nullptr)
 		{
-			if (audioCallbackClass->AudioCallbackClassPointer.Equals(otherAudioCallbackClass->AudioCallbackClassPointer))
+			if (audioCallbackClass->Equals(otherAudioCallbackClass))
 			{
 				return true;
 			}

@@ -55,7 +55,7 @@ namespace RenSharp
 		auto otherMultiListObjectClass = dynamic_cast<IMultiListObjectClass ^>(other);
 		if (otherMultiListObjectClass != nullptr)
 		{
-			if (multiListObjectClass->MultiListObjectClassPointer.Equals(otherMultiListObjectClass->MultiListObjectClassPointer))
+			if (multiListObjectClass->Equals(otherMultiListObjectClass))
 			{
 				return true;
 			}

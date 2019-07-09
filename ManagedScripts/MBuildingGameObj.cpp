@@ -147,10 +147,10 @@ namespace RenSharp
 			return false;
 		}
 
-		auto otherCombatPhysObserverClass = dynamic_cast<ICombatPhysObserverClass ^>(other);
-		if (otherCombatPhysObserverClass != nullptr)
+		auto otherPhysObserverClass = dynamic_cast<IPhysObserverClass^>(other);
+		if (otherPhysObserverClass != nullptr)
 		{
-			if (combatPhysObserverClass->CombatPhysObserverClassPointer.Equals(otherCombatPhysObserverClass->CombatPhysObserverClassPointer))
+			if (combatPhysObserverClass->Equals(otherPhysObserverClass))
 			{
 				return true;
 			}

@@ -54,7 +54,7 @@ namespace RenSharp
 		auto otherPlayerDataClass = dynamic_cast<IPlayerDataClass ^>(other);
 		if (otherPlayerDataClass != nullptr)
 		{
-			if (playerDataClass->PlayerDataClassPointer.Equals(otherPlayerDataClass->PlayerDataClassPointer))
+			if (playerDataClass->Equals(otherPlayerDataClass))
 			{
 				return true;
 			}

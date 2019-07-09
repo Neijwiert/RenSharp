@@ -72,10 +72,10 @@ namespace RenSharp
 			return false;
 		}
 
-		auto otherDefinitionClass = dynamic_cast<IDefinitionClass^>(other);
-		if (otherDefinitionClass != nullptr)
+		auto otherPostLoadableClass = dynamic_cast<IPostLoadableClass^>(other);
+		if (otherPostLoadableClass != nullptr)
 		{
-			if (definitionClass->DefinitionClassPointer.Equals(otherDefinitionClass->DefinitionClassPointer))
+			if (definitionClass->Equals(otherPostLoadableClass))
 			{
 				return true;
 			}

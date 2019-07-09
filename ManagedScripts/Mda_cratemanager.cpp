@@ -450,7 +450,7 @@ namespace RenSharp
 		auto otherDAGameFeatureClass = dynamic_cast<IDAGameFeatureClass^>(other);
 		if (otherDAGameFeatureClass != nullptr)
 		{
-			if (daGameFeatureClass->DAGameFeatureClassPointer.Equals(otherDAGameFeatureClass->DAGameFeatureClassPointer))
+			if (daGameFeatureClass->Equals(otherDAGameFeatureClass))
 			{
 				return true;
 			}

@@ -116,7 +116,7 @@ namespace RenSharp
 		auto otherDAGameModeClass = dynamic_cast<IDAGameModeClass^>(other);
 		if (otherDAGameModeClass != nullptr)
 		{
-			if (daGameModeClass->DAGameModeClassPointer.Equals(otherDAGameModeClass->DAGameModeClassPointer))
+			if (daGameModeClass->Equals(otherDAGameModeClass))
 			{
 				return true;
 			}

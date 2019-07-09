@@ -56,10 +56,10 @@ namespace RenSharp
 			return false;
 		}
 
-		auto otherPersistClass = dynamic_cast<IPersistClass ^>(other);
-		if (otherPersistClass != nullptr)
+		auto otherPostLoadableClass = dynamic_cast<IPostLoadableClass^>(other);
+		if (otherPostLoadableClass != nullptr)
 		{
-			if (persistClass->PersistClassPointer.Equals(otherPersistClass->PersistClassPointer))
+			if (persistClass->Equals(otherPostLoadableClass))
 			{
 				return true;
 			}

@@ -115,7 +115,7 @@ namespace RenSharp
 		auto otherMultiListObjectClass = dynamic_cast<IMultiListObjectClass ^>(other);
 		if (otherMultiListObjectClass != nullptr)
 		{
-			if (multiListObjectClass->MultiListObjectClassPointer.Equals(otherMultiListObjectClass->MultiListObjectClassPointer))
+			if (multiListObjectClass->Equals(otherMultiListObjectClass))
 			{
 				return true;
 			}
@@ -124,7 +124,7 @@ namespace RenSharp
 		auto otherRefCountClass = dynamic_cast<IRefCountClass ^>(other);
 		if (otherRefCountClass != nullptr)
 		{
-			if (refCountClass->RefCountClassPointer.Equals(otherRefCountClass->RefCountClassPointer))
+			if (refCountClass->Equals(otherRefCountClass))
 			{
 				return true;
 			}

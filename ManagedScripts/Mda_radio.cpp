@@ -126,7 +126,7 @@ namespace RenSharp
 		auto otherDAGameFeatureClass = dynamic_cast<IDAGameFeatureClass^>(other);
 		if (otherDAGameFeatureClass != nullptr)
 		{
-			if (daGameFeatureClass->DAGameFeatureClassPointer.Equals(otherDAGameFeatureClass->DAGameFeatureClassPointer))
+			if (daGameFeatureClass->Equals(otherDAGameFeatureClass))
 			{
 				return true;
 			}
@@ -135,7 +135,7 @@ namespace RenSharp
 		auto otherDAPlayerDataFactoryClass = dynamic_cast<IDAPlayerDataFactoryClass^>(other);
 		if (otherDAPlayerDataFactoryClass != nullptr)
 		{
-			if (daPlayerDataFactoryClass->DAPlayerDataFactoryClassPointer.Equals(otherDAPlayerDataFactoryClass->DAPlayerDataFactoryClassPointer))
+			if (daPlayerDataFactoryClass->Equals(otherDAPlayerDataFactoryClass))
 			{
 				return true;
 			}
