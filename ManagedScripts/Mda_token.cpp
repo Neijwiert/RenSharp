@@ -189,7 +189,7 @@ namespace RenSharp
 		{
 			throw gcnew ArgumentNullException("str");
 		}
-		else if (startPos < 1)
+		else if (startPos < 0)
 		{
 			throw gcnew ArgumentOutOfRangeException("startPos");
 		}
@@ -216,7 +216,7 @@ namespace RenSharp
 		{
 			throw gcnew ArgumentNullException("str");
 		}
-		else if (startPos < 1)
+		else if (startPos < 0)
 		{
 			throw gcnew ArgumentOutOfRangeException("startPos");
 		}
