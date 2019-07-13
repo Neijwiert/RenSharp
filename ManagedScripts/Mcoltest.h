@@ -165,7 +165,6 @@ namespace RenSharp
 			IRenderObjClass ^collidedRenderObj;
 
 		public:
-			CollisionTestClass(CastResultStruct result, CollisionType collisionType);
 			CollisionTestClass(CollisionType collisionType);
 			CollisionTestClass(ICollisionTestClass ^colTest);
 			CollisionTestClass(CollisionTestClass ^colTest);
@@ -320,9 +319,6 @@ namespace RenSharp
 			bool ignoreTranslucentMeshes;
 
 		public:
-			RayCollisionTestClass(LineSegClass ray, CastResultStruct result, RenSharp::CollisionType collisionType, bool ignoreTranslucentMeshes);
-			RayCollisionTestClass(LineSegClass ray, CastResultStruct result, RenSharp::CollisionType collisionType);
-			RayCollisionTestClass(LineSegClass ray, CastResultStruct result);
 			RayCollisionTestClass(LineSegClass ray, RenSharp::CollisionType collisionType, bool ignoreTranslucentMeshes);
 			RayCollisionTestClass(LineSegClass ray, RenSharp::CollisionType collisionType);
 			RayCollisionTestClass(LineSegClass ray);
@@ -514,8 +510,6 @@ namespace RenSharp
 		public:
 			AABoxCollisionTestClass(AABoxClass aabox, Vector3 move, RenSharp::CollisionType collisionType);
 			AABoxCollisionTestClass(AABoxClass aabox, Vector3 move);
-			AABoxCollisionTestClass(AABoxClass aabox, Vector3 move, CastResultStruct res, RenSharp::CollisionType collisionType);
-			AABoxCollisionTestClass(AABoxClass aabox, Vector3 move, CastResultStruct res);
 			AABoxCollisionTestClass(IAABoxCollisionTestClass ^boxTest);
 			AABoxCollisionTestClass(AABoxCollisionTestClass ^boxTest);
 
@@ -710,8 +704,6 @@ namespace RenSharp
 		public:
 			OBBoxCollisionTestClass(OBBoxClass obbox, Vector3 move, RenSharp::CollisionType collisionType);
 			OBBoxCollisionTestClass(OBBoxClass obbox, Vector3 move);
-			OBBoxCollisionTestClass(OBBoxClass obbox, Vector3 move, CastResultStruct res, RenSharp::CollisionType collisionType);
-			OBBoxCollisionTestClass(OBBoxClass obbox, Vector3 move, CastResultStruct res);
 			OBBoxCollisionTestClass(IOBBoxCollisionTestClass ^that, Matrix3D tm);
 			OBBoxCollisionTestClass(OBBoxCollisionTestClass ^that, Matrix3D tm);
 			OBBoxCollisionTestClass(IAABoxCollisionTestClass ^that, Matrix3D tm);

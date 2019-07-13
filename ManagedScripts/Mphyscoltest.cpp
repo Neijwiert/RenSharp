@@ -331,18 +331,6 @@ namespace RenSharp
 
 	}
 
-	PhysRayCollisionTestClass::PhysRayCollisionTestClass(LineSegClass ray, CastResultStruct res, CollisionGroupType group, RenSharp::CollisionType type)
-		: RayCollisionTestClass(ray, res, type), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
-	{
-
-	}
-
-	PhysRayCollisionTestClass::PhysRayCollisionTestClass(LineSegClass ray, CastResultStruct res, CollisionGroupType group)
-		: RayCollisionTestClass(ray, res, RenSharp::CollisionType::CollisionTypeProjectile), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
-	{
-
-	}
-
 	PhysRayCollisionTestClass::PhysRayCollisionTestClass(IPhysRayCollisionTestClass ^collisionTestClass)
 		: RayCollisionTestClass(collisionTestClass)
 	{
@@ -775,18 +763,6 @@ namespace RenSharp
 
 	}
 
-	PhysAABoxCollisionTestClass::PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CastResultStruct res, CollisionGroupType group, RenSharp::CollisionType type)
-		: AABoxCollisionTestClass(box, move, res, type), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
-	{
-		
-	}
-
-	PhysAABoxCollisionTestClass::PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CastResultStruct res, CollisionGroupType group)
-		: AABoxCollisionTestClass(box, move, res, RenSharp::CollisionType::CollisionTypePhysical), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
-	{
-
-	}
-
 	PhysAABoxCollisionTestClass::PhysAABoxCollisionTestClass(IPhysAABoxCollisionTestClass ^collisionTestClass)
 		: AABoxCollisionTestClass(collisionTestClass)
 	{
@@ -1215,18 +1191,6 @@ namespace RenSharp
 
 	PhysOBBoxCollisionTestClass::PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CollisionGroupType group)
 		: OBBoxCollisionTestClass(box, move, RenSharp::CollisionType::CollisionTypePhysical), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
-	{
-
-	}
-
-	PhysOBBoxCollisionTestClass::PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CastResultStruct res, CollisionGroupType group, RenSharp::CollisionType type)
-		: OBBoxCollisionTestClass(box, move, res, type), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
-	{
-
-	}
-
-	PhysOBBoxCollisionTestClass::PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CastResultStruct res, CollisionGroupType group)
-		: OBBoxCollisionTestClass(box, move, res, RenSharp::CollisionType::CollisionTypePhysical), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
 	{
 
 	}

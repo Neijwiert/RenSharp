@@ -181,8 +181,6 @@ namespace RenSharp
 		public:
 			PhysRayCollisionTestClass(LineSegClass ray, CollisionGroupType group, RenSharp::CollisionType type);
 			PhysRayCollisionTestClass(LineSegClass ray, CollisionGroupType group);
-			PhysRayCollisionTestClass(LineSegClass ray, CastResultStruct res, CollisionGroupType group, RenSharp::CollisionType type);
-			PhysRayCollisionTestClass(LineSegClass ray, CastResultStruct res, CollisionGroupType group);
 			PhysRayCollisionTestClass(IPhysRayCollisionTestClass ^collisionTestClass);
 			PhysRayCollisionTestClass(PhysRayCollisionTestClass ^collisionTestClass);
 
@@ -358,8 +356,6 @@ namespace RenSharp
 		public:
 			PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CollisionGroupType group, RenSharp::CollisionType type);
 			PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CollisionGroupType group);
-			PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CastResultStruct res, CollisionGroupType group, RenSharp::CollisionType type);
-			PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CastResultStruct res, CollisionGroupType group);
 			PhysAABoxCollisionTestClass(IPhysAABoxCollisionTestClass ^collisionTestClass);
 			PhysAABoxCollisionTestClass(PhysAABoxCollisionTestClass ^collisionTestClass);
 
@@ -535,8 +531,6 @@ namespace RenSharp
 		public:
 			PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CollisionGroupType group, RenSharp::CollisionType type);
 			PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CollisionGroupType group);
-			PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CastResultStruct res, CollisionGroupType group, RenSharp::CollisionType type);
-			PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CastResultStruct res, CollisionGroupType group);
 			PhysOBBoxCollisionTestClass(IPhysOBBoxCollisionTestClass ^collisionTestClass);
 			PhysOBBoxCollisionTestClass(PhysOBBoxCollisionTestClass ^collisionTestClass);
 

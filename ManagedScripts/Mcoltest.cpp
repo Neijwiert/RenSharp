@@ -222,16 +222,10 @@ namespace RenSharp
 		return reinterpret_cast<::RenSharpCollisionTestClass *>(Pointer.ToPointer());
 	}
 
-	CollisionTestClass::CollisionTestClass(CastResultStruct result, RenSharp::CollisionType collisionType)
-		: result(result), collisionType(collisionType), collidedRenderObj(nullptr)
-	{
-
-	}
-
 	CollisionTestClass::CollisionTestClass(RenSharp::CollisionType collisionType)
-		: collisionType(collisionType), collidedRenderObj(nullptr)
+		: result(true), collisionType(collisionType), collidedRenderObj(nullptr)
 	{
-		result.Reset();
+		
 	}
 
 	CollisionTestClass::CollisionTestClass(ICollisionTestClass ^colTest)
@@ -748,28 +742,6 @@ namespace RenSharp
 		return reinterpret_cast<::RenSharpRayCollisionTestClass *>(Pointer.ToPointer());
 	}
 
-	RayCollisionTestClass::RayCollisionTestClass(
-		LineSegClass ray,
-		CastResultStruct result,
-		RenSharp::CollisionType collisionType,
-		bool ignoreTranslucentMeshes)
-		: CollisionTestClass(result, collisionType), ray(ray), ignoreTranslucentMeshes(ignoreTranslucentMeshes)
-	{
-
-	}
-
-	RayCollisionTestClass::RayCollisionTestClass(LineSegClass ray, CastResultStruct result, RenSharp::CollisionType collisionType)
-		: CollisionTestClass(result, collisionType), ray(ray), ignoreTranslucentMeshes(false)
-	{
-
-	}
-
-	RayCollisionTestClass::RayCollisionTestClass(LineSegClass ray, CastResultStruct result)
-		: CollisionTestClass(result, RenSharp::CollisionType::CollisionType0), ray(ray), ignoreTranslucentMeshes(false)
-	{
-
-	}
-
 	RayCollisionTestClass::RayCollisionTestClass(LineSegClass ray, RenSharp::CollisionType collisionType, bool ignoreTranslucentMeshes)
 		: CollisionTestClass(collisionType), ray(ray), ignoreTranslucentMeshes(ignoreTranslucentMeshes)
 	{
@@ -1249,31 +1221,6 @@ namespace RenSharp
 
 	AABoxCollisionTestClass::AABoxCollisionTestClass(AABoxClass aabox, Vector3 move)
 		: AABoxCollisionTestClass(aabox, move, RenSharp::CollisionType::CollisionType0)
-	{
-
-	}
-
-	AABoxCollisionTestClass::AABoxCollisionTestClass(
-		AABoxClass aabox,
-		Vector3 move,
-		CastResultStruct res,
-		RenSharp::CollisionType collisionType)
-		: CollisionTestClass(res, collisionType), box(aabox), move(move)
-	{
-		sweepMin = Vector3::operator-(aabox.Center, aabox.Extent);
-		sweepMax = Vector3::operator+(aabox.Center, aabox.Extent);
-		Vector3 endmin = Vector3::operator-(Vector3::operator+(aabox.Center, move), aabox.Extent);
-		Vector3 endmax = Vector3::operator+(Vector3::operator+(aabox.Center, move), aabox.Extent);
-		if (endmax.X > sweepMax.X) sweepMax.X = endmax.X;
-		if (endmax.Y > sweepMax.Y) sweepMax.Y = endmax.Y;
-		if (endmax.Z > sweepMax.Z) sweepMax.Z = endmax.Z;
-		if (endmin.X < sweepMin.X) sweepMin.X = endmin.X;
-		if (endmin.Y < sweepMin.Y) sweepMin.Y = endmin.Y;
-		if (endmin.Z < sweepMin.Z) sweepMin.Z = endmin.Z;
-	}
-
-	AABoxCollisionTestClass::AABoxCollisionTestClass(AABoxClass aabox, Vector3 move, CastResultStruct res)
-		: AABoxCollisionTestClass(aabox, move, res, RenSharp::CollisionType::CollisionType0)
 	{
 
 	}
@@ -1937,36 +1884,6 @@ namespace RenSharp
 
 	OBBoxCollisionTestClass::OBBoxCollisionTestClass(OBBoxClass obbox, Vector3 move)
 		: OBBoxCollisionTestClass(obbox, move, RenSharp::CollisionType::CollisionType0)
-	{
-
-	}
-
-	OBBoxCollisionTestClass::OBBoxCollisionTestClass(
-		OBBoxClass obbox,
-		Vector3 move,
-		CastResultStruct res,
-		RenSharp::CollisionType collisionType)
-		: CollisionTestClass(res, collisionType), box(obbox), move(move)
-	{
-		Vector3 maxExtent;
-
-		maxExtent.X = Math::Abs(box.Basis.Row0[0] * box.Extent.X) + Math::Abs(box.Basis.Row0[1] * box.Extent.Y) + Math::Abs(box.Basis.Row0[2] * box.Extent.Z) + 0.01f;
-		maxExtent.Y = Math::Abs(box.Basis.Row1[0] * box.Extent.X) + Math::Abs(box.Basis.Row1[1] * box.Extent.Y) + Math::Abs(box.Basis.Row1[2] * box.Extent.Z) + 0.01f;
-		maxExtent.Z = Math::Abs(box.Basis.Row2[0] * box.Extent.X) + Math::Abs(box.Basis.Row2[1] * box.Extent.Y) + Math::Abs(box.Basis.Row2[2] * box.Extent.Z) + 0.01f;
-		sweepMin = Vector3::operator-(box.Center, maxExtent);
-		sweepMax = Vector3::operator+(box.Center, maxExtent);
-		Vector3 endmin = Vector3::operator-(Vector3::operator+(box.Center, move), maxExtent);
-		Vector3 endmax = Vector3::operator+(Vector3::operator+(box.Center, move), maxExtent);
-		if (endmax.X > sweepMax.X) sweepMax.X = endmax.X;
-		if (endmax.Y > sweepMax.Y) sweepMax.Y = endmax.Y;
-		if (endmax.Z > sweepMax.Z) sweepMax.Z = endmax.Z;
-		if (endmin.X < sweepMin.X) sweepMin.X = endmin.X;
-		if (endmin.Y < sweepMin.Y) sweepMin.Y = endmin.Y;
-		if (endmin.Z < sweepMin.Z) sweepMin.Z = endmin.Z;
-	}
-
-	OBBoxCollisionTestClass::OBBoxCollisionTestClass(OBBoxClass obbox, Vector3 move, CastResultStruct res)
-		: OBBoxCollisionTestClass(obbox, move, res, RenSharp::CollisionType::CollisionType0)
 	{
 
 	}
