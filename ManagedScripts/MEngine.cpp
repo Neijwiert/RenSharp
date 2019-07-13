@@ -1697,13 +1697,21 @@ namespace RenSharp
 		}
 
 		auto result = ::GetCurrentMusicTrack();
-		if (result == nullptr)
+		try
 		{
-			return nullptr;
+			if (result == nullptr)
+			{
+				return nullptr;
+			}
+			else
+			{
+				return gcnew String(result);
+			}
 		}
-		else
+		finally
 		{
-			return gcnew String(result);
+			// ::GetCurrentMusicTrack uses newstr
+			Imports::DestroyAnsiString(result);
 		}
 	}
 
