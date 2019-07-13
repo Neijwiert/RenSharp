@@ -1132,7 +1132,7 @@ namespace RenSharp
 
 	String ^Engine::RenSharpVersion::get()
 	{
-		return "1.2";
+		return "1.3";
 	}
 
 	Threading::Thread^ Engine::RenegadeThread::get()

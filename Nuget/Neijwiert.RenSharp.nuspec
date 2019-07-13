@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Neijwiert.RenSharp</id>
-    <version>1.2.0.0</version>
+    <version>1.3.0.0</version>
     <authors>Neijwiert</authors>
     <owners>Neijwiert</owners>
     <license type="expression">Apache-2.0</license>
@@ -10,12 +10,19 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C++/CLI wrapper for Command and Conquer Renegade Dragonade FDS manager</description>
     <releaseNotes>
-	- Fixed infinite recursion in PhysicsSceneClass
-	- Fixed Vector3::Mul
-	- Fixed critical bug: RenSharp shuts down when manually gameover is requested.
-	- Changed the !rensharp output to host chat
-	- Added AdjustX/Y/ZTranslation methods to Matrix3D. These were missing.
-	- Added several engine calls related to Beacons and C4.
+	- Got rid of some comments that weren't correct
+	- Made the RenSharp manager classes final
+	- Introduced a dispatcher (Engine.Dispatcher). This is a helper class that will let you execute stuff on the main Renegade thread. Useful for multithreaded applications. This dispatcher is unique per thread.
+	- Added W3DSurfaceType enum and SurfaceTypeStrings to Engine, which reflects the surface stuff in w3d.h
+	- Prevent over resizing of the priority queue in the Renegade Dispatcher
+	- The FDS now always exits whenever a RenSharp shutdown is requested
+	- OBBoxCollisionTestClass did not copy the box and move in one of its constructors
+	- Added ability to reset a CastResultStruct upon construction. This is important as Fraction needs to be 1.0f for collision tests to actually work.
+	- Fixed the Equals method on some classes that have multiple inheritance and the RenSharpGameObjObserverClass
+	- Fixed wrong argument bounds checks in DATokenClass
+	- Fixed memory leak in Engine.GetCurrentMusicTrack
+	- Made sure that when the managed console functions are deleted that its properly sorted internally
+	- Removed constructors of physics test classes that take a CastResultStruct argument. This is to avoid confusion that it is not changed by reference.
 	</releaseNotes>
     <copyright>Copyright 2019 Neijwiert</copyright>
     <tags>RenSharp Renegade</tags>
