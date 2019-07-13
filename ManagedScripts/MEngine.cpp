@@ -14897,7 +14897,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 				auto currentThread = threadDispatcherPair.Key;
 				auto currentDispatcher = threadDispatcherPair.Value;
 
-				if ((currentThread->ThreadState == Threading::ThreadState::Aborted || currentThread->ThreadState == Threading::ThreadState::Stopped) &&
+				if ((currentThread->ThreadState.HasFlag(Threading::ThreadState::Aborted) || currentThread->ThreadState.HasFlag(Threading::ThreadState::Stopped)) &&
 					(currentDispatcher->CurrentQueueCount <= 1))
 				{
 					dispatchersToRemove->Add(currentThread);
