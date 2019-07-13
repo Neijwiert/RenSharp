@@ -188,6 +188,9 @@ namespace RenSharp
 
 		tmpManagedConsoleFunctions->Clear();
 
+		::Sort_Function_List();
+		::Verbose_Help_File();
+
 		ScriptableGameObj::Shutdown();
 		DAPlayerClass::Shutdown();
 		DAPlayerManager::Shutdown();
