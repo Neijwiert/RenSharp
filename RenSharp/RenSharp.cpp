@@ -111,9 +111,17 @@ HRESULT RenSharpRootEventClass::Init()
 								currentRuntimeInfo = nullptr;
 							}
 						}
+						else
+						{
+							Console_Output("Failed to get the version string for the current enumerated runtime\n");
+						}
 
 						delete[] versionString;
 						versionString = nullptr;
+					}
+					else
+					{
+						Console_Output("Failed to determine the size of the version string for the current enumerated runtime\n");
 					}
 
 					if (currentRuntimeInfo != nullptr)
@@ -122,6 +130,10 @@ HRESULT RenSharpRootEventClass::Init()
 						currentRuntimeInfo = nullptr;
 					}
 				}
+			}
+			else
+			{
+				Console_Output("Failed to enumerate the installed runtimes\n");
 			}
 
 			if (runtimeInfo != nullptr)
@@ -152,25 +164,53 @@ HRESULT RenSharpRootEventClass::Init()
 											hr = E_UNEXPECTED;
 										}
 									}
+									else
+									{
+										Console_Output("Failed to initialize RenSharp\n");
+									}
 
 									rsInterface->Release();
 									rsInterface = nullptr;
 								}
+								else
+								{
+									Console_Output("Failed to start the runtime host\n");
+								}
 							}
+							else
+							{
+								Console_Output("Failed to set the app domain manager type\n");
+							}
+						}
+						else
+						{
+							Console_Output("Failed to get the CLR control\n");
 						}
 					}
 					else
 					{
+						Console_Output("Failed to set the host control\n");
+
 						delete hostControl;
 						hostControl = nullptr;
 					}
 				}
+				else
+				{
+					Console_Output("Failed to get the runtime host interface\n");
+				}
 			}
 			else
 			{
+				Console_Output("No suitable runtime found\n");
+
 				// No suitable runtime version found
 				hr = E_UNEXPECTED;
 			}
+		}
+		else
+		{
+			Console_Output("Failed to create the meta host\n");
 		}
 	}
 
