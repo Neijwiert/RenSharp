@@ -113,7 +113,7 @@ HRESULT RenSharpRootEventClass::Init()
 						}
 						else
 						{
-							Console_Output("Failed to get the version string for the current enumerated runtime\n");
+							Console_Output("Failed to get the version string for the current enumerated runtime (HRESULT: %d)\n", hr);
 						}
 
 						delete[] versionString;
@@ -121,7 +121,7 @@ HRESULT RenSharpRootEventClass::Init()
 					}
 					else
 					{
-						Console_Output("Failed to determine the size of the version string for the current enumerated runtime\n");
+						Console_Output("Failed to determine the size of the version string for the current enumerated runtime (HRESULT: %d)\n", hr);
 					}
 
 					if (currentRuntimeInfo != nullptr)
@@ -133,7 +133,7 @@ HRESULT RenSharpRootEventClass::Init()
 			}
 			else
 			{
-				Console_Output("Failed to enumerate the installed runtimes\n");
+				Console_Output("Failed to enumerate the installed runtimes (HRESULT: %d)\n", hr);
 			}
 
 			if (runtimeInfo != nullptr)
@@ -166,7 +166,7 @@ HRESULT RenSharpRootEventClass::Init()
 									}
 									else
 									{
-										Console_Output("Failed to initialize RenSharp\n");
+										Console_Output("Failed to initialize RenSharp (HRESULT: %d)\n", hr);
 									}
 
 									rsInterface->Release();
@@ -174,22 +174,22 @@ HRESULT RenSharpRootEventClass::Init()
 								}
 								else
 								{
-									Console_Output("Failed to start the runtime host\n");
+									Console_Output("Failed to start the runtime host (HRESULT: %d)\n", hr);
 								}
 							}
 							else
 							{
-								Console_Output("Failed to set the app domain manager type\n");
+								Console_Output("Failed to set the app domain manager type (HRESULT: %d)\n", hr);
 							}
 						}
 						else
 						{
-							Console_Output("Failed to get the CLR control\n");
+							Console_Output("Failed to get the CLR control (HRESULT: %d)\n", hr);
 						}
 					}
 					else
 					{
-						Console_Output("Failed to set the host control\n");
+						Console_Output("Failed to set the host control (HRESULT: %d)\n", hr);
 
 						delete hostControl;
 						hostControl = nullptr;
@@ -197,7 +197,7 @@ HRESULT RenSharpRootEventClass::Init()
 				}
 				else
 				{
-					Console_Output("Failed to get the runtime host interface\n");
+					Console_Output("Failed to get the runtime host interface (HRESULT: %d)\n", hr);
 				}
 			}
 			else
@@ -210,7 +210,7 @@ HRESULT RenSharpRootEventClass::Init()
 		}
 		else
 		{
-			Console_Output("Failed to create the meta host\n");
+			Console_Output("Failed to create the meta host (HRESULT: %d)\n", hr);
 		}
 	}
 
