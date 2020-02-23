@@ -110,10 +110,14 @@ HRESULT RenSharpRootEventClass::Init()
 								runtimeInfo = currentRuntimeInfo;
 								currentRuntimeInfo = nullptr;
 							}
+							else
+							{
+								Console_Output("INFO: Skipped unsuitable runtime version '%ls'\n", versionString);
+							}
 						}
 						else
 						{
-							Console_Output("Failed to get the version string for the current enumerated runtime (HRESULT: %d)\n", hr);
+							Console_Output("WARNING: Failed to get the version string for the current enumerated runtime (HRESULT: %d)\n", hr);
 						}
 
 						delete[] versionString;
@@ -121,7 +125,7 @@ HRESULT RenSharpRootEventClass::Init()
 					}
 					else
 					{
-						Console_Output("Failed to determine the size of the version string for the current enumerated runtime (HRESULT: %d)\n", hr);
+						Console_Output("WARNING: Failed to determine the size of the version string for the current enumerated runtime (HRESULT: %d)\n", hr);
 					}
 
 					if (currentRuntimeInfo != nullptr)
@@ -133,7 +137,7 @@ HRESULT RenSharpRootEventClass::Init()
 			}
 			else
 			{
-				Console_Output("Failed to enumerate the installed runtimes (HRESULT: %d)\n", hr);
+				Console_Output("ERROR: Failed to enumerate the installed runtimes (HRESULT: %d)\n", hr);
 			}
 
 			if (runtimeInfo != nullptr)
@@ -166,7 +170,7 @@ HRESULT RenSharpRootEventClass::Init()
 									}
 									else
 									{
-										Console_Output("Failed to initialize RenSharp (HRESULT: %d)\n", hr);
+										Console_Output("ERROR: Failed to initialize RenSharp (HRESULT: %d)\n", hr);
 									}
 
 									rsInterface->Release();
@@ -174,22 +178,22 @@ HRESULT RenSharpRootEventClass::Init()
 								}
 								else
 								{
-									Console_Output("Failed to start the runtime host (HRESULT: %d)\n", hr);
+									Console_Output("ERROR: Failed to start the runtime host (HRESULT: %d)\n", hr);
 								}
 							}
 							else
 							{
-								Console_Output("Failed to set the app domain manager type (HRESULT: %d)\n", hr);
+								Console_Output("ERROR: Failed to set the app domain manager type (HRESULT: %d)\n", hr);
 							}
 						}
 						else
 						{
-							Console_Output("Failed to get the CLR control (HRESULT: %d)\n", hr);
+							Console_Output("ERROR: Failed to get the CLR control (HRESULT: %d)\n", hr);
 						}
 					}
 					else
 					{
-						Console_Output("Failed to set the host control (HRESULT: %d)\n", hr);
+						Console_Output("ERROR: Failed to set the host control (HRESULT: %d)\n", hr);
 
 						delete hostControl;
 						hostControl = nullptr;
@@ -197,12 +201,12 @@ HRESULT RenSharpRootEventClass::Init()
 				}
 				else
 				{
-					Console_Output("Failed to get the runtime host interface (HRESULT: %d)\n", hr);
+					Console_Output("ERROR: Failed to get the runtime host interface (HRESULT: %d)\n", hr);
 				}
 			}
 			else
 			{
-				Console_Output("No suitable runtime found\n");
+				Console_Output("ERROR: No suitable runtime found\n");
 
 				// No suitable runtime version found
 				hr = E_UNEXPECTED;
@@ -210,7 +214,7 @@ HRESULT RenSharpRootEventClass::Init()
 		}
 		else
 		{
-			Console_Output("Failed to create the meta host (HRESULT: %d)\n", hr);
+			Console_Output("ERROR: Failed to create the meta host (HRESULT: %d)\n", hr);
 		}
 	}
 
@@ -318,7 +322,7 @@ void RenSharpRootEventClass::EventClass_Destructed(RenSharpEventClass* eventClas
 		if (FAILED(hr = rsInterface->EventClassDestructed(eventClass)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -345,7 +349,7 @@ void RenSharpRootEventClass::EventClass_Settings_Loaded_Event(RenSharpEventClass
 		if (FAILED(hr = rsInterface->EventClassSettingsLoadedEvent(eventClass)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassSettingsLoadedEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassSettingsLoadedEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -374,7 +378,7 @@ bool RenSharpRootEventClass::EventClass_Chat_Event(RenSharpEventClass* eventClas
 		if (FAILED(hr = rsInterface->EventClassChatEvent(eventClass, Player, Type, Message, ReceiverID, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassChatEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassChatEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -405,7 +409,7 @@ bool RenSharpRootEventClass::EventClass_Chat_Command_Event(RenSharpEventClass* e
 		if (FAILED(hr = rsInterface->EventClassChatCommandEvent(eventClass, Player, Type, Command.Peek_Buffer(), &Text, ReceiverID, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassChatCommandEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassChatCommandEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -436,7 +440,7 @@ bool RenSharpRootEventClass::EventClass_Key_Hook_Event(RenSharpEventClass* event
 		if (FAILED(hr = rsInterface->EventClassKeyHookEvent(eventClass, Player, Key.Peek_Buffer(), &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassKeyHookEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassKeyHookEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -467,7 +471,7 @@ bool RenSharpRootEventClass::EventClass_Host_Chat_Event(RenSharpEventClass* even
 		if (FAILED(hr = rsInterface->EventClassHostChatEvent(eventClass, ID, Type, Message, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassHostChatEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassHostChatEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -498,7 +502,7 @@ bool RenSharpRootEventClass::EventClass_Radio_Event(RenSharpEventClass* eventCla
 		if (FAILED(hr = rsInterface->EventClassRadioEvent(eventClass, Player, PlayerType, AnnouncementID, IconID, AnnouncementType, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassRadioEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassRadioEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -531,7 +535,7 @@ ConnectionAcceptanceFilter::STATUS RenSharpRootEventClass::EventClass_Connection
 		if (FAILED(hr = rsInterface->EventClassConnectionRequestEvent(eventClass, &Request, &tmpRefusalMessage, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassConnectionRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassConnectionRequestEvent: %s\n", error.ErrorMessage());
 		}
 		
 		if (tmpRefusalMessage != RefusalMessage.Peek_Buffer())
@@ -541,7 +545,7 @@ ConnectionAcceptanceFilter::STATUS RenSharpRootEventClass::EventClass_Connection
 			if (FAILED(hr = rsInterface->FreePointer(tmpRefusalMessage)))
 			{
 				_com_error error(hr);
-				Console_Output("Failed to call FreePointer: %s\n", error.ErrorMessage());
+				Console_Output("ERROR: Failed to call FreePointer: %s\n", error.ErrorMessage());
 			}
 
 			tmpRefusalMessage = nullptr;
@@ -573,7 +577,7 @@ void RenSharpRootEventClass::EventClass_Player_Pre_Join_Event(RenSharpEventClass
 		if (FAILED(hr = rsInterface->EventClassPlayerPreJoinEvent(eventClass, &Request)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassPlayerPreJoinEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassPlayerPreJoinEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -600,7 +604,7 @@ void RenSharpRootEventClass::EventClass_Player_Join_Event(RenSharpEventClass* ev
 		if (FAILED(hr = rsInterface->EventClassPlayerJoinEvent(eventClass, Player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassPlayerJoinEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassPlayerJoinEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -627,7 +631,7 @@ void RenSharpRootEventClass::EventClass_Player_Leave_Event(RenSharpEventClass* e
 		if (FAILED(hr = rsInterface->EventClassPlayerLeaveEvent(eventClass, Player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassPlayerLeaveEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassPlayerLeaveEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -654,7 +658,7 @@ void RenSharpRootEventClass::EventClass_Player_Loaded_Event(RenSharpEventClass* 
 		if (FAILED(hr = rsInterface->EventClassPlayerLoadedEvent(eventClass, Player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassPlayerLoadedEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassPlayerLoadedEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -681,7 +685,7 @@ void RenSharpRootEventClass::EventClass_Name_Change_Event(RenSharpEventClass* ev
 		if (FAILED(hr = rsInterface->EventClassNameChangeEvent(eventClass, Player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassNameChangeEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassNameChangeEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -708,7 +712,7 @@ void RenSharpRootEventClass::EventClass_Level_Loaded_Event(RenSharpEventClass* e
 		if (FAILED(hr = rsInterface->EventClassLevelLoadedEvent(eventClass)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassLevelLoadedEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassLevelLoadedEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -735,7 +739,7 @@ void RenSharpRootEventClass::EventClass_Remix_Event(RenSharpEventClass* eventCla
 		if (FAILED(hr = rsInterface->EventClassRemixEvent(eventClass)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassRemixEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassRemixEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -762,7 +766,7 @@ void RenSharpRootEventClass::EventClass_Rebalance_Event(RenSharpEventClass* even
 		if (FAILED(hr = rsInterface->EventClassRebalanceEvent(eventClass)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassRebalanceEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassRebalanceEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -789,7 +793,7 @@ void RenSharpRootEventClass::EventClass_Swap_Event(RenSharpEventClass* eventClas
 		if (FAILED(hr = rsInterface->EventClassSwapEvent(eventClass)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassSwapEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassSwapEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -816,7 +820,7 @@ void RenSharpRootEventClass::EventClass_Game_Over_Event(RenSharpEventClass* even
 		if (FAILED(hr = rsInterface->EventClassGameOverEvent(eventClass)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassGameOverEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassGameOverEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -843,7 +847,7 @@ void RenSharpRootEventClass::EventClass_Console_Output_Event(RenSharpEventClass*
 		if (FAILED(hr = rsInterface->EventClassConsoleOutputEvent(eventClass, Output)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassConsoleOutputEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassConsoleOutputEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -870,7 +874,7 @@ void RenSharpRootEventClass::EventClass_Ren_Log_Event(RenSharpEventClass* eventC
 		if (FAILED(hr = rsInterface->EventClassRenLogEvent(eventClass, Output)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassRenLogEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassRenLogEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -897,7 +901,7 @@ void RenSharpRootEventClass::EventClass_DA_Log_Event(RenSharpEventClass* eventCl
 		if (FAILED(hr = rsInterface->EventClassDALogEvent(eventClass, Header, Output)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassDALogEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassDALogEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -926,7 +930,7 @@ int RenSharpRootEventClass::EventClass_Character_Purchase_Request_Event(RenSharp
 		if (FAILED(hr = rsInterface->EventClassCharacterPurchaseRequestEvent(eventClass, Base, Player, &Cost, Item, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassCharacterPurchaseRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassCharacterPurchaseRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -957,7 +961,7 @@ int RenSharpRootEventClass::EventClass_Vehicle_Purchase_Request_Event(RenSharpEv
 		if (FAILED(hr = rsInterface->EventClassVehiclePurchaseRequestEvent(eventClass, Base, Player, &Cost, Item, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassVehiclePurchaseRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassVehiclePurchaseRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -988,7 +992,7 @@ int RenSharpRootEventClass::EventClass_PowerUp_Purchase_Request_Event(RenSharpEv
 		if (FAILED(hr = rsInterface->EventClassPowerUpPurchaseRequestEvent(eventClass, Base, Player, &Cost, Item, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassPowerUpPurchaseRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassPowerUpPurchaseRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1019,7 +1023,7 @@ int RenSharpRootEventClass::EventClass_Custom_Purchase_Request_Event(RenSharpEve
 		if (FAILED(hr = rsInterface->EventClassCustomPurchaseRequestEvent(eventClass, Base, Player, &Cost, ID, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassCustomPurchaseRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassCustomPurchaseRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1048,7 +1052,7 @@ void RenSharpRootEventClass::EventClass_Character_Purchase_Event(RenSharpEventCl
 		if (FAILED(hr = rsInterface->EventClassCharacterPurchaseEvent(eventClass, Player, Cost, Item)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassCharacterPurchaseEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassCharacterPurchaseEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1075,7 +1079,7 @@ void RenSharpRootEventClass::EventClass_Vehicle_Purchase_Event(RenSharpEventClas
 		if (FAILED(hr = rsInterface->EventClassVehiclePurchaseEvent(eventClass, Player, Cost, Item)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassVehiclePurchaseEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassVehiclePurchaseEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1102,7 +1106,7 @@ void RenSharpRootEventClass::EventClass_PowerUp_Purchase_Event(RenSharpEventClas
 		if (FAILED(hr = rsInterface->EventClassPowerUpPurchaseEvent(eventClass, Player, Cost, Item)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassPowerUpPurchaseEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassPowerUpPurchaseEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1129,7 +1133,7 @@ void RenSharpRootEventClass::EventClass_Custom_Purchase_Event(RenSharpEventClass
 		if (FAILED(hr = rsInterface->EventClassCustomPurchaseEvent(eventClass, Player, Cost, ID)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassCustomPurchaseEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassCustomPurchaseEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1158,7 +1162,7 @@ bool RenSharpRootEventClass::EventClass_Refill_Event(RenSharpEventClass* eventCl
 		if (FAILED(hr = rsInterface->EventClassRefillEvent(eventClass, Player, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassRefillEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassRefillEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1189,7 +1193,7 @@ bool RenSharpRootEventClass::EventClass_Suicide_Event(RenSharpEventClass* eventC
 		if (FAILED(hr = rsInterface->EventClassSuicideEvent(eventClass, Player, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassSuicideEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassSuicideEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1220,7 +1224,7 @@ bool RenSharpRootEventClass::EventClass_Team_Change_Request_Event(RenSharpEventC
 		if (FAILED(hr = rsInterface->EventClassTeamChangeRequestEvent(eventClass, Player, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassTeamChangeRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassTeamChangeRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1249,7 +1253,7 @@ void RenSharpRootEventClass::EventClass_Team_Change_Event(RenSharpEventClass* ev
 		if (FAILED(hr = rsInterface->EventClassTeamChangeEvent(eventClass, Player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassTeamChangeEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassTeamChangeEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1278,7 +1282,7 @@ bool RenSharpRootEventClass::EventClass_Vehicle_Entry_Request_Event(RenSharpEven
 		if (FAILED(hr = rsInterface->EventClassVehicleEntryRequestEvent(eventClass, Vehicle, Player, &Seat, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassVehicleEntryRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassVehicleEntryRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1307,7 +1311,7 @@ void RenSharpRootEventClass::EventClass_Vehicle_Enter_Event(RenSharpEventClass* 
 		if (FAILED(hr = rsInterface->EventClassVehicleEnterEvent(eventClass, Vehicle, Player, Seat)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassVehicleEnterEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassVehicleEnterEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1334,7 +1338,7 @@ void RenSharpRootEventClass::EventClass_Vehicle_Exit_Event(RenSharpEventClass* e
 		if (FAILED(hr = rsInterface->EventClassVehicleExitEvent(eventClass, Vehicle, Player, Seat)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassVehicleExitEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassVehicleExitEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1363,7 +1367,7 @@ bool RenSharpRootEventClass::EventClass_PowerUp_Grant_Request_Event(RenSharpEven
 		if (FAILED(hr = rsInterface->EventClassPowerUpGrantRequestEvent(eventClass, Player, PowerUp, PowerUpObj, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassPowerUpGrantRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassPowerUpGrantRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1392,7 +1396,7 @@ void RenSharpRootEventClass::EventClass_PowerUp_Grant_Event(RenSharpEventClass* 
 		if (FAILED(hr = rsInterface->EventClassPowerUpGrantEvent(eventClass, Player, PowerUp, PowerUpObj)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassPowerUpGrantEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassPowerUpGrantEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1421,7 +1425,7 @@ bool RenSharpRootEventClass::EventClass_Add_Weapon_Request_Event(RenSharpEventCl
 		if (FAILED(hr = rsInterface->EventClassAddWeaponRequestEvent(eventClass, Player, Weapon, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassAddWeaponRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassAddWeaponRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1450,7 +1454,7 @@ void RenSharpRootEventClass::EventClass_Add_Weapon_Event(RenSharpEventClass* eve
 		if (FAILED(hr = rsInterface->EventClassAddWeaponEvent(eventClass, Player, Weapon)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassAddWeaponEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassAddWeaponEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1477,7 +1481,7 @@ void RenSharpRootEventClass::EventClass_Remove_Weapon_Event(RenSharpEventClass* 
 		if (FAILED(hr = rsInterface->EventClassRemoveWeaponEvent(eventClass, Player, Weapon)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassRemoveWeaponEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassRemoveWeaponEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1504,7 +1508,7 @@ void RenSharpRootEventClass::EventClass_Clear_Weapons_Event(RenSharpEventClass* 
 		if (FAILED(hr = rsInterface->EventClassClearWeaponsEvent(eventClass, Player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassClearWeaponsEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassClearWeaponsEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1531,7 +1535,7 @@ void RenSharpRootEventClass::EventClass_Beacon_Deploy_Event(RenSharpEventClass* 
 		if (FAILED(hr = rsInterface->EventClassBeaconDeployEvent(eventClass, Beacon)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassBeaconDeployEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassBeaconDeployEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1558,7 +1562,7 @@ void RenSharpRootEventClass::EventClass_Beacon_Detonate_Event(RenSharpEventClass
 		if (FAILED(hr = rsInterface->EventClassBeaconDetonateEvent(eventClass, Beacon)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassBeaconDetonateEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassBeaconDetonateEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1587,7 +1591,7 @@ bool RenSharpRootEventClass::EventClass_C4_Detonate_Request_Event(RenSharpEventC
 		if (FAILED(hr = rsInterface->EventClassC4DetonateRequestEvent(eventClass, C4, Triggerer, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassC4DetonateRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassC4DetonateRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1616,7 +1620,7 @@ void RenSharpRootEventClass::EventClass_C4_Detonate_Event(RenSharpEventClass* ev
 		if (FAILED(hr = rsInterface->EventClassC4DetonateEvent(eventClass, C4)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassC4DetonateEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassC4DetonateEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1643,7 +1647,7 @@ void RenSharpRootEventClass::EventClass_Change_Character_Event(RenSharpEventClas
 		if (FAILED(hr = rsInterface->EventClassChangeCharacterEvent(eventClass, Player, Soldier)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassChangeCharacterEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassChangeCharacterEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1672,7 +1676,7 @@ bool RenSharpRootEventClass::EventClass_Vehicle_Flip_Event(RenSharpEventClass* e
 		if (FAILED(hr = rsInterface->EventClassVehicleFlipEvent(eventClass, Vehicle, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassVehicleFlipEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassVehicleFlipEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1703,7 +1707,7 @@ bool RenSharpRootEventClass::EventClass_Request_Vehicle_Event(RenSharpEventClass
 		if (FAILED(hr = rsInterface->EventClassRequestVehicleEvent(eventClass, Factory, Vehicle, Player, Delay, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassRequestVehicleEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassRequestVehicleEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1732,7 +1736,7 @@ void RenSharpRootEventClass::EventClass_Think(RenSharpEventClass* eventClass)
 		if (FAILED(hr = rsInterface->EventClassThink(eventClass)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassThink: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassThink: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1759,7 +1763,7 @@ void RenSharpRootEventClass::EventClass_Object_Created_Event(RenSharpEventClass*
 		if (FAILED(hr = rsInterface->EventClassObjectCreatedEvent(eventClass, obj)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassObjectCreatedEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassObjectCreatedEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1788,7 +1792,7 @@ bool RenSharpRootEventClass::EventClass_Stock_Client_Damage_Request_Event(RenSha
 		if (FAILED(hr = rsInterface->EventClassStockClientDamageRequestEvent(eventClass, Victim, Damager, Damage, Warhead, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassStockClientDamageRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassStockClientDamageRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1819,7 +1823,7 @@ bool RenSharpRootEventClass::EventClass_TT_Client_Damage_Request_Event(RenSharpE
 		if (FAILED(hr = rsInterface->EventClassTTClientDamageRequestEvent(eventClass, Victim, Damager, Ammo, Bone, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassTTClientDamageRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassTTClientDamageRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1850,7 +1854,7 @@ bool RenSharpRootEventClass::EventClass_Damage_Request_Event(RenSharpEventClass*
 		if (FAILED(hr = rsInterface->EventClassDamageRequestEvent(eventClass, Victim, Damager, &Damage, &Warhead, Scale, Type, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassDamageRequestEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassDamageRequestEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1879,7 +1883,7 @@ void RenSharpRootEventClass::EventClass_Damage_Event(RenSharpEventClass* eventCl
 		if (FAILED(hr = rsInterface->EventClassDamageEvent(eventClass, Victim, Damager, Damage, Warhead, Scale, Type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassDamageEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassDamageEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1906,7 +1910,7 @@ void RenSharpRootEventClass::EventClass_Kill_Event(RenSharpEventClass* eventClas
 		if (FAILED(hr = rsInterface->EventClassKillEvent(eventClass, Victim, Killer, Damage, Warhead, Scale, Type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassKillEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassKillEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1933,7 +1937,7 @@ void RenSharpRootEventClass::EventClass_Custom_Event(RenSharpEventClass* eventCl
 		if (FAILED(hr = rsInterface->EventClassCustomEvent(eventClass, obj, Type, Param, Sender)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassCustomEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassCustomEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1960,7 +1964,7 @@ void RenSharpRootEventClass::EventClass_Poke_Event(RenSharpEventClass* eventClas
 		if (FAILED(hr = rsInterface->EventClassPokeEvent(eventClass, Player, obj)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassPokeEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassPokeEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -1987,7 +1991,7 @@ void RenSharpRootEventClass::EventClass_Zone_Enter_Event(RenSharpEventClass* eve
 		if (FAILED(hr = rsInterface->EventClassZoneEnterEvent(eventClass, obj, Enterer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassZoneEnterEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassZoneEnterEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2014,7 +2018,7 @@ void RenSharpRootEventClass::EventClass_Zone_Exit_Event(RenSharpEventClass* even
 		if (FAILED(hr = rsInterface->EventClassZoneExitEvent(eventClass, obj, Exiter)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassZoneExitEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassZoneExitEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2041,7 +2045,7 @@ void RenSharpRootEventClass::EventClass_Object_Destroyed_Event(RenSharpEventClas
 		if (FAILED(hr = rsInterface->EventClassObjectDestroyedEvent(eventClass, obj)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassObjectDestroyedEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassObjectDestroyedEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2068,7 +2072,7 @@ void RenSharpRootEventClass::EventClass_Timer_Expired(RenSharpEventClass* eventC
 		if (FAILED(hr = rsInterface->EventClassTimerExpired(eventClass, Number, Data)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call EventClassTimerExpired: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call EventClassTimerExpired: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2095,7 +2099,7 @@ void RenSharpRootEventClass::Observer_Destructed(RenSharpGameObjObserverClass *o
 		if (FAILED(hr = rsInterface->ObserverDestructed(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2122,7 +2126,7 @@ void RenSharpRootEventClass::Observer_Destroyed(RenSharpGameObjObserverClass *ob
 		if (FAILED(hr = rsInterface->ObserverDestroyed(observer, obj)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverDestroyed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverDestroyed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2149,7 +2153,7 @@ void RenSharpRootEventClass::Observer_Custom(RenSharpGameObjObserverClass *obser
 		if (FAILED(hr = rsInterface->ObserverCustom(observer, obj, message, param, sender)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverCustom: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverCustom: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2176,7 +2180,7 @@ void RenSharpRootEventClass::Observer_Poked(RenSharpGameObjObserverClass *observ
 		if (FAILED(hr = rsInterface->ObserverPoked(observer, obj, poker)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverPoked: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverPoked: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2203,7 +2207,7 @@ void RenSharpRootEventClass::Observer_Entered(RenSharpGameObjObserverClass *obse
 		if (FAILED(hr = rsInterface->ObserverEntered(observer, obj, enterer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverEntered: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverEntered: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2230,7 +2234,7 @@ void RenSharpRootEventClass::Observer_Exited(RenSharpGameObjObserverClass *obser
 		if (FAILED(hr = rsInterface->ObserverExited(observer, obj, exiter)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverExited: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverExited: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2257,7 +2261,7 @@ void RenSharpRootEventClass::Observer_Sound_Heard(RenSharpGameObjObserverClass *
 		if (FAILED(hr = rsInterface->ObserverSoundHeard(observer, obj, &sound)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverSoundHeard: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverSoundHeard: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2284,7 +2288,7 @@ void RenSharpRootEventClass::Observer_Enemy_Seen(RenSharpGameObjObserverClass *o
 		if (FAILED(hr = rsInterface->ObserverEnemySeen(observer, obj, enemy)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverEnemySeen: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverEnemySeen: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2311,7 +2315,7 @@ void RenSharpRootEventClass::Observer_Action_Complete(RenSharpGameObjObserverCla
 		if (FAILED(hr = rsInterface->ObserverActionComplete(observer, obj, actionID, completeReason)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverActionComplete: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverActionComplete: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2338,7 +2342,7 @@ void RenSharpRootEventClass::Observer_Timer_Expired(RenSharpGameObjObserverClass
 		if (FAILED(hr = rsInterface->ObserverTimerExpired(observer, obj, number)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverTimerExpired: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverTimerExpired: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2365,7 +2369,7 @@ void RenSharpRootEventClass::Observer_Animation_Complete(RenSharpGameObjObserver
 		if (FAILED(hr = rsInterface->ObserverAnimationComplete(observer, obj, name)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverAnimationComplete: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverAnimationComplete: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2392,7 +2396,7 @@ void RenSharpRootEventClass::Observer_Init(RenSharpGameObjObserverClass *observe
 		if (FAILED(hr = rsInterface->ObserverInit(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverInit: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverInit: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2421,7 +2425,7 @@ bool RenSharpRootEventClass::Observer_Vehicle_Entry_Request(RenSharpGameObjObser
 		if (FAILED(hr = rsInterface->ObserverVehicleEntryRequest1(observer, player, &seat, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverVehicleEntryRequest1: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverVehicleEntryRequest1: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2452,7 +2456,7 @@ bool RenSharpRootEventClass::Observer_Vehicle_Entry_Request(RenSharpGameObjObser
 		if (FAILED(hr = rsInterface->ObserverVehicleEntryRequest2(observer, vehicle, &seat, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverVehicleEntryRequest2: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverVehicleEntryRequest2: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2481,7 +2485,7 @@ void RenSharpRootEventClass::Observer_Vehicle_Enter(RenSharpGameObjObserverClass
 		if (FAILED(hr = rsInterface->ObserverVehicleEnter1(observer, player, seat)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverVehicleEnter1: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverVehicleEnter1: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2508,7 +2512,7 @@ void RenSharpRootEventClass::Observer_Vehicle_Enter(RenSharpGameObjObserverClass
 		if (FAILED(hr = rsInterface->ObserverVehicleEnter2(observer, vehicle, seat)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverVehicleEnter2: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverVehicleEnter2: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2535,7 +2539,7 @@ void RenSharpRootEventClass::Observer_Vehicle_Exit(RenSharpGameObjObserverClass 
 		if (FAILED(hr = rsInterface->ObserverVehicleExit1(observer, player, seat)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverVehicleExit1: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverVehicleExit1: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2562,7 +2566,7 @@ void RenSharpRootEventClass::Observer_Vehicle_Exit(RenSharpGameObjObserverClass 
 		if (FAILED(hr = rsInterface->ObserverVehicleExit2(observer, vehicle, seat)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverVehicleExit2: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverVehicleExit2: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2591,7 +2595,7 @@ bool RenSharpRootEventClass::Observer_Vehicle_Flip(RenSharpGameObjObserverClass 
 		if (FAILED(hr = rsInterface->ObserverVehicleFlip(observer, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverVehicleFlip: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverVehicleFlip: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2622,7 +2626,7 @@ bool RenSharpRootEventClass::Observer_Damage_Dealt_Request(RenSharpGameObjObserv
 		if (FAILED(hr = rsInterface->ObserverDamageDealtRequest(observer, victim, &damage, &warhead, scale, type, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverDamageDealtRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverDamageDealtRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2653,7 +2657,7 @@ bool RenSharpRootEventClass::Observer_Damage_Received_Request(RenSharpGameObjObs
 		if (FAILED(hr = rsInterface->ObserverDamageReceivedRequest(observer, damager, &damage, &warhead, scale, type, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverDamageReceivedRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverDamageReceivedRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2682,7 +2686,7 @@ void RenSharpRootEventClass::Observer_Damage_Dealt(RenSharpGameObjObserverClass 
 		if (FAILED(hr = rsInterface->ObserverDamageDealt(observer, victim, damage, warhead, scale, type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverDamageDealt: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverDamageDealt: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2709,7 +2713,7 @@ void RenSharpRootEventClass::Observer_Damage_Received(RenSharpGameObjObserverCla
 		if (FAILED(hr = rsInterface->ObserverDamageReceived(observer, damager, damage, warhead, scale, type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverDamageReceived: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverDamageReceived: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2736,7 +2740,7 @@ void RenSharpRootEventClass::Observer_Kill_Dealt(RenSharpGameObjObserverClass *o
 		if (FAILED(hr = rsInterface->ObserverKillDealt(observer, victim, damage, warhead, scale, type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverKillDealt: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverKillDealt: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2763,7 +2767,7 @@ void RenSharpRootEventClass::Observer_Kill_Received(RenSharpGameObjObserverClass
 		if (FAILED(hr = rsInterface->ObserverKillReceived(observer, killer, damage, warhead, scale, type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverKillReceived: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverKillReceived: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2792,7 +2796,7 @@ bool RenSharpRootEventClass::Observer_PowerUp_Grant_Request(RenSharpGameObjObser
 		if (FAILED(hr = rsInterface->ObserverPowerUpGrantRequest1(observer, player, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverPowerUpGrantRequest1: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverPowerUpGrantRequest1: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2823,7 +2827,7 @@ bool RenSharpRootEventClass::Observer_PowerUp_Grant_Request(RenSharpGameObjObser
 		if (FAILED(hr = rsInterface->ObserverPowerUpGrantRequest2(observer, powerUp, powerUpObj, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverPowerUpGrantRequest2: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverPowerUpGrantRequest2: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2852,7 +2856,7 @@ void RenSharpRootEventClass::Observer_PowerUp_Grant(RenSharpGameObjObserverClass
 		if (FAILED(hr = rsInterface->ObserverPowerUpGrant1(observer, player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverPowerUpGrant1: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverPowerUpGrant1: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2879,7 +2883,7 @@ void RenSharpRootEventClass::Observer_PowerUp_Grant(RenSharpGameObjObserverClass
 		if (FAILED(hr = rsInterface->ObserverPowerUpGrant2(observer, powerUp, powerUpObj)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverPowerUpGrant2: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverPowerUpGrant2: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2908,7 +2912,7 @@ bool RenSharpRootEventClass::Observer_Add_Weapon_Request(RenSharpGameObjObserver
 		if (FAILED(hr = rsInterface->ObserverAddWeaponRequest(observer, weapon, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverAddWeaponRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverAddWeaponRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2937,7 +2941,7 @@ void RenSharpRootEventClass::Observer_Add_Weapon(RenSharpGameObjObserverClass *o
 		if (FAILED(hr = rsInterface->ObserverAddWeapon(observer, weapon)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverAddWeapon: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverAddWeapon: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2964,7 +2968,7 @@ void RenSharpRootEventClass::Observer_Remove_Weapon(RenSharpGameObjObserverClass
 		if (FAILED(hr = rsInterface->ObserverRemoveWeapon(observer, weapon)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverRemoveWeapon: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverRemoveWeapon: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -2991,7 +2995,7 @@ void RenSharpRootEventClass::Observer_Clear_Weapons(RenSharpGameObjObserverClass
 		if (FAILED(hr = rsInterface->ObserverClearWeapons(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ObserverClearWeapons: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ObserverClearWeapons: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3018,7 +3022,7 @@ void RenSharpRootEventClass::PlayerObserver_Destructed(RenSharpPlayerObserverCla
 		if (FAILED(hr = rsInterface->PlayerObserverDestructed(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3045,7 +3049,7 @@ void RenSharpRootEventClass::PlayerObserver_Init(RenSharpPlayerObserverClass *ob
 		if (FAILED(hr = rsInterface->PlayerObserverInit(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverInit: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverInit: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3072,7 +3076,7 @@ void RenSharpRootEventClass::PlayerObserver_Join(RenSharpPlayerObserverClass *ob
 		if (FAILED(hr = rsInterface->PlayerObserverJoin(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverJoin: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverJoin: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3099,7 +3103,7 @@ void RenSharpRootEventClass::PlayerObserver_Leave(RenSharpPlayerObserverClass *o
 		if (FAILED(hr = rsInterface->PlayerObserverLeave(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverLeave: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverLeave: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3126,7 +3130,7 @@ void RenSharpRootEventClass::PlayerObserver_Level_Loaded(RenSharpPlayerObserverC
 		if (FAILED(hr = rsInterface->PlayerObserverLevelLoaded(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverLevelLoaded: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverLevelLoaded: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3153,7 +3157,7 @@ void RenSharpRootEventClass::PlayerObserver_Player_Loaded(RenSharpPlayerObserver
 		if (FAILED(hr = rsInterface->PlayerObserverPlayerLoaded(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverPlayerLoaded: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverPlayerLoaded: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3180,7 +3184,7 @@ void RenSharpRootEventClass::PlayerObserver_Name_Change(RenSharpPlayerObserverCl
 		if (FAILED(hr = rsInterface->PlayerObserverNameChange(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverNameChange: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverNameChange: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3207,7 +3211,7 @@ void RenSharpRootEventClass::PlayerObserver_Team_Change(RenSharpPlayerObserverCl
 		if (FAILED(hr = rsInterface->PlayerObserverTeamChange(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverTeamChange: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverTeamChange: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3236,7 +3240,7 @@ int RenSharpRootEventClass::PlayerObserver_Character_Purchase_Request(RenSharpPl
 		if (FAILED(hr = rsInterface->PlayerObserverCharacterPurchaseRequest(observer, &cost, item, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverCharacterPurchase: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverCharacterPurchase: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3267,7 +3271,7 @@ int RenSharpRootEventClass::PlayerObserver_Vehicle_Purchase_Request(RenSharpPlay
 		if (FAILED(hr = rsInterface->PlayerObserverVehiclePurchaseRequest(observer, &cost, item, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverVehiclePurchaseRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverVehiclePurchaseRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3298,7 +3302,7 @@ int RenSharpRootEventClass::PlayerObserver_PowerUp_Purchase_Request(RenSharpPlay
 		if (FAILED(hr = rsInterface->PlayerObserverPowerUpPurchaseRequest(observer, &cost, item, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverPowerUpPurchaseRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverPowerUpPurchaseRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3329,7 +3333,7 @@ int RenSharpRootEventClass::PlayerObserver_Custom_Purchase_Request(RenSharpPlaye
 		if (FAILED(hr = rsInterface->PlayerObserverCustomPurchaseRequest(observer, &cost, id, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverCustomPurchaseRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverCustomPurchaseRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3358,7 +3362,7 @@ void RenSharpRootEventClass::PlayerObserver_Character_Purchase(RenSharpPlayerObs
 		if (FAILED(hr = rsInterface->PlayerObserverCharacterPurchase(observer, cost, item)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverCharacterPurchase: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverCharacterPurchase: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3385,7 +3389,7 @@ void RenSharpRootEventClass::PlayerObserver_Vehicle_Purchase(RenSharpPlayerObser
 		if (FAILED(hr = rsInterface->PlayerObserverVehiclePurchase(observer, cost, item)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverVehiclePurchase: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverVehiclePurchase: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3412,7 +3416,7 @@ void RenSharpRootEventClass::PlayerObserver_PowerUp_Purchase(RenSharpPlayerObser
 		if (FAILED(hr = rsInterface->PlayerObserverPowerUpPurchase(observer, cost, item)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverPowerUpPurchase: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverPowerUpPurchase: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3439,7 +3443,7 @@ void RenSharpRootEventClass::PlayerObserver_Custom_Purchase(RenSharpPlayerObserv
 		if (FAILED(hr = rsInterface->PlayerObserverCustomPurchase(observer, cost, id)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverCustomPurchase: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverCustomPurchase: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3468,7 +3472,7 @@ bool RenSharpRootEventClass::PlayerObserver_Vehicle_Entry_Request(RenSharpPlayer
 		if (FAILED(hr = rsInterface->PlayerObserverVehicleEntryRequest(observer, vehicle, &seat, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverVehicleEntryRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverVehicleEntryRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3497,7 +3501,7 @@ void RenSharpRootEventClass::PlayerObserver_Vehicle_Enter(RenSharpPlayerObserver
 		if (FAILED(hr = rsInterface->PlayerObserverVehicleEnter(observer, vehicle, seat)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverVehicleEnter: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverVehicleEnter: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3524,7 +3528,7 @@ void RenSharpRootEventClass::PlayerObserver_Vehicle_Exit(RenSharpPlayerObserverC
 		if (FAILED(hr = rsInterface->PlayerObserverVehicleExit(observer, vehicle, seat)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverVehicleExit: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverVehicleExit: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3553,7 +3557,7 @@ bool RenSharpRootEventClass::PlayerObserver_PowerUp_Grant_Request(RenSharpPlayer
 		if (FAILED(hr = rsInterface->PlayerObserverPowerUpGrantRequest(observer, powerUp, powerUpObj, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverPowerUpGrantRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverPowerUpGrantRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3582,7 +3586,7 @@ void RenSharpRootEventClass::PlayerObserver_PowerUp_Grant(RenSharpPlayerObserver
 		if (FAILED(hr = rsInterface->PlayerObserverPowerUpGrant(observer, powerUp, powerUpObj)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverPowerUpGrant: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverPowerUpGrant: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3611,7 +3615,7 @@ bool RenSharpRootEventClass::PlayerObserver_Add_Weapon_Request(RenSharpPlayerObs
 		if (FAILED(hr = rsInterface->PlayerObserverAddWeaponRequest(observer, weapon, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverAddWeaponRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverAddWeaponRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3640,7 +3644,7 @@ void RenSharpRootEventClass::PlayerObserver_Add_Weapon(RenSharpPlayerObserverCla
 		if (FAILED(hr = rsInterface->PlayerObserverAddWeapon(observer, weapon)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverAddWeapon: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverAddWeapon: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3667,7 +3671,7 @@ void RenSharpRootEventClass::PlayerObserver_Remove_Weapon(RenSharpPlayerObserver
 		if (FAILED(hr = rsInterface->PlayerObserverRemoveWeapon(observer, weapon)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverRemoveWeapon: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverRemoveWeapon: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3694,7 +3698,7 @@ void RenSharpRootEventClass::PlayerObserver_Clear_Weapons(RenSharpPlayerObserver
 		if (FAILED(hr = rsInterface->PlayerObserverClearWeapons(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverClearWeapons: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverClearWeapons: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3723,7 +3727,7 @@ bool RenSharpRootEventClass::PlayerObserver_C4_Detonate_Request(RenSharpPlayerOb
 		if (FAILED(hr = rsInterface->PlayerObserverC4DetonateRequest(observer, c4, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverC4DetonateRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverC4DetonateRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3752,7 +3756,7 @@ void RenSharpRootEventClass::PlayerObserver_C4_Detonate(RenSharpPlayerObserverCl
 		if (FAILED(hr = rsInterface->PlayerObserverC4Detonate(observer, c4)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverC4Detonate: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverC4Detonate: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3779,7 +3783,7 @@ void RenSharpRootEventClass::PlayerObserver_Change_Character(RenSharpPlayerObser
 		if (FAILED(hr = rsInterface->PlayerObserverChangeCharacter(observer, soldier)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverChangeCharacter: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverChangeCharacter: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3806,7 +3810,7 @@ void RenSharpRootEventClass::PlayerObserver_Created(RenSharpPlayerObserverClass 
 		if (FAILED(hr = rsInterface->PlayerObserverCreated(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverCreated: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverCreated: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3833,7 +3837,7 @@ void RenSharpRootEventClass::PlayerObserver_Destroyed(RenSharpPlayerObserverClas
 		if (FAILED(hr = rsInterface->PlayerObserverDestroyed(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverDestroyed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverDestroyed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3862,7 +3866,7 @@ bool RenSharpRootEventClass::PlayerObserver_Damage_Dealt_Request(RenSharpPlayerO
 		if (FAILED(hr = rsInterface->PlayerObserverDamageDealtRequest(observer, victim, &damage, &warhead, scale, type, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverDamageDealtRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverDamageDealtRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3893,7 +3897,7 @@ bool RenSharpRootEventClass::PlayerObserver_Damage_Received_Request(RenSharpPlay
 		if (FAILED(hr = rsInterface->PlayerObserverDamageReceivedRequest(observer, damager, &damage, &warhead, scale, type, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverDamageReceivedRequest: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverDamageReceivedRequest: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3922,7 +3926,7 @@ void RenSharpRootEventClass::PlayerObserver_Damage_Dealt(RenSharpPlayerObserverC
 		if (FAILED(hr = rsInterface->PlayerObserverDamageDealt(observer, victim, damage, warhead, scale, type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverDamageDealt: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverDamageDealt: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3949,7 +3953,7 @@ void RenSharpRootEventClass::PlayerObserver_Damage_Received(RenSharpPlayerObserv
 		if (FAILED(hr = rsInterface->PlayerObserverDamageReceived(observer, damager, damage, warhead, scale, type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverDamageReceived: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverDamageReceived: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -3976,7 +3980,7 @@ void RenSharpRootEventClass::PlayerObserver_Kill_Dealt(RenSharpPlayerObserverCla
 		if (FAILED(hr = rsInterface->PlayerObserverKillDealt(observer, victim, damage, warhead, scale, type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverKillDealt: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverKillDealt: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4003,7 +4007,7 @@ void RenSharpRootEventClass::PlayerObserver_Kill_Received(RenSharpPlayerObserver
 		if (FAILED(hr = rsInterface->PlayerObserverKillReceived(observer, killer, damage, warhead, scale, type)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverKillReceived: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverKillReceived: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4030,7 +4034,7 @@ void RenSharpRootEventClass::PlayerObserver_Custom(RenSharpPlayerObserverClass *
 		if (FAILED(hr = rsInterface->PlayerObserverCustom(observer, sender, type, param)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverCustom: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverCustom: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4057,7 +4061,7 @@ void RenSharpRootEventClass::PlayerObserver_Poked(RenSharpPlayerObserverClass *o
 		if (FAILED(hr = rsInterface->PlayerObserverPoked(observer, player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverPoked: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverPoked: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4084,7 +4088,7 @@ void RenSharpRootEventClass::PlayerObserver_Timer_Expired(RenSharpPlayerObserver
 		if (FAILED(hr = rsInterface->PlayerObserverTimerExpired(observer, number, data)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverTimerExpired: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverTimerExpired: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4111,7 +4115,7 @@ void RenSharpRootEventClass::PlayerObserver_Think(RenSharpPlayerObserverClass *o
 		if (FAILED(hr = rsInterface->PlayerObserverThink(observer)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerObserverThink: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerObserverThink: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4138,7 +4142,7 @@ void RenSharpRootEventClass::ConsoleFunction_Destructed(RenSharpConsoleFunctionC
 		if (FAILED(hr = rsInterface->ConsoleFunctionDestructed(function)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ConsoleFunctionDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ConsoleFunctionDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4165,7 +4169,7 @@ void RenSharpRootEventClass::ConsoleFunction_Activate(RenSharpConsoleFunctionCla
 		if (FAILED(hr = rsInterface->ConsoleFunctionActivate(function, pArgs)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call ConsoleFunctionActivate: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call ConsoleFunctionActivate: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4192,7 +4196,7 @@ void RenSharpRootEventClass::GameFeatureFactory_Destructed(RenSharpGameFeatureFa
 		if (FAILED(hr = rsInterface->GameFeatureFactoryDestructed(factory)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call GameFeatureFactoryDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call GameFeatureFactoryDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4221,7 +4225,7 @@ DAGameFeatureClass* RenSharpRootEventClass::GameFeatureFactory_Create_Instance(R
 		if (FAILED(hr = rsInterface->GameFeatureFactoryCreateInstance(factory, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call GameFeatureFactoryCreateInstance: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call GameFeatureFactoryCreateInstance: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4250,7 +4254,7 @@ void RenSharpRootEventClass::GameFeature_Destructed(RenSharpGameFeatureClass* ga
 		if (FAILED(hr = rsInterface->GameFeatureDestructed(gameFeature)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call GameFeatureDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call GameFeatureDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4277,7 +4281,7 @@ void RenSharpRootEventClass::GameFeature_Init(RenSharpGameFeatureClass* gameFeat
 		if (FAILED(hr = rsInterface->GameFeatureInit(gameFeature)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call GameFeatureInit: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call GameFeatureInit: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4304,7 +4308,7 @@ void RenSharpRootEventClass::PlayerDataFactory_Destructed(RenSharpPlayerDataFact
 		if (FAILED(hr = rsInterface->PlayerDataFactoryDestructed(playerDataFactory)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerDataFactoryDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerDataFactoryDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4333,7 +4337,7 @@ DAPlayerDataClass* RenSharpRootEventClass::PlayerDataFactory_Create_Data(RenShar
 		if (FAILED(hr = rsInterface->PlayerDataFactoryCreateData(playerDataFactory, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerDataFactoryCreateData: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerDataFactoryCreateData: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4362,7 +4366,7 @@ void RenSharpRootEventClass::PlayerData_Destructed(RenSharpPlayerDataClass* play
 		if (FAILED(hr = rsInterface->PlayerDataDestructed(playerData)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerDataDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerDataDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4389,7 +4393,7 @@ void RenSharpRootEventClass::PlayerData_Init(RenSharpPlayerDataClass* playerData
 		if (FAILED(hr = rsInterface->PlayerDataInit(playerData)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerDataInit: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerDataInit: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4416,7 +4420,7 @@ void RenSharpRootEventClass::PlayerData_Clear_Level(RenSharpPlayerDataClass* pla
 		if (FAILED(hr = rsInterface->PlayerDataClearLevel(playerData)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerDataClearLevel: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerDataClearLevel: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4443,7 +4447,7 @@ void RenSharpRootEventClass::PlayerData_Clear_Session(RenSharpPlayerDataClass* p
 		if (FAILED(hr = rsInterface->PlayerDataClearSession(playerData)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call PlayerDataClearSession: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call PlayerDataClearSession: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4470,7 +4474,7 @@ void RenSharpRootEventClass::GameModeFactory_Destructed(RenSharpGameModeFactoryC
 		if (FAILED(hr = rsInterface->GameModeFactoryDestructed(factory)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call GameModeFactoryDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call GameModeFactoryDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4499,7 +4503,7 @@ DAGameModeClass* RenSharpRootEventClass::GameModeFactory_Create_Instance(RenShar
 		if (FAILED(hr = rsInterface->GameModeFactoryCreateInstance(factory, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call GameModeFactoryCreateInstance: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call GameModeFactoryCreateInstance: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4528,7 +4532,7 @@ void RenSharpRootEventClass::GameMode_Destructed(RenSharpGameModeClass* gameMode
 		if (FAILED(hr = rsInterface->GameModeDestructed(gameMode)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call GameModeDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call GameModeDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4555,7 +4559,7 @@ void RenSharpRootEventClass::GameMode_Init(RenSharpGameModeClass* gameMode)
 		if (FAILED(hr = rsInterface->GameModeInit(gameMode)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call GameModeInit: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call GameModeInit: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4582,7 +4586,7 @@ void RenSharpRootEventClass::CrateModifierFactory_Destructed(RenSharpCrateModifi
 		if (FAILED(hr = rsInterface->CrateModifierFactoryDestructed(factory)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateModifierFactoryDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateModifierFactoryDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4611,7 +4615,7 @@ DACrateModifierClass* RenSharpRootEventClass::CrateModifierFactory_Create(RenSha
 		if (FAILED(hr = rsInterface->CrateModifierFactoryCreate(factory, parameters, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateModifierFactoryCreate: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateModifierFactoryCreate: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4640,7 +4644,7 @@ void RenSharpRootEventClass::CrateModifier_Destructed(RenSharpCrateModifierClass
 		if (FAILED(hr = rsInterface->CrateModifierDestructed(crateModifier)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateModifierDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateModifierDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4667,7 +4671,7 @@ void RenSharpRootEventClass::CrateModifier_Init(RenSharpCrateModifierClass* crat
 		if (FAILED(hr = rsInterface->CrateModifierInit(crateModifier, parameters)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateModifierInit: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateModifierInit: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4694,7 +4698,7 @@ void RenSharpRootEventClass::CrateModifier_Calculate_Odds(RenSharpCrateModifierC
 		if (FAILED(hr = rsInterface->CrateModifierCalculateOdds(crateModifier, &odds, player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateModifierCalculateOdds: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateModifierCalculateOdds: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4721,7 +4725,7 @@ void RenSharpRootEventClass::Crate_Destructed(RenSharpCrateClass* crate)
 		if (FAILED(hr = rsInterface->CrateDestructed(crate)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4748,7 +4752,7 @@ void RenSharpRootEventClass::Crate_Init(RenSharpCrateClass* crate)
 		if (FAILED(hr = rsInterface->CrateInit(crate)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateInit: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateInit: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4775,7 +4779,7 @@ void RenSharpRootEventClass::Crate_Settings_Loaded(RenSharpCrateClass* crate)
 		if (FAILED(hr = rsInterface->CrateSettingsLoaded(crate)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateSettingsLoaded: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateSettingsLoaded: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4802,7 +4806,7 @@ void RenSharpRootEventClass::Crate_Calculate_Odds(RenSharpCrateClass* crate, cPl
 		if (FAILED(hr = rsInterface->CrateCalculateOdds(crate, player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateCalculateOdds: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateCalculateOdds: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4831,7 +4835,7 @@ bool RenSharpRootEventClass::Crate_Can_Activate(RenSharpCrateClass* crate, cPlay
 		if (FAILED(hr = rsInterface->CrateCanActivate(crate, player, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateCanActivate: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateCanActivate: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4860,7 +4864,7 @@ void RenSharpRootEventClass::Crate_Activate(RenSharpCrateClass* crate, cPlayer* 
 		if (FAILED(hr = rsInterface->CrateActivate(crate, player)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call Crate_Activate: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call Crate_Activate: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4887,7 +4891,7 @@ void RenSharpRootEventClass::CrateFactory_Destructed(RenSharpCrateFactoryClass* 
 		if (FAILED(hr = rsInterface->CrateFactoryDestructed(factory)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateFactoryDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateFactoryDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4916,7 +4920,7 @@ DACrateClass* RenSharpRootEventClass::CrateFactory_Create_Instance(RenSharpCrate
 		if (FAILED(hr = rsInterface->CrateFactoryCreateInstance(factory, &result)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call CrateFactoryCreateInstance: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call CrateFactoryCreateInstance: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4945,7 +4949,7 @@ void RenSharpRootEventClass::Node_Destructed(RenSharpNodeClass* node)
 		if (FAILED(hr = rsInterface->NodeDestructed(node)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call NodeDestructed: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call NodeDestructed: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4972,7 +4976,7 @@ void RenSharpRootEventClass::Node_Init(RenSharpNodeClass* node, const INIClass* 
 		if (FAILED(hr = rsInterface->NodeInit(node, ini, header.Peek_Buffer())))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call NodeInit: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call NodeInit: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -4999,7 +5003,7 @@ void RenSharpRootEventClass::Node_Contested_Event(RenSharpNodeClass* node)
 		if (FAILED(hr = rsInterface->NodeContestedEvent(node)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call NodeContestedEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call NodeContestedEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -5026,7 +5030,7 @@ void RenSharpRootEventClass::Node_Capture_Event(RenSharpNodeClass* node)
 		if (FAILED(hr = rsInterface->NodeCaptureEvent(node)))
 		{
 			_com_error error(hr);
-			Console_Output("Failed to call NodeCaptureEvent: %s\n", error.ErrorMessage());
+			Console_Output("ERROR: Failed to call NodeCaptureEvent: %s\n", error.ErrorMessage());
 		}
 
 		rsInterface->Release();
@@ -5090,7 +5094,7 @@ extern "C"
 	{
 		if (!SetConsoleCtrlHandler(ConsoleCtrlHandlerRoutine, TRUE))
 		{
-			Console_Output("Failed to initialize RenSharp: Error code: %u\n", GetLastError());
+			Console_Output("ERROR: Failed to initialize RenSharp: Error code: %u\n", GetLastError());
 		}
 		else
 		{
@@ -5107,7 +5111,7 @@ extern "C"
 				RenSharpRootEventClass::Get_Instance().Clear_Events();
 
 				_com_error error(hr);
-				Console_Output("Failed to initialize RenSharp: %s\n", error.ErrorMessage());
+				Console_Output("ERROR: Failed to initialize RenSharp: %s\n", error.ErrorMessage());
 			}
 		}
 	}
