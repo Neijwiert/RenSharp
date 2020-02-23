@@ -40,8 +40,12 @@ namespace RenSharp
         {
             try
             {
+                AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
                 if (!Engine.Init())
                 {
+                    AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
+
                     return false;
                 }
 
@@ -104,7 +108,9 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(Init)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
+
+                AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
 
                 throw exception;
             }
@@ -120,9 +126,13 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(Shutdown)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
+            }
+            finally
+            {
+                AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
             }
         }
 
@@ -136,7 +146,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -158,7 +168,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassSettingsLoadedEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -182,7 +192,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassChatEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -207,7 +217,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassChatCommandEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -231,7 +241,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassKeyHookEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -253,7 +263,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassHostChatEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -277,7 +287,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassRadioEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -312,7 +322,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassConnectionRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -336,7 +346,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassPlayerPreJoinEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -360,7 +370,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassPlayerJoinEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -384,7 +394,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassPlayerLeaveEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -408,7 +418,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassPlayerLoadedEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -432,7 +442,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassNameChangeEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -454,7 +464,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassLevelLoadedEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -476,7 +486,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassRemixEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -498,7 +508,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassRebalanceEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -520,7 +530,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassSwapEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -542,7 +552,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassGameOverEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -564,7 +574,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassConsoleOutputEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -586,7 +596,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassRenLogEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -608,7 +618,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassDALogEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -634,7 +644,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassCharacterPurchaseRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -660,7 +670,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassVehiclePurchaseRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -686,7 +696,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassPowerUpPurchaseRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -711,7 +721,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassCustomPurchaseRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -736,7 +746,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassCharacterPurchaseEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -761,7 +771,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassVehiclePurchaseEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -786,7 +796,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassPowerUpPurchaseEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -810,7 +820,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassCustomPurchaseEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -834,7 +844,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassRefillEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -858,7 +868,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassSuicideEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -882,7 +892,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassTeamChangeRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -906,7 +916,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassTeamChangeEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -931,7 +941,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassVehicleEntryRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -956,7 +966,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassVehicleEnterEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -981,7 +991,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassVehicleExitEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1007,7 +1017,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassPowerUpGrantRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1033,7 +1043,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassPowerUpGrantEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1058,7 +1068,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassAddWeaponRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1083,7 +1093,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassAddWeaponEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1108,7 +1118,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassRemoveWeaponEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1132,7 +1142,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassClearWeaponsEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1156,7 +1166,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassBeaconDeployEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1180,7 +1190,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassBeaconDetonateEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1205,7 +1215,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassC4DetonateRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1229,7 +1239,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassC4DetonateEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1254,7 +1264,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassChangeCharacterEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1278,7 +1288,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassVehicleFlipEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1313,7 +1323,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassRequestVehicleEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1335,7 +1345,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassThink)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1359,7 +1369,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassObjectCreatedEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1384,7 +1394,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassStockClientDamageRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1410,7 +1420,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassTTClientDamageRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1435,7 +1445,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassDamageRequestEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1460,7 +1470,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassDamageEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1485,7 +1495,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassKillEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1510,7 +1520,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassCustomEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1535,7 +1545,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassPokeEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1560,7 +1570,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassZoneEnterEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1585,7 +1595,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassZoneExitEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1609,7 +1619,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassObjectDestroyedEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1631,7 +1641,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(EventClassTimerExpired)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1647,7 +1657,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1671,7 +1681,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverDestroyed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1696,7 +1706,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverCustom)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1721,7 +1731,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverPoked)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1746,7 +1756,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverEntered)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1771,7 +1781,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverExited)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1796,7 +1806,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverSoundHeard)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1821,7 +1831,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverEnemySeen)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1845,7 +1855,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverActionComplete)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1867,7 +1877,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverTimerExpired)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1891,7 +1901,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverAnimationComplete)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1913,7 +1923,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverInit)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1937,7 +1947,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverVehicleEntryRequest1)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1961,7 +1971,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverVehicleEntryRequest2)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -1985,7 +1995,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverVehicleEnter1)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2009,7 +2019,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverVehicleEnter2)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2033,7 +2043,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverVehicleExit1)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2057,7 +2067,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverVehicleExit2)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2079,7 +2089,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverVehicleFlip)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2103,7 +2113,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverDamageDealtRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2127,7 +2137,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverDamageReceivedRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2151,7 +2161,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverDamageDealt)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2175,7 +2185,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverDamageReceived)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2199,7 +2209,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverKillDealt)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2223,7 +2233,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverKillReceived)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2247,7 +2257,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverPowerUpGrantRequest1)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2272,7 +2282,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverPowerUpGrantRequest2)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2296,7 +2306,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverPowerUpGrant1)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2321,7 +2331,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverPowerUpGrant2)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2345,7 +2355,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverAddWeaponRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2369,7 +2379,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverAddWeapon)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2393,7 +2403,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverRemoveWeapon)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2415,7 +2425,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ObserverClearWeapons)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2431,7 +2441,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2453,7 +2463,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverInit)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2475,7 +2485,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverJoin)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2497,7 +2507,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverLeave)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2519,7 +2529,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverLevelLoaded)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2541,7 +2551,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverPlayerLoaded)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2563,7 +2573,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverNameChange)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2585,7 +2595,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverTeamChange)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2609,7 +2619,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverCharacterPurchaseRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2633,7 +2643,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverVehiclePurchaseRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2657,7 +2667,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverPowerUpPurchaseRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2679,7 +2689,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverCustomPurchaseRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2703,7 +2713,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverCharacterPurchase)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2727,7 +2737,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverVehiclePurchase)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2751,7 +2761,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverPowerUpPurchase)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2773,7 +2783,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverCustomPurchase)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2797,7 +2807,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverVehicleEntryRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2821,7 +2831,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverVehicleEnter)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2845,7 +2855,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverVehicleExit)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2870,7 +2880,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverPowerUpGrantRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2895,7 +2905,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverPowerUpGrant)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2919,7 +2929,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverAddWeaponRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2943,7 +2953,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverAddWeapon)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2967,7 +2977,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverRemoveWeapon)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -2989,7 +2999,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverClearWeapons)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3013,7 +3023,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverC4DetonateRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3037,7 +3047,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverC4Detonate)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3061,7 +3071,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverChangeCharacter)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3083,7 +3093,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverCreated)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3105,7 +3115,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverDestroyed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3129,7 +3139,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverDamageDealtRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3153,7 +3163,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverDamageReceivedRequest)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3177,7 +3187,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverDamageDealt)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3201,7 +3211,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverDamageReceived)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3225,7 +3235,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverKillDealt)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3249,7 +3259,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverKillReceived)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3273,7 +3283,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverCustom)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3297,7 +3307,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverPoked)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3319,7 +3329,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverTimerExpired)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3341,7 +3351,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerObserverThink)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3357,7 +3367,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ConsoleFunctionDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3384,7 +3394,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(ConsoleFunctionActivate)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3400,7 +3410,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(GameFeatureFactoryDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3424,7 +3434,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(GameFeatureFactoryCreateInstance)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3440,7 +3450,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(GameFeatureDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3462,7 +3472,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(GameFeatureInit)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3478,7 +3488,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerDataFactoryDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3511,7 +3521,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerDataFactoryCreateData)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3527,7 +3537,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerDataDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3549,7 +3559,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerDataInit)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3571,7 +3581,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerDataClearLevel)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3593,7 +3603,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(PlayerDataClearSession)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3609,7 +3619,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(GameModeFactoryDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3633,7 +3643,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(GameModeFactoryCreateInstance)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3649,7 +3659,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(GameModeDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3671,7 +3681,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(GameModeInit)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3687,7 +3697,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateModifierFactoryDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3720,7 +3730,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateModifierFactoryCreate)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3736,7 +3746,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateModifierDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3772,7 +3782,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateModifierInit)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3796,7 +3806,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateModifierCalculateOdds)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3812,7 +3822,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3834,7 +3844,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateInit)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3856,7 +3866,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateSettingsLoaded)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3880,7 +3890,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateCalculateOdds)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3904,7 +3914,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateCanActivate)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3928,7 +3938,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateActivate)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3944,7 +3954,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateFactoryDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3968,7 +3978,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(CrateFactoryCreateInstance)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -3984,7 +3994,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(NodeDestructed)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -4008,7 +4018,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(NodeInit)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -4030,7 +4040,7 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(NodeContestedEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
             }
@@ -4052,9 +4062,55 @@ namespace RenSharp
             {
                 FatalRenSharpException exception = new FatalRenSharpException($"{nameof(RenSharpAppDomainManager)}.{nameof(NodeCaptureEvent)} failed fatally", ex);
 
-                Imports.OnFatalException(exception.ToString());
+                OnFatalException(exception);
 
                 throw exception;
+            }
+        }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                Imports.OnFatalException(ex.ToString());
+            }
+
+            Imports.MINIDUMP_EXCEPTION_INFORMATION exceptionInfo = new Imports.MINIDUMP_EXCEPTION_INFORMATION
+            {
+                ClientPointers = 1,
+                ExceptionPointers = Marshal.GetExceptionPointers(),
+                ThreadId = Imports.GetCurrentThreadId()
+            };
+
+            IntPtr exceptionInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Imports.MINIDUMP_EXCEPTION_INFORMATION)));
+            try
+            {
+                Marshal.StructureToPtr(exceptionInfo, exceptionInfoPtr, false);
+
+                DumpMiniDump(exceptionInfoPtr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(exceptionInfoPtr);
+            }
+        }
+
+        private void OnFatalException(Exception ex)
+        {
+            Imports.OnFatalException(ex.ToString());
+
+            DumpMiniDump(IntPtr.Zero);
+        }
+
+        private void DumpMiniDump(IntPtr exceptionInfoPtr)
+        {
+            var debugDirectory = Directory.CreateDirectory(Path.Combine(Engine.FilePath, "debug"));
+            var dateTime = DateTime.UtcNow;
+            using (var stream = new FileStream(Path.Combine(debugDirectory.FullName, $"crashdump.{dateTime.ToString("yyyyMMdd-HHmmss")}-r{Engine.GetTTRevision().ToString("D4")}-da{DA.Version}-rs{Engine.RenSharpVersion}.dmp"), FileMode.Create))
+            {
+                // A full memory dump is necessary in the case of a managed application, other wise no information
+                // regarding the managed code will be available
+                Imports.MiniDumpWriteDump(Imports.GetCurrentProcess(), Imports.GetCurrentProcessId(), stream.SafeFileHandle.DangerousGetHandle(), Imports.MiniDumpWithFullMemory, exceptionInfoPtr, IntPtr.Zero, IntPtr.Zero);
             }
         }
 
