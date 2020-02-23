@@ -10333,6 +10333,7 @@ void JMG_Utility_Send_Custom_If_Not_Moving_Enough::Timer_Expired(GameObject *obj
 JMG_Utility_AI_Skittish_Herd_Animal::HerdAnimalPositionSystem JMG_Utility_AI_Skittish_Herd_Animal::HerdAnimalPositionControl[128] = {HerdAnimalPositionSystem()};
 void JMG_Utility_AI_Skittish_Herd_Animal::Created(GameObject *obj)
 {
+	actionCrouched = Get_Float_Parameter("ActionsCrouched");
 	weaponRange = 3.75;
 	sprintf(defaultWeapon,"%s",Get_Current_Weapon(obj));
 	int minHerdId = Get_Int_Parameter("MinHerdID");
@@ -10438,7 +10439,7 @@ void JMG_Utility_AI_Skittish_Herd_Animal::GotoLocation(GameObject *obj,const Vec
 	params.Set_Movement(pos,speed ? speed : (Enemy ? 1.0f : Commands->Get_Random(0.25f,1.0f)),Enemy ? weaponRange*Commands->Get_Random(0.01f,1.0f) : 1.0f,false);
 	params.MovePathfind = true;
 	Vector3 mypos = Commands->Get_Position(obj);
-	if (!speed && JmgUtility::SimpleDistance(mypos,pos) < 625 && Commands->Get_Random(0.0f,1.0f) < 0.25f)
+	if (!speed && JmgUtility::SimpleDistance(mypos,pos) < 625 && Commands->Get_Random(0.0f,1.0f) < actionCrouched)
 	{
 		params.MoveCrouched = true;
 		params.AttackCrouched = true;
@@ -12115,6 +12116,38 @@ void JMG_Utility_Custom_Send_Custom_On_Count_From_Sender::Custom(GameObject *obj
 		}
 	}
 }
+void JMG_Utility_Player_Seen_Send_Custom::Created(GameObject *obj)
+{
+	id = Get_Int_Parameter("ID");
+	custom = Get_Int_Parameter("Custom");
+	Param = Get_Int_Parameter("Param");
+	delay = Get_Float_Parameter("Delay");
+	triggerOnce = Get_Int_Parameter("TriggerOnce") != 0;
+	Commands->Start_Timer(obj,this,0.1f,1);
+}
+void JMG_Utility_Player_Seen_Send_Custom::Timer_Expired(GameObject *obj,int number)
+{
+	if (number == 1)
+	{
+		for (int x = 1;x < 128;x++)
+		{
+			GameObject *player = Get_GameObj(x);
+			if (!player || Commands->Get_Player_Type(player) == -4)
+				continue;
+			SmartGameObj *smartGameObject = player->As_SmartGameObj();
+			if (!smartGameObject || !smartGameObject->Is_Visible())
+				continue;
+			if (obj->As_SmartGameObj()->Is_Obj_Visible(smartGameObject))
+			{
+				GameObject *object = id ? (id == -1 ? player : Commands->Find_Object(id)) : obj;
+				Commands->Send_Custom_Event(obj,object,custom,Param == -1 ? Commands->Get_ID(player) : Param,delay);
+				if (triggerOnce)
+					Destroy_Script();
+			}
+		}
+		Commands->Start_Timer(obj,this,0.1f,1);
+	}
+}
 ScriptRegistrant<JMG_Utility_Check_If_Script_Is_In_Library> JMG_Utility_Check_If_Script_Is_In_Library_Registrant("JMG_Utility_Check_If_Script_Is_In_Library","ScriptName:string,CppName:string");
 ScriptRegistrant<JMG_Send_Custom_When_Custom_Sequence_Matched> JMG_Send_Custom_When_Custom_Sequence_Matched_Registrant("JMG_Send_Custom_When_Custom_Sequence_Matched","Success_Custom=0:int,Correct_Step_Custom=0:int,Partial_Failure_Custom=0:int,Failure_Custom=0:int,Send_To_ID=0:int,Custom_0=0:int,Custom_1=0:int,Custom_2=0:int,Custom_3=0:int,Custom_4=0:int,Custom_5=0:int,Custom_6=0:int,Custom_7=0:int,Custom_8=0:int,Custom_9=0:int,Disable_On_Success=1:int,Disable_On_Failure=0:int,Starts_Enabled=1:int,Enable_Custom=0:int,Correct_Step_Saftey=0:int,Failure_Saftey=1:int,Max_Failures=1:int");
 ScriptRegistrant<JMG_Utility_Change_Model_On_Timer> JMG_Utility_Change_Model_On_Timer_Registrant("JMG_Utility_Change_Model_On_Timer","Model=null:string,Time=0:float");
@@ -12365,7 +12398,7 @@ ScriptRegistrant<JMG_Utility_In_Line_Of_Sight_Send_Custom_Ignore> JMG_Utility_In
 ScriptRegistrant<JMG_Utility_Timer_Trigger_Enemy_Seen> JMG_Utility_Timer_Trigger_Enemy_Seen_Registrant("JMG_Utility_Timer_Trigger_Enemy_Seen","Scan_Rate=0.1:float");
 ScriptRegistrant<JMG_Utility_Custom_Teleport_To_Random_Wander_Point> JMG_Utility_Custom_Teleport_To_Random_Wander_Point_Registrant("JMG_Utility_Custom_Teleport_To_Random_Wander_Point","Custom:int,WanderingAIGroupID=-1:int,SafeTeleportDistance=1.5:float,RetryOnFailure=0:int");
 ScriptRegistrant<JMG_Utility_Send_Custom_If_Not_Moving_Enough> JMG_Utility_Send_Custom_If_Not_Moving_Enough_Registrant("JMG_Utility_Send_Custom_If_Not_Moving_Enough","Time:float,Distance:float,ID=0:int,SendCustom:int,Param:int,Delay=0.0:float");
-ScriptRegistrant<JMG_Utility_AI_Skittish_Herd_Animal> JMG_Utility_AI_Skittish_Herd_Animal_Registrant("JMG_Utility_AI_Skittish_Herd_Animal","MinHerdID=0:int,MaxHerdID=0:int,WanderGroupID=0:int,WanderRadiusAroundHerdCenter=25.0:float,MinWanderFrequency=5.0:float,MaxWanderFrequency=30.0:float,MinRetreatRange=50.0:float,MaxRetreatRange=200.0:float,MinRetreatTime=6.0:float,MaxRetreatTime=24.0:float,MinUpdateHerdCenter=10.0:float,MaxUpdateHerdCenter=25.0:float,RunTowardThreatChance=0.0:float");
+ScriptRegistrant<JMG_Utility_AI_Skittish_Herd_Animal> JMG_Utility_AI_Skittish_Herd_Animal_Registrant("JMG_Utility_AI_Skittish_Herd_Animal","MinHerdID=0:int,MaxHerdID=0:int,WanderGroupID=0:int,WanderRadiusAroundHerdCenter=25.0:float,MinWanderFrequency=5.0:float,MaxWanderFrequency=30.0:float,MinRetreatRange=50.0:float,MaxRetreatRange=200.0:float,MinRetreatTime=6.0:float,MaxRetreatTime=24.0:float,MinUpdateHerdCenter=10.0:float,MaxUpdateHerdCenter=25.0:float,RunTowardThreatChance=0.0:float,ActionsCrouched=0.25:float");
 ScriptRegistrant<JMG_Utility_AI_Skittish_Herd_Animal_Ignore> JMG_Utility_AI_Skittish_Herd_Animal_Ignore_Registrant("JMG_Utility_AI_Skittish_Herd_Animal_Ignore","");
 ScriptRegistrant<JMG_Utility_AI_Skittish_Herd_Animal_Controller> JMG_Utility_AI_Skittish_Herd_Animal_Controller_Registrant("JMG_Utility_AI_Skittish_Herd_Animal_Controller","");
 ScriptRegistrant<JMG_Utility_Custom_Display_Dialog_Box> JMG_Utility_Custom_Display_Dialog_Box_Registrant("JMG_Utility_Custom_Display_Dialog_Box","Custom:int,Message:string,Delim=@:string");
@@ -12402,3 +12435,4 @@ ScriptRegistrant<JMG_Utility_Zone_Send_Custom_Enter_From_Enterer> JMG_Utility_Zo
 ScriptRegistrant<JMG_Utility_AI_Lobbed_Vehicle_Projectile_Custom> JMG_Utility_AI_Lobbed_Vehicle_Projectile_Custom_Registrant("JMG_Utility_AI_Lobbed_Vehicle_Projectile_Custom","TargetCustom:int,MinDistance=0.0:float,MinAngle=-90.0:float,MaxAngle=90.0:float,UseLowAngleMaxDistance=0.0:float,UseLowAngleWhenAboveMinDistance=1:int,UseLowAngleTargetAboveHeight=9999.9:float,VehicleProjectilePreset:string,FireVelocity=1.0:float,GravityScale=1.0:float,MissAmountPerMeter=0.0:float,BaseMissAmount=0.0:float,ProjectedShotsChance=1.0:float,FireRate=1.0:float,ReloadTime=1.0:float,ReloadSound=null:string,ClipCount=1:int,FireSound=null:string,MuzzleFlashExplosion=null:string,ProjectileExplosion=null:string,CustomTimeoutTime=3:int,AimTurret=1:int");
 ScriptRegistrant<JMG_Utility_Vehicle_Enter_Send_Custom_From_Enterer> JMG_Utility_Vehicle_Enter_Send_Custom_From_Enterer_Registrant("JMG_Utility_Vehicle_Enter_Send_Custom_From_Enterer","PlayerType=2:int,ID:int,Custom:int,Param:int,Delay:float,TriggerOnce:int");
 ScriptRegistrant<JMG_Utility_Custom_Send_Custom_On_Count_From_Sender> JMG_Utility_Custom_Send_Custom_On_Count_From_Sender_Registrant("JMG_Utility_Custom_Send_Custom_On_Count_From_Sender","Custom:int,Count:int,ID=0:int,SendCustom:int,Param:int,Delay:float,ResetCustom:int");
+ScriptRegistrant<JMG_Utility_Player_Seen_Send_Custom> JMG_Utility_Player_Seen_Send_Custom_Registrant("JMG_Utility_Player_Seen_Send_Custom","ID:int,Custom:int,Param:int,Delay:float,TriggerOnce:int");

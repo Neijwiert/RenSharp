@@ -240,6 +240,46 @@ class JMG_Utility_Set_Object_Visibility_For_Player_On_Custom : public ScriptImpC
 class JmgUtility
 {
 public:
+	struct GenericDateTime
+	{
+		int month;
+		int day;
+		int year;
+		int hour;
+		int minute;
+		int second;
+		unsigned long lTime;
+		GenericDateTime(const GenericDateTime &dateTime)
+		{
+			this->month = dateTime.month;
+			this->day = dateTime.day;
+			this->year = dateTime.year;
+			this->hour = dateTime.hour;
+			this->minute = dateTime.minute;
+			this->second = dateTime.second;
+			this->lTime = dateTime.lTime;
+		}
+		GenericDateTime()
+		{
+			time_t theTime = time(0);
+			struct tm *timeinfo;
+			time(&theTime);
+			timeinfo = localtime(&theTime);
+			this->year = timeinfo->tm_year+1900;
+			this->month = timeinfo->tm_mon+1;
+			this->day = timeinfo->tm_mday;
+			this->hour = timeinfo->tm_hour;
+			this->minute = timeinfo->tm_min;
+			this->second = timeinfo->tm_sec;
+			this->lTime = (long)mktime(timeinfo);
+		}
+		void DebugTime()
+		{
+			char debug[220];
+			sprintf(debug,"msg %d/%d/%d %d:%02d:%02d {%lu}",month,day,year,hour,minute,second,lTime);
+			Console_Input(debug);
+		}
+	};
 	static bool IsInPathfindZone(Vector3 spot)
 	{
 		if (!Get_Random_Pathfind_Spot(spot,5.0f,&spot))
@@ -558,6 +598,16 @@ public:
 			DisplayChatMessage(Player,Red,Green,Blue,MSG);
 		}
 	}
+	static void MessageTeamPlayersAndType(int Red,int Green,int Blue,int Team,const char *MSG)
+	{
+		for (int x = 0;x < 128;x++)
+		{
+			GameObject *Player = Get_GameObj(x);
+			if (!Player || !(Commands->Get_Player_Type(Player) == Team || Get_Team(x) == Team))
+				continue;
+			DisplayChatMessage(Player,Red,Green,Blue,MSG);
+		}
+	}
 	static GameObject *FindNearestPlayer(const Vector3 &pos)
 	{
 		GameObject *nearestPlayer = NULL;
@@ -798,6 +848,16 @@ public:
 		}
 		return true;
 	}
+	static void Create_2D_Wave_Sound_Dialog(const char *soundName)
+	{
+		for (int x = 1;x < 128;x++)
+		{
+			GameObject *player = Get_GameObj(x);
+			if (!player)
+				continue;
+			Create_2D_Wave_Sound_Dialog_Player(player,soundName);
+		}
+	}
 };
 
 class NewObjectiveSystem
@@ -877,10 +937,10 @@ private:
 	{
 		switch (priority)
 		{
-		case Primary: JmgUtility::MessageTeamPlayersType(50,255,50,team,format); break;
-		case Secondary: JmgUtility::MessageTeamPlayersType(50,150,250,team,format); break;
-		case Tertiary:case Unknown: JmgUtility::MessageTeamPlayersType(150,50,150,team,format); break;
-		default: JmgUtility::MessageTeamPlayersType(125,150,150,team,format); break;
+		case Primary: JmgUtility::MessageTeamPlayersAndType(50,255,50,team,format); break;
+		case Secondary: JmgUtility::MessageTeamPlayersAndType(50,150,250,team,format); break;
+		case Tertiary:case Unknown: JmgUtility::MessageTeamPlayersAndType(150,50,150,team,format); break;
+		default: JmgUtility::MessageTeamPlayersAndType(125,150,150,team,format); break;
 		}
 	}
 	void messagePlayerAndColor(GameObject *player,const char *format,Priority priority)
@@ -6725,6 +6785,7 @@ class JMG_Utility_Send_Custom_If_Not_Moving_Enough : public ScriptImpClass {
 * \MinUpdateHerdCenter - Min amount of time required for the center point of the herd to reposition
 * \MaxUpdateHerdCenter - Max amount of time required for the center point of the herd to reposition
 * \RunTowardThreatChance - Chance that it'll flee on purpose toward the threat (0.0 - 1.0)
+* \ActionsCrouched - Chance that it will move and stand crouched 0-1.0
 * \author jgray
 * \ingroup JmgUtility
 */
@@ -6880,6 +6941,7 @@ private:
 	float minWanderFrequency;
 	float maxWanderFrequency;
 	float runTowardThreatChance;
+	float actionCrouched;
 	void Created(GameObject *obj);
 	void Enemy_Seen(GameObject *obj,GameObject *seen);
 	void Timer_Expired(GameObject *obj,int number);
@@ -7947,4 +8009,24 @@ class JMG_Utility_Custom_Send_Custom_On_Count_From_Sender : public ScriptImpClas
 	int count;
 	void Created(GameObject *obj);
 	void Custom(GameObject *obj,int message,int param,GameObject *sender);
+};
+
+/*!
+* \brief Sends a custom when a player is seen, ignores team -4 (spec) and non-visible
+* \ID - ID to send the custom to, 0 sends to self, -1 sends to enter
+* \Custom - Custom message to send
+* \Param - Param to send
+* \Delay - Delay to add before sending custom
+* \TriggerOnce - Allows the script only to trigger the first time the zone is entered
+* \author jgray
+* \ingroup JmgUtility
+*/
+class JMG_Utility_Player_Seen_Send_Custom : public ScriptImpClass {
+	int id;
+	int custom;
+	int Param;
+	float delay;
+	bool triggerOnce;
+	void Created(GameObject *obj);
+	void Timer_Expired(GameObject *obj,int number);
 };

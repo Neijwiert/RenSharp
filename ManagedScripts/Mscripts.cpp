@@ -1045,6 +1045,174 @@ namespace RenSharp
 		return gcnew ActionParamsStruct(this);
 	}
 
+	void ActionParamsStructRef::SetBasicOld(IScriptClass^ script, unsigned long priority, unsigned long id, SoldierAIState state)
+	{
+		if (script == nullptr || script->ScriptClassPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("script");
+		}
+
+		InternalActionParamsStructPointer->Set_Basic_Old(
+			reinterpret_cast<::ScriptClass*>(script->ScriptClassPointer.ToPointer()),
+			priority,
+			id,
+			static_cast<long>(state));
+
+		// Fix for bug where it sets ActionID to script->ID and not setting ObserverID at all.
+		ObserverID = script->ID;
+		ActionID = id;
+	}
+
+	void ActionParamsStructRef::SetAttackHold(IScriptableGameObj^ target, float range, float deviation, bool primary, bool hold)
+	{
+		::ScriptableGameObj* targetPtr;
+		if (target == nullptr || target->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			targetPtr = nullptr;
+		}
+		else
+		{
+			targetPtr = reinterpret_cast<::ScriptableGameObj*>(target->ScriptableGameObjPointer.ToPointer());
+		}
+
+		InternalActionParamsStructPointer->Set_Attack_Hold(
+			targetPtr,
+			range,
+			deviation,
+			primary,
+			hold);
+	}
+
+	void ActionParamsStructRef::SetAttackPosition(Vector3 position, float range, float deviation, bool primary)
+	{
+		::Vector3 positionVec;
+
+		Vector3::ManagedToUnmanagedVector3(position, positionVec);
+
+		InternalActionParamsStructPointer->Set_Attack_Position(
+			positionVec,
+			range,
+			deviation,
+			primary);
+	}
+
+	void ActionParamsStructRef::SetGotoLocation(Vector3 position, float speed, float arriveDistance, bool crouch)
+	{
+		::Vector3 positionVec;
+
+		Vector3::ManagedToUnmanagedVector3(position, positionVec);
+
+		InternalActionParamsStructPointer->Set_Goto_Location(
+			positionVec,
+			speed,
+			arriveDistance,
+			crouch);
+	}
+
+	void ActionParamsStructRef::SetGotoFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool following)
+	{
+		::ScriptableGameObj* targetPtr;
+		if (target == nullptr || target->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			targetPtr = nullptr;
+		}
+		else
+		{
+			targetPtr = reinterpret_cast<::ScriptableGameObj*>(target->ScriptableGameObjPointer.ToPointer());
+		}
+
+		InternalActionParamsStructPointer->Set_Goto_Following(
+			targetPtr,
+			speed,
+			arriveDistance,
+			following);
+	}
+
+	void ActionParamsStructRef::SetGotoCrouch(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch)
+	{
+		::ScriptableGameObj* targetPtr;
+		if (target == nullptr || target->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			targetPtr = nullptr;
+		}
+		else
+		{
+			targetPtr = reinterpret_cast<::ScriptableGameObj*>(target->ScriptableGameObjPointer.ToPointer());
+		}
+
+		InternalActionParamsStructPointer->Set_Goto_Crouch(
+			targetPtr,
+			speed,
+			arriveDistance,
+			crouch);
+	}
+
+	void ActionParamsStructRef::SetGotoCrouchFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch, bool following)
+	{
+		::ScriptableGameObj* targetPtr;
+		if (target == nullptr || target->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			targetPtr = nullptr;
+		}
+		else
+		{
+			targetPtr = reinterpret_cast<::ScriptableGameObj*>(target->ScriptableGameObjPointer.ToPointer());
+		}
+
+		InternalActionParamsStructPointer->Set_Goto_Crouch_Following(
+			targetPtr,
+			speed,
+			arriveDistance,
+			crouch,
+			following);
+	}
+
+	void ActionParamsStructRef::SetGoto(IScriptableGameObj^ target, float speed, float arriveDistance)
+	{
+		::ScriptableGameObj* targetPtr;
+		if (target == nullptr || target->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			targetPtr = nullptr;
+		}
+		else
+		{
+			targetPtr = reinterpret_cast<::ScriptableGameObj*>(target->ScriptableGameObjPointer.ToPointer());
+		}
+
+		InternalActionParamsStructPointer->Set_Goto(
+			targetPtr,
+			speed,
+			arriveDistance);
+	}
+
+	void ActionParamsStructRef::SetGotoWaypathStart(unsigned long waypathId, unsigned long waypathStartId, unsigned long waypathEndId, bool splined)
+	{
+		InternalActionParamsStructPointer->Set_Goto_Waypath_Start(
+			waypathId,
+			waypathStartId,
+			waypathEndId,
+			splined);
+	}
+
+	void ActionParamsStructRef::SetGotoWaypath(unsigned long waypathId, bool splined, bool attackActive, bool hold)
+	{
+		InternalActionParamsStructPointer->Set_Goto_Waypath(
+			waypathId,
+			splined,
+			attackActive,
+			hold);
+	}
+
+	void ActionParamsStructRef::SetGotoWaypathId(unsigned long waypathId)
+	{
+		InternalActionParamsStructPointer->Set_Goto_Waypath_ID(waypathId);
+	}
+
+	void ActionParamsStructRef::SetMoveArriveDistance(float distance)
+	{
+		InternalActionParamsStructPointer->Set_Move_Arrive_Distance(distance);
+	}
+
 	void ActionParamsStructRef::SetBasic(IGameObjObserverClass ^script, float priority, int actionId, SoldierAIState aiState)
 	{
 		if (script == nullptr || script->GameObjObserverClassPointer.ToPointer() == nullptr)
@@ -1996,6 +2164,102 @@ namespace RenSharp
 		AIState = params->AIState;
 		DockLocation = params->DockLocation;
 		DockEntrance = params->DockEntrance;
+	}
+
+	void ActionParamsStruct::SetBasicOld(IScriptClass^ script, unsigned long priority, unsigned long id, SoldierAIState state)
+	{
+		if (script == nullptr || script->ScriptClassPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("script");
+		}
+
+		ObserverID = script->ID;
+		Priority = priority;
+		ActionID = id;
+		AIState = (SoldierAIState)state;
+	}
+
+	void ActionParamsStruct::SetAttackHold(IScriptableGameObj^ target, float range, float deviation, bool primary, bool hold)
+	{
+		AttackObject = target;
+		AttackRange = range;
+		AttackError = deviation;
+		AttackPrimaryFire = primary;
+		AttackCheckBlocked = hold;
+	}
+
+	void ActionParamsStruct::SetAttackPosition(Vector3 position, float range, float deviation, bool primary)
+	{
+		AttackRange = range;
+		AttackLocation = position;
+		AttackError = deviation;
+		AttackPrimaryFire = primary;
+	}
+
+	void ActionParamsStruct::SetGotoLocation(Vector3 position, float speed, float arriveDistance, bool crouch)
+	{
+		MoveLocation = position;
+		MoveSpeed = speed;
+		MoveArrivedDistance = arriveDistance;
+		MoveCrouched = crouch;
+	}
+
+	void ActionParamsStruct::SetGotoFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool following)
+	{
+		MoveObject = target;
+		MoveSpeed = speed;
+		MoveArrivedDistance = arriveDistance;
+		MoveFollow = following;
+	}
+
+	void ActionParamsStruct::SetGotoCrouch(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch)
+	{
+		MoveObject = target;
+		MoveSpeed = speed;
+		MoveArrivedDistance = arriveDistance;
+		MoveCrouched = crouch;
+	}
+
+	void ActionParamsStruct::SetGotoCrouchFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch, bool following)
+	{
+		MoveObject = target;
+		MoveSpeed = speed;
+		MoveArrivedDistance = arriveDistance;
+		MoveCrouched = crouch;
+		MoveFollow = following;
+	}
+
+	void ActionParamsStruct::SetGoto(IScriptableGameObj^ target, float speed, float arriveDistance)
+	{
+		MoveObject = target;
+		MoveSpeed = speed;
+		MoveArrivedDistance = arriveDistance;
+	}
+
+	void ActionParamsStruct::SetGotoWaypathStart(unsigned long waypathId, unsigned long waypathStartId, unsigned long waypathEndId, bool splined)
+	{
+		WaypathID = waypathId;
+		WaypointStartID = waypathStartId;
+		WaypointEndID = waypathEndId;
+		WaypathSplined = splined;
+	}
+
+	void ActionParamsStruct::SetGotoWaypath(unsigned long waypathId, bool splined, bool attackActive, bool hold)
+	{
+		WaypathID = waypathId;
+		WaypathSplined = splined;
+		AttackActive = attackActive;
+		AttackCheckBlocked = hold;
+	}
+
+	void ActionParamsStruct::SetGotoWaypathId(unsigned long waypathId)
+	{
+		WaypathID = waypathId;
+	}
+
+	void ActionParamsStruct::SetMoveArriveDistance(float distance)
+	{
+		MoveArrivedDistance = distance;
 	}
 
 	void ActionParamsStruct::SetBasic(IGameObjObserverClass ^script, float priority, int actionId, SoldierAIState aiState)

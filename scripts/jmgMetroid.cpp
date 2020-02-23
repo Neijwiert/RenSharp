@@ -307,6 +307,7 @@ void JMG_Metroid_Game_Control::Destroyed(GameObject *obj)
 }
 void JMG_Metroid_Game_Control::IncreasePlayerTimeScores()
 {
+	JmgUtility::GenericDateTime currentTime = JmgUtility::GenericDateTime();
 	for (int y = 1;y < 128;y++)
 	{
 		GameObject *Player = Get_GameObj(y);
@@ -324,6 +325,7 @@ void JMG_Metroid_Game_Control::IncreasePlayerTimeScores()
 		if (abs(Facing - pobj->LastFacing) < 1.0f)
 			IsTurning = false;
 		pobj->LastFacing = Facing;
+		pobj->LastPlayTime = currentTime;
 		if (pobj->IsMoving == IsMoving && pobj->IsTurning == IsTurning)
 			if (pobj->IdleDelay > 60)
 			{
@@ -5189,14 +5191,21 @@ void JMG_AI_Artillery_Targeting_Fire_Vehicle_Projectile_At_Custom::FireProjectil
 }
 void JMG_AI_Artillery_Targeting_Fire_Vehicle_Projectile_Attach::Created(GameObject *obj)
 {
-	Commands->Start_Timer(obj,this,0.025f,1);
+	Force_Position_Update(obj);
+	Force_Orientation_Update(obj);
+	Force_Velocity_Update(obj);
+	Update_Network_Object(obj);
+	Commands->Start_Timer(obj,this,0.1f,1);
 }
 void JMG_AI_Artillery_Targeting_Fire_Vehicle_Projectile_Attach::Timer_Expired(GameObject *obj,int number)
 {
 	if (number == 1)
 	{
 		Force_Position_Update(obj);
-		Commands->Start_Timer(obj,this,0.025f,1);
+		Force_Orientation_Update(obj);
+		Force_Velocity_Update(obj);
+		Update_Network_Object(obj);
+		Commands->Start_Timer(obj,this,1.0f,1);
 	}
 }
 void JMG_AI_Artillery_Targeting_Fire_Vehicle_Projectile_Attach::Destroyed(GameObject *obj)

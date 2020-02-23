@@ -49,6 +49,23 @@ void JMG_Bear_Hunter_Player_Soldier::Created(GameObject *obj)
 		{
 			Set_Background_Music_Player(obj,JMG_Bear_Hunter_Game_Control::currentSong);
 			Commands->Start_Timer(obj,this,1.0f,6);
+			for (SLNode<SmartGameObj> *current = GameObjManager::SmartGameObjList.Head();current;current = current->Next())
+			{
+				SmartGameObj* o = current->Data();
+				if (o && Is_Script_Attached(o,"JMG_Bear_Hunter_Armored_Car"))
+				{
+					JMG_Bear_Hunter_Armored_Car *script = (JMG_Bear_Hunter_Armored_Car*)Find_Script_On_Object(o,"JMG_Bear_Hunter_Armored_Car");
+					if (!script || script->effectRangeId)
+					{
+						GameObject *effect = Commands->Find_Object(script->effectRangeId);
+						if (effect)
+						{
+							Set_Object_Visibility_For_Player(obj,script->effectRangeId,false);
+							Update_Network_Object_Player(effect,playerId);
+						}
+					}
+				}
+			}
 		}
 	}
 	PlayerData.players[playerId]->displayedKillMessage = false;
@@ -68,9 +85,9 @@ void JMG_Bear_Hunter_Player_Soldier::Created(GameObject *obj)
 	clipBullets = 0;
 	if (!PlayerData.players[playerId]->hasGotIntro)
 	{
-		Commands->Start_Timer(obj,this,10.0f,2);
-		Commands->Start_Timer(obj,this,16.0f,3);
-		Commands->Start_Timer(obj,this,22.0f,4);
+		Commands->Start_Timer(obj,this,14.0f,2);
+		Commands->Start_Timer(obj,this,24.0f,3);
+		Commands->Start_Timer(obj,this,34.0f,4);
 		PlayerData.players[playerId]->killsWithoutGettingHurt = 0;
 	}
 	if (PlayerData.players[playerId]->firstJoin)
@@ -142,25 +159,43 @@ void JMG_Bear_Hunter_Player_Soldier::Timer_Expired(GameObject *obj,int number)
 		LastTime = CurrentTime;
 		Vector3 Pos = Commands->Get_Position(obj);
 		if (TimeDiff)
-			JMG_Bear_Hunter_Player_Soldier::speed[playerId] = Commands->Get_Distance(Pos,LastPosition) * (1000.0f/TimeDiff);
+			JMG_Bear_Hunter_Player_Soldier::speed[playerId] = Commands->Get_Distance(Pos,LastPosition)*(1000.0f/TimeDiff);
 		LastPosition = Pos;
+		if (lastDamaged)
+			lastDamaged--;
+		if (armoredCarWeapon.lastFireTime)
+			armoredCarWeapon.lastFireTime--;
 		Commands->Start_Timer(obj,this,0.1f,1);
 	}
 	if (number == 2)
 		switch (JMG_Bear_Hunter_Game_Control::gameState)
 		{
-		case JMG_Bear_Hunter_Game_Control::LeaveBase:case JMG_Bear_Hunter_Game_Control::HuntBears:JmgUtility::DisplayChatMessage(obj,127,127,255,"San Casina Rug Co: Hello, you must be here for the money, as I'm sure you've heard, San Casina Rug Co. is in desperate need for bear rugs, and we are willing to pay 30 dollars a pelt.");return;
-		case JMG_Bear_Hunter_Game_Control::MutationStart:JmgUtility::DisplayChatMessage(obj,127,127,255,"San Casina Rug Co: Hello, I'm sure you came down to make some money killing bears, got some good news for you: a tiberium meteorite hit, and mutated the wildlife, mutant bear pelts are far more valuable, head north and join in the fun!");return;
-		case JMG_Bear_Hunter_Game_Control::FallBack:case JMG_Bear_Hunter_Game_Control::DefendPrez:JmgUtility::DisplayChatMessage(obj,127,127,255,"San Casina Rug Co: Welcome, its a bad time for you to have joined us, a tiberium meteorite hit, and now we're under attack by mutant wildlife, grab a gun and help us defend the President of Corporate America!");return;
-		case JMG_Bear_Hunter_Game_Control::SecureBase:JmgUtility::DisplayChatMessage(obj,127,127,255,"San Casina Rug Co: Greetings, victory is at hand, all we need to do is kill the remaining mutants inside the base!");return;
-		case JMG_Bear_Hunter_Game_Control::BossArrive:JmgUtility::DisplayChatMessage(obj,127,127,255,"San Casina Rug Co: Greetings, Kill the boss and this will be all over!");return;
+		case JMG_Bear_Hunter_Game_Control::LeaveBase:case JMG_Bear_Hunter_Game_Control::HuntBears:
+			JmgUtility::DisplayChatMessage(obj,127,127,255,"Bear Rug Co: Hello, you must be here for the money, as I'm sure you've heard, Bear Rug Co. is in desperate need for bear rugs, and we are willing to pay 30 dollars a pelt.");
+			Create_2D_Wave_Sound_Dialog_Player(obj,"BH1.mp3");return;
+		case JMG_Bear_Hunter_Game_Control::MutationStart:
+			JmgUtility::DisplayChatMessage(obj,127,127,255,"Bear Rug Co: Hello, I'm sure you came down to make some money killing bears, got some good news for you: a tiberium meteorite hit, and mutated the wildlife, mutant bear pelts are far more valuable, head north and join in the fun!");
+			Create_2D_Wave_Sound_Dialog_Player(obj,"BH2.mp3");return;
+		case JMG_Bear_Hunter_Game_Control::FallBack:case JMG_Bear_Hunter_Game_Control::DefendPrez:
+			JmgUtility::DisplayChatMessage(obj,127,127,255,"Bear Rug Co: Welcome, its a bad time for you to have joined us, a tiberium meteorite hit, and now we're under attack by mutant wildlife, grab a gun and help us defend the President of Corporate America!");
+			Create_2D_Wave_Sound_Dialog_Player(obj,"BH3.mp3");return;
+		case JMG_Bear_Hunter_Game_Control::SecureBase:
+			JmgUtility::DisplayChatMessage(obj,127,127,255,"Bear Rug Co: Greetings, victory is at hand, all we need to do is kill the remaining mutants inside the base!");
+			Create_2D_Wave_Sound_Dialog_Player(obj,"BH4.mp3");return;
+		case JMG_Bear_Hunter_Game_Control::BossArrive:
+			JmgUtility::DisplayChatMessage(obj,127,127,255,"Bear Rug Co: Greetings, Kill the boss and this will be all over!");
+			Create_2D_Wave_Sound_Dialog_Player(obj,"BH5.mp3");return;
 		}
 	if (number == 3)
-		JmgUtility::DisplayChatMessage(obj,127,127,255,"San Casina Rug Co: Feel free to buy weapons at your nearest PCT, and once your ready, head north into the swamp and start making some money!");
+	{
+		JmgUtility::DisplayChatMessage(obj,127,127,255,"Bear Rug Co: Feel free to buy weapons at your nearest PCT, and once your ready, head north into the swamp and start making some money!");
+		Create_2D_Wave_Sound_Dialog_Player(obj,"BH6.mp3");
+	}
 	if (number == 4)
 	{
 		PlayerData.players[playerId]->hasGotIntro = true;
-		JmgUtility::DisplayChatMessage(obj,127,127,255,"San Casina Rug Co: Oh, and as a tempory promotion, we are giving out an extra $50.00 every time someone kills 10 in a row without getting hurt! And we'll give out $1,000.00 to anyone that can kill 250!");
+		JmgUtility::DisplayChatMessage(obj,127,127,255,"Bear Rug Co: Oh, and as a tempory promotion, we are giving out an extra $50.00 every time someone kills 10 in a row without getting hurt! And we'll give out $1,000.00 to anyone that can kill 250!");
+		Create_2D_Wave_Sound_Dialog_Player(obj,"BH7.mp3");
 	}
 	if (number == 5)
 	{
@@ -199,7 +234,10 @@ void JMG_Bear_Hunter_Player_Soldier::Timer_Expired(GameObject *obj,int number)
 void JMG_Bear_Hunter_Player_Soldier::Damaged(GameObject *obj,GameObject *damager,float damage)
 {
 	if (damage > 0)
+	{
+		lastDamaged = 150;
 		PlayerData.players[playerId]->killsWithoutGettingHurt = 0;
+	}
 }
 void JMG_Bear_Hunter_Player_Soldier::Killed(GameObject *obj,GameObject *killer)
 {
@@ -209,8 +247,6 @@ void JMG_Bear_Hunter_Player_Soldier::Killed(GameObject *obj,GameObject *killer)
 		PlayerData.players[playerId]->deaths++;
 		scoreNode->Deaths++;
 	}
-	if (playerId && !JMG_Bear_Hunter_Game_Control::remainingLives[playerId])
-		JMG_Bear_Hunter_Game_Control::playerAlive[playerId] = false;
 	char deathMsg[500];
 	unsigned int killerWarheadId = Get_Damage_Warhead();
 	if (!killer)
@@ -251,6 +287,8 @@ void JMG_Bear_Hunter_Player_Soldier::Killed(GameObject *obj,GameObject *killer)
 }
 void JMG_Bear_Hunter_Player_Soldier::Destroyed(GameObject *obj)
 {
+	if (playerId && !JMG_Bear_Hunter_Game_Control::remainingLives[playerId])
+		JMG_Bear_Hunter_Game_Control::playerAlive[playerId] = false;
 	if (!PlayerData.players[playerId])
 		return;
 	PlayerData.players[playerId]->destroyTime = clock();
@@ -425,6 +463,7 @@ JMG_Bear_Hunter_Game_Control::JMG_Bear_Hunter_Game_Control()
 }
 void JMG_Bear_Hunter_Game_Control::Created(GameObject *obj)
 {
+	bonusObjectiveCount = 0;
 	hasBeenInjured = false;
 	spawnKarma = 0;
 	smoothFade = false;
@@ -446,6 +485,7 @@ void JMG_Bear_Hunter_Game_Control::Created(GameObject *obj)
 		aiIgnorePlayers[x] = 0;
 		remainingLives[x] = 0;
 		playerAlive[x] = true;
+		wanderingAiIgnorePlayers[x] = 0;
 	}
 	bossRabitDead = 0;
 	bearTransition = 0;
@@ -501,6 +541,9 @@ void JMG_Bear_Hunter_Game_Control::Created(GameObject *obj)
 		engineerSpawnedOnce[x] = false;
 	}
 	engineerScanTime = 0;
+	for (int x = 0;x < 8;x++)
+		wildMountainLionIds[x] = 0;
+	wildMountainLionsPet = 0;
 	for (int x = 0;x < 6;x++)
 	{
 		weaponsFound[x] = false;
@@ -538,14 +581,23 @@ void JMG_Bear_Hunter_Game_Control::Created(GameObject *obj)
 	Commands->Attach_Script(obj,"JMG_Bear_Hunter_Wolf_Pack_Definition","3,Wild_Wolf_Twiddler,3,-400.0 230.0 -0.11,50.0,120,30,60.0,15.0,1.5,1");
 	Commands->Attach_Script(obj,"JMG_Bear_Hunter_Wolf_Pack_Controller","");
 	Commands->Attach_Script(obj,"JMG_Utility_Dynamic_Clock_Control","");
+	Commands->Attach_Script(obj,"JMG_Bear_Hunter_Armored_Car_Controller","");
+	Commands->Attach_Script(obj,"JMG_Utility_Basic_Spawner_In_Radius","Skittish_Animal_Wander_Point,0.1,0.0,500,0.0,450.0,0.0,500.0,0.0 0.0 -1000.0,1.0,1.0,1,5,0.25,-1,-1,-1,1,1,0.0 0.0 1.0,0.0,1,5.0,1,0,0,0.0 0.0 0.0,-1,0.0");
 }
 void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 {
 	if (number == 1)
 	{
 		for (int x = 0;x < 128;x++)
+		{
 			if (aiIgnorePlayers[x] > 0)
 				aiIgnorePlayers[x]--;
+			if (wanderingAiIgnorePlayers[x])
+				wanderingAiIgnorePlayers[x]--;
+			GameObject *player = Get_GameObj(x);
+			if (player && !Is_Script_Attached(player,"JMG_Rp2_Dedicated_Server_Sound_Emulator"))
+			Commands->Attach_Script(player,"JMG_Rp2_Dedicated_Server_Sound_Emulator","");
+		}
 		bearHunterScoreSystem.IncreasePlayerTimeScores();
 		if (The_Game()->Is_Game_Over())
 		{
@@ -593,21 +645,6 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			Commands->Fade_Background_Music("Unreal2_awakening_Hell_Ending.mp3",1000,1000);
 			for (int x = 0;x < 5;x++)
 				Commands->Create_Sound("Mission_Failed",Commands->Get_Position(obj),obj);
-		}
-		if (JMG_Bear_Hunter_Game_Control::gameState == JMG_Bear_Hunter_Game_Control::BossArrive && !playersDead)
-		{
-			bool playersAlive = false;
-			for (int x = 0;x < 128;x++)
-			{
-				GameObject *player = Get_GameObj(x);
-				if (!player || Get_Player_Type(player) == -4)
-					continue;
-				if (!playerAlive[x])
-					continue;
-				playersAlive = true;
-			}
-			if (!playersAlive)
-				playersDead = true;
 		}
 		if (bossRabitDead)
 		{
@@ -679,15 +716,16 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 					Commands->Set_Objective_HUD_Info_Position(3,2,"POGCabin.tga",7387,Vector3(15.593f,-93.453f,-0.166f));
 					if (NewObjectiveSystemControl.Get_Objective_Status(13) == NewObjectiveSystem::NotDefined)
 					{
-						JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: There is an alert system placed at the cabin, activating it would defintly attact attention of the bears.");
+						JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: There is an alert system placed at the cabin, activating it would defintly attract attention of the bears.");
 						NewObjectiveSystemControl.Add_Objective(13,NewObjectiveSystem::Secondary,NewObjectiveSystem::Pending,12739,"",12739);
+						JmgUtility::Create_2D_Wave_Sound_Dialog("BH8.mp3");
 					}
 				} 
 				if (!atCabin)
 				{
 					if (gameState < MutationStart && !alarmSwitchActive)
 					{
-						sprintf(currentSong,"SpecForce_Sneak_02.mp3");//04-ambient industrial
+						sprintf(currentSong,"SpecForce_Sneak_02.mp3");
 						Commands->Fade_Background_Music("SpecForce_Sneak_02.mp3",5000,5000);
 					}
 					NewObjectiveSystemControl.Set_Objective_Mission(11,12729,12729);
@@ -697,7 +735,8 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 		if (JMG_Bear_Hunter_Player_Assist_AI::maxWait > 0)
 			JMG_Bear_Hunter_Player_Assist_AI::maxWait--;
 		for (int x = 0;x < 6;x++)
-			randomSelectableSpawnPoints[x].DecreaseValue();
+			if (x != 4)
+				randomSelectableSpawnPoints[x].DecreaseValue();
 		for (int x = 0;x < 2;x++)
 			if (easTowers[x].activeTime)
 			{
@@ -754,6 +793,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 						if (!player || Get_Player_Type(player) == -4 || JmgUtility::SimpleDistance(Commands->Get_Position(switchObj),Commands->Get_Position(player)) >= 22500)
 							continue;
 						JmgUtility::DisplayChatMessage(player,127,127,255,"Bear Rug Co: Great work holding those bears off, here is a small bonus!");
+						Create_2D_Wave_Sound_Dialog_Player(player,"BH9.mp3");
 						Commands->Give_Money(player,250.0f,0);
 						BearHunterScoreSystem::BHScoreNode *node = bearHunterScoreSystem.Get_Current_Player_Score_Node(x);
 						if (node)
@@ -783,6 +823,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				JMG_Bear_Hunter_Player_Assist_AI::maxWait = 0;
 				NewObjectiveSystemControl.Set_Objective_Status(1,NewObjectiveSystem::Accomplished);
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We need more rugs, get out there and kill us some bears!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH10.mp3");
 				NewObjectiveSystemControl.Add_Objective(2,NewObjectiveSystem::Primary,NewObjectiveSystem::Pending,12694,"",12694);
 				sprintf(currentSong,"SpecForce_Sneak_02.mp3");
 				Commands->Fade_Background_Music("SpecForce_Sneak_02.mp3",10000,10000);
@@ -790,6 +831,31 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				JmgUtility::SetHUDHelpText(objective,Vector3(0,1,0));
 				Commands->Set_Objective_HUD_Info_Position(2,1,"PogBear.tga",12700,Vector3(15.593f,-93.453f,-0.166f));
 				Commands->Start_Timer(obj,this,0.1f,16);
+				for (int x = 0;x < 8;x++)
+				{
+					Rp2SimplePositionSystem::SimplePositionNode *node = JMG_Wandering_AI_Controller::wanderPoints.GetRandomFromGroup(256);
+					if (!node)
+						continue;
+					GameObject *mlion = Commands->Create_Object("Normal_Mountain_Lion_Twiddler",node->position);
+					Vector3 pos = node->position;
+					MoveablePhysClass *mphys = mlion->As_PhysicalGameObj() ? mlion->As_PhysicalGameObj()->Peek_Physical_Object()->As_MoveablePhysClass() : NULL;
+					if (mphys)
+						mphys->Find_Teleport_Location(pos,2.0f,&pos);
+					Commands->Enable_HUD_Pokable_Indicator(mlion,true);
+					Commands->Set_Position(mlion,pos);
+					mlion->As_SoldierGameObj()->Set_Override_Muzzle_Direction(true);
+					char params[256];
+					sprintf(params,"%d,268427,0,0.0,1",Commands->Get_ID(obj));
+					Commands->Attach_Script(mlion,"JMG_Utility_Player_Seen_Send_Custom",params);
+					sprintf(params,"%d,2684270,%d,0.0,1,2",Commands->Get_ID(obj),x);
+					Commands->Attach_Script(mlion,"JMG_Utility_Poke_Send_Custom_From_Poker",params);
+					Commands->Attach_Script(mlion,"JMG_Utility_AI_Guardian_Infantry","256,0.15,-1,1,0,0");
+					sprintf(params,"%d,268427,1,0.0",Commands->Get_ID(obj));
+					Commands->Attach_Script(mlion,"JMG_Utility_Destroy_Send_Custom",params);
+					Commands->Attach_Script(mlion,"JMG_Utility_Killed_Send_Custom_From_Killer",params);
+					Attach_Script_Once(mlion,"JMG_Security_Camera_Behavior_Ignore","");
+					wildMountainLionIds[x] = Commands->Get_ID(mlion);
+				}
 				return;
 			}
 		}
@@ -807,34 +873,46 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (gameTime == 1780)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: There is a little cabin up north with some supplies, if you head up there you'll have easy hunting.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH11.mp3");
 				NewObjectiveSystemControl.Add_Objective(11,NewObjectiveSystem::Secondary,NewObjectiveSystem::Pending,12729,"",12729,Vector3(15.593f,-93.453f,-0.166f));
 			}
 			if (gameTime == 1770)
 			{
-				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Oh also, we'll pay everyone big bucks if you can deliver the turret supplies from the warehouse to the North East.");
-				NewObjectiveSystemControl.Add_Objective(9,NewObjectiveSystem::Tertiary,NewObjectiveSystem::Pending,12727,"",12727,Vector3(434.101f,539.071f,1.142f));
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: 3 Pump Jacks have fallen into disrepair in the East, repair them for additional profit.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH12.mp3");
+				IncreaseBonusObjectiveCount(17);
+				NewObjectiveSystemControl.Add_Objective(17,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12748,"",12748,bonusObjectiveCount);
 			}
 			if (gameTime == 1760)
 			{
-				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: One last thing, we had a helicopter go down in the swamp to the North West there are 5 surviving engineers that could use an escort back to base; we will of course pay for their safe return.");
-				NewObjectiveSystemControl.Add_Objective(15,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12741,"",12741,3);
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: 7 of our oil rigs to the north have gone off-line, if you head up there and activate them we'll give you a cut of the profits.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH13.mp3");
+				IncreaseBonusObjectiveCount(16);
+				NewObjectiveSystemControl.Add_Objective(16,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12758,"",12758,bonusObjectiveCount);
 			}
 			if (gameTime == 1730)
 			{
-				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: 7 of our oil rigs to the north have gone off-line, if you head up there and activate them we'll give you a cut of the profits.");
-				NewObjectiveSystemControl.Add_Objective(16,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12758,"",12758,4);
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Oh also, we'll pay everyone big bucks if you can deliver the turret supplies from the warehouse in the North East.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH14.mp3");
+				NewObjectiveSystemControl.Add_Objective(9,NewObjectiveSystem::Tertiary,NewObjectiveSystem::Pending,12727,"",12727,Vector3(434.101f,539.071f,1.142f));
 			}
 			if (gameTime == 1700)
 			{
-				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: 3 other Pump Jacks have fallen into disrepair in the East, repair them for additional profit.");
-				NewObjectiveSystemControl.Add_Objective(17,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12748,"",12748,5);
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: One last thing, we had a helicopter go down in the swamp to the North West there are 5 surviving engineers that could use an escort back to base; we will of course pay for their safe return.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH15.mp3");
+				IncreaseBonusObjectiveCount(15);
+				NewObjectiveSystemControl.Add_Objective(15,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12741,"",12741,bonusObjectiveCount);
 			}
 			if (gameTime == 1500)
+			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Half way there, you guys better get those bears while you can, because they won't be worth much when we hit our quota!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH16.mp3");
+			}
 			if (gameTime == 1196)
 			{
 				gameState = MutationStart;
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Wow! Was that a Tiberium meteorite that just hit?");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH17.mp3");
 				BearHunterWolfHivemindSystem::BearHunterWolfHivemindNode *node = bearHunterWolfHivemindControl.find(2);
 				if (node)
 					node->maxPackSize = 5;
@@ -881,6 +959,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 					{
 						char successMsg[220];
 						sprintf(successMsg,"Bear Rug Co: There are %d inactive pumpjacks to the North that survied that meteor impact, hurry up and activate them.",inactivePumpjackCount);
+						JmgUtility::Create_2D_Wave_Sound_Dialog("BH18.mp3");
 						JmgUtility::MessageAllPlayers(127,127,255,successMsg);
 						unsigned int textId = (7-inactivePumpjackCount == 1) ? 12752 : (7-inactivePumpjackCount == 2) ? 12753 : (7-inactivePumpjackCount == 3) ? 12754 : (7-inactivePumpjackCount == 4) ? 12755 : 12756;
 						NewObjectiveSystemControl.Set_Objective_Mission(16,textId,textId);
@@ -888,16 +967,23 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 					if (!livingPumpjacks)
 					{
 						if (!inactivePumpjackCount)
+						{
 							JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: All of the pump jacks to the North were destroyed by that meteor, guess we should have repaired them!");
+							JmgUtility::Create_2D_Wave_Sound_Dialog("BH19.mp3");
+						}
 						else
+						{
 							JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Looks like that meteor impact also wiped out all the pumpjacks to the North!");
+							JmgUtility::Create_2D_Wave_Sound_Dialog("BH20.mp3");
+						}
 						NewObjectiveSystemControl.Set_Objective_Status(16,NewObjectiveSystem::Failed);
 					}
 				}
 			}
 			if (gameTime == 1180)
 			{
-				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Looks like it was, and mutation has already spread to the local bears, I bet those pelts would be worth way more than a normal bears'... You should head north, there is a little house with supplies.");
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Looks like it was, and mutation has already spread to the local bears, I bet those pelts would be worth way more than a normal bears'... You should head North, there is a little house with supplies.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH21.mp3");
 				objective = 12696;
 				JmgUtility::SetHUDHelpText(objective,Vector3(0,1,0));
 				NewObjectiveSystemControl.Set_Objective_Status(2,NewObjectiveSystem::Accomplished);
@@ -916,6 +1002,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				if (node)
 					node->maxPackSize = 0;
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Local deer have begun to show effects of mutation, we're locking the base down for the President of Corporate America's safety!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH22.mp3");
 				Commands->Static_Anim_Phys_Goto_Last_Frame(650184,"BH_GATE_1.BH_GATE_1");
 				Commands->Static_Anim_Phys_Goto_Last_Frame(650183,"BH_GATE_1.BH_GATE_1");
 				Commands->Static_Anim_Phys_Goto_Last_Frame(650190,"BH_GATE_1.BH_GATE_1");
@@ -924,6 +1011,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (gameTime == 875)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Shit! Looks like there has been a failure in the gate control mainframe, fall back and defend the President of Corporate America!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH23.mp3");
 				sprintf(currentSong,"SpecForce_Moments02.mp3");
 				Commands->Fade_Background_Music("SpecForce_Moments02.mp3",10000,10000);
 				objective = 12697;
@@ -939,7 +1027,10 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 					NewObjectiveSystemControl.Set_Objective_Status(13,NewObjectiveSystem::Failed);
 			}
 			if (gameTime == 835 && !JMG_Bear_Hunter_Game_Control::hasGotTurrets && NewObjectiveSystemControl.Get_Objective_Status(10) == NewObjectiveSystem::Pending)
-				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Our engineers report if the truck isn't back in the next 60 seconds they won't be able to get them set up!");
+			{
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Our engineers report if the truck isn't back in the next minute they won't be able to get them set up!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH24.mp3");
+			}
 			if (gameTime == 775)
 			{
 				gameState = FallBack;
@@ -950,10 +1041,12 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 					{
 						truckTimeExtended = true;
 						JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We see the truck is getting close, the engineers are going to give you another 45 seconds! Everyone else fall back to base!");
+						JmgUtility::Create_2D_Wave_Sound_Dialog("BH25.mp3");
 					}
 					else
 					{
 						JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Forget about the turret parts there isn't enough time! Fall back to base!");
+						JmgUtility::Create_2D_Wave_Sound_Dialog("BH26.mp3");
 						if (NewObjectiveSystemControl.Get_Objective_Status(10) != NewObjectiveSystem::Accomplished)
 						{
 							NewObjectiveSystemControl.Remove_Objective(9);
@@ -961,7 +1054,10 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 						}
 					}
 				else
+				{
 					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Everyone fall back to base!");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH27.mp3");
+				}
 				Commands->Enable_Spawner(600536,false);
 				if (NewObjectiveSystemControl.Get_Objective_Status(14) == NewObjectiveSystem::Pending)
 					NewObjectiveSystemControl.Remove_Objective(14);
@@ -972,13 +1068,17 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			{
 				Vector3 truckPos;
 				if (NewObjectiveSystemControl.Get_Objective_Status(10) == NewObjectiveSystem::Pending && NewObjectiveSystemControl.Get_Radar_Blip_Position(10,&truckPos) && JmgUtility::SimpleFlatDistance(JMG_Bear_Hunter_Game_Control::centerOfBase,truckPos) <= 10000)
+				{
 					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We're giving you another 15 seconds to get those turret parts inside DERP Industries beings your so close!");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH28.mp3");
+				}
 				else
 				{
 					truckTimeExtended = false;
 					if (NewObjectiveSystemControl.Get_Objective_Status(10) != NewObjectiveSystem::Accomplished)
 					{
 						JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We need all the engineers back to work on the gates, there is no more time for the turret parts!");
+						JmgUtility::Create_2D_Wave_Sound_Dialog("BH29.mp3");
 						NewObjectiveSystemControl.Remove_Objective(9);
 						NewObjectiveSystemControl.Remove_Objective(10);
 					}
@@ -990,22 +1090,26 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				if (NewObjectiveSystemControl.Get_Objective_Status(10) != NewObjectiveSystem::Accomplished)
 				{
 					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Forget the turret parts and fall back to base, there isn't any more time to set them up!");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH30.mp3");
 					NewObjectiveSystemControl.Remove_Objective(9);
 					NewObjectiveSystemControl.Remove_Objective(10);
 				}
 			}
 			if (gameTime == 700)
 			{
-				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: This could get pretty intense, if you have a chance try to head west, you will find a radio tower, if you can activate it we can call for backup.");
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: This could get pretty intense, if you have a chance try to head West, you will find a radio tower, if you can activate it we can call for backup.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH31.mp3");
 				NewObjectiveSystemControl.Add_Objective(21,NewObjectiveSystem::Secondary,NewObjectiveSystem::Pending,12789,"",12789,Vector3(-512.0f,-270.705f,76.11f));
 			}
 			if (gameTime == 624)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Watch your backs, there are mutant dogs out there now!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH32.mp3");
 			}
 			if (gameTime == 400 && objective != 12698)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Mutant squirrels incoming, this is just getting to be too much, fall back and defend the President of Corporate America!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH33.mp3");
 				NewObjectiveSystemControl.Remove_Objective(5);
 				JmgUtility::SetHUDHelpText(objective,Vector3(0,1,0));
 				objective = 12698;
@@ -1018,6 +1122,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (gameTime == 320)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Looks like cats are infected now too, I think I'll just be leaving...");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH34.mp3");
 				sprintf(currentSong,"304824_Goliath__Club_Remix_.mp3");
 				Commands->Fade_Background_Music("304824_Goliath__Club_Remix_.mp3",10000,10000);
 			}
@@ -1030,19 +1135,31 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (gameTime == 240)
 			{
 				if (NewObjectiveSystemControl.Get_Objective_Status(21) == NewObjectiveSystem::Pending && NewObjectiveSystemControl.Get_Mission_Text_Id(21) != 12790)
-					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The gate will be back on-line in the next 4 minutes, if you can get the signal sent within the next minute don't bother!");
+				{
+					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The gate will be back on-line in the next 4 minutes, if you can't get the signal sent within the next minute don't bother!");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH35.mp3");
+				}
 				gameState = DefendPrez;
 			}
 			if (gameTime == 180)
 			{
 				if (NewObjectiveSystemControl.Get_Objective_Status(21) == NewObjectiveSystem::Pending && NewObjectiveSystemControl.Get_Mission_Text_Id(21) != 12790)
 				{
-					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Forget about the communications tower, there isn't enough time anymore focus all resources on defending the president!");
+					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Forget about the communications tower, there isn't enough time anymore; focus all resources on defending the president!");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH36.mp3");
 					NewObjectiveSystemControl.Remove_Objective(21);
 				}
 			}
 			if (gameTime == 150)
-				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Oh god, is that a moose? What are they doing out here… Never mind, defend the President of Corperate America!");
+			{
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Oh god, is that a moose? What are they doing out here... Never mind, defend the President of Corperate America!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH37.mp3");
+			}
+			if (gameTime == 60)
+			{
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: And... Here comes the cougars... looks like everything is going straight for the President of Corperate America!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH38.mp3");
+			}
 			if ((gameTime == 600 || gameTime == 300) || (!(gameTime % 60) && gameTime > 0 && gameTime < 300))
 			{
 				char timeMsg[220];
@@ -1064,6 +1181,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (gameTime == 0)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Mainframe back on-line, gates are closing!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH39.mp3");
 				Commands->Static_Anim_Phys_Goto_Last_Frame(650185,"BH_GATE_1.BH_GATE_1");
 				Commands->Static_Anim_Phys_Goto_Last_Frame(650186,"BH_GATE_1.BH_GATE_1");
 				Commands->Static_Anim_Phys_Goto_Last_Frame(650187,"BH_GATE_1.BH_GATE_1");
@@ -1084,13 +1202,21 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			int normalBears = (int)(!bearTransition ? maxTotalEnemies : (bearTransition == 100 ? 0 : maxTotalEnemies*(1-bearTransition/100.0f)));
 			if ((int)(normalBears * 0.25f) > JMG_Bear_Hunter_AI_Avoid_Enemies::wildAnimalCount)
 			{
+				bool deer = Commands->Get_Random(0.0f,1.0f) < 0.5f;
 				Vector3 pos = BearHunterGameControlSystem.LookupNearestPosition(Vector2(Commands->Get_Random(-500.0f,500.0f),Commands->Get_Random(-350.0f,500.0f)));
-				GameObject *ai = Commands->Get_Random(0.0f,1.0f) < 0.5f ? Commands->Create_Object("Normal_Squirrel_Twiddler",pos) : Commands->Create_Object("Normal_Buck_Twiddler",pos);
+				GameObject *ai = deer ? Commands->Create_Object("Normal_Buck_Twiddler",pos) : Commands->Create_Object("Normal_Squirrel_Twiddler",pos);
 				Commands->Set_Facing(ai,Commands->Get_Random(-180,180));
 				MoveablePhysClass *mphys = ai->As_PhysicalGameObj() ? ai->As_PhysicalGameObj()->Peek_Physical_Object()->As_MoveablePhysClass() : NULL;
 				if (mphys)
 					mphys->Find_Teleport_Location(pos,2.0f,&pos);
-				Attach_Script_Once(ai,"JMG_Bear_Hunter_AI_Avoid_Enemies","");
+				Commands->Set_Position(ai,pos);
+				if (deer)
+				{
+					Attach_Script_Once(ai,"JMG_Utility_AI_Skittish_Herd_Animal","0,4,511,25.0,30.0,50.0,200.0,6.0,24.0,10.0,25.0,0.1,0.125");
+					Commands->Set_Model(ai,Commands->Get_Random(0.0f,1.0f) < 0.25f ? "BUCK_" : "DOE_");
+				}
+				else
+					Attach_Script_Once(ai,"JMG_Bear_Hunter_AI_Avoid_Enemies","");
 				Attach_Script_Once(ai,"JMG_Security_Camera_Behavior_Ignore","");
 			}
 			if (!normalBears && JMG_Bear_Hunter_AI_Avoid_Enemies::wildAnimalCount)
@@ -1114,6 +1240,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				pos.Z += 0.1f;
 				Commands->Set_Position(ai,pos);
 				Commands->Set_Loiters_Allowed(ai,true);
+				ai->As_SoldierGameObj()->Set_Override_Muzzle_Direction(true);
 				bearObjectListControl += ai;
 				Attach_Script_Once(ai,"JMG_Rp2_Hostile_Mutant_AI","");
 				Attach_Script_Once(ai,"JMG_Bear_Hunter_Bear_Tracker","");
@@ -1142,6 +1269,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 								mphys->Find_Teleport_Location(playerPos,1.5f,&playerPos);
 								Commands->Set_Position(tinyDeer,playerPos);
 							}
+							tinyDeer->As_SoldierGameObj()->Set_Override_Muzzle_Direction(true);
 							Commands->Attach_Script(tinyDeer,"JMG_Utility_AI_Goto_Player","-1.0,1.0,1.0,0.0,0,1.0,-1.0,0.0,0,1.0,-1,1.0,1,0,0.0");
 							Commands->Attach_Script(tinyDeer,"JMG_Bear_Hunter_Kill_Score_Tracker","");
 							JMG_Bear_Hunter_Golden_Deer_Statue::tinyDeerIds[x] = Commands->Get_ID(tinyDeer);
@@ -1163,6 +1291,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 	{
 		gameState = SecureBase;
 		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Kill all remaining mutants inside the walls!");
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH40.mp3");
 		objective = 12699;
 		JmgUtility::SetHUDHelpText(objective,Vector3(0,1,0));
 		NewObjectiveSystemControl.Set_Objective_Status(6,NewObjectiveSystem::Accomplished);
@@ -1193,6 +1322,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 		Commands->Start_Timer(obj,this,1.0f,5);
 		Commands->Start_Timer(obj,this,1.0f,15);
 		Commands->Start_Timer(obj,this,2.0f,15);
+		Commands->Start_Timer(obj,this,0.25f,19);
 	}
 	if (number == 5)
 	{
@@ -1204,11 +1334,14 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			for (int x = 0;x < 128;x++)
 			{
 				GameObject *player = Get_GameObj(x);
-				if (JMG_Bear_Hunter_Game_Control::remainingLives[x]  && (!player || Get_Player_Type(player) != -4))
+				if (player && Commands->Get_Player_Type(player) == 1 && Commands->Get_Position(player).Z < 50.0f && _stricmp(Commands->Get_Preset_Name(player),"CNC_Spectator"))
 					isOver = false;
 			}
 			if (isOver && gameState == JMG_Bear_Hunter_Game_Control::BossArrive)
+			{
 				NewObjectiveSystemControl.Set_Objective_Status(12,NewObjectiveSystem::Failed);
+				playersDead = true;
+			}
 			winWait++;
 			if (winWait == 3)
 			{
@@ -1221,9 +1354,15 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				if (!JMG_Bear_Hunter_Game_Control::hasBeenInjured)
 					spawnKarma += 2;
 				if (!JMG_Bear_Hunter_Game_Control::hasBeenInjured)
+				{
 					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: I cannot believe it; the president did not even get hurt once, if I did not know better, I would think you were cheating!");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH41.mp3");
+				}
 				else
+				{
 					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Great work guys, I think thats all of them!");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH42.mp3");
+				}
 			}
 			if (winWait == 13)
 			{
@@ -1243,7 +1382,10 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				else
 					turretState = 2;
 				if (turretState)
+				{
 					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Just in time too, looks like the turret control computer was about to burn up. Shutting it down now...");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH43.mp3");
+				}
 				if (0.7f < (1.0f*NewObjectiveSystemControl.Get_Objective_Priority_Count(NewObjectiveSystem::Secondary,NewObjectiveSystem::Accomplished)+NewObjectiveSystemControl.Get_Objective_Priority_Count(NewObjectiveSystem::Tertiary,NewObjectiveSystem::Accomplished)+NewObjectiveSystemControl.Get_Objective_Priority_Count(NewObjectiveSystem::Quaternary,NewObjectiveSystem::Accomplished))/(1.0f*NewObjectiveSystemControl.Get_Objective_Priority_Count(NewObjectiveSystem::Secondary)+NewObjectiveSystemControl.Get_Objective_Priority_Count(NewObjectiveSystem::Tertiary)+NewObjectiveSystemControl.Get_Objective_Priority_Count(NewObjectiveSystem::Quaternary)))
 					spawnKarma++;
 				if (JMG_Bear_Hunter_Power_Transformer::online && !JMG_Bear_Hunter_Game_Control::turretsDestroyed)
@@ -1307,11 +1449,20 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (winWait == 23)
 			{
 				if (spawnKarma <= 1)
+				{
 					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Haha, its a good thing this isn't a video game, otherwise I'd have expected some sort of super mutant boss.");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH44.mp3");
+				}
 				else if (spawnKarma <= 3)
+				{
 					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Haha, its a good thing this isn't a video game, otherwise I'd have expected some sort of super mutant boss, with maybe some support bosses because you did so well.");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH45.mp3");
+				}
 				else
+				{
 					JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: However, it is a good thing you people are not cheaters, otherwise karma would try to find a way to balance the odds.");
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH46.mp3");
+				}
 				Commands->Set_Lightning(1.0f,0.0f,0.25f,0.0f,1.0f,20.0f);
 				sprintf(currentSong,"304557_Goliath.mp3");
 			}
@@ -1320,6 +1471,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (winWait == 43)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Well, we should have seen this coming, hurry guys, kill it and we'll call it a day!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH47.mp3");
 				Commands->Create_Object("Mutant_Rabbit_Boss",Vector3(0.0f,0.0f,0.0f));
 				if (spawnKarma >= 2)
 					for (int x = 0;x < spawnKarma;x++)
@@ -1373,6 +1525,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (CheckIfPlayerInRange(switchPos,22500))
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: By the way, there is an active security system in the complex, you might want to deactivate it before you take the truck.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH48.mp3");
 				NewObjectiveSystemControl.Add_Objective(14,NewObjectiveSystem::Quaternary,NewObjectiveSystem::Pending,12740,"",12740);
 				return;
 			}
@@ -1463,6 +1616,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (entineersReturned == 5)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Thats all of them, great work guys!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH49.mp3");
 				NewObjectiveSystemControl.Set_Objective_Status(15,NewObjectiveSystem::Accomplished);
 			}
 			else
@@ -1472,12 +1626,14 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				if (totalEngineers == 5)
 				{
 					sprintf(successMsg,"Bear Rug Co: Looks like we saved %d of the 5 engineers, it's good to see some of them back.",entineersReturned);
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH50.mp3");
 					JmgUtility::MessageAllPlayers(127,127,255,successMsg);
 					NewObjectiveSystemControl.Remove_Objective(15);
 				}
 				else
 				{
 					sprintf(successMsg,"Bear Rug Co: Good work bringing another engineer home, %d more to go.",5-totalEngineers);
+					JmgUtility::Create_2D_Wave_Sound_Dialog("BH51.mp3");
 					JmgUtility::MessageAllPlayers(127,127,255,successMsg);
 					unsigned int textId = (totalEngineers == 1) ? 12743 : (totalEngineers == 2) ? 12744 : (totalEngineers == 3) ? 12745 : 12746;
 					NewObjectiveSystemControl.Set_Objective_Mission(15,textId,textId);
@@ -1491,11 +1647,16 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			lastUpdateEngineersDead = JMG_Bear_Hunter_Engineer_AI::engineersDead;
 			switch (JMG_Bear_Hunter_Engineer_AI::engineersDead)
 			{
-			case 1:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Looks like we lost an engineer.");break;
-			case 2:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Another engineer has died.");break;
-			case 3:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We've lost another engineer! Be more careful, these people have families!");break;
-			case 4:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Four engineers dead, maybe you should just let the last one hide.");break;
-			case 5:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We've lost all the engineers, I understand you guys didn't have training in fighting killer animals, but we still expected better.");break;
+			case 1:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Looks like we lost an engineer.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH52.mp3");break;
+			case 2:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Another engineer has died.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH53.mp3");break;
+			case 3:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We've lost another engineer! Be more careful, these people have families!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH54.mp3");break;
+			case 4:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Four engineers dead, maybe you should just let the last one hide.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH55.mp3");break;
+			case 5:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We've lost all the engineers, I understand you guys didn't have training in fighting killer animals, but we still expected better.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH56.mp3");break;
 			}
 			int totalEngineers = entineersReturned+JMG_Bear_Hunter_Engineer_AI::engineersDead;
 			if (JMG_Bear_Hunter_Engineer_AI::engineersDead == 5)
@@ -1504,6 +1665,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			{
 				char engineerMsg[220];
 				sprintf(engineerMsg,"Bear Rug Co: Looks like we saved %d of the 5 engineers, it's good to see some of them back.",entineersReturned);
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH50.mp3");
 				JmgUtility::MessageAllPlayers(127,127,255,engineerMsg);
 				NewObjectiveSystemControl.Remove_Objective(15);
 			}
@@ -1525,7 +1687,9 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 			if (JmgUtility::SimpleFlatDistance(Vector3(50.0f,-685.0f,0),Commands->Get_Position(player)) > 2500.0f)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: While you are hunting for bears keep an eye out for weapons containers, 6 of them have been misplaced and we will let you use the weapons if you bring them back to base.");
-				NewObjectiveSystemControl.Add_Objective(18,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12772,"",12772,1);
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH57.mp3");
+				IncreaseBonusObjectiveCount(18);
+				NewObjectiveSystemControl.Add_Objective(18,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12772,"",12772,bonusObjectiveCount);
 				return;
 			}
 		}
@@ -1640,6 +1804,7 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				Vector3 createPosition = posNode->position;
 				tinyDeer = Commands->Create_Object("Friendly_Tiny_Deer_Twiddler",createPosition);
 				Commands->Set_Player_Type(tinyDeer,1);
+				tinyDeer->As_SoldierGameObj()->Set_Override_Muzzle_Direction(true);
 				Commands->Attach_Script(tinyDeer,"JMG_Utility_AI_Goto_Enemy","75.0,1.5,1.0,0.0,1,1.5,-1.0,0.0,0,1.0,1,1.0,1,0,1,75.0");
 				Commands->Attach_Script(tinyDeer,"JMG_Bear_Hunter_Kill_Score_Tracker","");
 				MoveablePhysClass *mphys = tinyDeer->As_PhysicalGameObj() ? tinyDeer->As_PhysicalGameObj()->Peek_Physical_Object()->As_MoveablePhysClass() : NULL;
@@ -1649,7 +1814,52 @@ void JMG_Bear_Hunter_Game_Control::Timer_Expired(GameObject *obj,int number)
 				JMG_Bear_Hunter_Game_Control::friendlyTinyDeerIds[x] = Commands->Get_ID(tinyDeer);
 				JMG_Bear_Hunter_Game_Control::friendlyTinyDeerRespawnTime[x] = 40;
 			}
+		if (gameTime && NewObjectiveSystemControl.Get_Objective_Status(25) == NewObjectiveSystem::Accomplished)
+			for (int x = 0;x < 8;x++)
+			{
+				if (wildMountainLionRespawn[x])
+					wildMountainLionRespawn[x]--;
+				if (wildMountainLionIds[x] && !Commands->Find_Object(wildMountainLionIds[x]))
+				{
+					wildMountainLionIds[x] = 0;
+					wildMountainLionRespawn[x] = 40;
+					continue;
+				}
+				if (wildMountainLionRespawn[x] || wildMountainLionIds[x])
+					continue;
+				Rp2SimplePositionSystem::SimplePositionNode *node = JMG_Wandering_AI_Controller::wanderPoints.GetRandomFromGroup(256);
+				if (!node)
+					continue;
+				GameObject *mlion = Commands->Create_Object("Normal_Mountain_Lion_Twiddler",node->position);
+				Vector3 pos = node->position;
+				MoveablePhysClass *mphys = mlion->As_PhysicalGameObj() ? mlion->As_PhysicalGameObj()->Peek_Physical_Object()->As_MoveablePhysClass() : NULL;
+				if (mphys)
+					mphys->Find_Teleport_Location(pos,2.0f,&pos);
+				Commands->Set_Position(mlion,pos);
+				mlion->As_SoldierGameObj()->Set_Override_Muzzle_Direction(true);
+				Commands->Set_Player_Type(mlion,1);
+				Commands->Attach_Script(mlion,"JMG_Bear_Hunter_Friendly_Cougar","1.0,10.0,1.0,1.5,3.0,0.0,3,6,5.0");
+				wildMountainLionIds[x] = Commands->Get_ID(mlion);
+			}
 		Commands->Start_Timer(obj,this,0.25f,18);
+	}
+	if (number == 19)
+	{
+		Vector3 centerOfBase = Vector3(-0.532f,-705.389f,0.0f);
+		for (SLNode<SmartGameObj> *current = GameObjManager::SmartGameObjList.Head();current;current = current->Next())
+		{
+			SmartGameObj* o = current->Data();
+			Vector3 objectPos = Commands->Get_Position(o);
+			if (!o || Commands->Get_Player_Type(o) != 1 || !Commands->Get_Health(o) || Get_Vehicle(o))
+				continue;
+			float dist = JmgUtility::SimpleFlatDistance(objectPos,centerOfBase);
+			if ((dist > 27225.0f && objectPos.Z < 11.898f) || dist > 40000.0f)
+			{
+				bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(o))->DiedTryingToEscapeBase++;
+				Commands->Apply_Damage(o,1000.0f,"None",o);
+			}
+		}
+		Commands->Start_Timer(obj,this,0.25f,19);
 	}
 }
 void JMG_Bear_Hunter_Game_Control::Custom(GameObject *obj,int message,int param,GameObject *sender)
@@ -1710,6 +1920,13 @@ void JMG_Bear_Hunter_Game_Control::Custom(GameObject *obj,int message,int param,
 		GameObject *deerStatue = Commands->Find_Object(JMG_Bear_Hunter_Golden_Deer_Statue::statueId);
 		if (deerStatue)
 			Commands->Destroy_Object(deerStatue);
+		if (NewObjectiveSystemControl.Get_Objective_Status(25) != NewObjectiveSystem::Failed && NewObjectiveSystemControl.Get_Objective_Status(25) != NewObjectiveSystem::Accomplished)
+			for (int x = 0;x < 8;x++)
+			{
+				GameObject *mlion = Commands->Find_Object(wildMountainLionIds[x]);
+				if (mlion)
+					Commands->Destroy_Object(mlion);
+			}
 		GameObject *deerPlayer = Get_GameObj(JMG_Bear_Hunter_Golden_Deer_Statue::playerWithTheStatue);
 		if (deerPlayer)
 		{
@@ -1721,9 +1938,90 @@ void JMG_Bear_Hunter_Game_Control::Custom(GameObject *obj,int message,int param,
 		}
 		if (NewObjectiveSystemControl.Get_Objective_Status(24) != NewObjectiveSystem::NotDefined && NewObjectiveSystemControl.Get_Objective_Status(24) != NewObjectiveSystem::Accomplished)
 		{
-			JmgUtility::MessageAllPlayers(127,127,255,"San Casina Rug Co: The statue has vanished, forget about it.");
+			JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The statue has vanished, forget about it.");
+			JmgUtility::Create_2D_Wave_Sound_Dialog("BH58.mp3");
 			NewObjectiveSystemControl.Set_Objective_Status(24,NewObjectiveSystem::Failed);
 		}
+	}
+	if (message == 268427)
+	{
+		if (param == 0)
+		{
+			if (NewObjectiveSystemControl.Get_Objective_Status(25) != NewObjectiveSystem::NotDefined)
+				return;
+			JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Oh look, a pride of cougars... The boys bet that you guys can't pet them all, $50.00 per cat if you can!");
+			JmgUtility::Create_2D_Wave_Sound_Dialog("BH59.mp3");
+			IncreaseBonusObjectiveCount(25);
+			NewObjectiveSystemControl.Add_Objective(25,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12832,"",12832,bonusObjectiveCount);
+		}
+		else if (param == 1)
+		{
+			for (int x = 0;x < 8;x++)
+			{
+				GameObject *mlion = Commands->Find_Object(wildMountainLionIds[x]);
+				if (!mlion)
+					continue;
+				Remove_All_Scripts(mlion);
+				Commands->Set_Player_Type(mlion,0);
+				Commands->Attach_Script(mlion,"JMG_Utility_AI_Goto_Player","-1.0,1.0,1.0,0.0,0,1.0,-1.0,0.0,1,1.0,256,1.0,1,0,1,0.0,0.0,0,0,0,0,0,0,0,0.66");
+			}
+			if (NewObjectiveSystemControl.Get_Objective_Status(25) != NewObjectiveSystem::Pending)
+			{
+				bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(sender))->FailedPettingCougars++;
+				NewObjectiveSystemControl.Add_Objective(25,NewObjectiveSystem::Unknown,NewObjectiveSystem::Hidden,12832,"",12832,obj);
+				NewObjectiveSystemControl.Set_Objective_Status(25,NewObjectiveSystem::Failed);
+				return;
+			}
+			else if (NewObjectiveSystemControl.Get_Objective_Status(25) != NewObjectiveSystem::Failed)
+			{
+				bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(sender))->FailedPettingCougars++;
+				NewObjectiveSystemControl.Set_Objective_Status(25,NewObjectiveSystem::Failed);
+			}
+			JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Looks like one died, now the bet is off!");
+			JmgUtility::Create_2D_Wave_Sound_Dialog("BH60.mp3");
+		}
+	}
+	if (message == 2684270)
+	{
+		if (NewObjectiveSystemControl.Get_Objective_Status(25) != NewObjectiveSystem::Pending)
+			return;
+		int pokerId = JmgUtility::JMG_Get_Player_ID(sender);
+		BearHunterScoreSystem::BHScoreNode *node = bearHunterScoreSystem.Get_Current_Player_Score_Node(pokerId);
+		node->PettedCougars++;
+		node->tmpPettedCougars++;
+		wildMountainLionsPet++;
+		GameObject *mlion = Commands->Find_Object(wildMountainLionIds[param]);
+		if (mlion)
+			Commands->Set_Player_Type(mlion,-2);
+		if (wildMountainLionsPet == 8)
+		{
+			for (int x = 0;x < 8;x++)
+			{
+				GameObject *mlion = Commands->Find_Object(wildMountainLionIds[x]);
+				if (!mlion)
+					continue;
+				Remove_All_Scripts(mlion);
+				Commands->Set_Player_Type(mlion,1);
+				Commands->Attach_Script(mlion,"JMG_Bear_Hunter_Friendly_Cougar","1.0,10.0,1.0,1.5,3.0,0.0,3,6,5.0");
+			}
+			JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: I don't believe it! Those cougars look like they're your best friends now!");
+			JmgUtility::Create_2D_Wave_Sound_Dialog("BH61.mp3");
+			NewObjectiveSystemControl.Set_Objective_Status(25,NewObjectiveSystem::Accomplished);
+			for (int x = 1;x < 128;x++)
+			{
+				GameObject *player = Get_GameObj(x);
+				if (!player)
+					continue;
+				BearHunterScoreSystem::BHScoreNode *node = bearHunterScoreSystem.Get_Current_Player_Score_Node(x);
+				if (node->tmpPettedCougars)
+				{
+					Commands->Give_Points(player,50.0f*node->tmpPettedCougars,false);
+					node->BonusObjectivesCompleted++;
+				}
+			}
+		}
+		else
+			NewObjectiveSystemControl.Set_Objective_Mission(25,wildMountainLionsPet+12832,wildMountainLionsPet+12832);
 	}
 }
 void JMG_Bear_Hunter_Game_Control::Destroyed(GameObject *obj)
@@ -1789,6 +2087,7 @@ void JMG_Bear_Hunter_Game_Control::EndGameDataCleanup(GameObject *obj,bool saveD
 	}
 	weaponsUnlocked[6] = false;
 	aiPtLocations.Empty_List();
+	bossSpawnProtectionPoints.Empty_List();
 	if (saveData)
 		bearHunterScoreSystem.SaveData();
 	bearHunterScoreSystem.Cleanup();
@@ -1817,8 +2116,10 @@ GameObject *JMG_Bear_Hunter_Game_Control::MutantSpawn()
 		preset = (Commands->Get_Random(0.0f,1.0f)<0.25) ? ((Commands->Get_Random(0.0,1.0f)<0.5f) ? (Commands->Get_Random(0.0f,1.0f) < 0.5f ? "Mutant_Squirrel_Twiddler" : "Mutant_Bear_Twiddler") : ((Commands->Get_Random(0.0,1.0f)<0.6) ? "Mutant_Cat" : "Mutant_Cat_Blue")) : ((Commands->Get_Random(0.0,1.0f)<0.5f) ? "Mutant_Deer_Twiddler" : "Mutant_Dog_Twiddler");
 	else if (gameTime > 150)// nuke cats
 		preset = (Commands->Get_Random(0.0f,1.0f)<0.25) ? ((Commands->Get_Random(0.0,1.0f)<0.5f) ? (Commands->Get_Random(0.0f,1.0f) < 0.5f ? "Mutant_Squirrel_Twiddler" : "Mutant_Bear_Twiddler") : ((Commands->Get_Random(0.0,1.0f)<0.6) ? "Mutant_Cat" : (Commands->Get_Random(0.0,1.0)<0.8) ? "Mutant_Cat_Blue" : "Mutant_Cat_Crazy")) : ((Commands->Get_Random(0.0,1.0f)<0.5f) ? "Mutant_Deer_Twiddler" : "Mutant_Dog_Twiddler");
+	else if (gameTime > 60)
+		preset = ((Commands->Get_Random(0.0,1.0f)<0.075f) ? "Mutant_Moose_Twiddler" : (Commands->Get_Random(0.0f,1.0f)<0.25) ? ((Commands->Get_Random(0.0,1.0f)<0.5f) ? (Commands->Get_Random(0.0f,1.0f) < 0.5f ? "Mutant_Squirrel_Twiddler" : "Mutant_Bear_Twiddler") : ((Commands->Get_Random(0.0,1.0f)<0.6) ? "Mutant_Cat" : (Commands->Get_Random(0.0,1.0)<0.8) ? "Mutant_Cat_Blue" : "Mutant_Cat_Crazy")) : ((Commands->Get_Random(0.0,1.0f)<0.5f) ? "Mutant_Deer_Twiddler" : "Mutant_Dog_Twiddler"));
 	else
-		preset = ((Commands->Get_Random(0.0,1.0f)<0.05f) ? "Mutant_Moose_Twiddler" : (Commands->Get_Random(0.0f,1.0f)<0.25) ? ((Commands->Get_Random(0.0,1.0f)<0.5f) ? (Commands->Get_Random(0.0f,1.0f) < 0.5f ? "Mutant_Squirrel_Twiddler" : "Mutant_Bear_Twiddler") : ((Commands->Get_Random(0.0,1.0f)<0.6) ? "Mutant_Cat" : (Commands->Get_Random(0.0,1.0)<0.8) ? "Mutant_Cat_Blue" : "Mutant_Cat_Crazy")) : ((Commands->Get_Random(0.0,1.0f)<0.5f) ? "Mutant_Deer_Twiddler" : "Mutant_Dog_Twiddler"));
+		preset = ((Commands->Get_Random(0.0,1.0f)<0.15f) ? (Commands->Get_Random(0.0f,1.0f)<0.5 ? "Mutant_Moose_Twiddler" : "Mutant_Mountain_Lion_Twiddler") : (Commands->Get_Random(0.0f,1.0f)<0.25) ? ((Commands->Get_Random(0.0,1.0f)<0.5f) ? (Commands->Get_Random(0.0f,1.0f) < 0.25f ? "Mutant_Squirrel_Twiddler" : "Mutant_Bear_Twiddler") : ((Commands->Get_Random(0.0,1.0f)<0.6) ? "Mutant_Cat" : (Commands->Get_Random(0.0,1.0)<0.8) ? "Mutant_Cat_Blue" : "Mutant_Cat_Crazy")) : ((Commands->Get_Random(0.0,1.0f)<0.5f) ? "Mutant_Deer_Twiddler" : "Mutant_Dog_Twiddler"));
 	Vector3 pos = BearHunterGameControlSystem.LookupNearestPosition(Vector2(Commands->Get_Random(-500.0f,500.0f),Commands->Get_Random(JmgUtility::MathClamp(CreatePositionZ-250,-600,500),CreatePositionZ)));
 	GameObject *ai = Commands->Create_Object(preset,pos);
 	Commands->Set_Facing(ai,Commands->Get_Random(-180,180));
@@ -1834,11 +2135,17 @@ GameObject *JMG_Bear_Hunter_Game_Control::MutantSpawn()
 	mutantObjectListControl += ai;
 	char params[512];
 	sprintf(params,"%.2f",JmgUtility::MathClamp(JmgUtility::MathClamp(GamePercent*0.95f,0.35f,999.9f)+Commands->Get_Random(-0.1f,0.1f),0.35f,0.9f+Get_Player_Count()*0.0225f));
+	ai->As_SoldierGameObj()->Set_Override_Muzzle_Direction(true);
 	Attach_Script_Once(ai,"JMG_Bear_Hunt_Mutant_Attacker",params);
 	Attach_Script_Once(ai,"JMG_Bear_Hunter_Mutant_Tracker","");
 	Attach_Script_Once(ai,"JMG_Bear_Hunter_Animal_Control","");
 	Attach_Script_Once(ai,"JMG_Bear_Hunter_Mutant_Respawn_Tracker","");
 	return ai;
+}
+void JMG_Bear_Hunter_Game_Control::IncreaseBonusObjectiveCount(int objectiveId)
+{
+	if (NewObjectiveSystemControl.Get_Objective_Status(objectiveId) == NewObjectiveSystem::Undefined)
+		bonusObjectiveCount++;
 }
 void JMG_Rp2_Hostile_Mutant_AI::Created(GameObject *obj)
 {
@@ -2415,13 +2722,15 @@ void JMG_Bear_Hunter_Animal_Control::Killed(GameObject *obj,GameObject *killer)
 	if (!(PlayerData.players[playerId]->killsWithoutGettingHurt % 10))
 	{
 		Commands->Give_Money(killer,50.0f,false);
-		JmgUtility::DisplayChatMessage(killer,11,194,255,"San Casina Rug Co: Congrats, here's your $50.00 for 10 in a row without being hurt!");
+		JmgUtility::DisplayChatMessage(killer,11,194,255,"Bear Rug Co: Congrats, here's your $50.00 for 10 in a row without being hurt!");
+		Create_2D_Wave_Sound_Dialog_Player(killer,"BH62.mp3");
 	}
 	PlayerData.players[playerId]->totalKills++;
 	if (!(PlayerData.players[playerId]->totalKills % 250))
 	{
 		Commands->Give_Money(killer,1000.0f,false);
-		JmgUtility::DisplayChatMessage(killer,11,194,255,"San Casina Rug Co: $1,000.00 for the 250 pelts!");
+		JmgUtility::DisplayChatMessage(killer,11,194,255,"Bear Rug Co: $1,000.00 for the 250 pelts!");
+		Create_2D_Wave_Sound_Dialog_Player(killer,"BH63.mp3");
 	}
 	if (Commands->Get_Random(0.0f,1.0f) < (1.0f-JMG_Bear_Hunter_Game_Control::gameTime/2000.0f)*0.25f)
 	{
@@ -2743,12 +3052,13 @@ void JMG_Bear_Hunter_President_Controller::Poked(GameObject *obj, GameObject *po
 			playerScoreNode->ReturnedMedicalNeedle++;
 		JmgUtility::DisplayChatMessage(poker,200,127,255,"President of Corporate America: Thanks!");
 		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Good work, he'll feel better in no time!");
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH64.mp3");
 		for (int x = 1;x < 128;x++)
 		{
 			GameObject *player = Get_GameObj(x);
 			if (!player)
 				continue;
-			Commands->Give_Money(player,1000.0f,0);
+			Commands->Give_Money(player,100.0f,0);
 		}
 		const char *weap = Get_Current_Weapon(poker);
 		if (weap && !_stricmp(weap,"Weapon_Needle"))
@@ -2835,6 +3145,8 @@ void JMG_Bear_Hunter_President_Controller::Killed(GameObject *obj,GameObject *ki
 	Commands->Fade_Background_Music("Unreal2_awakening_Hell_Ending.mp3",1000,1000);
 	for (int x = 0;x < 5;x++)
 		Commands->Create_Sound("Mission_Failed",Commands->Get_Position(obj),obj);
+	JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We lost the President of Corporate America, our company is screwed!");
+	JmgUtility::Create_2D_Wave_Sound_Dialog("BH96.mp3");
 }
 void JMG_Bear_Hunter_President_Controller::damagedEvent(GameObject *obj,bool announce,bool palyinjured)
 {
@@ -2990,6 +3302,7 @@ void JMG_Bear_Hunter_Turret_Death_Alert::Killed(GameObject *obj,GameObject *kill
 	if (JMG_Bear_Hunter_Game_Control::gameTime && JMG_Bear_Hunter_Game_Control::gameTime <= 700 && JMG_Bear_Hunter_Game_Control::objective != 12698 && JMG_Bear_Hunter_Game_Control::turretsDestroyed >= 5)
 	{
 		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: This is just getting to be too much, fall back and defend the President of Corporate America!");
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH65.mp3");
 		NewObjectiveSystemControl.Remove_Objective(5);
 		JmgUtility::SetHUDHelpText(JMG_Bear_Hunter_Game_Control::objective,Vector3(0,1,0));
 		JMG_Bear_Hunter_Game_Control::objective = 12698;
@@ -3000,6 +3313,7 @@ void JMG_Bear_Hunter_Turret_Death_Alert::Killed(GameObject *obj,GameObject *kill
 	float compassDegree = atan2(turretPos.Y,turretPos.X)* (180.0f / PI);
 	char turretMsg[220];
 	sprintf(turretMsg,"Bear Rug Co: The %s Cannon Emplacement was destroyed!",JmgUtility::JMG_Get_Compass_Directions(compassDegree));
+	JmgUtility::Create_2D_Wave_Sound_Dialog("BH66.mp3");
 	JmgUtility::MessageAllPlayers(127,127,255,turretMsg);
 }
 void JMG_Powerup_Grant_Cash::Custom(GameObject *obj,int message,int param,GameObject *sender)
@@ -3061,15 +3375,15 @@ void JMG_Bear_Hunter_Player_Spawn::Created(GameObject *obj)
 		posNode = randomSelectableSpawnPoints[(PlayerData.players[JmgUtility::JMG_Get_Player_ID(obj)] && PlayerData.players[JmgUtility::JMG_Get_Player_ID(obj)]->deaths >= 5 && JMG_Bear_Hunter_Game_Control::spawnGroup == 1) ? 0 : JMG_Bear_Hunter_Game_Control::spawnGroup].GetRandomLowestValue();
 	else
 	{
-		float ranges[7] = {2500.0f,625.0f,625.0f,625.0f,625.0f,625.0f,625.0f};
+		float ranges[7] = {5625.0f,625.0f,625.0f,625.0f,625.0f,625.0f,625.0f};
 		float weight[7] = {1.0f,2.0f,2.0f,2.0f,2.0f,2.0f,2.0f};
 		Vector3 pos[7];
 		pos[0] = JMG_Bear_Hunt_Final_Boss::bossPos;
 		for (int x = 0;x < 6;x++)
 			pos[x+1] = Commands->Get_Position(Commands->Find_Object(JMG_Bear_Hunter_Game_Control::karmaDeerIds[x]));
-		posNode = randomSelectableSpawnPoints[JMG_Bear_Hunter_Game_Control::spawnGroup].GetSpotNotVisibileFromSpots(7,pos,ranges);
+		posNode = GetSpotNotVisibileFromSpots(7,pos,ranges);
 		if (!posNode)
-			posNode = randomSelectableSpawnPoints[JMG_Bear_Hunter_Game_Control::spawnGroup].GetFurthestSpotFromSpots(7,pos,weight);
+			posNode = GetFurthestSpotFromSpots(7,pos,weight);
 	}
 	if (!posNode)
 	{
@@ -3082,12 +3396,108 @@ void JMG_Bear_Hunter_Player_Spawn::Created(GameObject *obj)
 	if (mphys)
 		mphys->Find_Teleport_Location(pos,1.0f,&pos);
 	Commands->Set_Position(obj,pos);
+	char params[220];
+	sprintf(params,"0.1,%.2f",posNode->facing);
+	Commands->Attach_Script(obj,"JMG_Utility_Delay_Then_Rotate_Camera",params);
 }
 void JMG_Bear_Hunter_Player_Spawn::Timer_Expired(GameObject *obj,int number)
 {
 	if (number == 999)
 	{
 		Created(obj);
+	}
+}
+Rp2SimplePositionSystem::SimplePositionNode *JMG_Bear_Hunter_Player_Spawn::GetSpotNotVisibileFromSpots(int points,Vector3 pos[],float ranges[])
+{
+	for (int x = 0;x < points;x++)
+		pos[x].Z += 2;
+	Rp2SimplePositionSystem::SimplePositionNode *current = randomSelectableSpawnPoints[4].SimplePositionNodeList;
+	int random = Commands->Get_Random_Int(0,randomSelectableSpawnPoints[4].ObjectCount*2)+1;
+	int originalRandom = random;
+	while (current)
+	{
+		Vector3 targetpos = current->position;
+		targetpos.Z += 2.0f;
+		bool clear = true;
+		for (int x = 0;x < points;x++)
+		{
+			float dist = JmgUtility::SimpleDistance(pos[x],current->position);
+			if (dist < ranges[x])
+			{
+				clear = false;
+				break;
+			}
+			if ((!x || dist <= 14400.0f) && !TestRay(pos[x],targetpos))
+			{
+				clear = false;
+				break;
+			}
+			for (Rp2SimplePositionSystem::SimplePositionNode *currentSightNode = bossSpawnProtectionPoints.SimplePositionNodeList;currentSightNode;currentSightNode = currentSightNode->next)
+			{
+				if (currentSightNode->value != current->value)
+					continue;
+				if (!TestRay(pos[x],currentSightNode->position))
+				{
+					clear = false;
+					break;
+				}
+			}
+		}
+		if (clear)
+		{
+			if (random)
+				random--;
+			if (!random)
+				return current;
+		}
+		current = current->next;
+		if (!current && originalRandom != random)
+			current = randomSelectableSpawnPoints[4].SimplePositionNodeList;
+	}
+	return NULL;
+}
+Rp2SimplePositionSystem::SimplePositionNode *JMG_Bear_Hunter_Player_Spawn::GetFurthestSpotFromSpots(int points,Vector3 pos[],float weight[])
+{
+	float furthestDistance = 0;
+	Rp2SimplePositionSystem::SimplePositionNode *current = randomSelectableSpawnPoints[4].SimplePositionNodeList,*furthest = NULL;
+	while (current)
+	{
+		float tempBest = -1;
+		for (int x = 0;x < points;x++)
+		{
+			float tempDistance = JmgUtility::SimpleDistance(pos[x],current->position)*weight[x];
+			if (tempBest == -1 || tempDistance < tempBest)
+				tempBest = tempDistance;
+		}
+		if (furthestDistance < tempBest)
+		{
+			furthest = current;
+			furthestDistance = tempBest;
+		}
+		current = current->next;
+	}
+	return furthest;
+}
+bool JMG_Bear_Hunter_Player_Spawn::TestRay(Vector3 pos,Vector3 targetPos)
+{
+	CastResultStruct res;
+	LineSegClass ray(pos,targetPos);
+	PhysRayCollisionTestClass coltest(ray,&res,SOLDIER_GHOST_COLLISION_GROUP);
+	PhysicsSceneClass::Get_Instance()->Cast_Ray(coltest,false);
+	return coltest.CollidedRenderObj != NULL;
+}
+void JMG_Bear_Hunter_Player_Vehicle::Created(GameObject *obj)
+{
+	lastDamaged = 0;
+	Commands->Start_Timer(obj,this,0.1f,1); 
+}
+void JMG_Bear_Hunter_Player_Vehicle::Timer_Expired(GameObject *obj,int number)
+{
+	if (number == 1)
+	{
+		if (lastDamaged)
+			lastDamaged--;
+		Commands->Start_Timer(obj,this,0.1f,1);
 	}
 }
 void JMG_Bear_Hunter_Player_Vehicle::Custom(GameObject *obj,int message,int param,GameObject *sender)
@@ -3101,6 +3511,11 @@ void JMG_Bear_Hunter_Player_Vehicle::Custom(GameObject *obj,int message,int para
 	{
 		Commands->Set_Player_Type(obj,1);
 	}
+}
+void JMG_Bear_Hunter_Player_Vehicle::Damaged(GameObject *obj,GameObject *damager,float damage)
+{
+	if (damage > 0.0f)
+		lastDamaged = 150;
 }
 void JMG_Bear_Hunter_Player_Vehicle::Killed(GameObject *obj,GameObject *killer)
 {
@@ -3164,16 +3579,21 @@ void JMG_Bear_Hunter_Security_Turret_Truck::Custom(GameObject *obj,int message,i
 	{
 		NewObjectiveSystemControl.Set_Radar_Blip(10,obj);
 		JmgUtility::DisplayChatMessage(sender,127,127,255,"Bear Rug Co: Get back in that truck, it must make it back to base!");
+		Create_2D_Wave_Sound_Dialog_Player(sender,"BH67.mp3");
 	}
 	if (message == CUSTOM_EVENT_VEHICLE_ENTERED && (JMG_Bear_Hunter_Game_Control::gameTime > 775 || JMG_Bear_Hunter_Game_Control::truckTimeExtended) && !JMG_Bear_Hunter_Game_Control::hasGotTurrets)
 	{
 		if (NewObjectiveSystemControl.Get_Objective_Status(14) == NewObjectiveSystem::Pending)
 		{
 			JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Looks like you forgot to deactivate the alarm, get out of there while you can, we're tracking lots of movement in the swamp!");
+			JmgUtility::Create_2D_Wave_Sound_Dialog("BH68.mp3");
 			NewObjectiveSystemControl.Set_Objective_Status(14,NewObjectiveSystem::Failed);
 		}
 		else
+		{
 			JmgUtility::DisplayChatMessage(sender,127,127,255,"Bear Rug Co: Now all you have to do is return the truck to base.");
+			Create_2D_Wave_Sound_Dialog_Player(sender,"BH69.mp3");
+		}
 		if (firstTime)
 		{
 			firstTime = false;
@@ -3194,7 +3614,10 @@ void JMG_Bear_Hunter_Security_Turret_Truck::Destroyed(GameObject *obj)
 		NewObjectiveSystemControl.Remove_Objective(9);
 		NewObjectiveSystemControl.Remove_Objective(10);
 		if (JMG_Bear_Hunter_Game_Control::gameTime > 775)
+		{
 			JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The truck was lost, GMax will pull another one out of the storage area for you shortly.");
+			JmgUtility::Create_2D_Wave_Sound_Dialog("BH70.mp3");
+		}
 	}
 }
 void JMG_Bear_Hunter_Security_Turret_Truck_Zone::Entered(GameObject *obj,GameObject *enterer)
@@ -3215,6 +3638,7 @@ void JMG_Bear_Hunter_Security_Turret_Truck_Zone::Entered(GameObject *obj,GameObj
 	if (JMG_Bear_Hunter_Game_Control::gameTime <= 775 && !JMG_Bear_Hunter_Game_Control::truckTimeExtended)
 	{
 		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Thanks for the turret parts, its too late for us to set up the turrets, but here is your payment!");
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH71.mp3");
 		return;
 	}
 	GameObject *driver = Get_Vehicle_Driver(obj);
@@ -3239,9 +3663,11 @@ void JMG_Bear_Hunter_Security_Turret_Truck_Zone::Entered(GameObject *obj,GameObj
 	Commands->Set_Facing(turret,90.0f);
 	Commands->Attach_Script(turret,"JMG_AI_Ignore_Object","");
 	JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Thanks for the turret parts, we'll get these up right away, and here is your payment!");
+	JmgUtility::Create_2D_Wave_Sound_Dialog("BH72.mp3");
 }
 void JMG_Bear_Hunt_Final_Boss::Created(GameObject *obj)
 {
+	targetIsMine = false;
 	moveSpeed = 0.5;
 	rabbitSize = 1.0f;
 	bossPos = Commands->Get_Position(obj);
@@ -3251,6 +3677,7 @@ void JMG_Bear_Hunt_Final_Boss::Created(GameObject *obj)
 	JMG_Bear_Hunter_Game_Control::spawnGroup = 4;
 	actionUpdate = 0;
 	attackingPlayer = false;
+	enemyId = 0;
 	Set_Skin(obj,"Blamo");
 	Commands->Set_Shield_Type(obj,"Blamo");
 	int finalMultiplier = JMG_Bear_Hunter_Game_Control::spawnKarma > 5 ? 2 : 1;
@@ -3287,7 +3714,10 @@ void JMG_Bear_Hunt_Final_Boss::Created(GameObject *obj)
 	Commands->Set_Animation(jump,"rabbitJump.rabbitJump",false,0,0.0f,90.0f,false);
 	Commands->Attach_To_Object_Bone(obj,jump,"Bunny");
 	jumperId = Commands->Get_ID(jump);
-	obj->As_SoldierGameObj()->Set_Scale_Across_Network(1.5f);
+	SoldierGameObj *soldierGameObj = obj->As_SoldierGameObj();
+	soldierGameObj->Set_Scale_Across_Network(1.5f);
+	soldierGameObj->Set_Override_Muzzle_Direction(true);
+	soldierGameObj->Set_Can_Play_Damage_Animations(false);
 	Commands->Start_Timer(obj,this,3.0f,1);
 }
 void JMG_Bear_Hunt_Final_Boss::Enemy_Seen(GameObject *obj,GameObject *seen)	
@@ -3304,19 +3734,21 @@ void JMG_Bear_Hunt_Final_Boss::Enemy_Seen(GameObject *obj,GameObject *seen)
 		return;
 	if (JMG_Bear_Hunter_Game_Control::aiIgnorePlayers[JmgUtility::JMG_Get_Player_ID(seen)])
 		return;
-	 enemyId = Commands->Get_ID(seen);
-	 if (!JMG_Bear_Hunter_Game_Control::playersDead && enemyId == JMG_Bear_Hunter_Game_Control::mutantTargetId)
-		 return;
-	 if (Commands->Is_A_Star(seen))
-	 {
+	int seenId = Commands->Get_ID(seen);
+	if (seenId == JMG_Bear_Hunter_Game_Control::mutantTargetId)
+		return;
+	targetIsMine = false;
+	enemyId = seenId;
+	if (Commands->Is_A_Star(seen))
+	{
 		attackingPlayer = true;;
 		targetUpdate = 40;
-	 }
-	 else
-	 {
+	}
+	else
+	{
 		attackingPlayer = false;
 		targetUpdate = 0;
-	 }
+	}
 }
 void JMG_Bear_Hunt_Final_Boss::Timer_Expired(GameObject *obj,int number)
 {
@@ -3365,6 +3797,12 @@ void JMG_Bear_Hunt_Final_Boss::Timer_Expired(GameObject *obj,int number)
 			return;
 		Vector3 pos = Commands->Get_Position(obj);
 		GameObject *target = enemyId ? Commands->Find_Object(enemyId) : NULL;
+		if (Get_C4_Attached(target) == obj)
+		{
+			enemyId = 0;
+			target = NULL;
+		}
+		MineHunt(obj,pos,target);
 		ChooseTarget(obj,pos,target);
 		if (targetUpdate)
 			targetUpdate--;
@@ -3398,7 +3836,7 @@ void JMG_Bear_Hunt_Final_Boss::Timer_Expired(GameObject *obj,int number)
 			if (JmgUtility::SimpleDistance(Commands->Get_Position(o),bossPos) <= 4.0f)
 				SnackTime(obj,o);
 		}
-		Commands->Start_Timer(obj,this,0.25f,2);
+		Commands->Start_Timer(obj,this,0.1f,2);
 	}
 }
 void JMG_Bear_Hunt_Final_Boss::Damaged(GameObject *obj,GameObject *damager,float damage)
@@ -3432,23 +3870,25 @@ void JMG_Bear_Hunt_Final_Boss::Damaged(GameObject *obj,GameObject *damager,float
 	}
 	lastHealth = Commands->Get_Health(obj);
 	lastArmor = Commands->Get_Shield_Strength(obj);
-	if (damage <= 0 || !damager || obj == damager || (enemyId && targetUpdate) || enemyId == Commands->Get_ID(damager) || Commands->Get_Player_Type(damager) == Commands->Get_Player_Type(obj))
+	int damagerId = Commands->Get_ID(damager);
+	if (damage <= 0 || !damager || obj == damager || (enemyId && targetUpdate) || enemyId == damagerId || Commands->Get_Player_Type(damager) == Commands->Get_Player_Type(obj))
 		return;
 	if (JMG_Bear_Hunter_Game_Control::aiIgnorePlayers[JmgUtility::JMG_Get_Player_ID(damager)])
 		return;
 	if (enemyId && JmgUtility::SimpleDistance(Commands->Get_Position(damager),Commands->Get_Position(obj)) > targetDistance)
 		return;
-	 enemyId = Commands->Get_ID(damager);
-	 if (Commands->Is_A_Star(damager))
-	 {
+	targetIsMine = false;
+	enemyId = damagerId;
+	if (Commands->Is_A_Star(damager))
+	{
 		attackingPlayer = true;
 		targetUpdate = 40;
-	 }
-	 else
-	 {
+	}
+	else
+	{
 		attackingPlayer = false;
 		targetUpdate = 0;
-	 }
+	}
 }
 void JMG_Bear_Hunt_Final_Boss::Action_Complete(GameObject *obj,int action_id,ActionCompleteReason reason)
 {
@@ -3482,6 +3922,7 @@ void JMG_Bear_Hunt_Final_Boss::Killed(GameObject *obj,GameObject *killer)
 		sprintf(deathMsg,"A %s killed the giant Mutant Rabbit!",Get_Translated_Preset_Name(killer));
 	JmgUtility::MessageAllPlayers(255,255,0,deathMsg);
 	JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We did it, the President of Corporate America has been saved!");
+	JmgUtility::Create_2D_Wave_Sound_Dialog("BH73.mp3");
 	NewObjectiveSystemControl.Set_Objective_Status(8,NewObjectiveSystem::Accomplished);
 }
 void JMG_Bear_Hunt_Final_Boss::AttackTarget(GameObject *obj,GameObject *target,float distance)
@@ -3489,11 +3930,11 @@ void JMG_Bear_Hunt_Final_Boss::AttackTarget(GameObject *obj,GameObject *target,f
 	int tempId = Commands->Get_ID(target);
 	if (targetedId == tempId && actionUpdate)
 		return;
-	actionUpdate = 10;
+	actionUpdate = 40;
 	Commands->Action_Reset(obj,10);
 	targetedId = tempId;
 	ActionParamsStruct params;
-	params.Set_Movement(target,moveSpeed,target->As_SoldierGameObj() ? 0.0f : 5.0f,false);
+	params.Set_Movement(target,moveSpeed,targetIsMine ? 5.0f : (target->As_SoldierGameObj() ? 0.0f : 5.0f),false);
 	params.MovePathfind = true;
 	Commands->Action_Goto(obj,params);
 	if ((distance < 40000.0f && JMG_Bear_Hunter_Game_Control::mutantTargetId != targetedId) || distance < 625)
@@ -3501,7 +3942,10 @@ void JMG_Bear_Hunt_Final_Boss::AttackTarget(GameObject *obj,GameObject *target,f
 	else
 		params.AttackForceFire = false;
 	params.Set_Basic(this,100,10,AI_STATE_COMBAT);
-	params.Set_Attack(target,200.0f,0.0f,Get_Player_Count() <= 10 ? true : false);
+	if (JMG_Bear_Hunter_Game_Control::mutantTargetId == targetedId)
+		params.Set_Attack(Commands->Get_Bone_Position(target,"c pelvis"),200.0f,0.0f,Get_Player_Count() <= 10 ? true : false);
+	else
+		params.Set_Attack(target,200.0f,0.0f,Get_Player_Count() <= 10 ? true : false);
 	Commands->Action_Attack(obj,params);
 }
 void JMG_Bear_Hunt_Final_Boss::Respawn(GameObject *obj)
@@ -3534,6 +3978,7 @@ void JMG_Bear_Hunt_Final_Boss::ChooseTarget(GameObject *obj,Vector3 pos,GameObje
 				closestDist = tempDist;
 				target = aiPlayer;
 				enemyId = Commands->Get_ID(aiPlayer);
+				targetIsMine = false;
 				attackingPlayer = true;
 			}
 		}
@@ -3554,6 +3999,7 @@ void JMG_Bear_Hunt_Final_Boss::ChooseTarget(GameObject *obj,Vector3 pos,GameObje
 				closestDist = tempDist;
 				target = player;
 				enemyId = Commands->Get_ID(player);
+				targetIsMine = false;
 				attackingPlayer = true;
 			}
 		}
@@ -3611,6 +4057,35 @@ void JMG_Bear_Hunt_Final_Boss::SnackTime(GameObject *obj,GameObject *target)
 			node->EatenByRabbit++;
 	}
 }
+void JMG_Bear_Hunt_Final_Boss::MineHunt(GameObject *obj,Vector3 myPos,GameObject *enemy)
+{
+	float nearest = 0.0f;
+	GameObject *c4 = NULL;
+	Vector3 headPos = Commands->Get_Bone_Position(obj,"c headt");
+	for (SLNode<C4GameObj> *current = GameObjManager::C4GameObjList.Head();current;current = current->Next())
+	{
+		GameObject *object = (SmartGameObj *)current->Data();
+		if (Get_C4_Attached(object) == obj)
+			continue;
+		Vector3 targetPos = Commands->Get_Position(object);
+		float dist = JmgUtility::SimpleDistance(targetPos,myPos);
+		targetPos.Z += 0.1f;
+		CastResultStruct res;
+		LineSegClass ray(headPos,targetPos);
+		PhysRayCollisionTestClass coltest(ray,&res,SOLDIER_GHOST_COLLISION_GROUP);
+		PhysicsSceneClass::Get_Instance()->Cast_Ray(coltest,false);
+		if ((!c4 || dist < nearest) && coltest.CollidedRenderObj)
+		{
+			c4 = object;
+			nearest = dist;
+		}
+	}
+	if ((c4 && Commands->Get_ID(c4) != enemyId && nearest < JmgUtility::SimpleDistance(myPos,Commands->Get_Position(enemy))) || (!enemy && c4))
+	{
+		targetIsMine = true;
+		enemyId = Commands->Get_ID(c4);
+	}
+}
 void JMG_Bear_Hunter_Spectator::Created(GameObject *obj)
 {
 	Commands->Set_Player_Type(obj,-4);
@@ -3633,6 +4108,9 @@ void JMG_Bear_Hunter_Spectator::Created(GameObject *obj)
 	if (mphys)
 		mphys->Find_Teleport_Location(pos,1.0f,&pos);
 	Commands->Set_Position(obj,pos);
+	char params[220];
+	sprintf(params,"0.1,%.2f",posNode->facing);
+	Commands->Attach_Script(obj,"JMG_Utility_Delay_Then_Rotate_Camera",params);
 }
 void JMG_Bear_Hunter_Spectator::Destroyed(GameObject *obj)
 {
@@ -3715,7 +4193,7 @@ void JMG_Bear_Hunter_Player_Assist_AI::Timer_Expired(GameObject *obj,int number)
 			SetAIState(obj,MoveToCabin,Vector3(),5.0f,0.85f,aiDefensePoints[1].GetRandom(0));
 		if (aiState == NoAction && !enemyId)
 			ChooseAction(obj);
-		if ((aiState == AccessPT || aiState == PTReload) && JmgUtility::SimpleDistance(Commands->Get_Position(obj),targetDestination) <= requiredDestinationRange)
+		if ((aiState == AccessPT || aiState == PTReload) && JmgUtility::SimpleFlatDistance(Commands->Get_Position(obj),targetDestination) <= requiredDestinationRange)
 		{
 			if (aiState == PTReload)
 			{
@@ -4110,6 +4588,10 @@ void JMG_Airdrop_Attached_Object_On_Create::Created(GameObject *obj)
 	Commands->Attach_Script(obj,"JMG_RP2_Set_Object_Team_On_Timer","14.3,68541,-3");
 	Commands->Attach_Script(obj,"JMG_RP2_Set_Physical_Collisions_On_Timer","17.5,68541,1 1 1");
 	CreateAObject(obj,NULL,"Daves Arrow","XG_HD_Harness","XG_HD_Harness.XG_HD_Harness",createLocation,origFacing,0,"none",437,1000);
+	createLocation.Z -= 1.25f;
+	GameObject *flare = Commands->Create_Object("Vehicle_Signal_Flare",createLocation);
+	flare->As_PhysicalGameObj()->Peek_Physical_Object()->Set_Collision_Group(Collision_Group_Type::TERRAIN_AND_BULLET_COLLISION_GROUP);
+	flareId = Commands->Get_ID(flare);
 	Commands->Send_Custom_Event(obj,obj,92562142,0,15.0f);
 	Commands->Send_Custom_Event(obj,obj,92562143,0,25.0f);
 }
@@ -4148,6 +4630,9 @@ void JMG_Airdrop_Attached_Object_On_Create::Custom(GameObject *obj,int message,i
 	}
 	if (message == 92562142)
 	{
+		GameObject *flare = Commands->Find_Object(flareId);
+		if (flare)
+			Commands->Destroy_Object(flare);
 		Commands->Enable_Collisions(obj);
 		Commands->Set_Position(obj,origPos);
 		GameObject *Zone = Commands->Find_Object(Get_Int_Parameter("DeathZoneID"));
@@ -4763,7 +5248,10 @@ void JMG_Bear_Hunter_Engineer_AI::Enemy_Seen(GameObject *obj,GameObject *seen)
 		return;
 	if (JMG_Bear_Hunter_Game_Control::aiIgnorePlayers[JmgUtility::JMG_Get_Player_ID(seen)])
 		return;
-	targetId = Commands->Get_ID(seen);
+	int seenId = Commands->Get_ID(seen);
+	if (seenId == JMG_Bear_Hunter_Game_Control::mutantTargetId)
+		return;
+	targetId = seenId;
 	targetUpdate = 20;
 }
 void JMG_Bear_Hunter_Engineer_AI::Timer_Expired(GameObject *obj,int number)
@@ -4952,6 +5440,8 @@ bool JMG_Bear_Hunter_Engineer_AI::Valid_Repair_Target(GameObject *obj,GameObject
 		return false;
 	if (target->As_SoldierGameObj() && Get_Hitpoints(target) > Get_Max_Hitpoints(target)*repairSoldierVehicleTurret.X)
 		return false;
+	if (target->As_VehicleGameObj() && Get_Vehicle_Mode(target) != VEHICLE_TYPE_TURRET && !Get_Vehicle_Occupant_Count(target))
+		return false;
 	if (target->As_VehicleGameObj() && Get_Vehicle_Mode(target) != VEHICLE_TYPE_TURRET && Get_Hitpoints(target) > Get_Max_Hitpoints(target)*repairSoldierVehicleTurret.Y)
 		return false;
 	if (target->As_VehicleGameObj() && Get_Vehicle_Mode(target) == VEHICLE_TYPE_TURRET && (Get_Hitpoints(target) > Get_Max_Hitpoints(target)*repairSoldierVehicleTurret.Z || !JMG_Bear_Hunter_Power_Transformer::online))
@@ -5022,13 +5512,15 @@ void JMG_Bear_Hunter_Oil_Rig::Poked(GameObject *obj, GameObject *poker)
 			oilRigCount++;
 			if (oilRigCount == 7)
 			{
-				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Thats all of them, great work guys!");
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: That's all of the pump jacks in the North East, great work guys!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH74.mp3");
 				NewObjectiveSystemControl.Set_Objective_Status(16,NewObjectiveSystem::Accomplished);
 			}
 			else
 			{
 				char successMsg[220];
 				sprintf(successMsg,"Bear Rug Co: Oil rig on-line, %d more to go.",7-oilRigCount);
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH75.mp3");
 				JmgUtility::MessageAllPlayers(127,127,255,successMsg);
 				unsigned int textId = (oilRigCount == 1) ? 12752 : (oilRigCount == 2) ? 12753 : (oilRigCount == 3) ? 12754 : (oilRigCount == 4) ? 12755 : 12756;
 				NewObjectiveSystemControl.Set_Objective_Mission(16,textId,textId);
@@ -5067,10 +5559,10 @@ void JMG_Bear_Hunter_Damaged_Oil_Rig::Damaged(GameObject *obj,GameObject *damage
 		char params[256];
 		sprintf(params,"%s,%.2f,%.2f,1",Get_Parameter("RepairAnimation"),Get_Float_Parameter("StartFrame"),Get_Float_Parameter("EndFrame"));
 		Commands->Attach_Script(rig,"JMG_Bear_Hunter_Oil_Rig",params);
+		BearHunterScoreSystem::BHScoreNode *node = bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(obj));
 		if (NewObjectiveSystemControl.Set_Objective_Status(17,NewObjectiveSystem::Accomplished))
 		{
 			Commands->Give_Points(damager,250.0f,false);
-			BearHunterScoreSystem::BHScoreNode *node = bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(obj));
 			node->BonusObjectivesCompleted++;
 			node->totalObjectivesCompleted++;
 			node->ObjectiveOilRigsRepaired++;
@@ -5136,7 +5628,10 @@ void JMG_Bear_Hunter_Weapons_Container::Custom(GameObject *obj,int message,int p
 				if (JMG_Bear_Hunter_Game_Control::weaponsReturned[x])
 					count++;
 			if (count == 1)
-				NewObjectiveSystemControl.Add_Objective(19,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12784,"",12784,2);
+			{
+				JMG_Bear_Hunter_Game_Control::IncreaseBonusObjectiveCount(19);
+				NewObjectiveSystemControl.Add_Objective(19,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12784,"",12784,JMG_Bear_Hunter_Game_Control::bonusObjectiveCount);
+			}
 			else
 				NewObjectiveSystemControl.Set_Objective_Mission(19,12785-count,12785-count);
 		}
@@ -5165,13 +5660,27 @@ void JMG_Bear_Hunter_Weapons_Container_Attached::Timer_Expired(GameObject *obj,i
 			JMG_Bear_Hunter_Game_Control::weaponsUnlocked[Get_Int_Parameter("WeaponType")] = true;
 			switch (Get_Int_Parameter("WeaponType"))
 			{
-			case 0:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Good work, all infantry classes now have a Twin Bow.");break;
-			case 1:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Great work, basic infantry now have a 10 gauge shotgun.");break;
-			case 2:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Due to your hard work, tier 1 infantry now have a FAMAS F1.");break;
-			case 3:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Excellent work, tier 2 infantry now have the PPSh-41!");break;
-			case 4:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Enjoy the AA12 with your tier 3 infantry!");break;
-			case 5:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Engineers can now use the Beretta 93R.");break;
-			case 6:JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Wow, looks like that bear had blueprints for a plasma rifle, all classes now have a plasma rifle!");break;
+			case 0:
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Good work, all infantry classes now have a Twin Bow.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH76.mp3");break;
+			case 1:
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Great work, basic infantry now have a 10 gauge shotgun.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH77.mp3");break;
+			case 2:
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Due to your hard work, tier 1 infantry now have a FAMAS F1.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH78.mp3");break;
+			case 3:
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Excellent work, tier 2 infantry now have the PPSh-41!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH79.mp3");break;
+			case 4:
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Enjoy the AA12 with your tier 3 infantry!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH80.mp3");break;
+			case 5:
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Engineers can now use the Beretta 93R.");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH81.mp3");break;
+			case 6:
+				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Wow, looks like that deer had blueprints for a plasma rifle, all classes now have a plasma rifle!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH82.mp3");break;
 			}
 			if (Get_Int_Parameter("WeaponType") < 6)
 			{
@@ -5277,8 +5786,10 @@ void JMG_Bear_Hunter_Giant_Deer_Boss::Enemy_Seen(GameObject *obj,GameObject *see
 	}
 	if (NewObjectiveSystemControl.Get_Objective_Status(20) == NewObjectiveSystem::NotDefined)
 	{
-		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: That deer looks real exotic, kill it so we can stuff it and sell it for big bucks!!");
-		NewObjectiveSystemControl.Add_Objective(20,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12786,"",12786,6);
+		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: That deer looks real exotic, kill it so we can stuff it and sell it for big bucks!");
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH83.mp3");
+		JMG_Bear_Hunter_Game_Control::IncreaseBonusObjectiveCount(20);
+		NewObjectiveSystemControl.Add_Objective(20,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12786,"",12786,JMG_Bear_Hunter_Game_Control::bonusObjectiveCount);
 	}
 }
 void JMG_Bear_Hunter_Giant_Deer_Boss::Custom(GameObject *obj,int message,int param,GameObject *sender)
@@ -5401,12 +5912,15 @@ void JMG_Bear_Hunter_Giant_Deer_Boss::Damaged(GameObject *obj,GameObject *damage
 	if (NewObjectiveSystemControl.Get_Objective_Status(20) == NewObjectiveSystem::NotDefined)
 	{
 		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: That deer looks real exotic, kill it so we can stuff it and sell it for big bucks!");
-		NewObjectiveSystemControl.Add_Objective(20,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12786,"",12786,6);
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH83.mp3");
+		JMG_Bear_Hunter_Game_Control::IncreaseBonusObjectiveCount(20);
+		NewObjectiveSystemControl.Add_Objective(20,NewObjectiveSystem::Bonus,NewObjectiveSystem::Pending,12786,"",12786,JMG_Bear_Hunter_Game_Control::bonusObjectiveCount);
 	}
 }
 void JMG_Bear_Hunter_Giant_Deer_Boss::Killed(GameObject *obj,GameObject *killer)
 {
-	JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Good work killing that exotic deer, grab its carcass and return it to base and we’ll swap it out for a new weapon prototype we’re working on.");
+	JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Good work killing that exotic deer, grab its carcass and return it to base and we'll swap it out for a new weapon prototype we're working on.");
+	JmgUtility::Create_2D_Wave_Sound_Dialog("BH84.mp3");
 	NewObjectiveSystemControl.Set_Objective_Mission(20,12787,12787);
 	Commands->Give_Points(killer,250.0f,false);
 	Vector3 pos = Commands->Get_Position(obj);
@@ -5478,6 +5992,8 @@ void JMG_Bear_Hunter_Kill_Score_Tracker::Killed(GameObject *obj,GameObject *kill
 		case 1000003566:case 1000003569:case 1000003571:node->WildDeerKilled++;break;
 		case 1000003573:case 1000003575:case 1000003577:node->WildSquirrelsKilled++;break;
 		case 1000003643:case 1000003647:case 1000003649:node->FriendlyTinyDeerKilled++;break;
+		case 1000000024:case 1000000026:case 1000000028:Commands->Get_Player_Type(obj) == 1 ? node->KilledFriendlyCougars++ : node->KilledCougars++;break;
+		case 1000000036:case 1000000038:case 1000000040:node->KilledMutantCougars++;break;
 		default:node->KilledHumanAi++;break;
 		}
 }
@@ -5593,17 +6109,20 @@ void JMG_Bear_Hunter_Radio_Tower_Switch::Poked(GameObject *obj, GameObject *poke
 	if (NewObjectiveSystemControl.Get_Objective_Status(21) == NewObjectiveSystem::NotDefined)
 	{
 		JmgUtility::DisplayChatMessage(poker,127,127,255,"Bear Rug Co: We have the Communications Tower turned off right now because it was scaring off the wild life, leave it off!");
+		Create_2D_Wave_Sound_Dialog_Player(poker,"BH85.mp3");
 		return;
 	}
 	if (NewObjectiveSystemControl.Get_Objective_Status(21) == NewObjectiveSystem::Removed)
 	{
 		JmgUtility::DisplayChatMessage(poker,127,127,255,"Bear Rug Co: Sorry, its too late to activate the tower now.");
+		Create_2D_Wave_Sound_Dialog_Player(poker,"BH86.mp3");
 		return;
 	}
 	Commands->Enable_HUD_Pokable_Indicator(obj,false);
 	Commands->Give_Points(obj,250.0f,false);
 	activated = true;
 	JmgUtility::MessageAllPlayers(127,127,255,"Distress Signal Transmission In Progress: We are under attack by mutants on Bear Island and we need help!");
+	JmgUtility::Create_2D_Wave_Sound_Dialog("BH87.mp3");
 	NewObjectiveSystemControl.Set_Objective_Mission(21,12790,12790);
 	Commands->Set_Animation(obj,"RdoTwrSwtch.RdoTwrSwtch",false,0,2.0f,2.0f,false);
 	GameObject *radioTower = Commands->Find_Object(JMG_Bear_Hunter_Radio_Tower_Control::radioTowerId);
@@ -5627,6 +6146,7 @@ void JMG_Bear_Hunter_Radio_Tower_Support::Killed(GameObject *obj,GameObject *kil
 	if (NewObjectiveSystemControl.Get_Objective_Status(21) != NewObjectiveSystem::Accomplished)
 	{
 		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The communications tower was destroyed before anyone could answer our distress call!");
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH88.mp3");
 		NewObjectiveSystemControl.Set_Objective_Status(21,NewObjectiveSystem::Failed);
 	}
 	JMG_Bear_Hunter_Radio_Tower_Control::destroyed = true;
@@ -5668,6 +6188,7 @@ void JMG_Bear_Hunter_Death_Water_Zone::Entered(GameObject *obj,GameObject *enter
 		Set_Screen_Fade_Color_Player(enterer,0.102f,0.086f,0.098f,0.0f);
 		Set_Screen_Fade_Opacity_Player(enterer,0.9f,0.0f);
 		JMG_Bear_Hunter_Game_Control::diedInWater[JmgUtility::JMG_Get_Player_ID(enterer)] = true;
+		Commands->Attach_Script(enterer,"JMG_Utility_Apply_Damage_While_In_Zone_Attached","0.1f,99999.0f,None,0");
 	}
 	VehicleGameObj *vehicle = enterer->As_VehicleGameObj();
 	if (vehicle)
@@ -6231,7 +6752,8 @@ void JMG_Powerup_Prez_Medical_Needle::Created(GameObject *obj)
 {
 	if (NewObjectiveSystemControl.Get_Objective_Status(22) == NewObjectiveSystem::NotDefined)
 	{
-		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: President of Corporate America had some painkillers called in, they airdropped them outside of DERP, we'll pay everyone $1,000.00 if you can return it to the him.");
+		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The President of Corporate America had some painkillers called in, they airdropped them outside of DERP, we'll pay everyone $100.00 if you can return it to him.");
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH89.mp3");
 		NewObjectiveSystemControl.Add_Objective(22,NewObjectiveSystem::Tertiary,NewObjectiveSystem::Pending,12795,"",12795,obj);
 	}
 	else
@@ -6299,6 +6821,7 @@ void JMG_Bear_Hunter_Power_Transformer::Damaged(GameObject *obj,GameObject *dama
 			if (Commands->Get_Shield_Strength(obj) < 490.0f)
 			{
 				JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The power substation is under attack, defend it or else we'll lose power to the turrets!");
+				JmgUtility::Create_2D_Wave_Sound_Dialog("BH90.mp3");
 				NewObjectiveSystemControl.Add_Objective(23,NewObjectiveSystem::Secondary,NewObjectiveSystem::Pending,12798,"",12798,obj);
 				objectiveActive = true;
 			}
@@ -6307,6 +6830,7 @@ void JMG_Bear_Hunter_Power_Transformer::Damaged(GameObject *obj,GameObject *dama
 		else if (difftime(clock(),announceTime) > 10000.0f)
 		{
 			JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The power substation is still under attack!");
+			JmgUtility::Create_2D_Wave_Sound_Dialog("BH91.mp3");
 			announceTime = clock();
 		}
 	if (JMG_Bear_Hunter_Power_Transformer::online && !Commands->Get_Shield_Strength(obj))
@@ -6318,6 +6842,7 @@ void JMG_Bear_Hunter_Power_Transformer::Damaged(GameObject *obj,GameObject *dama
 			playerScoreNode->RepairedSubstation--;
 		Commands->Set_Player_Type(obj,-2);
 		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The power substation has been critically damaged, all turrets are down, get out there and repair it!");
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH92.mp3");
 		Commands->Create_Explosion("Explosion_IonCannonBeacon",Vector3(187.902f,-721.522f,1.852f),0);
 		NewObjectiveSystemControl.Set_Objective_Mission(23,12799,12799);
 		Commands->Set_Animation(obj,"transformer.transformer",false,0,1.0,1.0,true);
@@ -6333,6 +6858,7 @@ void JMG_Bear_Hunter_Power_Transformer::Damaged(GameObject *obj,GameObject *dama
 			playerScoreNode->RepairedSubstation++;
 		Commands->Set_Player_Type(obj,1);
 		JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: The power substation has been repaired, turrets back on-line, try to defend it this time!");
+		JmgUtility::Create_2D_Wave_Sound_Dialog("BH93.mp3");
 		NewObjectiveSystemControl.Set_Objective_Mission(23,12798,12798);
 		Commands->Set_Animation(obj,"transformer.transformer",false,0,0,0,true);
 		ToggleTurrets(true);
@@ -6449,7 +6975,7 @@ void JMG_Wandering_AI::Enemy_Seen(GameObject *obj,GameObject *seen)
 		return;
 	if (Is_Script_Attached(seen,"JMG_AI_Ignore_Object"))
 		return;
-	if (Commands->Is_A_Star(seen) && JMG_Wandering_AI_Controller::aiIgnorePlayers[JmgUtility::JMG_Get_Player_ID(seen)])
+	if (Commands->Is_A_Star(seen) && JMG_Bear_Hunter_Game_Control::wanderingAiIgnorePlayers[JmgUtility::JMG_Get_Player_ID(seen)])
 		return;
 	if (vehicleChaseTimeReset && (seen->As_VehicleGameObj() || Get_Vehicle(seen)) && JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(seen)) > 225)
 		return;
@@ -6648,7 +7174,7 @@ void JMG_Wandering_AI::Damaged(GameObject *obj,GameObject *damager,float damage)
 		return;
 	if (!damaged && damage > 0)
 		damaged = true;
-	if (Commands->Is_A_Star(damager) && JMG_Wandering_AI_Controller::aiIgnorePlayers[JmgUtility::JMG_Get_Player_ID(damager)])
+	if (Commands->Is_A_Star(damager) && JMG_Bear_Hunter_Game_Control::wanderingAiIgnorePlayers[JmgUtility::JMG_Get_Player_ID(damager)])
 		return;
 	if (Is_Script_Attached(damager,"JMG_AI_Ignore_Object"))
 		return;
@@ -6677,7 +7203,7 @@ void JMG_Wandering_AI::Action_Complete(GameObject *obj,int action_id,ActionCompl
 		GameObject *target = Commands->Find_Object(currentTargetID);
 		int playerId = JmgUtility::JMG_Get_Player_ID(target);
 		if (playerId && Commands->Get_Health(target))
-			JMG_Wandering_AI_Controller::aiIgnorePlayers[playerId] = 30;
+			JMG_Bear_Hunter_Game_Control::wanderingAiIgnorePlayers[playerId] = 30;
 	}
 }
 void JMG_Wandering_AI::SoundDHeard(GameObject *obj,const CombatSound &sound)
@@ -6692,7 +7218,7 @@ void JMG_Wandering_AI::SoundDHeard(GameObject *obj,const CombatSound &sound)
 	bool Success = false;//(dist > 225 && Commands->Get_Random(0.00f,1.00f) > 0.015)fail
 	if (dist < 144)// Sound is near, must investigate
 		Success = true;
-	else if (sound.sound == 6 && dist < 250000 && Commands->Get_Random(0.00f,1.00f) < JMG_Wandering_AI_Controller::soundAttentionWhoreNotify)//player just wants to be noticed
+	else if (sound.sound == 6 && dist < 250000 && Commands->Get_Random(0.00f,1.00f) < JMG_Bear_Hunter_Game_Control::soundAttentionWhoreNotify)//player just wants to be noticed
 		Success = true;
 	else if (Commands->Get_Random(0.00f,1.00f) < 0.00025 && sound.sound != 5)// Bad Luck
 		Success = true;
@@ -6731,27 +7257,6 @@ Vector3 JMG_Wandering_AI::GetRandomPosition()
 		return Vector3();
 	}
 	return node->position;
-}
-void JMG_Wandering_AI_Controller::Created(GameObject *obj)
-{
-	for (int x = 0;x < 128;x++)
-		aiIgnorePlayers[x] = 0;
-	Commands->Start_Timer(obj,this,1.0f,1);
-}
-void JMG_Wandering_AI_Controller::Timer_Expired(GameObject *obj,int number)
-{
-	if (number == 1)
-	{
-		for (int x = 0;x < 128;x++)
-		{
-			if (aiIgnorePlayers[x] > 0)
-				aiIgnorePlayers[x]--;
-			GameObject *player = Get_GameObj(x);
-			if (player && !Is_Script_Attached(player,"JMG_Rp2_Dedicated_Server_Sound_Emulator"))
-			Commands->Attach_Script(player,"JMG_Rp2_Dedicated_Server_Sound_Emulator","");
-		}
-		Commands->Start_Timer(obj,this,1.0f,1);
-	}
 }
 void JMG_Wandering_AI_Controller::Destroyed(GameObject *obj)
 {
@@ -7412,9 +7917,14 @@ void JMG_Bear_Hunter_Wolf_Wander_Point::Timer_Expired(GameObject *obj,int number
 }
 void JMG_Bear_Hunter_Armored_Car::Created(GameObject *obj)
 {
+	GameObject *effect = Commands->Create_Object("Armored_Car_Effect",Commands->Get_Position(obj));
+	Commands->Attach_To_Object_Bone(effect,obj,"origin");
+	effectRangeId = Commands->Get_ID(effect);
 	lightsOn = false;
 	Commands->Set_Animation(obj,"ArmoredCar.ArmoredCar",false,0,0,0,true);
 	Commands->Start_Timer(obj,this,0.1f,1);
+	Commands->Start_Timer(obj,this,1.0f,2);
+	Commands->Start_Timer(obj,this,0.1f,3);
 }
 void JMG_Bear_Hunter_Armored_Car::Timer_Expired(GameObject *obj,int number)
 {
@@ -7428,14 +7938,201 @@ void JMG_Bear_Hunter_Armored_Car::Timer_Expired(GameObject *obj,int number)
 			{
 				Remove_Script(obj,"JMG_Bear_Hunter_AI_Ignore_Up_To_75_Meters");
 				Commands->Set_Animation(obj,"ArmoredCar.ArmoredCar",false,0,1,1,true);
+				GameObject *driver = Get_Vehicle_Driver(obj);
+				if (driver)
+					Set_Object_Visibility_For_Player(driver,effectRangeId,true);
 			}
 			else
 			{
 				Attach_Script_Once(obj,"JMG_Bear_Hunter_AI_Ignore_Up_To_75_Meters","");
 				Commands->Set_Animation(obj,"ArmoredCar.ArmoredCar",false,0,0,0,true);
+				GameObject *driver = Get_Vehicle_Driver(obj);
+				if (driver)
+					Set_Object_Visibility_For_Player(driver,effectRangeId,false);
 			}
 		}
 		Commands->Start_Timer(obj,this,0.1f,1);
+	}
+	if (number == 2)
+	{
+		GameObject *owner = Get_Vehicle_Owner(obj);
+		if (owner)
+			ownerNode = bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(owner));
+	}
+	if (number == 3)
+	{
+		for (int x = 1;x < 128;x++)
+		{
+			GameObject *player = Get_GameObj(x);
+			if (player)
+				Set_Object_Visibility_For_Player(player,effectRangeId,false);
+		}
+	}
+}
+void JMG_Bear_Hunter_Armored_Car::Custom(GameObject *obj,int message,int param,GameObject *sender)
+{
+	if (message == CUSTOM_EVENT_VEHICLE_ENTERED)
+	{
+		GameObject *driver = Get_Vehicle_Driver(obj);
+		if (driver && sender == driver && lightsOn)
+			Set_Object_Visibility_For_Player(driver,effectRangeId,true);
+	}
+	if (message == CUSTOM_EVENT_VEHICLE_EXITED)
+	{
+		if (lightsOn)
+			Set_Object_Visibility_For_Player(sender,effectRangeId,false);
+	}
+}
+void JMG_Bear_Hunter_Armored_Car::Destroyed(GameObject *obj)
+{
+	GameObject *effect = Commands->Find_Object(effectRangeId);
+	if (effect)
+		Commands->Destroy_Object(effect);
+}
+void JMG_Bear_Hunter_Armored_Car_Controller::Created(GameObject *obj)
+{
+	Commands->Start_Timer(obj,this,0.1f,1);
+}
+void JMG_Bear_Hunter_Armored_Car_Controller::Timer_Expired(GameObject *obj,int number)
+{
+	if (number == 1 && !The_Game()->Is_Game_Over())
+	{
+		for (SLNode<SmartGameObj> *current = GameObjManager::SmartGameObjList.Head();current;current = current->Next())
+		{
+			SmartGameObj *armoredCar = current->Data();
+			if (!armoredCar || !Is_Script_Attached(armoredCar,"JMG_Bear_Hunter_Armored_Car"))
+				continue;
+			JMG_Bear_Hunter_Armored_Car *script = (JMG_Bear_Hunter_Armored_Car*)Find_Script_On_Object(armoredCar,"JMG_Bear_Hunter_Armored_Car");
+			if (!script || !script->lightsOn)
+				continue;
+			ArmoredCarSupport(armoredCar,script->ownerNode);
+		}
+		Commands->Start_Timer(obj,this,0.1f,1);
+	}
+}
+void JMG_Bear_Hunter_Armored_Car_Controller::ArmoredCarSupport(GameObject *obj,BearHunterScoreSystem::BHScoreNode *ownerNode)
+{
+	Vector3 myPos = Commands->Get_Position(obj);
+	for (SLNode<SmartGameObj> *current = GameObjManager::SmartGameObjList.Head();current;current = current->Next())
+	{
+		SmartGameObj *o = current->Data();
+		if (!o || Is_Script_Attached(o,"JMG_Bear_Hunter_Armored_Car") || Commands->Get_Player_Type(o) != 1)
+			continue;
+		if (JmgUtility::SimpleDistance(Commands->Get_Position(o),myPos) > 5625.0f)
+			continue;
+		if (o->As_SoldierGameObj())
+		{
+			if (Get_Vehicle(o))
+				continue;
+			JMG_Bear_Hunter_Player_Soldier *script = (JMG_Bear_Hunter_Player_Soldier*)Find_Script_On_Object(o,"JMG_Bear_Hunter_Player_Soldier");
+			if (!script)
+				continue;
+			if (!script->lastDamaged)
+				RegenHp(o,ownerNode);
+			const char *weap = Get_Current_Weapon(o);
+			if (!weap || !_stricmp(weap,"Weapon_Binoculars") || !_stricmp(weap,"Weapon_Needle") || !_stricmp(weap,"Weapon_Golden_Deer_Statue") || !_stricmp(weap,"Weapon_Weapons_Container") || !_stricmp(weap,"Weapon_Sentry_Gun_Beacon"))
+				script->armoredCarWeapon.Reset();
+			if (_stricmp(script->armoredCarWeapon.weaponName,weap))
+			{
+				script->armoredCarWeapon.Reset();
+				sprintf(script->armoredCarWeapon.weaponName,"%s",weap);
+				script->armoredCarWeapon.calculatedGrant = Get_Max_Total_Bullets(o,weap)/150.0;
+			}
+			int currentBullets = Get_Total_Bullets(o,weap);
+			int maxTotalBullets = Get_Max_Total_Bullets(o,weap);
+			if (currentBullets < script->armoredCarWeapon.lastammo)
+				script->armoredCarWeapon.Reset();
+			if (!script->armoredCarWeapon.lastFireTime && currentBullets < maxTotalBullets)
+			{
+				script->armoredCarWeapon.addedGrant += script->armoredCarWeapon.calculatedGrant;
+				double ammoClips;
+				script->armoredCarWeapon.addedGrant = modf(script->armoredCarWeapon.addedGrant,&ammoClips);
+				int finalClips = (int)JmgUtility::MathClampDouble(ammoClips,0.0,(double)(maxTotalBullets-currentBullets));
+				if (finalClips)
+				{
+					Set_Clip_Bullets(o,weap,Get_Clip_Bullets(o,weap)+finalClips);
+					if (ownerNode && !_stricmp(Get_Player_Name(o),ownerNode->PlayerName))
+						bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(o))->SupportReceivedAmmoSelf += finalClips;
+					else
+						bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(o))->SupportReceivedAmmo += finalClips;
+					if (ownerNode)
+					{
+						ownerNode->SupportGrantedAmmo += finalClips;
+						GrantScore(ownerNode->PlayerName,(float)(finalClips*(1.0f/(float)maxTotalBullets)));
+					}
+				}
+			}
+			script->armoredCarWeapon.lastammo = Get_Total_Bullets(o,weap);
+		}
+		if (o->As_VehicleGameObj())
+		{
+			JMG_Bear_Hunter_Player_Vehicle *script = (JMG_Bear_Hunter_Player_Vehicle*)Find_Script_On_Object(o,"JMG_Bear_Hunter_Player_Vehicle");
+			if (!script || script->lastDamaged)
+				continue;
+			RegenHp(o,ownerNode);
+		}
+	}
+}
+void JMG_Bear_Hunter_Armored_Car_Controller::RegenHp(GameObject *obj,BearHunterScoreSystem::BHScoreNode *ownerNode)
+{
+	GameObject *owner = Get_Vehicle_Driver(obj);
+	if (!owner)
+		owner = obj;
+	float maxHealth = Commands->Get_Max_Health(obj);
+	float maxShield = Commands->Get_Max_Shield_Strength(obj);
+	if (Commands->Get_Health(obj) < maxHealth)
+	{
+		float grantHp = maxHealth/300.0f;
+		Commands->Set_Health(obj,Commands->Get_Health(obj)+grantHp);
+		if (Commands->Get_Health(obj) > maxHealth)
+			Commands->Set_Health(obj,maxHealth);
+		DecideScoreVehicleOrInfantry(obj,owner,ownerNode,grantHp);
+	}
+	else if (Commands->Get_Shield_Strength(obj) < maxShield)
+	{
+		float grantHp = maxShield/300.0f;
+		Commands->Set_Shield_Strength(obj,Commands->Get_Shield_Strength(obj)+grantHp);
+		if (Commands->Get_Shield_Strength(obj) > maxShield)
+			Commands->Set_Shield_Strength(obj,maxShield);
+		DecideScoreVehicleOrInfantry(obj,owner,ownerNode,grantHp);
+	}
+}
+void JMG_Bear_Hunter_Armored_Car_Controller::GrantScore(const char *playerName,float score)
+{
+	GameObject *player = Get_GameObj_By_Player_Name(playerName);
+	if (!player)
+		return;
+	Commands->Give_Points(player,score,false);
+}
+void JMG_Bear_Hunter_Armored_Car_Controller::DecideScoreVehicleOrInfantry(GameObject *obj,GameObject *owner,BearHunterScoreSystem::BHScoreNode *ownerNode,float grantHp)
+{
+	if (obj->As_SoldierGameObj())
+		GrantInfantryRepairScore(obj,owner,ownerNode,grantHp);
+	if (obj->As_VehicleGameObj())
+		GrantVehicleRepairScore(obj,owner,ownerNode,grantHp);
+}
+void JMG_Bear_Hunter_Armored_Car_Controller::GrantVehicleRepairScore(GameObject *obj,GameObject *owner,BearHunterScoreSystem::BHScoreNode *ownerNode,float grantHp)
+{
+	if (ownerNode && !_stricmp(Get_Player_Name(owner),ownerNode->PlayerName))
+		bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(owner))->tmpSupportReceivedHpVehicleSelf += grantHp;
+	else
+		bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(owner))->tmpSupportReceivedVehicleHp += grantHp;
+	if (ownerNode)
+	{
+		GrantScore(ownerNode->PlayerName,grantHp*Get_Damage_Points(obj)*0.5f);
+		ownerNode->tmpSupportGrantedHpVehicle += grantHp;
+	}
+}
+void JMG_Bear_Hunter_Armored_Car_Controller::GrantInfantryRepairScore(GameObject *obj,GameObject *owner,BearHunterScoreSystem::BHScoreNode *ownerNode,float grantHp)
+{
+	if (ownerNode && !_stricmp(Get_Player_Name(owner),ownerNode->PlayerName))
+		bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(owner))->tmpSupportReceivedHpInfantrySelf += grantHp;
+	else
+		bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(owner))->tmpSupportReceivedInfantryHp += grantHp;
+	if (ownerNode)
+	{
+		GrantScore(ownerNode->PlayerName,grantHp*Get_Damage_Points(obj)*0.5f);
+		ownerNode->tmpSupportGrantedHpInfantry += grantHp;
 	}
 }
 void JMG_Bear_Hunt_Final_Boss_Support::Created(GameObject *obj)
@@ -7729,7 +8426,8 @@ void JMG_Bear_Hunter_Golden_Deer_Statue::Custom(GameObject *obj,int message,int 
 	{
 		if (NewObjectiveSystemControl.Get_Objective_Status(24) == NewObjectiveSystem::NotDefined)
 		{
-			JmgUtility::MessageAllPlayers(127,127,255,"San Casina Rug Co: Not only does that statue look valuable, but those little tiny deer seem to love it, bring it back to base!");
+			JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: Not only does that statue look valuable, but those little tiny deer seem to love it, bring it back to base!");
+			JmgUtility::Create_2D_Wave_Sound_Dialog("BH94.mp3");
 			NewObjectiveSystemControl.Add_Objective(24,NewObjectiveSystem::Tertiary,NewObjectiveSystem::Pending,12821,"",12821,JMG_Bear_Hunter_Game_Control::centerOfBase);
 		}
 		else
@@ -7794,7 +8492,8 @@ void JMG_Bear_Hunter_Golden_Deer_Statue_Attached::Timer_Expired(GameObject *obj,
 		{
 			Remove_Weapon(obj,"Weapon_Golden_Deer_Statue");
 			JMG_Bear_Hunter_Golden_Deer_Statue::playerWithTheStatue = 0;
-			JmgUtility::MessageAllPlayers(127,127,255,"San Casina Rug Co: We've placed the deer statue on the power substation, tiny deer will now guard it with their lives!");
+			JmgUtility::MessageAllPlayers(127,127,255,"Bear Rug Co: We've placed the deer statue on the power substation, those tiny deer will now guard it with their lives!");
+			JmgUtility::Create_2D_Wave_Sound_Dialog("BH95.mp3");
 			bearHunterScoreSystem.Get_Current_Player_Score_Node(JmgUtility::JMG_Get_Player_ID(obj))->ReturnedDeerStatue++;
 			Commands->Give_Money(obj,500.0f,false);
 			NewObjectiveSystemControl.Set_Objective_Status(24,NewObjectiveSystem::Accomplished);
@@ -7902,6 +8601,178 @@ void JMG_Bear_Hunter_AI_Avoid_Enemies::setRetreatLocation(GameObject *obj,GameOb
 void JMG_Security_Camera_Behavior_Ignore::Created(GameObject *obj)
 {
 }
+void JMG_Bear_Hunter_Friendly_Cougar::Created(GameObject *obj)
+{
+	gotoId = 0;
+	LastSeen = 0;
+	currentTargetID = 0;
+	secondaryTargetId = 0;
+	lastSeenSecondary = 0;
+	huntorattack = 0;
+	waitcount = 0;
+	speed = 2.0f;
+	stuckTime = 0;
+	movingSlow = false;
+	lastPos = homelocation = Commands->Get_Position(obj);
+	noPathfindRange = Get_Float_Parameter("NoPathfindDistance")*Get_Float_Parameter("NoPathfindDistance");
+	minVisibilityTime = Get_Int_Parameter("MinLooseVisibilityTime")*10;
+	maxVisibilityTime = Get_Int_Parameter("MaxLooseVisibilityTime")*10;
+	maxHuntDistance = Get_Float_Parameter("MaxHuntDistance")*Get_Float_Parameter("MaxHuntDistance");
+	Commands->Enable_Enemy_Seen(obj,true);
+	Commands->Start_Timer(obj,this,0.1f,92562343);
+}
+void JMG_Bear_Hunter_Friendly_Cougar::Enemy_Seen(GameObject *obj,GameObject *seen)	
+{
+	if (!Commands->Get_Health(seen))
+		return;
+	if (Is_Script_Attached(seen,"JMG_Bear_Hunter_AI_Avoid_Enemies") ||  Is_Script_Attached(seen,"JMG_Utility_AI_Skittish_Herd_Animal"))
+		return;
+	int SeenID = Commands->Get_ID(seen);
+	if (!currentTargetID || !LastSeen)
+	{
+		gotoId = 0;
+		LastSeen = minVisibilityTime == maxVisibilityTime ? maxVisibilityTime : Commands->Get_Random_Int(minVisibilityTime,maxVisibilityTime);
+		huntorattack = 0;
+		currentTargetID = SeenID;
+	}
+	else if (currentTargetID == SeenID)
+		LastSeen = minVisibilityTime == maxVisibilityTime ? maxVisibilityTime : Commands->Get_Random_Int(minVisibilityTime,maxVisibilityTime);
+	else if (!secondaryTargetId || !lastSeenSecondary)
+	{
+		gotoId = 0;
+		lastSeenSecondary = maxVisibilityTime;
+		secondaryTargetId = SeenID;
+	}
+	else if (secondaryTargetId == SeenID)
+		lastSeenSecondary = maxVisibilityTime;
+}
+void JMG_Bear_Hunter_Friendly_Cougar::Timer_Expired(GameObject *obj,int number)
+{
+	if (92562343 == number)
+	{
+		if (LastSeen)
+		{
+			LastSeen--;
+			if (!LastSeen)
+				currentTargetID = 0;
+		}
+		if (lastSeenSecondary)
+		{
+			lastSeenSecondary--;
+			if (!lastSeenSecondary)
+				secondaryTargetId = 0;
+		}
+		if (gotoId)
+		{
+			if (!Commands->Find_Object(gotoId))
+				gotoId = 0;
+		}
+		if (currentTargetID)
+		{
+			GameObject *target = Commands->Find_Object(currentTargetID);
+			GameObject *target2 = Commands->Find_Object(secondaryTargetId);
+			if (!target2 || Commands->Get_Health(target2) == 0.0f)
+				secondaryTargetId = 0;
+			if (!target || Commands->Get_Health(target) == 0.0f)
+			{
+				if (target2)
+				{
+					currentTargetID = secondaryTargetId;
+					LastSeen = maxVisibilityTime;
+				}
+				else
+					FollowPlayer(obj,false);
+			}
+			else if (Get_Float_Parameter("MaxHuntDistance") && JmgUtility::SimpleDistance(homelocation,Commands->Get_Position(target)) > maxHuntDistance)
+			{
+				currentTargetID = 0;
+				waitcount = 0;
+				if (huntorattack == 1)
+					Commands->Action_Reset(obj,10);
+			}
+			else
+			{
+				waitcount++;
+				if (waitcount > 2)
+				{
+					waitcount = 0;
+					ActionParamsStruct params;
+					params.Set_Movement(target,Get_Float_Parameter("ChaseSpeed"),Get_Float_Parameter("AttackArriveDistance"),false);
+					params.MovePathfind = JmgUtility::SimpleDistance(Commands->Get_Position(target),Commands->Get_Position(obj)) <= noPathfindRange ? false : true;
+					Commands->Action_Goto(obj,params);
+					params.Set_Basic(this,999,10);
+					params.Set_Attack(target,Get_Float_Parameter("StartAttackDistance"),1,true);
+					Commands->Action_Attack(obj,params);
+				}
+			}
+		}
+		if (!secondaryTargetId && !currentTargetID)
+		{
+			if (!gotoId)
+				FollowPlayer(obj,false);
+			else
+			{
+				GameObject *player = Commands->Find_Object(gotoId);
+				bool moveSlow = JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(player)) < 625.0f;
+				if (moveSlow != movingSlow)
+					FollowPlayer(obj,moveSlow);
+			}
+		}
+		Commands->Start_Timer(obj,this,0.1f,92562343);
+	}
+}
+void JMG_Bear_Hunter_Friendly_Cougar::Damaged(GameObject *obj,GameObject *damager,float damage)
+{
+	if (!damager || Commands->Get_Player_Type(damager) != 1 || currentTargetID || Commands->Get_Player_Type(damager) == Commands->Get_Player_Type(obj))
+		return;
+	if (!chooseTarget(obj,damager,&currentTargetID,&LastSeen))
+		chooseTarget(obj,damager,&secondaryTargetId,&lastSeenSecondary);
+	else
+	{
+		huntorattack = 0;
+		waitcount = 0;
+	}
+}
+bool JMG_Bear_Hunter_Friendly_Cougar::chooseTarget(GameObject *obj,GameObject *damager,int *compareId,int *seenTimer)
+{
+	GameObject *target = Commands->Find_Object(*compareId);
+	if (target)
+	{
+		float targetDistance = JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(target));
+		float damagerDistance = JmgUtility::SimpleDistance(Commands->Get_Position(obj),Commands->Get_Position(damager));
+		if (targetDistance < damagerDistance)
+			return false;
+	}
+	*seenTimer = minVisibilityTime == maxVisibilityTime ? maxVisibilityTime : Commands->Get_Random_Int(minVisibilityTime,maxVisibilityTime);
+	*compareId = Commands->Get_ID(damager);
+	return true;
+}
+void JMG_Bear_Hunter_Friendly_Cougar::FollowPlayer(GameObject *obj,bool moveSlow)
+{
+	waitcount = 0;
+	currentTargetID = 0;
+	Commands->Action_Reset(obj,10);
+	ActionParamsStruct params;
+	params.Set_Basic(this,999,10);
+	GameObject *player = JmgUtility::FindNearestPlayer(Commands->Get_Position(obj));
+	movingSlow = moveSlow;
+	params.Set_Movement(player,movingSlow ? 0.15f : Get_Float_Parameter("ReturnHomeSpeed"),Get_Float_Parameter("ReturnHomeArriveDistance"),false);
+	params.MoveFollow = true;
+	Commands->Action_Goto(obj,params);
+	gotoId = Commands->Get_ID(player);
+}
+void JMG_Bear_Hunter_SpawnPoint_Final_Boss_Line_Of_Sight::Created(GameObject *obj)
+{
+	Rp2SimplePositionSystem::SimplePositionNode *node = new Rp2SimplePositionSystem::SimplePositionNode(obj,Get_Int_Parameter("Value"));
+	bossSpawnProtectionPoints += node;
+	Commands->Destroy_Object(obj);
+}
+void JMG_Bear_Hunter_SpawnPoint_Final_Boss::Created(GameObject *obj)
+{
+	Rp2SimplePositionSystem::SimplePositionNode *node = new Rp2SimplePositionSystem::SimplePositionNode(obj,Get_Int_Parameter("Value"));
+	randomSelectableSpawnPoints[4] += node;
+	Commands->Destroy_Object(obj);
+}
 ScriptRegistrant<JMG_Bear_Hunter_Player_Soldier> JMG_Bear_Hunter_Player_Soldier_Registrant("JMG_Bear_Hunter_Player_Soldier","");
 ScriptRegistrant<JMG_Rp2_Dedicated_Server_Sound_Emulator> JMG_Rp2_Dedicated_Server_Sound_Emulator_Registrant("JMG_Rp2_Dedicated_Server_Sound_Emulator","");
 ScriptRegistrant<JMG_Bear_Hunter_Game_Control> JMG_Bear_Hunter_Game_Control_Registrant("JMG_Bear_Hunter_Game_Control","PositionFile=DhSwampDeerPositions.ecw:string");
@@ -7986,9 +8857,13 @@ ScriptRegistrant<JMG_Bear_Hunter_Wolf_Pack_Definition> JMG_Bear_Hunter_Wolf_Pack
 ScriptRegistrant<JMG_Bear_Hunter_Wolf> JMG_Bear_Hunter_Wolf_Registrant("JMG_Bear_Hunter_Wolf","WolfPackID:int,ControllerId:int");
 ScriptRegistrant<JMG_Bear_Hunter_Wolf_Wander_Point> JMG_Bear_Hunter_Wolf_Wander_Point_Registrant("JMG_Bear_Hunter_Wolf_Wander_Point","WolfPackID:int");
 ScriptRegistrant<JMG_Bear_Hunter_Armored_Car> JMG_Bear_Hunter_Armored_Car_Registrant("JMG_Bear_Hunter_Armored_Car","");
+ScriptRegistrant<JMG_Bear_Hunter_Armored_Car_Controller> JMG_Bear_Hunter_Armored_Car_Controller_Registrant("JMG_Bear_Hunter_Armored_Car_Controller","");
 ScriptRegistrant<JMG_Bear_Hunt_Final_Boss_Support> JMG_Bear_Hunt_Final_Boss_Support_Registrant("JMG_Bear_Hunt_Final_Boss_Support","");
 ScriptRegistrant<JMG_Bear_Hunter_Golden_Deer_Statue> JMG_Bear_Hunter_Golden_Deer_Statue_Registrant("JMG_Bear_Hunter_Golden_Deer_Statue","");
 ScriptRegistrant<JMG_Bear_Hunter_Golden_Deer_Statue_Standin> JMG_Bear_Hunter_Golden_Deer_Statue_Standin_Registrant("JMG_Bear_Hunter_Golden_Deer_Statue_Standin","");
 ScriptRegistrant<JMG_Bear_Hunter_Golden_Deer_Statue_Attached> JMG_Bear_Hunter_Golden_Deer_Statue_Attached_Registrant("JMG_Bear_Hunter_Golden_Deer_Statue_Attached","");
 ScriptRegistrant<JMG_Bear_Hunter_AI_Avoid_Enemies> JMG_Bear_Hunter_AI_Avoid_Enemies_Registrant("JMG_Bear_Hunter_AI_Avoid_Enemies","");
 ScriptRegistrant<JMG_Security_Camera_Behavior_Ignore> JMG_Security_Camera_Behavior_Ignore_Registrant("JMG_Security_Camera_Behavior_Ignore","");
+ScriptRegistrant<JMG_Bear_Hunter_Friendly_Cougar> JMG_Bear_Hunter_Friendly_Cougar_Registrant("JMG_Bear_Hunter_Friendly_Cougar","ReturnHomeSpeed=1.0:float,ReturnHomeArriveDistance=1.0:float,ChaseSpeed=1.0:float,AttackArriveDistance=0.0:float,StartAttackDistance=3.0:float,MaxHuntDistance=0.0:float,MinLooseVisibilityTime=3:int,MaxLooseVisibilityTime=6:int,NoPathfindDistance=5.0:float");
+ScriptRegistrant<JMG_Bear_Hunter_SpawnPoint_Final_Boss_Line_Of_Sight> JMG_Bear_Hunter_SpawnPoint_Final_Boss_Line_Of_Sight_Registrant("JMG_Bear_Hunter_SpawnPoint_Final_Boss_Line_Of_Sight","Value:int");
+ScriptRegistrant<JMG_Bear_Hunter_SpawnPoint_Final_Boss> JMG_Bear_Hunter_SpawnPoint_Final_Boss_Registrant("JMG_Bear_Hunter_SpawnPoint_Final_Boss","Value:int");

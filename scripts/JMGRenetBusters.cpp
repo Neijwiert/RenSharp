@@ -836,11 +836,13 @@ void JMG_CMTB_Main_Game_Control::Timer_Expired(GameObject *obj,int number)
 				JMG_CMTB_Main_Game_Control::PlayerSOSBeaconID = 0;
 			}
 		}
+		JmgUtility::GenericDateTime currentTime = JmgUtility::GenericDateTime();
 		for (int x = 0;x < MaxGamePlayerCount;x++)
 		{
 			if (!MiniGamePlayerControlSystem[x].GamePlayerID)
 				continue;
 			RenCometBustersScoreControl.Get_Current_Player_Score_Node(MiniGamePlayerControlSystem[x].PlayerID)->PlayTime++;
+			RenCometBustersScoreControl.Get_Current_Player_Score_Node(MiniGamePlayerControlSystem[x].PlayerID)->LastPlayTime = currentTime;
 			if (MiniGamePlayerControlSystem[x].ShipObject)
 				switch(MiniGamePlayerControlSystem[x].ShipObject->Type)
 				{

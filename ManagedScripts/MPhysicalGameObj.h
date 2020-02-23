@@ -195,6 +195,11 @@ namespace RenSharp
 		{
 			bool get();
 		}
+
+		property IScriptableGameObj^ ParentObject
+		{
+			IScriptableGameObj^ get();
+		}
 	};
 
 	public ref class PhysicalGameObj : public DamageableGameObj, public IPhysicalGameObj
@@ -363,6 +368,11 @@ namespace RenSharp
 			property bool HUDPokableIndicatorEnabled
 			{
 				virtual bool get() sealed;
+			}
+
+			property IScriptableGameObj^ ParentObject
+			{
+				virtual IScriptableGameObj^ get() sealed;
 			}
 
 		protected:

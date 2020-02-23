@@ -611,6 +611,19 @@ namespace RenSharp
 		return InternalPhysicalGameObjPointer->Is_HUD_Pokable_Indicator_Enabled();
 	}
 
+	IScriptableGameObj^ PhysicalGameObj::ParentObject::get()
+	{
+		auto result = InternalPhysicalGameObjPointer->Get_Parent_Object();
+		if (result == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			return gcnew ScriptableGameObj(IntPtr(result));
+		}
+	}
+
 	::DamageableGameObj *PhysicalGameObj::InternalDamageableGameObjPointer::get()
 	{
 		return InternalPhysicalGameObjPointer;

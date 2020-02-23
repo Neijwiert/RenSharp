@@ -600,6 +600,30 @@ namespace RenSharp
 	{
 		ActionParamsStruct ^ToActionParamsStruct();
 
+		void SetBasicOld(IScriptClass^ script, unsigned long priority, unsigned long id, SoldierAIState state);
+
+		void SetAttackHold(IScriptableGameObj^ target, float range, float deviation, bool primary, bool hold);
+
+		void SetAttackPosition(Vector3 position, float range, float deviation, bool primary);
+
+		void SetGotoLocation(Vector3 position, float speed, float arriveDistance, bool crouch);
+
+		void SetGotoFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool following);
+
+		void SetGotoCrouch(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch);
+
+		void SetGotoCrouchFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch, bool following);
+
+		void SetGoto(IScriptableGameObj^ target, float speed, float arriveDistance);
+
+		void SetGotoWaypathStart(unsigned long waypathId, unsigned long waypathStartId, unsigned long waypathEndId, bool splined);
+
+		void SetGotoWaypath(unsigned long waypathId, bool splined, bool attackActive, bool hold);
+
+		void SetGotoWaypathId(unsigned long waypathId);
+
+		void SetMoveArriveDistance(float distance);
+
 		void SetBasic(IGameObjObserverClass ^script, float priority, int actionId, SoldierAIState aiState);
 
 		void SetBasic(IGameObjObserverClass ^script, float priority, int actionId);
@@ -915,6 +939,18 @@ namespace RenSharp
 			bool Equals(Object ^other) override;
 
 			virtual ActionParamsStruct ^ToActionParamsStruct() sealed;
+			virtual void SetBasicOld(IScriptClass^ script, unsigned long priority, unsigned long id, SoldierAIState state) sealed;
+			virtual void SetAttackHold(IScriptableGameObj^ target, float range, float deviation, bool primary, bool hold) sealed;
+			virtual void SetAttackPosition(Vector3 position, float range, float deviation, bool primary) sealed;
+			virtual void SetGotoLocation(Vector3 position, float speed, float arriveDistance, bool crouch) sealed;
+			virtual void SetGotoFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool following) sealed;
+			virtual void SetGotoCrouch(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch) sealed;
+			virtual void SetGotoCrouchFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch, bool following) sealed;
+			virtual void SetGoto(IScriptableGameObj^ target, float speed, float arriveDistance) sealed;
+			virtual void SetGotoWaypathStart(unsigned long waypathId, unsigned long waypathStartId, unsigned long waypathEndId, bool splined) sealed;
+			virtual void SetGotoWaypath(unsigned long waypathId, bool splined, bool attackActive, bool hold) sealed;
+			virtual void SetGotoWaypathId(unsigned long waypathId) sealed;
+			virtual void SetMoveArriveDistance(float distance) sealed;
 			virtual void SetBasic(IGameObjObserverClass ^script, float priority, int actionId, SoldierAIState aiState) sealed;
 			virtual void SetBasic(IGameObjObserverClass ^script, float priority, int actionId) sealed;
 			virtual void SetBasic(long observerId, float priority, int actionId, SoldierAIState aiState) sealed;
@@ -1260,6 +1296,18 @@ namespace RenSharp
 			void CopyFrom(IActionParamsStruct ^params);
 			void CopyFrom(ActionParamsStruct ^params);
 
+			void SetBasicOld(IScriptClass^ script, unsigned long priority, unsigned long id, SoldierAIState state);
+			void SetAttackHold(IScriptableGameObj^ target, float range, float deviation, bool primary, bool hold);
+			void SetAttackPosition(Vector3 position, float range, float deviation, bool primary);
+			void SetGotoLocation(Vector3 position, float speed, float arriveDistance, bool crouch);
+			void SetGotoFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool following);
+			void SetGotoCrouch(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch);
+			void SetGotoCrouchFollowing(IScriptableGameObj^ target, float speed, float arriveDistance, bool crouch, bool following);
+			void SetGoto(IScriptableGameObj^ target, float speed, float arriveDistance);
+			void SetGotoWaypathStart(unsigned long waypathId, unsigned long waypathStartId, unsigned long waypathEndId, bool splined);
+			void SetGotoWaypath(unsigned long waypathId, bool splined, bool attackActive, bool hold);
+			void SetGotoWaypathId(unsigned long waypathId);
+			void SetMoveArriveDistance(float distance);
 			void SetBasic(IGameObjObserverClass ^script, float priority, int actionId, SoldierAIState aiState);
 			void SetBasic(IGameObjObserverClass ^script, float priority, int actionId);
 			void SetBasic(long observerId, float priority, int actionId, SoldierAIState aiState);
