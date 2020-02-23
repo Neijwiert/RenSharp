@@ -1,5 +1,5 @@
 /*
-Copyright 2019 Neijwiert
+Copyright 2020 Neijwiert
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ limitations under the License.
 // We need this boolean to stop the FDS gracefully the same way 'quit' does
 REF_DEF2(bool, cGameData::IsManualExit, 0x0082F125, 0x0082E30D);
 
-static LPCWSTR AppDomainManagerTypeAssemblyName = L"ManagedRenSharp, Version=1.3.0.0, Culture=neutral, PublicKeyToken=c2f4cb925e8b2a8a";
+static LPCWSTR AppDomainManagerTypeAssemblyName = L"ManagedRenSharp, Version=1.4.0.0, Culture=neutral, PublicKeyToken=c2f4cb925e8b2a8a";
 static LPCWSTR AppDomainManagerTypeName = L"RenSharp.RenSharpAppDomainManager";
 
 BOOL WINAPI ConsoleCtrlHandlerRoutine(_In_ DWORD dwCtrlType)
