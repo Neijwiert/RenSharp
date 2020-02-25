@@ -56,6 +56,8 @@ namespace RenSharp
 	interface class INetworkObjectClass;
 	interface class IcScTextObj;
 	interface class ISCAnnouncement;
+	interface class IcPlayerKill;
+	interface class IcPurchaseResponseEvent;
 	interface class IAmmoDefinitionClass;
 	interface class IScriptClass;
 	interface class ISmartGameObj;
@@ -383,10 +385,10 @@ namespace RenSharp
 			static void SetExplosionObj(IScriptableGameObj ^obj);
 			static void UpdateNetworkObject(INetworkObjectClass ^obj);
 			static void UpdateNetworkObjectPlayer(INetworkObjectClass ^object, int id);
-			static IUnmanagedContainer<IcScTextObj ^> ^SendClientText(String ^message, TextMessageEnum type, bool popUp, int senderId, int receiverId, bool doDirtyBit, bool doAct);
-			static IUnmanagedContainer<ISCAnnouncement ^> ^SendClientAnnouncement(int receiptientId, int senderId, int translationId, AnnouncementEnum type, int emotIconId, bool doDirtyBit, bool doAct);
-			static IntPtr SendPlayerKillMessage(int killer, int victim);
-			static IntPtr SendPurchaseResponse(int id, int type);
+			static IcScTextObj ^SendClientText(String ^message, TextMessageEnum type, bool popUp, int senderId, int receiverId, bool doDirtyBit, bool doAct);
+			static ISCAnnouncement ^SendClientAnnouncement(int receiptientId, int senderId, int translationId, AnnouncementEnum type, int emotIconId, bool doDirtyBit, bool doAct);
+			static IcPlayerKill ^SendPlayerKillMessage(int killer, int victim);
+			static IcPurchaseResponseEvent ^SendPurchaseResponse(int id, int type);
 			static void DoObjectivesDlg(IScriptableGameObj ^obj, String ^file);
 			static void SetPlayerLimit(unsigned int limit);
 			static unsigned int GetPlayerLimit();

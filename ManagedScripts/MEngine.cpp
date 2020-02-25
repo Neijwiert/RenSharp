@@ -104,6 +104,8 @@ void Internal_Create_Animation_Name_Wrapper(StringClass& target, const char* ani
 #include "MC4GameObj.h"
 #include "MRenderObjClass.h"
 #include "RenegadeDispatcher.h"
+#include "McPlayerKill.h"
+#include "McPurchaseResponseEvent.h"
 
 using namespace System::Collections::Generic;
 using namespace System::Runtime::InteropServices;
@@ -2612,7 +2614,7 @@ namespace RenSharp
 			id);
 	}
 
-	IUnmanagedContainer<IcScTextObj ^> ^Engine::SendClientText(String ^message, TextMessageEnum type, bool popUp, int senderId, int receiverId, bool doDirtyBit, bool doAct)
+	IcScTextObj ^Engine::SendClientText(String ^message, TextMessageEnum type, bool popUp, int senderId, int receiverId, bool doDirtyBit, bool doAct)
 	{
 		if (::Send_Client_Text == nullptr)
 		{
@@ -2643,7 +2645,7 @@ namespace RenSharp
 			}
 			else
 			{
-				return gcnew UnmanagedContainer<IcScTextObj ^>(gcnew cScTextObj(IntPtr(result)));
+				return gcnew cScTextObj(IntPtr(result));
 			}
 		}
 		finally
@@ -2652,7 +2654,7 @@ namespace RenSharp
 		}
 	}
 
-	IUnmanagedContainer<ISCAnnouncement ^> ^Engine::SendClientAnnouncement(int receiptientId, int senderId, int translationId, AnnouncementEnum type, int emotIconId, bool doDirtyBit, bool doAct)
+	ISCAnnouncement ^Engine::SendClientAnnouncement(int receiptientId, int senderId, int translationId, AnnouncementEnum type, int emotIconId, bool doDirtyBit, bool doAct)
 	{
 		if (::Send_Client_Announcement == nullptr)
 		{
@@ -2674,28 +2676,44 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew UnmanagedContainer<ISCAnnouncement ^>(gcnew SCAnnouncement(IntPtr(result)));
+			return gcnew SCAnnouncement(IntPtr(result));
 		}
 	}
 
-	IntPtr Engine::SendPlayerKillMessage(int killer, int victim)
+	IcPlayerKill ^Engine::SendPlayerKillMessage(int killer, int victim)
 	{
 		if (::Send_Player_Kill_Message == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
 
-		return IntPtr(::Send_Player_Kill_Message(killer, victim));
+		auto result = ::Send_Player_Kill_Message(killer, victim);
+		if (result == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			return gcnew cPlayerKill(IntPtr(result));
+		}
 	}
 
-	IntPtr Engine::SendPurchaseResponse(int id, int type)
+	IcPurchaseResponseEvent ^Engine::SendPurchaseResponse(int id, int type)
 	{
 		if (::Send_Purchase_Response == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
 
-		return IntPtr(::Send_Purchase_Response(id, type));
+		auto result = ::Send_Purchase_Response(id, type);
+		if (result == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			return gcnew cPurchaseResponseEvent(IntPtr(result));
+		}
 	}
 
 	void Engine::DoObjectivesDlg(IScriptableGameObj ^obj, String ^file)
