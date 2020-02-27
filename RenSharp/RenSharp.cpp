@@ -92,8 +92,8 @@ HRESULT RenSharpRootEventClass::Init()
 				while (SUCCEEDED(hr = installedRuntimes->Next(1, reinterpret_cast<IUnknown **>(&currentRuntimeInfo), &fetched)) && fetched > 0)
 				{
 					// Get version string of current runtime
-					DWORD versionStringSize;
-					if (SUCCEEDED(hr = currentRuntimeInfo->GetVersionString(nullptr, &versionStringSize)))
+					DWORD versionStringSize = 0;
+					if (SUCCEEDED(hr = currentRuntimeInfo->GetVersionString(nullptr, &versionStringSize)) || (hr == HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) && versionStringSize > 0))
 					{
 						LPWSTR versionString = new WCHAR[versionStringSize];
 						if (SUCCEEDED(hr = currentRuntimeInfo->GetVersionString(versionString, &versionStringSize)))
