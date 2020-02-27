@@ -57,14 +57,14 @@ namespace RenSharp
 			static float GetVisceroidProbability(unsigned int warhead);
 			static bool	IsSkinImpervious(SpecialDamageType type, unsigned int skin);
 
-			static property unsigned int NumArmorTypes
+			static property int NumArmorTypes
 			{
-				unsigned int get();
+				int get();
 			}
 
-			static property unsigned int NumWarheadTypes
+			static property int NumWarheadTypes
 			{
-				unsigned int get();
+				int get();
 			}
 	};
 }

@@ -319,6 +319,16 @@ namespace RenSharp
 				return LastScale;
 			}
 
+			bool& GetUpdatedTarget()
+			{
+				return UpdatedTarget;
+			}
+
+			bool& GetDoTilt()
+			{
+				return DoTilt;
+			}
+
 			bool &GetMovementLoitersAllowed()
 			{
 				return movementLoitersAllowed;
@@ -2013,6 +2023,42 @@ namespace RenSharp
 		lastScale = value;
 	}
 
+	bool SoldierGameObj::UpdatedTarget::get()
+	{
+		auto helper = reinterpret_cast<SoldierGameObjHelper*>(InternalSoldierGameObjPointer);
+
+		auto& updatedTarget = helper->GetUpdatedTarget();
+
+		return updatedTarget;
+	}
+
+	void SoldierGameObj::UpdatedTarget::set(bool value)
+	{
+		auto helper = reinterpret_cast<SoldierGameObjHelper*>(InternalSoldierGameObjPointer);
+
+		auto& updatedTarget = helper->GetUpdatedTarget();
+
+		updatedTarget = value;
+	}
+
+	bool SoldierGameObj::DoTilt::get()
+	{
+		auto helper = reinterpret_cast<SoldierGameObjHelper*>(InternalSoldierGameObjPointer);
+
+		auto& doTilt = helper->GetDoTilt();
+
+		return doTilt;
+	}
+
+	void SoldierGameObj::DoTilt::set(bool value)
+	{
+		auto helper = reinterpret_cast<SoldierGameObjHelper*>(InternalSoldierGameObjPointer);
+
+		auto& doTilt = helper->GetDoTilt();
+
+		doTilt = value;
+	}
+
 	float SoldierGameObj::LastSkeletonHeight::get()
 	{
 		auto helper = reinterpret_cast<SoldierGameObjHelper *>(InternalSoldierGameObjPointer);
@@ -2047,5 +2093,41 @@ namespace RenSharp
 		auto &lastSkeletonWidth = helper->GetLastSkeletonWidth();
 
 		lastSkeletonWidth = value;
+	}
+
+	int SoldierGameObj::OverrideWeaponHoldStyleId::get()
+	{
+		auto helper = reinterpret_cast<SoldierGameObjHelper*>(InternalSoldierGameObjPointer);
+
+		auto& overrideWeaponHoldStyleId = helper->GetOverrideWeaponHoldStyleId();
+
+		return overrideWeaponHoldStyleId;
+	}
+
+	void SoldierGameObj::OverrideWeaponHoldStyleId::set(int value)
+	{
+		auto helper = reinterpret_cast<SoldierGameObjHelper*>(InternalSoldierGameObjPointer);
+
+		auto& overrideWeaponHoldStyleId = helper->GetOverrideWeaponHoldStyleId();
+
+		overrideWeaponHoldStyleId = value;
+	}
+
+	bool SoldierGameObj::EnableHumanAnimOverride::get()
+	{
+		auto helper = reinterpret_cast<SoldierGameObjHelper*>(InternalSoldierGameObjPointer);
+
+		auto& enableHumanAnimOverride = helper->GetEnableHumanAnimOverride();
+
+		return enableHumanAnimOverride;
+	}
+
+	void SoldierGameObj::EnableHumanAnimOverride::set(bool value)
+	{
+		auto helper = reinterpret_cast<SoldierGameObjHelper*>(InternalSoldierGameObjPointer);
+
+		auto& enableHumanAnimOverride = helper->GetEnableHumanAnimOverride();
+
+		enableHumanAnimOverride = value;
 	}
 }

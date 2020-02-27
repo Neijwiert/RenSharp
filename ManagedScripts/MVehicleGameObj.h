@@ -59,6 +59,8 @@ namespace RenSharp
 
 		bool ScriptsIsEnemy(IDamageableGameObj ^obj);
 
+		int CheckIfOnSurface(int surfaceType);
+
 		property IntPtr VehicleGameObjPointer
 		{
 			IntPtr get();
@@ -269,6 +271,7 @@ namespace RenSharp
 			virtual ISoldierGameObj ^GetOccupant(int seat) sealed;
 			virtual void SetColor(Drawing::Color color) sealed;
 			virtual bool ScriptsIsEnemy(IDamageableGameObj ^obj) sealed;
+			virtual int CheckIfOnSurface(int surfaceType) sealed;
 
 			property IntPtr VehicleGameObjPointer
 			{

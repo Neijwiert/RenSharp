@@ -157,6 +157,7 @@ limitations under the License.
 #include <SysTimeClass.h>
 #include <DefaultConnectionAcceptanceFilter.h>
 #include <wwmath.h>
+#include <ObserverImpClass.h>
 
 class PersistantSurfaceEmitterClass;
 class SoldierGameObj;
@@ -345,6 +346,11 @@ extern "C"
 	__declspec(dllexport) void __stdcall Vector3Normalize(Vector3 *vector)
 	{
 		vector->Normalize();
+	}
+
+	__declspec(dllexport) void __stdcall Vector3Normalized(Vector3* vector, Vector3* result)
+	{
+		*result = vector->Normalized();
 	}
 
 	__declspec(dllexport) DASettingsClass * __stdcall CreateDASettingsClass1()
@@ -3323,13 +3329,13 @@ extern "C"
 		delete stringClassTDBObjClassPtrHashTemplateIterator;
 	}
 
-	__declspec(dllexport) void __stdcall DestroyDefaultConnectionAcceptanceFilter(DefaultConnectionAcceptanceFilter* defaultConnectionAcceptanceFilter)
-	{
-		delete defaultConnectionAcceptanceFilter;
-	}
-
 	__declspec(dllexport) float __stdcall WWMathInvSqrt(float a)
 	{
 		return WWMath::Inv_Sqrt(a);
+	}
+
+	__declspec(dllexport) ObserverImpClass* __stdcall CreateObserverImpClass(const char* name)
+	{
+		return new ObserverImpClass(name);
 	}
 }

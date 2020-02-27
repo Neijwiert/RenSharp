@@ -965,6 +965,18 @@ namespace RenSharp
 				void set(float value);
 			}
 
+			property bool UpdatedTarget
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			property bool DoTilt
+			{
+				bool get();
+				void set(bool value);
+			}
+
 			property float LastSkeletonHeight
 			{
 				float get();
@@ -975,6 +987,18 @@ namespace RenSharp
 			{
 				float get();
 				void set(float value);
+			}
+
+			property int OverrideWeaponHoldStyleId
+			{
+				int get();
+				void set(int value);
+			}
+
+			property bool EnableHumanAnimOverride
+			{
+				bool get();
+				void set(bool value);
 			}
 	};
 }

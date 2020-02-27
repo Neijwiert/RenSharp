@@ -95,6 +95,21 @@ namespace RenSharp
 		UnmanagedToManagedVector3(thisVec);
 	}
 
+	Vector3 Vector3::Normalized()
+	{
+		::Vector3 thisVec;
+		::Vector3 resultVec;
+
+		ManagedToUnmanagedVector3(thisVec);
+
+		Imports::Vector3Normalized(&thisVec, &resultVec); // Vector3::Normalized references WWMath::Inv_Sqrt which is a fastcall. We can't call fastcall functions
+	
+		Vector3 result;
+		UnmanagedToManagedVector3(resultVec, result);
+
+		return result;
+	}
+
 	void Vector3::Scale(Vector3 scale)
 	{
 		::Vector3 thisVec;

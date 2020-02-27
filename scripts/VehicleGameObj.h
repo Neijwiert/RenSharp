@@ -1,5 +1,5 @@
 /*	Renegade Scripts.dll
-	Copyright 2015 Tiberian Technologies
+	Copyright 2013 Tiberian Technologies
 
 	This file is part of the Renegade scripts.dll
 	The Renegade scripts.dll is free software; you can redistribute it and/or modify it under
@@ -9,19 +9,19 @@
 	In addition, an exemption is given to allow Run Time Dynamic Linking of this code with any closed source module that does not contain code covered by this licence.
 	Only the source code to the module(s) containing the licenced code has to be released.
 */
-//Changes made in DA:
-//Added Are_Transitions_Enabled and Get_Last_Team
-//Exported various functions
 #ifndef TT__VEHICLEGAMEOBJ_H
 #define TT__VEHICLEGAMEOBJ_H
+
+
 
 #include "engine_vector.h"
 #include "SmartGameObj.h"
 #include "PhysClass.h"
 #include "VehicleGameObjDef.h"
 #include "SoldierGameObj.h"
+#ifndef TTLE_EXPORTS
 #include "UndergroundEffectClass.h"
-
+#endif
 class AudibleSoundClass;
 class VehicleGameObjDef;
 class PersistantSurfaceEmitterClass;
@@ -39,7 +39,7 @@ public:
 	virtual	~VehicleGameObj();
 	virtual	void	Init( void );
 	void	Init( const VehicleGameObjDef & definition );
-	SCRIPTS_API const VehicleGameObjDef &Get_Definition( void ) const ;
+	const VehicleGameObjDef SCRIPTS_API & Get_Definition( void ) const ;
 	virtual	bool	Save( ChunkSaveClass & csave );
 	virtual	bool	Load( ChunkLoadClass & cload );
 	virtual	void	On_Post_Load( void );
@@ -60,15 +60,15 @@ public:
 	virtual int Get_Player_Type(void) const;
 	virtual	void	Apply_Damage_Extended( const OffenseObjectClass & offense, float scale = 1.0f,
 			const	Vector3 & direction = Vector3( 0,0,0 ), const char * collision_box_name = NULL );
-	SCRIPTS_API void Add_Occupant( SoldierGameObj * occupant, int seat_id );
-	SCRIPTS_API void Add_Occupant( SoldierGameObj * occupant );
+	SCRIPTS_API void	Add_Occupant(SoldierGameObj* occupant, int seat_id); //DA
+	SCRIPTS_API void	Add_Occupant( SoldierGameObj * occupant );
 	void	Remove_Occupant( SoldierGameObj * occupant );
 	bool	Contains_Occupant( SoldierGameObj * occupant );
-	SCRIPTS_API int	Get_Occupant_Count(void);
+	int	SCRIPTS_API Get_Occupant_Count(void);
 	int	Find_Seat( SoldierGameObj * occupant );
-	SCRIPTS_API SoldierGameObj * Get_Driver(void);
-	SCRIPTS_API SoldierGameObj * Get_Gunner(void);
-	SCRIPTS_API SoldierGameObj * Get_Actual_Gunner(void);
+	SCRIPTS_API SoldierGameObj* Get_Driver(void); //DA
+	SCRIPTS_API SoldierGameObj* Get_Gunner(void); //DA
+	SCRIPTS_API SoldierGameObj* Get_Actual_Gunner(void); //DA
 	virtual bool Is_Entry_Permitted(SoldierGameObj * p_soldier);
 	void	Passenger_Entering( void );
 	void	Passenger_Exiting( void );
@@ -83,6 +83,7 @@ public:
 	virtual	void	Export_Frequent( BitStreamClass & packet );
 	virtual	void	Import_State_Cs( BitStreamClass & packet );
 	virtual	void	Export_State_Cs( BitStreamClass & packet );
+	virtual CollisionReactionType	Collision_Occurred( const CollisionEventClass & event );
 	const char *Get_Profile( void )						{ return Get_Definition().Profile; }
 	void Get_Velocity(Vector3 & vel);
 	void Set_Velocity(Vector3 & vel);
@@ -123,9 +124,9 @@ public:
 	bool Get_Scripts_Can_Fire() { return CanFire; };
 	void Set_Allow_Stealth_While_Empty(bool onoff) { AllowStealthWhileEmpty = onoff; Set_Object_Dirty_Bit(BIT_RARE, true); };
 	bool Get_Allow_Stealth_While_Empty() const { return AllowStealthWhileEmpty; };
-	void Damage_Meshes_Update() {DamageMeshesUpdate = true; Set_Object_Dirty_Bit(NetworkObjectClass::BIT_FREQUENT,true);}
+	void Damage_Meshes_Update() { DamageMeshesUpdate = true; DamageMeshesNetworkUpdate = true; Set_Object_Dirty_Bit(NetworkObjectClass::BIT_FREQUENT, true); }
 	void Set_Occupant(int seat, SoldierGameObj *occupant) {SeatOccupants[seat] = occupant;}
-	bool Is_Underground() {return Peek_Physical_Object()->Get_Collision_Group() == UNDERGROUND_COLLISION_GROUP;}
+	bool Is_Underground() { return Peek_Physical_Object()->Get_Collision_Group() == UNDERGROUND_COLLISION_GROUP; }
 	SCRIPTS_API void Set_Immovable(bool b);
 	bool Is_Immovable() {return Peek_Physical_Object()->Is_Immovable();}
 	void Set_Lock_Team(int team) {LockTeam = (char)team;Set_Object_Dirty_Bit(BIT_RARE,true);} //0 = nod, 1 = gdi, 2 = both
@@ -135,7 +136,9 @@ public:
 	void Set_Owner(SoldierGameObj *obj) {Owner = obj;}
 	void Set_Can_Drive(bool onoff) {CanDrive = onoff; Set_Object_Dirty_Bit(BIT_RARE, true);}
 	bool Can_Drive() {return CanDrive;}
+#ifndef TTLE_EXPORTS
 	void Set_Color(Vector3 &color) {if (UndergroundEffect){UndergroundEffect->Set_Color(color);Set_Object_Dirty_Bit( NetworkObjectClass::BIT_RARE, true );}}
+#endif
 	SoldierGameObj *Get_Owner()
 	{
 		if (Owner.Get_Ptr())
@@ -150,7 +153,7 @@ public:
 	bool Scripts_Is_Enemy(DamageableGameObj *obj)
 	{
 		bool enemy = false;
-		if (obj != this)
+		if (obj != this && obj != NULL)
 		{
 			int sTeamID1 = LastTeam;
 			if (LastTeam == -2)
@@ -186,10 +189,10 @@ public:
 		}
 		return ((team <= 1) && (team >= 0));
 	}
-	bool Are_Transitions_Enabled() {
+	bool Are_Transitions_Enabled() { //DA
 		return TransitionsEnabled;
 	}
-	int Get_Last_Team() {
+	int Get_Last_Team() { //DA
 		return LastTeam;
 	}
 #ifndef TTLE_EXPORTS
@@ -198,8 +201,8 @@ public:
 #endif
 protected:
 #ifndef TTLE_EXPORTS
-	static REF_DECL(bool,DefaultDriverIsGunner);
-	static REF_DECL(bool,CameraLockedToTurret);
+	static REF_DECL(bool, DefaultDriverIsGunner);
+	static REF_DECL(bool, CameraLockedToTurret);
 #endif
 	Sound3DClass			*Sound; //2416
 	int						EngineSoundState; //2420
@@ -246,18 +249,21 @@ protected:
 	void		Create_New_Transitions( TransitionDataClass::StyleType transition_type );
 	void		Destroy_Transitions( void );
 	void		Update_Transitions( void );
-	SCRIPTS_API void Create_And_Destroy_Transitions( void );
+	void		Create_And_Destroy_Transitions( void );
 public:
 	void		Aquire_Turret_Bones( void );
 	void		Release_Turret_Bones( void );
-protected:
+	void        Reset_Sound_Effects( void );
 	void		Update_Turret( float weapon_turn, float weapon_tilt );
+protected:
 	void		Update_Sound_Effects( void );
 	void		Change_Engine_Sound_State( int new_state );
 	void		Update_Engine_Sound_Pitch( void );
 	virtual bool Is_Visible();
-	public:
-		void VehicleGameObj::Set_Fixed_Turret_Facing(bool fixed)
+public:
+	virtual int		Check_If_On_Surface(int surface_type);
+
+	void VehicleGameObj::Set_Fixed_Turret_Facing(bool fixed)
 	{
 		if(!LockedTurretFacing)
 		{

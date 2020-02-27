@@ -239,7 +239,6 @@
     <ClInclude Include="Mda_weapons.h" />
     <ClInclude Include="MDecorationPhysClass.h" />
     <ClInclude Include="MDecorationPhysDefClass.h" />
-    <ClInclude Include="MDefaultConnectionAcceptanceFilter.h" />
     <ClInclude Include="MDefenseObjectClass.h" />
     <ClInclude Include="MDefinitionFactoryClass.h" />
     <ClInclude Include="MDefinitionMgrClass.h" />
@@ -293,11 +292,13 @@
     <ClInclude Include="MMoveablePhysClass.h" />
     <ClInclude Include="MMoveablePhysDefClass.h" />
     <ClInclude Include="Mmultilist.h" />
+    <ClInclude Include="MMuzzleFlashClass.h" />
     <ClInclude Include="MMuzzleRecoilClass.h" />
     <ClInclude Include="MNavalFactoryGameObj.h" />
     <ClInclude Include="MNavalFactoryGameObjDef.h" />
     <ClInclude Include="MNetworkObjectClass.h" />
     <ClInclude Include="Mobboxclass.h" />
+    <ClInclude Include="MObserverImpClass.h" />
     <ClInclude Include="MOffenseObjectClass.h" />
     <ClInclude Include="MParameter.h" />
     <ClInclude Include="MPersist.h" />
@@ -322,6 +323,7 @@
     <ClInclude Include="MPowerPlantGameObjDef.h" />
     <ClInclude Include="MPowerUpGameObj.h" />
     <ClInclude Include="MPowerUpGameObjDef.h" />
+    <ClInclude Include="MPresetMgr.h" />
     <ClInclude Include="MProjectorManagerClass.h" />
     <ClInclude Include="Mprototypeclass.h" />
     <ClInclude Include="MPurchaseSettingsDefClass.h" />
@@ -617,7 +619,6 @@
     <ClCompile Include="Mda_weapons.cpp" />
     <ClCompile Include="MDecorationPhysClass.cpp" />
     <ClCompile Include="MDecorationPhysDefClass.cpp" />
-    <ClCompile Include="MDefaultConnectionAcceptanceFilter.cpp" />
     <ClCompile Include="MDefenseObjectClass.cpp" />
     <ClCompile Include="MDefinitionFactoryClass.cpp" />
     <ClCompile Include="MDefinitionMgrClass.cpp" />
@@ -671,11 +672,13 @@
     <ClCompile Include="MMoveablePhysClass.cpp" />
     <ClCompile Include="MMoveablePhysDefClass.cpp" />
     <ClCompile Include="Mmultilist.cpp" />
+    <ClCompile Include="MMuzzleFlashClass.cpp" />
     <ClCompile Include="MMuzzleRecoilClass.cpp" />
     <ClCompile Include="MNavalFactoryGameObj.cpp" />
     <ClCompile Include="MNavalFactoryGameObjDef.cpp" />
     <ClCompile Include="MNetworkObjectClass.cpp" />
     <ClCompile Include="Mobboxclass.cpp" />
+    <ClCompile Include="MObserverImpClass.cpp" />
     <ClCompile Include="MOffenseObjectClass.cpp" />
     <ClCompile Include="MParameter.cpp" />
     <ClCompile Include="MPersist.cpp" />
@@ -700,6 +703,7 @@
     <ClCompile Include="MPowerPlantGameObjDef.cpp" />
     <ClCompile Include="MPowerUpGameObj.cpp" />
     <ClCompile Include="MPowerUpGameObjDef.cpp" />
+    <ClCompile Include="MPresetMgr.cpp" />
     <ClCompile Include="MProjectorManagerClass.cpp" />
     <ClCompile Include="Mprototypeclass.cpp" />
     <ClCompile Include="MPurchaseSettingsDefClass.cpp" />

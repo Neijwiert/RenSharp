@@ -356,7 +356,6 @@ public:
 class DA_API DAPlayerDataClass abstract {
 public:
 	virtual ~DAPlayerDataClass() { }
-
 	inline cPlayer *Get_Owner() {
 		return Owner;
 	}

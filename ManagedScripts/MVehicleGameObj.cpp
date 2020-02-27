@@ -292,6 +292,11 @@ namespace RenSharp
 			reinterpret_cast<::DamageableGameObj *>(obj->DamageableGameObjPointer.ToPointer()));
 	}
 
+	int	VehicleGameObj::CheckIfOnSurface(int surfaceType)
+	{
+		return InternalVehicleGameObjPointer->Check_If_On_Surface(surfaceType);
+	}
+
 	IntPtr VehicleGameObj::VehicleGameObjPointer::get()
 	{
 		return IntPtr(InternalVehicleGameObjPointer);

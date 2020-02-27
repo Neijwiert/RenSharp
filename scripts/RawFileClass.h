@@ -156,6 +156,9 @@ public:
 		Rights = mode;
 		switch (Rights)
 		{
+		case 3: //DA
+			Handle = CreateFileA(Filename, GENERIC_WRITE, 0, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+			break;
 		case 2:
 			Handle = CreateFileA(Filename,GENERIC_WRITE,0,0,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,0);
 			break;

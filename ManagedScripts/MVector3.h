@@ -45,6 +45,7 @@ namespace RenSharp
 			void Set(float x, float y, float z);
 			void Set(Vector3 other);
 			void Normalize();
+			Vector3 Normalized();
 			void Scale(Vector3 scale);
 			void RotateX(float angle);
 			void RotateX(float sAngle, float cAngle);

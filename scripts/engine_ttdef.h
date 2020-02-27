@@ -22,8 +22,8 @@ enum TextMessageEnum
 	TEXT_MESSAGE_PUBLIC,
 	TEXT_MESSAGE_TEAM,
 	TEXT_MESSAGE_PRIVATE,
-	TEXT_MESSAGE_TMSG, //Special extra value for the TMSG console command.
-	TEXT_MESSAGE_KEYHOOK, //For chat commands triggered by keyhooks.
+	TEXT_MESSAGE_TMSG, //special extra value for the TMSG console command
+	TEXT_MESSAGE_KEYHOOK, //For chat commands triggered by keyhooks. //DA
 };
 enum AnnouncementEnum
 {
@@ -94,7 +94,7 @@ struct PathfindDistanceRequest
 
 	}
 
-	PathfindDistanceRequest(uint32 id, const Vector3& start, const Vector3& dest, PathSolveClass* solver, PathfindDistanceCallback callback, void* data) :
+	PathfindDistanceRequest(uint32 id, const Vector3 &start, const Vector3 &dest, PathSolveClass* solver, PathfindDistanceCallback callback, void *data) :
 		Id(id), Start(start), Dest(dest), PathSolver(solver), Result(PATHFIND_DISTANCE_INVALID_RESULT), Distance(0.0f), Callback(callback), Data(data)
 	{
 

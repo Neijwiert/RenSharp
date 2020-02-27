@@ -47,7 +47,7 @@ namespace RenSharp
 
 	String^ ArmorWarheadManager::GetArmorName(unsigned int type)
 	{
-		if (type > NumArmorTypes)
+		if (type > (unsigned int)NumArmorTypes)
 		{
 			throw gcnew ArgumentOutOfRangeException("type");
 		}
@@ -83,7 +83,7 @@ namespace RenSharp
 
 	String^ ArmorWarheadManager::GetWarheadName(unsigned int type)
 	{
-		if (type > NumWarheadTypes)
+		if (type > (unsigned int)NumWarheadTypes)
 		{
 			throw gcnew ArgumentOutOfRangeException("type");
 		}
@@ -101,11 +101,11 @@ namespace RenSharp
 
 	float ArmorWarheadManager::GetDamageMultiplier(unsigned int armor, unsigned int warhead)
 	{
-		if (armor > NumArmorTypes)
+		if (armor > (unsigned int)NumArmorTypes)
 		{
 			throw gcnew ArgumentOutOfRangeException("type");
 		}
-		else if (warhead > NumWarheadTypes)
+		else if (warhead > (unsigned int)NumWarheadTypes)
 		{
 			throw gcnew ArgumentOutOfRangeException("type");
 		}
@@ -115,11 +115,11 @@ namespace RenSharp
 
 	float ArmorWarheadManager::GetShieldAbsorbsion(unsigned int armor, unsigned int warhead)
 	{
-		if (armor > NumArmorTypes)
+		if (armor > (unsigned int)NumArmorTypes)
 		{
 			throw gcnew ArgumentOutOfRangeException("type");
 		}
-		else if (warhead > NumWarheadTypes)
+		else if (warhead > (unsigned int)NumWarheadTypes)
 		{
 			throw gcnew ArgumentOutOfRangeException("type");
 		}
@@ -129,7 +129,7 @@ namespace RenSharp
 
 	ArmorWarheadManager::SpecialDamageType ArmorWarheadManager::GetSpecialDamageType(unsigned int warhead)
 	{
-		if (warhead > NumWarheadTypes)
+		if (warhead > (unsigned int)NumWarheadTypes)
 		{
 			throw gcnew ArgumentOutOfRangeException("type");
 		}
@@ -139,7 +139,7 @@ namespace RenSharp
 
 	float ArmorWarheadManager::GetSpecialDamageProbability(unsigned int warhead)
 	{
-		if (warhead > NumWarheadTypes)
+		if (warhead > (unsigned int)NumWarheadTypes)
 		{
 			throw gcnew ArgumentOutOfRangeException("type");
 		}
@@ -177,7 +177,7 @@ namespace RenSharp
 
 	float ArmorWarheadManager::GetVisceroidProbability(unsigned int warhead)
 	{
-		if (warhead > NumWarheadTypes)
+		if (warhead > (unsigned int)NumWarheadTypes)
 		{
 			throw gcnew ArgumentOutOfRangeException("type");
 		}
@@ -190,13 +190,13 @@ namespace RenSharp
 		return ::ArmorWarheadManager::Is_Skin_Impervious(static_cast<::ArmorWarheadManager::SpecialDamageType>(type), skin);
 	}
 
-	unsigned int ArmorWarheadManager::NumArmorTypes::get()
+	int ArmorWarheadManager::NumArmorTypes::get()
 	{
-		return static_cast<unsigned int>(::ArmorWarheadManager::Get_Num_Armor_Types());
+		return ::ArmorWarheadManager::Get_Num_Armor_Types();
 	}
 
-	unsigned int ArmorWarheadManager::NumWarheadTypes::get()
+	int ArmorWarheadManager::NumWarheadTypes::get()
 	{
-		return static_cast<unsigned int>(::ArmorWarheadManager::Get_Num_Warhead_Types());
+		return ::ArmorWarheadManager::Get_Num_Warhead_Types();
 	}
 }

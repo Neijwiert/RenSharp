@@ -1,5 +1,5 @@
 /*	Renegade Scripts.dll
-	Copyright 2015 Tiberian Technologies
+	Copyright 2013 Tiberian Technologies
 
 	This file is part of the Renegade scripts.dll
 	The Renegade scripts.dll is free software; you can redistribute it and/or modify it under
@@ -10,10 +10,10 @@
 	Only the source code to the module(s) containing the licenced code has to be released.
 */
 #include "general.h"
+
 #include "scripts.h"
 #include "engine.h"
 #include "da.h"
-
 
 #define SCRIPTSAPI __declspec(dllexport)
 typedef void (*srdf) (void (*function)(ScriptClass*));
@@ -57,10 +57,13 @@ BOOL SCRIPTSAPI __stdcall DllMain(HINSTANCE hinstDLL,
 		case DLL_PROCESS_ATTACH:
 			TT_ASSERT(Exe != 6);
 
-			if (Exe != 1) {
-				//MessageBox(HWND_DESKTOP, "Fatal error: Dragonade only works on the FDS. Please replace your scripts.dll with an appropriate version for the Renegade client.", "Renegade", MB_OK | MB_ICONERROR);
-				//exit(0);
+			/*
+			if (Exe != 1)
+			{
+				MessageBox(HWND_DESKTOP, "Fatal error: Dragonade only works on the FDS. Please replace your scripts.dll with an appropriate version for the Renegade client.", "Renegade", MB_OK | MB_ICONERROR);
+				exit(0);
 			}
+			*/
 
 			if ((!Exe) || (Exe == 1))
 			{
@@ -263,7 +266,6 @@ bool SCRIPTSAPI Set_Script_Commands(ScriptCommandsClass* commands)
 	Send_Client_Announcement = (sca)Address(tt,"Send_Client_Announcement");
 	Send_Player_Kill_Message = (spkm)Address(tt, "Send_Player_Kill_Message");
 	Send_Purchase_Response = (spr)Address(tt, "Send_Purchase_Response");
-	GetTTVersion = (gttv)Address(tt,"GetTTVersion");
 	AddShaderNotify = (asn)Address(tt,"AddShaderNotify");
 	RemoveShaderNotify = (rsn)Address(tt,"RemoveShaderNotify");
 	Do_Objectives_Dlg = (dod)Address(tt,"Do_Objectives_Dlg");
@@ -325,7 +327,6 @@ bool SCRIPTSAPI Set_Script_Commands(ScriptCommandsClass* commands)
 	Get_Waypoint_Position = (gwp)Address(tt,"Get_Waypoint_Position");
 	Create_Lightning = (cl)Address(tt,"Create_Lightning");
 	Set_Global_Stealth_Disable = (smie)Address(tt,"Set_Global_Stealth_Disable");
-	Update_Game_Options = (ugo) Address(tt, "Update_Game_Options");
 	Get_Clouds = (gc) Address(tt, "Get_Clouds");
 	Get_Lightning = (gli) Address(tt, "Get_Lightning");
 	Get_Wind = (gw) Address(tt, "Get_Wind");
@@ -345,11 +346,13 @@ bool SCRIPTSAPI Set_Script_Commands(ScriptCommandsClass* commands)
 	Set_Object_Visibility = (sov)Address(tt,"Set_Object_Visibility");
 	Lock_Soldier_Collision_Group = (lscg)Address(tt,"Lock_Soldier_Collision_Group");
 	Unlock_Soldier_Collision_Group = (ulscg)Address(tt,"Unlock_Soldier_Collision_Group");
+	Unlock_Soldier_Collision_Group = (ulscg)Address(tt,"Unlock_Soldier_Collision_Group");
+	Is_Engine_Enabled = (iea)Address(tt,"Is_Engine_Enabled");
 	Stop_Timer = (ss)Address(tt,"Stop_Timer");
-	Stop_Timer2 = (ss2)Address(tt,"Stop_Timer2");
-	Has_Timer = (htm)Address(tt,"Has_Timer");
 	Create_2D_Wave_Sound_Dialog_Player = (cwsdp)Address(tt,"Create_2D_Wave_Sound_Dialog_Player");
 	Force_Position_Update_Player = (fpup)Address(tt,"Force_Position_Update_Player");
+	Stop_Timer2 = (ss2)Address(tt,"Stop_Timer2");
+	Has_Timer = (htm)Address(tt,"Has_Timer");
 	Set_Background_Music_Player_Offset = (sbgmo)Address(tt,"Set_Background_Music_Player_Offset");
 	Set_Camera_Player = (setcam)Address(tt,"Set_Camera_Player");
 	Set_Definition_TranslationID_Player = (settran)Address(tt,"Set_Definition_TranslationID_Player");
@@ -366,7 +369,7 @@ bool SCRIPTSAPI Set_Script_Commands(ScriptCommandsClass* commands)
 	Cancel_Get_Pathfind_Distance = (cgpd)Address(tt,"Cancel_Get_Pathfind_Distance");
 	Get_Pathfind_Distance_Async = (gpda)Address(tt, "Get_Pathfind_Distance_Async");
 	Get_Pathfind_Distance_Blocking = (gpdb)Address(tt, "Get_Pathfind_Distance_Blocking");
-	
+
 	DA::Init();
 
 	return (SetScriptCommands) (commands);
@@ -378,4 +381,3 @@ void SCRIPTSAPI Set_Request_Destroy_Func(void (*function)(ScriptClass*))
 	(SetRequestDestroyFunc)(function);
 }
 } //extern "C"
-

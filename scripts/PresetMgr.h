@@ -115,10 +115,9 @@ public:
 	}
 };
 
-// DA
-//#if (DDBEDIT) || (TDBEDIT) || (W3DVIEWER)
+#if (DDBEDIT) || (TDBEDIT) || (W3DVIEWER)
 extern PresetMgrClass _ThePresetMgr;
-//#else
-//extern REF_DECL(PresetMgrClass, _ThePresetMgr);
-//#endif
+#else
+extern REF_DECL(PresetMgrClass, _ThePresetMgr);
+#endif
 #endif

@@ -19,7 +19,6 @@
 #include "HashTemplateClass.h"
 #include "SList.h"
 #include "cPlayer.h"
-#include "PhysDefClass.h"
 class ConnectionAcceptanceFilter;
 class WideStringClass;
 class cScTextObj;
@@ -52,7 +51,6 @@ typedef void (*rkh) (int pos);
 typedef void (*ss) (GameObject *obj,int scope);
 typedef void (*ss2) (GameObject *obj,ScriptClass *script,int number);
 typedef bool (*htm) (GameObject *obj,ScriptClass *script,int number);
-
 typedef void (*ach) (ChatHook h);
 typedef void (*ahh) (HostHook h);
 typedef void (*arh) (RefillHook h);
@@ -184,7 +182,7 @@ typedef void (*fvu) (GameObject *obj);
 typedef void (*fvup) (GameObject *player,GameObject *obj);
 typedef void (*schn) (GameObject *obj);
 typedef uint32(*gpd) (const Vector3& start, const Vector3& dest, PathfindDistanceCallback callback, SmartGameObj* pathObj, void* data);
-typedef uint32(*gpda) (SmartGameObj* pathObj, const Vector3& dest, PathfindDistanceCallback callback, void* data);
+typedef uint32 (*gpda) (SmartGameObj* pathObj, const Vector3 &dest, PathfindDistanceCallback callback, void *data);
 typedef bool(*gpdb) (SmartGameObj* pathObj, const Vector3& dest, float& distanceResult, PathfindDistanceResult& pathfindResult);
 typedef bool (*cgpd) (uint32 id);
 SCRIPTS_API extern gpl Get_Player_List;
@@ -480,6 +478,7 @@ SCRIPTS_API void Create_Sound_Team(const char *soundname,const Vector3 & positio
 SCRIPTS_API void Create_2D_Sound_Team(const char *soundname,int team); //play a 2D sound for a team
 SCRIPTS_API void Create_2D_WAV_Sound_Team(const char *soundname,int team); //play a 2D WAV sound for a team
 SCRIPTS_API void Create_2D_WAV_Sound_Team_Dialog(const char *soundname,int team); //play a 2D WAV Dialogue sound for a team
+SCRIPTS_API void Create_2D_WAV_Sound_Team_Cinematic(const char *soundname,int team); //play a 2D WAV Cinematic sound for a team
 SCRIPTS_API void Create_3D_WAV_Sound_At_Bone_Team(const char *soundname,GameObject *obj,const char *bonename,int team); //play a 3D WAV sound at a bone for a team
 SCRIPTS_API void Create_3D_Sound_At_Bone_Team(const char *soundname,GameObject *obj,const char *bonename,int team); //play a 3D sound at a bone for a team
 SCRIPTS_API void Send_Message_Team(int team,unsigned int red,unsigned int green,unsigned int blue,const char *msg); //send a message to a team

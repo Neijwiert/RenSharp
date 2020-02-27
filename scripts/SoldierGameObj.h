@@ -9,9 +9,6 @@
 	In addition, an exemption is given to allow Run Time Dynamic Linking of this code with any closed source module that does not contain code covered by this licence.
 	Only the source code to the module(s) containing the licenced code has to be released.
 */
-//Changes made in DA:
-//Added Get_Player and Get_DA_Player
-//Exported Toggle_Fly_Mode
 #ifndef TT_INCLUDE__SOLDIERGAMEOBJ_H
 #define TT_INCLUDE__SOLDIERGAMEOBJ_H
 
@@ -21,8 +18,8 @@
 #include "PhysClass.h"
 #include "ArmorWarheadManager.h"
 #include "TransitionGameObjDef.h"
-#include "SoldierGameObjDef.h"
-#include "cPlayer.h"
+#include "SoldierGameObjDef.h" //DA
+#include "cPlayer.h" //DA
 class TransitionInstanceClass;
 class RenderObjClass;
 class SimpleAnimControlClass;
@@ -118,7 +115,7 @@ public:
 	void				Reset_Loiter_Delay( void )				{ HumanState.Reset_Loiter_Delay(); }
 	virtual	void	Get_Information( StringClass & string );
 	virtual void	Get_Description(StringClass & description);
-	SCRIPTS_API void		Toggle_Fly_Mode( void );
+	SCRIPTS_API void		Toggle_Fly_Mode(void); //DA
 	virtual float		Get_Max_Speed( void );
 	virtual void 		Set_Max_Speed( float speed );
 	virtual float		Get_Turn_Rate( void );
@@ -155,7 +152,7 @@ public:
 	void					Prepare_Speech_Framework( void );
 	void					Enable_Ghost_Collision( bool onoff );
 	bool					Is_Soldier_Blocked( const Vector3 &curr_pos );
-	bool					Is_Safe_To_Disable_Ghost_Collision() const;
+	bool					Disable_Ghost_Collision();
 	DynamicSpeechAnimClass *Get_Facial_Anim (void) { return SpeechAnim; }
 	void							Set_Emot_Icon (const char *model_name, float duration );
 	SoldierObserverClass	*	Get_Innate_Controller( void );
@@ -217,13 +214,12 @@ public:
 	virtual void 		Set_Human_Anim_Override(bool enableHumanAnimOverride);
 	virtual int			Get_Human_Anim_Override();
 
-	cPlayer *Get_Player() {
+	cPlayer* Get_Player() { //DA
 		return (cPlayer*)Get_Player_Data();
 	}
-	DAPlayerClass *Get_DA_Player() {
+	DAPlayerClass* Get_DA_Player() { //DA
 		return Get_Player()->Get_DA_Player();
 	}
-
 protected:
 	RenderObjClass		*	WeaponRenderModel; //2416
 	RenderObjClass		*	BackWeaponRenderModel; //2420
@@ -293,6 +289,8 @@ protected:
 	bool						movementLoitersAllowed;
 	bool						useStockGhostBehavior;
 	bool						OverrideMuzzleDirection;
+	bool						UpdatedTarget;
+	bool						DoTilt;
 	float						skeletonHeight;
 	float						skeletonWidth;
 	float						lastSkeletonHeight;

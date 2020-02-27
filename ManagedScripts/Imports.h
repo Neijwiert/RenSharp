@@ -234,7 +234,7 @@ class CompressedVisTableClass;
 class VisDecompressionCacheClass;
 class SysTimeClass;
 class TDBObjClass;
-class DefaultConnectionAcceptanceFilter;
+class ObserverImpClass;
 
 #include <coltype.h>
 #include <multilist.h>
@@ -383,6 +383,9 @@ namespace RenSharp
 
 		[DllImport(RenSharpPluginName)]
 		extern "C" void Vector3Normalize(::Vector3 *vector);
+
+		[DllImport(RenSharpPluginName)]
+		extern "C" void Vector3Normalized(::Vector3* vector, ::Vector3* result);
 
 		[DllImport(RenSharpPluginName)]
 		extern "C" ::DASettingsClass *CreateDASettingsClass1();
@@ -2098,9 +2101,9 @@ namespace RenSharp
 		extern "C" void DestroyStringClassTDBObjClassPtrHashTemplateIterator(::HashTemplateIterator<::StringClass, ::TDBObjClass*>* stringClassTDBObjClassPtrHashTemplateIterator);
 
 		[DllImport(RenSharpPluginName)]
-		extern "C" void DestroyDefaultConnectionAcceptanceFilter(::DefaultConnectionAcceptanceFilter* defaultConnectionAcceptanceFilter);
+		extern "C" float WWMathInvSqrt(float a);
 
 		[DllImport(RenSharpPluginName)]
-		extern "C" float WWMathInvSqrt(float a);
+		extern "C" ::ObserverImpClass* CreateObserverImpClass(const char* name);
 	}
 }

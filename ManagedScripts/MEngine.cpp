@@ -38,6 +38,7 @@ limitations under the License.
 #include <ReferencerClass.h>
 #include <MoveablePhysClass.h>
 #include <w3d.h>
+#include <da_ssgm.h>
 
 RENEGADE_FUNCTION
 ::cTeam* Internal_Find_Team(int team)
@@ -4339,6 +4340,26 @@ namespace RenSharp
 		{
 			::Create_2D_WAV_Sound_Team_Dialog(
 				reinterpret_cast<char *>(soundNameHandle.ToPointer()),
+				team);
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(soundNameHandle);
+		}
+	}
+
+	void Engine::Create2DWAVSoundTeamCinematic(String^ soundName, int team)
+	{
+		if (soundName == nullptr)
+		{
+			throw gcnew ArgumentNullException("soundName");
+		}
+
+		IntPtr soundNameHandle = Marshal::StringToHGlobalAnsi(soundName);
+		try
+		{
+			::Create_2D_WAV_Sound_Team_Cinematic(
+				reinterpret_cast<char*>(soundNameHandle.ToPointer()),
 				team);
 		}
 		finally
@@ -13126,6 +13147,44 @@ static ::cPlayer* NickSavePlayer = nullptr;
 
 		return CRC_File(
 			reinterpret_cast<::FileClass*>(file->FileClassPointer.ToPointer()));
+	}
+
+	void Engine::LogKilledMessage(IScriptableGameObj^ obj, IScriptableGameObj^ killer, String^ objectType)
+	{
+		if (objectType == nullptr)
+		{
+			throw gcnew ArgumentNullException("objectType");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
+		::ScriptableGameObj* killerPtr;
+		if (killer == nullptr || killer->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			killerPtr = nullptr;
+		}
+		else
+		{
+			killerPtr = reinterpret_cast<::ScriptableGameObj*>(killer->ScriptableGameObjPointer.ToPointer());
+		}
+
+		IntPtr objectTypePtr = Marshal::StringToHGlobalAnsi(objectType);
+		try
+		{
+			::Log_Killed_Message(objPtr, killerPtr, reinterpret_cast<const char*>(objectTypePtr.ToPointer()));
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(objectTypePtr);
+		}
 	}
 
 	IntPtr Engine::GetPlayerListPointer::get()

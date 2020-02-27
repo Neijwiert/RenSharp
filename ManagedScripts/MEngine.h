@@ -204,6 +204,10 @@ namespace RenSharp
 			literal int CIDAirstrip = CID_Airstrip;
 			literal int CIDCinematic = CID_Cinematic;
 			literal int CIDComCenter = CID_ComCenter;
+			literal int CIDWeapon = CID_Weapon;
+			literal int CIDAmmo = CID_Ammo;
+			literal int CIDExplosion = CID_Explosion;
+			literal int CIDSpawner = CID_Spawner;
 
 			// engine_common.h
 			generic<typename T>
@@ -243,12 +247,8 @@ namespace RenSharp
 			};
 
 			// engine_da.h
-			literal uint32 CIDWeapon = CID_Weapon;
-			literal uint32 CIDAmmo = CID_Ammo;
-			literal uint32 CIDExplosion = CID_Explosion;
 			literal int StyleC4 = STYLE_C4;
 			literal int StyleBeacon = STYLE_BEACON;
-			literal uint32 CIDSpawner = CID_Spawner;
 
 			// engine_ttdef.h
 			literal int FogExp = FOG_EXP;
@@ -490,6 +490,7 @@ namespace RenSharp
 			static void Create2DSoundTeam(String ^soundName, int team);
 			static void Create2DWAVSoundTeam(String ^soundName, int team);
 			static void Create2DWAVSoundTeamDialog(String ^soundName, int team);
+			static void Create2DWAVSoundTeamCinematic(String^ soundName, int team);
 			static void Create3DWAVSoundAtBoneTeam(String ^soundName, IScriptableGameObj ^obj, String ^boneName, int team);
 			static void Create3DSoundAtBoneTeam(String ^soundName, IScriptableGameObj ^obj, String ^boneName, int team);
 			static void SendMessageTeam(int team, Color color, String ^msg);
@@ -1046,6 +1047,9 @@ namespace RenSharp
 			static unsigned long CRCStringi(String^ data);
 			static unsigned long CRCFile(IFileClass^ file, uint32 seed);
 			static unsigned long CRCFile(IFileClass^ file);
+
+			// da_ssgm.h
+			static void LogKilledMessage(IScriptableGameObj^ obj, IScriptableGameObj^ killer, String^ objectType);
 
 			// Custom stuff
 			static property String ^RenSharpVersion
