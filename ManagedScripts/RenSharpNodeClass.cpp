@@ -599,34 +599,34 @@ namespace RenSharp
 		return true;
 	}
 
-	void RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, System::Object^ data)
+	RenSharpChatCommandStruct^ RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, System::Object^ data)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters, accessLevel, chatType, data);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters, accessLevel, chatType, data);
 	}
 
-	void RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType)
+	RenSharpChatCommandStruct^ RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters, accessLevel, chatType);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters, accessLevel, chatType);
 	}
 
-	void RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel)
+	RenSharpChatCommandStruct^ RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters, accessLevel);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters, accessLevel);
 	}
 
-	void RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, System::Object^ data)
+	RenSharpChatCommandStruct^ RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, System::Object^ data)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters, data);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters, data);
 	}
 
-	void RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters)
+	RenSharpChatCommandStruct^ RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers, parameters);
 	}
 
-	void RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers)
+	RenSharpChatCommandStruct^ RenSharpNodeClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::EventClass, func, triggers);
 	}
 
 	void RenSharpNodeClass::UnregisterChatCommand(String^ trigger)
@@ -661,14 +661,14 @@ namespace RenSharp
 		return true;
 	}
 
-	void RenSharpNodeClass::RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers, System::Object^ data)
+	RenSharpKeyHookStruct^ RenSharpNodeClass::RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers, System::Object^ data)
 	{
-		RenSharpKeyHookManager::RegisterKeyHook(this, KeyHookGroup::EventClass, func, triggers, data);
+		return RenSharpKeyHookManager::RegisterKeyHook(this, KeyHookGroup::EventClass, func, triggers, data);
 	}
 
-	void RenSharpNodeClass::RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers)
+	RenSharpKeyHookStruct^ RenSharpNodeClass::RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers)
 	{
-		RenSharpKeyHookManager::RegisterKeyHook(this, KeyHookGroup::EventClass, func, triggers);
+		return RenSharpKeyHookManager::RegisterKeyHook(this, KeyHookGroup::EventClass, func, triggers);
 	}
 
 	void RenSharpNodeClass::UnregisterKeyHook(String^ trigger)

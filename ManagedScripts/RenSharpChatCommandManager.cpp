@@ -219,7 +219,7 @@ namespace RenSharp
 		globalChatCommands->Remove(chatCommand);
 	}
 
-	void RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, Object ^data)
+	RenSharpChatCommandStruct^ RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, Object ^data)
 	{
 		if (owner == nullptr)
 		{
@@ -241,31 +241,33 @@ namespace RenSharp
 		}
 
 		groupedChatCommands[static_cast<int>(group)]->Add(newChatCommand);
+
+		return newChatCommand;
 	}
 
-	void RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType)
+	RenSharpChatCommandStruct^ RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType)
 	{
-		RegisterChatCommand(owner, group, func, triggers, parameters, accessLevel, chatType, nullptr);
+		return RegisterChatCommand(owner, group, func, triggers, parameters, accessLevel, chatType, nullptr);
 	}
 
-	void RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel)
+	RenSharpChatCommandStruct^ RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel)
 	{
-		RegisterChatCommand(owner, group, func, triggers, parameters, accessLevel, DAChatType::All, nullptr);
+		return RegisterChatCommand(owner, group, func, triggers, parameters, accessLevel, DAChatType::All, nullptr);
 	}
 
-	void RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, Object^ data)
+	RenSharpChatCommandStruct^ RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, Object^ data)
 	{
-		RegisterChatCommand(owner, group, func, triggers, parameters, DAAccessLevel::None, DAChatType::All, data);
+		return RegisterChatCommand(owner, group, func, triggers, parameters, DAAccessLevel::None, DAChatType::All, data);
 	}
 
-	void RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters)
+	RenSharpChatCommandStruct^ RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters)
 	{
-		RegisterChatCommand(owner, group, func, triggers, parameters, nullptr);
+		return RegisterChatCommand(owner, group, func, triggers, parameters, nullptr);
 	}
 
-	void RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers)
+	RenSharpChatCommandStruct^ RenSharpChatCommandManager::RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers)
 	{
-		RegisterChatCommand(owner, group, func, triggers, 0, nullptr);
+		return RegisterChatCommand(owner, group, func, triggers, 0, nullptr);
 	}
 
 	void RenSharpChatCommandManager::UnregisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, String^ trigger)

@@ -56,29 +56,44 @@ namespace RenSharp
 				IChatCommandInterface^ get();
 			}
 
-			property array<String ^> ^Triggers
+			property array<String^> ^Triggers
 			{
 				array<String ^> ^get();
+
+				protected:
+					void set(array<String^>^ value);
 			}
 
-			property RenSharpCCDelegate^Func
+			property RenSharpCCDelegate^ Func
 			{
-				RenSharpCCDelegate^get();
+				RenSharpCCDelegate^ get();
+
+				protected:
+					void set(RenSharpCCDelegate^ value);
 			}
 
 			property DAAccessLevel AccessLevel
 			{
 				DAAccessLevel get();
+
+				protected:
+					void set(DAAccessLevel value);
 			}
 
 			property int Parameters
 			{
 				int get();
+
+				protected:
+					void set(int value);
 			}
 
 			property DAChatType ChatType
 			{
 				DAChatType get();
+
+				protected:
+					void set(DAChatType value);
 			}
 
 			property Object^ Data

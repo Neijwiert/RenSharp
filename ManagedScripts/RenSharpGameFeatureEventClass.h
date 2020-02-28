@@ -129,18 +129,18 @@ namespace RenSharp
 			virtual void ClearTimers() sealed;
 
 			virtual bool FilterChatCommand(IcPlayer^ player, String^ command, IDATokenClass^ text, TextMessageEnum chatType, Object^ data) sealed;
-			virtual void RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, Object^ data) sealed;
-			virtual void RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType) sealed;
-			virtual void RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel) sealed;
-			virtual void RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, Object^ data) sealed;
-			virtual void RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters) sealed;
-			virtual void RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers) sealed;
+			virtual RenSharpChatCommandStruct^ RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, Object^ data) sealed;
+			virtual RenSharpChatCommandStruct^ RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType) sealed;
+			virtual RenSharpChatCommandStruct^ RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel) sealed;
+			virtual RenSharpChatCommandStruct^ RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, Object^ data) sealed;
+			virtual RenSharpChatCommandStruct^ RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters) sealed;
+			virtual RenSharpChatCommandStruct^ RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers) sealed;
 			virtual void UnregisterChatCommand(String^ trigger) sealed;
 			virtual void ClearChatCommands() sealed;
 
 			virtual bool FilterKeyHook(IcPlayer^ player, String^ key, Object^ data) sealed;
-			virtual void RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers, Object^ data) sealed;
-			virtual void RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers) sealed;
+			virtual RenSharpKeyHookStruct^ RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers, Object^ data) sealed;
+			virtual RenSharpKeyHookStruct^ RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers) sealed;
 			virtual void UnregisterKeyHook(String^ trigger) sealed;
 			virtual void ClearKeyHooks() sealed;
 

@@ -454,34 +454,34 @@ namespace RenSharp
 		return Object::Equals(Owner, player);
 	}
 
-	void RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, Object^ data)
+	RenSharpChatCommandStruct^ RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, Object^ data)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters, accessLevel, chatType, data);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters, accessLevel, chatType, data);
 	}
 
-	void RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType)
+	RenSharpChatCommandStruct^ RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters, accessLevel, chatType);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters, accessLevel, chatType);
 	}
 
-	void RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel)
+	RenSharpChatCommandStruct^ RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters, accessLevel);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters, accessLevel);
 	}
 
-	void RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, Object^ data)
+	RenSharpChatCommandStruct^ RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters, Object^ data)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters, data);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters, data);
 	}
 
-	void RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters)
+	RenSharpChatCommandStruct^ RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers, int parameters)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers, parameters);
 	}
 
-	void RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers)
+	RenSharpChatCommandStruct^ RenSharpPlayerObserverClass::RegisterChatCommand(RenSharpCCDelegate^ func, String^ triggers)
 	{
-		RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers);
+		return RenSharpChatCommandManager::RegisterChatCommand(this, ChatCommandGroup::PlayerObserver, func, triggers);
 	}
 
 	void RenSharpPlayerObserverClass::UnregisterChatCommand(String^ trigger)
@@ -516,14 +516,14 @@ namespace RenSharp
 		return Object::Equals(Owner, player);
 	}
 
-	void RenSharpPlayerObserverClass::RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers, Object^ data)
+	RenSharpKeyHookStruct^ RenSharpPlayerObserverClass::RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers, Object^ data)
 	{
-		RenSharpKeyHookManager::RegisterKeyHook(this, KeyHookGroup::PlayerObserver, func, triggers, data);
+		return RenSharpKeyHookManager::RegisterKeyHook(this, KeyHookGroup::PlayerObserver, func, triggers, data);
 	}
 
-	void RenSharpPlayerObserverClass::RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers)
+	RenSharpKeyHookStruct^ RenSharpPlayerObserverClass::RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers)
 	{
-		RenSharpKeyHookManager::RegisterKeyHook(this, KeyHookGroup::PlayerObserver, func, triggers);
+		return RenSharpKeyHookManager::RegisterKeyHook(this, KeyHookGroup::PlayerObserver, func, triggers);
 	}
 
 	void RenSharpPlayerObserverClass::UnregisterKeyHook(String^ trigger)

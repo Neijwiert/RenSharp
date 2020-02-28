@@ -2105,5 +2105,14 @@ namespace RenSharp
 
 		[DllImport(RenSharpPluginName)]
 		extern "C" ::ObserverImpClass* CreateObserverImpClass(const char* name);
+
+		[DllImport(RenSharpPluginName)]
+		extern "C" void RenSharpConsoleFunctionClassSetName(::RenSharpConsoleFunctionClass* renSharpConsoleFunctionClass, const char* name);
+
+		[DllImport(RenSharpPluginName)]
+		extern "C" void RenSharpConsoleFunctionClassSetAlias(::RenSharpConsoleFunctionClass* renSharpConsoleFunctionClass, const char* alias);
+
+		[DllImport(RenSharpPluginName)]
+		extern "C" void RenSharpConsoleFunctionClassSetHelp(::RenSharpConsoleFunctionClass* renSharpConsoleFunctionClass, const char* help);
 	}
 }

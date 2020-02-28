@@ -160,7 +160,7 @@ namespace RenSharp
 		globalKeyHooks->Remove(keyHook);
 	}
 
-	void RenSharpKeyHookManager::RegisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, RenSharpKHDelegate^ func, String^ triggers, Object^ data)
+	RenSharpKeyHookStruct^ RenSharpKeyHookManager::RegisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, RenSharpKHDelegate^ func, String^ triggers, Object^ data)
 	{
 		if (owner == nullptr)
 		{
@@ -182,11 +182,13 @@ namespace RenSharp
 		}
 
 		groupedKeyHooks[static_cast<int>(group)]->Add(newKeyHook);
+
+		return newKeyHook;
 	}
 
-	void RenSharpKeyHookManager::RegisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, RenSharpKHDelegate^ func, String^ triggers)
+	RenSharpKeyHookStruct^ RenSharpKeyHookManager::RegisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, RenSharpKHDelegate^ func, String^ triggers)
 	{
-		RegisterKeyHook(owner, group, func, triggers, nullptr);
+		return RegisterKeyHook(owner, group, func, triggers, nullptr);
 	}
 
 	void RenSharpKeyHookManager::UnregisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, String^ trigger)

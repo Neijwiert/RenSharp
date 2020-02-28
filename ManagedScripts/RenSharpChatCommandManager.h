@@ -55,12 +55,12 @@ namespace RenSharp
 			static void RegisterChatCommand(RenSharpChatCommandClass^ chatCommand);
 			static void UnregisterChatCommand(RenSharpChatCommandClass^ chatCommand);
 
-			static void RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, Object^ data);
-			static void RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType);
-			static void RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel);
-			static void RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, Object^ data);
-			static void RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters);
-			static void RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers);
+			static RenSharpChatCommandStruct^ RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType, Object^ data);
+			static RenSharpChatCommandStruct^ RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel, DAChatType chatType);
+			static RenSharpChatCommandStruct^ RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, DAAccessLevel accessLevel);
+			static RenSharpChatCommandStruct^ RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters, Object^ data);
+			static RenSharpChatCommandStruct^ RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers, int parameters);
+			static RenSharpChatCommandStruct^ RegisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, RenSharpCCDelegate^ func, String^ triggers);
 			static void UnregisterChatCommand(IChatCommandInterface^ owner, ChatCommandGroup group, String^ trigger);
 			static void ClearChatCommands(IChatCommandInterface^ owner, ChatCommandGroup group);
 			static Collections::Generic::IEnumerable<RenSharpChatCommandStruct^>^ GetChatCommands(IChatCommandInterface^ owner, ChatCommandGroup group);

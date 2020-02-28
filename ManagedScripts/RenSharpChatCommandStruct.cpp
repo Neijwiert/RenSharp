@@ -120,9 +120,29 @@ namespace RenSharp
 		return triggers;
 	}
 
+	void RenSharpChatCommandStruct::Triggers::set(array<String^>^ value)
+	{
+		if (value == nullptr)
+		{
+			throw gcnew ArgumentNullException("value");
+		}
+
+		triggers = value;
+	}
+
 	RenSharpCCDelegate^ RenSharpChatCommandStruct::Func::get()
 	{
 		return func;
+	}
+
+	void RenSharpChatCommandStruct::Func::set(RenSharpCCDelegate^ value)
+	{
+		if (value == nullptr)
+		{
+			throw gcnew ArgumentNullException("value");
+		}
+
+		func = value;
 	}
 
 	DAAccessLevel RenSharpChatCommandStruct::AccessLevel::get()
@@ -130,14 +150,29 @@ namespace RenSharp
 		return accessLevel;
 	}
 
+	void RenSharpChatCommandStruct::AccessLevel::set(DAAccessLevel value)
+	{
+		accessLevel = value;
+	}
+
 	int RenSharpChatCommandStruct::Parameters::get()
 	{
 		return parameters;
 	}
 
+	void RenSharpChatCommandStruct::Parameters::set(int value)
+	{
+		parameters = value;
+	}
+
 	DAChatType RenSharpChatCommandStruct::ChatType::get()
 	{
 		return chatType;
+	}
+
+	void RenSharpChatCommandStruct::ChatType::set(DAChatType value)
+	{
+		chatType = value;
 	}
 
 	Object^ RenSharpChatCommandStruct::Data::get()

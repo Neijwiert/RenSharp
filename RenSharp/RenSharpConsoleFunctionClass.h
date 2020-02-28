@@ -34,4 +34,8 @@ class RenSharpConsoleFunctionClass : public ConsoleFunctionClass
 		virtual const char *Get_Alias();
 		virtual const char *Get_Help();
 		virtual void Activate(const char *pArgs);
+
+		void Set_Name(const char* name);
+		void Set_Alias(const char* alias);
+		void Set_Help(const char* help);
 };

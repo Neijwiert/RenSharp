@@ -84,7 +84,7 @@ namespace RenSharp
 
 	String ^RenSharpConsoleFunctionClass::ToString()
 	{
-		return name;
+		return Name;
 	}
 
 	bool RenSharpConsoleFunctionClass::Equals(Object ^other)
@@ -301,17 +301,110 @@ namespace RenSharp
 
 	String ^RenSharpConsoleFunctionClass::Name::get()
 	{
-		return name;
+		if (IsAttached)
+		{
+			return gcnew String(InternalConsoleFunctionClassPointer->Get_Name());
+		}
+		else
+		{
+			return name;
+		}
+	}
+
+	void RenSharpConsoleFunctionClass::Name::set(String^ value)
+	{
+		if (value == nullptr)
+		{
+			throw gcnew ArgumentNullException("value");
+		}
+
+		IntPtr valuePtr = Marshal::StringToHGlobalAnsi(value);
+		try
+		{
+			Imports::RenSharpConsoleFunctionClassSetName(
+				reinterpret_cast<::RenSharpConsoleFunctionClass*>(InternalConsoleFunctionClassPointer),
+				reinterpret_cast<const char*>(valuePtr.ToPointer()));
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(valuePtr);
+		}
 	}
 
 	String ^RenSharpConsoleFunctionClass::Alias::get()
 	{
-		return alias;
+		if (IsAttached)
+		{
+			auto result = InternalConsoleFunctionClassPointer->Get_Alias();
+			if (result == nullptr)
+			{
+				return nullptr;
+			}
+			else
+			{
+				return gcnew String(result);
+			}
+		}
+		else
+		{
+			return alias;
+		}
+	}
+
+	void RenSharpConsoleFunctionClass::Alias::set(String^ value)
+	{
+		if (value == nullptr)
+		{
+			Imports::RenSharpConsoleFunctionClassSetAlias(
+				reinterpret_cast<::RenSharpConsoleFunctionClass*>(InternalConsoleFunctionClassPointer),
+				nullptr);
+		}
+		else
+		{
+			IntPtr valuePtr = Marshal::StringToHGlobalAnsi(value);
+			try
+			{
+				Imports::RenSharpConsoleFunctionClassSetAlias(
+					reinterpret_cast<::RenSharpConsoleFunctionClass*>(InternalConsoleFunctionClassPointer),
+					reinterpret_cast<const char*>(valuePtr.ToPointer()));
+			}
+			finally
+			{
+				Marshal::FreeHGlobal(valuePtr);
+			}
+		}
 	}
 
 	String ^RenSharpConsoleFunctionClass::Help::get()
 	{
-		return help;
+		if (IsAttached)
+		{
+			return gcnew String(InternalConsoleFunctionClassPointer->Get_Help());
+		}
+		else
+		{
+			return help;
+		}
+	}
+
+	void RenSharpConsoleFunctionClass::Help::set(String^ value)
+	{
+		if (value == nullptr)
+		{
+			throw gcnew ArgumentNullException("value");
+		}
+
+		IntPtr valuePtr = Marshal::StringToHGlobalAnsi(value);
+		try
+		{
+			Imports::RenSharpConsoleFunctionClassSetHelp(
+				reinterpret_cast<::RenSharpConsoleFunctionClass*>(InternalConsoleFunctionClassPointer),
+				reinterpret_cast<const char*>(valuePtr.ToPointer()));
+		}
+		finally
+		{
+			Marshal::FreeHGlobal(valuePtr);
+		}
 	}
 
 	bool RenSharpConsoleFunctionClass::DestroyPointer::get()

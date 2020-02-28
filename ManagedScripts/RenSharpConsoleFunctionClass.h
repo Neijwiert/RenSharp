@@ -132,16 +132,25 @@ namespace RenSharp
 			property String ^Name
 			{
 				virtual String ^get() sealed;
+
+				protected:
+					virtual void set(String^ value) sealed;
 			}
 
 			property String ^Alias
 			{
 				virtual String ^get() sealed;
+
+				protected:
+					virtual void set(String^ value) sealed;
 			}
 
 			property String ^Help
 			{
 				virtual String ^get() sealed;
+
+				protected:
+					virtual void set(String^ value) sealed;
 			}
 
 		protected:

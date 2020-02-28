@@ -58,3 +58,26 @@ void RenSharpConsoleFunctionClass::Activate(const char *pArgs)
 {
 	RenSharpRootEventClass::Get_Instance().ConsoleFunction_Activate(this, pArgs);
 }
+
+void RenSharpConsoleFunctionClass::Set_Name(const char* name)
+{
+	this->name = name;
+}
+
+void RenSharpConsoleFunctionClass::Set_Alias(const char* alias)
+{
+	if (alias == nullptr)
+	{
+		aliasNull = true;
+	}
+	else
+	{
+		this->alias = alias;
+		aliasNull = false;
+	}
+}
+
+void RenSharpConsoleFunctionClass::Set_Help(const char* help)
+{
+	this->help = help;
+}

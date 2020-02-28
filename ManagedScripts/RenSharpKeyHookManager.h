@@ -54,8 +54,8 @@ namespace RenSharp
 			static void RegisterKeyHook(RenSharpKeyHookClass^ keyHook);
 			static void UnregisterKeyHook(RenSharpKeyHookClass^ keyHook);
 
-			static void RegisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, RenSharpKHDelegate^ func, String^ triggers, Object^ data);
-			static void RegisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, RenSharpKHDelegate^ func, String^ triggers);
+			static RenSharpKeyHookStruct^ RegisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, RenSharpKHDelegate^ func, String^ triggers, Object^ data);
+			static RenSharpKeyHookStruct^ RegisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, RenSharpKHDelegate^ func, String^ triggers);
 			static void UnregisterKeyHook(IKeyHookInterface^ owner, KeyHookGroup group, String^ trigger);
 			static void ClearKeyHooks(IKeyHookInterface^ owner, KeyHookGroup group);
 			static Collections::Generic::IEnumerable<RenSharpKeyHookStruct^>^ GetKeyHooks(IKeyHookInterface^ owner, KeyHookGroup group);

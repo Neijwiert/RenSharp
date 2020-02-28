@@ -3338,4 +3338,19 @@ extern "C"
 	{
 		return new ObserverImpClass(name);
 	}
+
+	__declspec(dllexport) void __stdcall RenSharpConsoleFunctionClassSetName(RenSharpConsoleFunctionClass* renSharpConsoleFunctionClass, const char* name)
+	{
+		renSharpConsoleFunctionClass->Set_Name(name);
+	}
+
+	__declspec(dllexport) void __stdcall RenSharpConsoleFunctionClassSetAlias(RenSharpConsoleFunctionClass* renSharpConsoleFunctionClass, const char* alias)
+	{
+		renSharpConsoleFunctionClass->Set_Alias(alias);
+	}
+
+	__declspec(dllexport) void __stdcall RenSharpConsoleFunctionClassSetHelp(RenSharpConsoleFunctionClass* renSharpConsoleFunctionClass, const char* help)
+	{
+		renSharpConsoleFunctionClass->Set_Help(help);
+	}
 }

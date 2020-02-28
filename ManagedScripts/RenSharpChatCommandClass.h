@@ -62,21 +62,33 @@ namespace RenSharp
 			property array<String^>^ Triggers
 			{
 				array<String^>^ get();
+
+				protected:
+					void set(array<String^>^ value);
 			}
 
 			property DAAccessLevel AccessLevel
 			{
 				DAAccessLevel get();
+
+				protected:
+					void set(DAAccessLevel value);
 			}
 
 			property DAChatType ChatType
 			{
 				DAChatType get();
+
+				protected:
+					void set(DAChatType value);
 			}
 
 			property int Parameters
 			{
 				int get();
+
+				protected:
+					void set(int value);
 			}
 	};
 }

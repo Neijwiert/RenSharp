@@ -24,9 +24,9 @@ namespace RenSharp
 	{
 		bool FilterKeyHook(IcPlayer^ player, String^ key, Object^ data);
 
-		void RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers, Object^ data);
+		RenSharpKeyHookStruct^ RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers, Object^ data);
 
-		void RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers);
+		RenSharpKeyHookStruct^ RegisterKeyHook(RenSharpKHDelegate^ func, String^ triggers);
 
 		void UnregisterKeyHook(String^ trigger);
 
