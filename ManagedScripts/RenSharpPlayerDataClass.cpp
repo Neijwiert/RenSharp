@@ -139,6 +139,12 @@ namespace RenSharp
 		return daPlayerDataClassPointer.GetHashCode();
 	}
 
+	void RenSharpPlayerDataClass::InitUnmanagedAttachable()
+	{
+		AttachToUnmanagedObject();
+		RegisterManagedObject();
+	}
+
 	void RenSharpPlayerDataClass::AttachToUnmanagedObject()
 	{
 		if (IsAttached)
@@ -214,6 +220,11 @@ namespace RenSharp
 	bool RenSharpPlayerDataClass::IsAttached::get()
 	{
 		return (daPlayerDataClassPointer != IntPtr::Zero);
+	}
+
+	bool RenSharpPlayerDataClass::IsRegistered::get()
+	{
+		return (IsAttached && DAPlayerManager::IsManagedPlayerData(daPlayerDataClassPointer));
 	}
 
 	bool RenSharpPlayerDataClass::DestroyPointer::get()

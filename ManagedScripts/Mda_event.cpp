@@ -1528,6 +1528,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 
@@ -1559,6 +1563,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 
@@ -1588,6 +1596,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 
@@ -1619,6 +1631,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 
@@ -1651,6 +1667,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 
@@ -1680,6 +1700,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 
@@ -1719,6 +1743,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 
@@ -1755,6 +1783,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 
@@ -1806,6 +1838,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 
@@ -1861,6 +1897,10 @@ namespace RenSharp
 		if (!base->IsAttached)
 		{
 			base->AttachToUnmanagedObject();
+		}
+
+		if (!base->IsRegistered)
+		{
 			base->RegisterManagedObject();
 		}
 

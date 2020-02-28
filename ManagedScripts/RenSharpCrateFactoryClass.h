@@ -166,6 +166,12 @@ namespace RenSharp
 				return daCrateFactoryClassPointer.GetHashCode();
 			}
 
+			virtual void InitUnmanagedAttachable() sealed
+			{
+				AttachToUnmanagedObject();
+				RegisterManagedObject();
+			}
+
 			virtual void AttachToUnmanagedObject() sealed
 			{
 				if (IsAttached)
@@ -269,8 +275,7 @@ namespace RenSharp
 					T managedInstance = InternalCreateInstance();
 					try
 					{
-						managedInstance->AttachToUnmanagedObject();
-						managedInstance->RegisterManagedObject();
+						managedInstance->InitUnmanagedAttachable();
 
 						managedInstance->Factory = gcnew DACrateFactoryClass(daCrateFactoryClassPointer);
 						managedInstance->Init();
@@ -372,6 +377,14 @@ namespace RenSharp
 				virtual bool get() sealed
 				{
 					return (daCrateFactoryClassPointer != IntPtr::Zero);
+				}
+			}
+
+			property bool IsRegistered
+			{
+				virtual bool get() sealed
+				{
+					return (IsAttached && DACrateManager::IsManagedCrateFactory(daCrateFactoryClass));
 				}
 			}
 

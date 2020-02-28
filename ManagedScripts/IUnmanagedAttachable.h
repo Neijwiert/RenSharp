@@ -26,6 +26,8 @@ namespace RenSharp
 	where T : IUnmanagedObject
 	public interface class IUnmanagedAttachable : public IDisposable
 	{
+		void InitUnmanagedAttachable();
+
 		void AttachToUnmanagedObject();
 
 		void RegisterManagedObject();
@@ -44,6 +46,11 @@ namespace RenSharp
 		}
 
 		property bool IsAttached
+		{
+			bool get();
+		}
+
+		property bool IsRegistered
 		{
 			bool get();
 		}

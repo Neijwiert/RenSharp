@@ -148,6 +148,12 @@ namespace RenSharp
 		return renSharpGameModeEventClassPointer.GetHashCode();
 	}
 
+	void RenSharpGameModeEventClass::InitUnmanagedAttachable()
+	{
+		AttachToUnmanagedObject();
+		RegisterManagedObject();
+	}
+
 	void RenSharpGameModeEventClass::AttachToUnmanagedObject()
 	{
 		if (IsAttached)
@@ -818,6 +824,14 @@ namespace RenSharp
 	bool RenSharpGameModeEventClass::IsAttached::get()
 	{
 		return (renSharpGameModeEventClassPointer != IntPtr::Zero);
+	}
+
+	bool RenSharpGameModeEventClass::IsRegistered::get()
+	{
+		return (
+			IsAttached && 
+			DAGameManager::IsManagedGameMode(daGameModeClassPointer) &&
+			DAEventManager::IsManagedEventClass(daEventClassPointer));
 	}
 
 	bool RenSharpGameModeEventClass::DestroyPointer::get()

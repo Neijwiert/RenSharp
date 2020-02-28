@@ -122,6 +122,12 @@ namespace RenSharp
 				return daPlayerDataFactoryClassPointer.GetHashCode();
 			}
 
+			virtual void InitUnmanagedAttachable() sealed
+			{
+				AttachToUnmanagedObject();
+				RegisterManagedObject();
+			}
+
 			virtual void AttachToUnmanagedObject() sealed
 			{
 				if (IsAttached)
@@ -207,8 +213,7 @@ namespace RenSharp
 				T managedData = InternalCreateData();
 				try
 				{
-					managedData->AttachToUnmanagedObject();
-					managedData->RegisterManagedObject();
+					managedData->InitUnmanagedAttachable();
 
 					managedData->Factory = gcnew DAPlayerDataFactoryClass(daPlayerDataFactoryClassPointer);
 
@@ -249,6 +254,14 @@ namespace RenSharp
 				virtual bool get() sealed
 				{
 					return (daPlayerDataFactoryClassPointer != IntPtr::Zero);
+				}
+			}
+
+			property bool IsRegistered
+			{
+				virtual bool get() sealed
+				{
+					return (IsAttached && DAPlayerManager::IsManagedPlayerDataFactory(daPlayerDataFactoryClassPointer));
 				}
 			}
 

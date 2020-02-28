@@ -87,6 +87,12 @@ namespace RenSharp
 		return daEventClassPointer.GetHashCode();
 	}
 
+	void RenSharpEventClass::InitUnmanagedAttachable()
+	{
+		AttachToUnmanagedObject();
+		RegisterManagedObject();
+	}
+
 	void RenSharpEventClass::AttachToUnmanagedObject()
 	{
 		if (IsAttached)
@@ -730,6 +736,11 @@ namespace RenSharp
 	bool RenSharpEventClass::IsAttached::get()
 	{
 		return (daEventClassPointer != IntPtr::Zero);
+	}
+
+	bool RenSharpEventClass::IsRegistered::get()
+	{
+		return (IsAttached && DAEventManager::IsManagedEventClass(daEventClassPointer));
 	}
 
 	Collections::Generic::IEnumerable<RenSharpChatCommandStruct^>^ RenSharpEventClass::ChatCommands::get()

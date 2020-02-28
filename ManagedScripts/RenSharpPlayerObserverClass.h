@@ -197,6 +197,7 @@ namespace RenSharp
 			bool Equals(Object ^other) override;
 			int GetHashCode() override sealed;
 
+			virtual void InitUnmanagedAttachable() sealed;
 			virtual void AttachToUnmanagedObject() sealed;
 			virtual void RegisterManagedObject() sealed;
 			virtual void ReleasePointer() sealed;
@@ -310,6 +311,11 @@ namespace RenSharp
 			}
 
 			property bool IsAttached
+			{
+				virtual bool get() sealed;
+			}
+
+			property bool IsRegistered
 			{
 				virtual bool get() sealed;
 			}

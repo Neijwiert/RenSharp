@@ -176,6 +176,12 @@ namespace RenSharp
 				return daGameModeFactoryClassPointer.GetHashCode();
 			}
 
+			virtual void InitUnmanagedAttachable() sealed
+			{
+				AttachToUnmanagedObject();
+				RegisterManagedObject();
+			}
+
 			virtual void AttachToUnmanagedObject() sealed
 			{
 				if (IsAttached)
@@ -306,8 +312,7 @@ namespace RenSharp
 					T managedInstance = InternalCreateInstance();
 					try
 					{
-						managedInstance->AttachToUnmanagedObject();
-						managedInstance->RegisterManagedObject();
+						managedInstance->InitUnmanagedAttachable();
 
 						managedInstance->Factory = gcnew DAGameModeFactoryClass(daGameModeFactoryClassPointer);
 						managedInstance->Init();
@@ -369,6 +374,14 @@ namespace RenSharp
 				virtual bool get() sealed
 				{
 					return (daGameModeFactoryClassPointer != IntPtr::Zero);
+				}
+			}
+
+			property bool IsRegistered
+			{
+				virtual bool get() sealed
+				{
+					return (IsAttached && DAGameManager::IsManagedGameModeFactory(daGameModeFactoryClassPointer));
 				}
 			}
 

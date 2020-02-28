@@ -7107,6 +7107,10 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		if (!function->IsAttached)
 		{
 			function->AttachToUnmanagedObject();
+		}
+
+		if (!function->IsRegistered)
+		{
 			function->RegisterManagedObject();
 		}
 

@@ -50,20 +50,16 @@ namespace RenSharp
                 }
 
                 var threadManager = new RenSharpThreadManager();
-                threadManager.AttachToUnmanagedObject();
-                threadManager.RegisterManagedObject();
+                threadManager.InitUnmanagedAttachable();
 
                 var timerManager = new RenSharpTimerManager();
-                timerManager.AttachToUnmanagedObject();
-                timerManager.RegisterManagedObject();
+                timerManager.InitUnmanagedAttachable();
 
                 var chatCommandManager = new RenSharpChatCommandManager();
-                chatCommandManager.AttachToUnmanagedObject();
-                chatCommandManager.RegisterManagedObject();
+                chatCommandManager.InitUnmanagedAttachable();
 
                 var keyHookManager = new RenSharpKeyHookManager();
-                keyHookManager.AttachToUnmanagedObject();
-                keyHookManager.RegisterManagedObject();
+                keyHookManager.InitUnmanagedAttachable();
 
                 var renSharpChatCommand = new RenSharpChatCommand();
                 renSharpChatCommand.RegisterManagedObject();
@@ -4226,8 +4222,7 @@ namespace RenSharp
 
                 if (eventClass != null)
                 {
-                    eventClass.AttachToUnmanagedObject();
-                    eventClass.RegisterManagedObject();
+                    eventClass.InitUnmanagedAttachable();
 
                     Engine.ConsoleOutput($"|\tAdded event handler {type.FullName}\n");
                 }

@@ -143,6 +143,12 @@ namespace RenSharp
 		return daCrateModifierClassPointer.GetHashCode();
 	}
 
+	void RenSharpCrateModifierClass::InitUnmanagedAttachable()
+	{
+		AttachToUnmanagedObject();
+		RegisterManagedObject();
+	}
+	
 	void RenSharpCrateModifierClass::AttachToUnmanagedObject()
 	{
 		if (IsAttached)
@@ -245,6 +251,11 @@ namespace RenSharp
 	bool RenSharpCrateModifierClass::IsAttached::get()
 	{
 		return (daCrateModifierClassPointer != IntPtr::Zero);
+	}
+
+	bool RenSharpCrateModifierClass::IsRegistered::get()
+	{
+		return (IsAttached && DACrateManager::IsManagedCrateModifier(daCrateModifierClassPointer));
 	}
 
 	bool RenSharpCrateModifierClass::DestroyPointer::get()

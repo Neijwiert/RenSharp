@@ -125,6 +125,12 @@ namespace RenSharp
 		return daGameModeClassPointer.GetHashCode();
 	}
 
+	void RenSharpGameModeClass::InitUnmanagedAttachable()
+	{
+		AttachToUnmanagedObject();
+		RegisterManagedObject();
+	}
+
 	void RenSharpGameModeClass::AttachToUnmanagedObject()
 	{
 		if (IsAttached)
@@ -190,6 +196,11 @@ namespace RenSharp
 	bool RenSharpGameModeClass::IsAttached::get()
 	{
 		return (daGameModeClassPointer != IntPtr::Zero);
+	}
+
+	bool RenSharpGameModeClass::IsRegistered::get()
+	{
+		return (IsAttached && DAGameManager::IsManagedGameMode(daGameModeClassPointer));
 	}
 
 	bool RenSharpGameModeClass::DestroyPointer::get()

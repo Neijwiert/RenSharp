@@ -22,7 +22,7 @@ namespace RenSharpExamplePlugin
     Automatic loading of event classes and other classes (such as a console function or game feature) can be disabled when the class is marked with the RenSharpIgnoreAttribute.
     The same goal can be achieved when the class isn't publicly defined.
     This can be useful if you need to delay loading, or when you have a constructor with arguments.
-    Manual loading can be done by calling AttachToUnmanagedObject() and  RegisterManagedObject() right after instantiating the class
+    Manual loading can be done by calling InitUnmanagedAttachable() right after instantiating the class
     */
     [RenSharpIgnore]
     public class IgnoredExampleEventClass : RenSharpEventClass

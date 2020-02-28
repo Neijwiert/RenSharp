@@ -110,6 +110,12 @@ namespace RenSharp
 		ReleasePointer();
 	}
 
+	void RenSharpGameObjObserverClass::InitUnmanagedAttachable()
+	{
+		AttachToUnmanagedObject();
+		RegisterManagedObject();
+	}
+
 	void RenSharpGameObjObserverClass::AttachToUnmanagedObject()
 	{
 		if (IsAttached)
@@ -411,6 +417,11 @@ namespace RenSharp
 	bool RenSharpGameObjObserverClass::IsAttached::get()
 	{
 		return (daGameObjObserverClassPointer != IntPtr::Zero);
+	}
+
+	bool RenSharpGameObjObserverClass::IsRegistered::get()
+	{
+		return (IsAttached && ScriptableGameObj::IsManagedObserver(daGameObjObserverClassPointer));
 	}
 
 	String ^RenSharpGameObjObserverClass::Name::get()

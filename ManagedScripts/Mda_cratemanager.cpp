@@ -278,12 +278,19 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("factory");
 		}
 
+		bool addCrateFactory = true;
 		if (!factory->IsAttached)
 		{
-			factory->AttachToUnmanagedObject(); // Already added in unmanaged constructor
+			factory->AttachToUnmanagedObject(); 
+			addCrateFactory = false; // Already added in unmanaged constructor
+		}
+
+		if (!factory->IsRegistered)
+		{
 			factory->RegisterManagedObject();
 		}
-		else
+
+		if (addCrateFactory)
 		{
 			::DACrateManager::Add_Crate(
 				reinterpret_cast<::DACrateFactoryClass*>(factory->DACrateFactoryClassPointer.ToPointer()));
@@ -315,12 +322,19 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("factory");
 		}
 
+		bool addCreateModifier = true;
 		if (!factory->IsAttached)
 		{
-			factory->AttachToUnmanagedObject(); // Already added in unmanaged constructor
+			factory->AttachToUnmanagedObject(); 
+			bool addCreateModifier = false; // Already added in unmanaged constructor
+		}
+
+		if (!factory->IsRegistered)
+		{
 			factory->RegisterManagedObject();
 		}
-		else
+
+		if (addCreateModifier)
 		{
 			::DACrateManager::Add_Crate_Modifier(
 				reinterpret_cast<::DACrateModifierFactoryClass*>(factory->DACrateModifierFactoryClassPointer.ToPointer()));

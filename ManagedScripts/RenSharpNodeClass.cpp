@@ -124,6 +124,12 @@ namespace RenSharp
 		return daBaseNodeClassPointer.GetHashCode();
 	}
 
+	void RenSharpNodeClass::InitUnmanagedAttachable()
+	{
+		AttachToUnmanagedObject();
+		RegisterManagedObject();
+	}
+
 	void RenSharpNodeClass::AttachToUnmanagedObject()
 	{
 		if (IsAttached)
@@ -842,6 +848,14 @@ namespace RenSharp
 	bool RenSharpNodeClass::IsAttached::get()
 	{
 		return (daBaseNodeClassPointer != IntPtr::Zero);
+	}
+
+	bool RenSharpNodeClass::IsRegistered::get()
+	{
+		return (
+			IsAttached && 
+			DAEventManager::IsManagedEventClass(DAEventClassPointer) &&
+			DANodeManagerClass::IsManagedNode(daBaseNodeClassPointer));
 	}
 
 	bool RenSharpNodeClass::DestroyPointer::get()

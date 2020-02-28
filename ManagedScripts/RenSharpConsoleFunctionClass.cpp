@@ -159,6 +159,12 @@ namespace RenSharp
 		RenSharpTimerManager::ClearTimers(this);
 	}
 
+	void RenSharpConsoleFunctionClass::InitUnmanagedAttachable()
+	{
+		AttachToUnmanagedObject();
+		RegisterManagedObject();
+	}
+
 	void RenSharpConsoleFunctionClass::AttachToUnmanagedObject()
 	{
 		if (IsAttached)
@@ -286,6 +292,11 @@ namespace RenSharp
 	bool RenSharpConsoleFunctionClass::IsAttached::get()
 	{
 		return (consoleFunctionClassPointer != IntPtr::Zero);
+	}
+
+	bool RenSharpConsoleFunctionClass::IsRegistered::get()
+	{
+		return (IsAttached && Engine::IsManagedConsoleFunction(consoleFunctionClassPointer));
 	}
 
 	String ^RenSharpConsoleFunctionClass::Name::get()

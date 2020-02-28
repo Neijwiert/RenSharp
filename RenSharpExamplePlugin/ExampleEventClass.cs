@@ -24,7 +24,7 @@ namespace RenSharpExamplePlugin
     // This class will get automatically instantiated since it can be instantiated with parameterless construction
     // Also it needs to marked `public`.
     // To prevent automatic instantiation, have a complex constructor or do not mark it `public` or use the RenSharpIgnore attribute
-    // To do custom registration, instantiate your EventClass, call AttachToUnmanagedObject() and right after that RegisterManagedObject()
+    // To do custom registration, instantiate your EventClass, call InitUnmanagedAttachable() right after instantiating the class
     // The same attaching/registration process applies to all custom classes (such as game features, game modes). With the exception of global chat commands and key hooks.
     public class ExampleEventClass : RenSharpEventClass
     {

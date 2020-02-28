@@ -119,6 +119,12 @@ namespace RenSharp
 		return daPlayerObserverClassPointer.GetHashCode();
 	}
 
+	void RenSharpPlayerObserverClass::InitUnmanagedAttachable()
+	{
+		AttachToUnmanagedObject();
+		RegisterManagedObject();
+	}
+
 	void RenSharpPlayerObserverClass::AttachToUnmanagedObject()
 	{
 		if (IsAttached)
@@ -640,6 +646,11 @@ namespace RenSharp
 	bool RenSharpPlayerObserverClass::IsAttached::get()
 	{
 		return (daPlayerObserverClassPointer != IntPtr::Zero);
+	}
+
+	bool RenSharpPlayerObserverClass::IsRegistered::get()
+	{
+		return (IsAttached && DAPlayerClass::IsManagedPlayerObserver(daPlayerObserverClassPointer));
 	}
 
 	IcPlayer ^RenSharpPlayerObserverClass::Owner::get()

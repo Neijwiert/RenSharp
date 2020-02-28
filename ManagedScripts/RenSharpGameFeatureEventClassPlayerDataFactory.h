@@ -187,6 +187,12 @@ namespace RenSharp
 				return renSharpGameFeatureEventClassPlayerDataFactoryPointer.GetHashCode();
 			}
 
+			virtual void InitUnmanagedAttachable() sealed
+			{
+				AttachToUnmanagedObject();
+				RegisterManagedObject();
+			}
+
 			virtual void AttachToUnmanagedObject() sealed
 			{
 				if (IsAttached)
@@ -839,8 +845,7 @@ namespace RenSharp
 				T managedData = InternalCreateData();
 				try
 				{
-					managedData->AttachToUnmanagedObject();
-					managedData->RegisterManagedObject();
+					managedData->InitUnmanagedAttachable();
 
 					managedData->Factory = gcnew DAPlayerDataFactoryClass(daPlayerDataFactoryClassPointer);
 
@@ -897,6 +902,18 @@ namespace RenSharp
 				virtual bool get() sealed
 				{
 					return (renSharpGameFeatureEventClassPlayerDataFactoryPointer != IntPtr::Zero);
+				}
+			}
+
+			property bool IsRegistered
+			{
+				virtual bool get() sealed
+				{
+					return (
+						IsAttached && 
+						DAGameManager::IsManagedGameFeature(daGameFeatureClassPointer) && 
+						DAEventManager::IsManagedEventClass(daEventClassPointer) && 
+						DAPlayerManager::IsManagedPlayerDataFactory(daPlayerDataFactoryClassPointer));
 				}
 			}
 

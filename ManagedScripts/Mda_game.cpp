@@ -348,12 +348,19 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("factory");
 		}
 		
+		bool addGameMode = true;
 		if (!factory->IsAttached)
 		{
-			factory->AttachToUnmanagedObject(); // Already added in unmanaged constructor
+			factory->AttachToUnmanagedObject(); 
+			addGameMode = false; // Already added in unmanaged constructor
+		}
+
+		if (!factory->IsRegistered)
+		{
 			factory->RegisterManagedObject();
 		}
-		else
+
+		if (addGameMode)
 		{
 			::DAGameManager::Add_Game_Mode(
 				reinterpret_cast<::DAGameModeFactoryClass*>(factory->DAGameModeFactoryClassPointer.ToPointer()));
@@ -385,12 +392,19 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("factory");
 		}
 		
+		bool addGameFeature = true;
 		if (!factory->IsAttached)
 		{
-			factory->AttachToUnmanagedObject(); // Already added in unmanaged constructor
+			factory->AttachToUnmanagedObject(); 
+			addGameFeature = false; // Already added in unmanaged constructor
+		}
+
+		if (!factory->IsRegistered)
+		{
 			factory->RegisterManagedObject();
 		}
-		else
+
+		if (addGameFeature)
 		{
 			::DAGameManager::Add_Game_Feature(
 				reinterpret_cast<::DAGameFeatureFactoryClass*>(factory->DAGameFeatureFactoryClassPointer.ToPointer()));

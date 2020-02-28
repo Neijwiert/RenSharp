@@ -580,8 +580,7 @@ namespace RenSharp
 				auto& nodes = (*InternalDANodeManagerClassPointer).*get(DANodeManagerClassNodes());
 
 				T newNode = gcnew T();
-				static_cast<IUnmanagedAttachable<IDABaseNodeClass^>^>(newNode)->AttachToUnmanagedObject();
-				static_cast<IUnmanagedAttachable<IDABaseNodeClass^>^>(newNode)->RegisterManagedObject();
+				static_cast<IUnmanagedAttachable<IDABaseNodeClass^>^>(newNode)->InitUnmanagedAttachable();
 				newNode->Init(ini, header);
 
 				nodes.Add(

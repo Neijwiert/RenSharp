@@ -1544,6 +1544,10 @@ namespace RenSharp
 		if (!observer->IsAttached)
 		{
 			observer->AttachToUnmanagedObject();
+		}
+
+		if (!observer->IsRegistered)
+		{
 			observer->RegisterManagedObject();
 		}
 
@@ -1640,6 +1644,10 @@ namespace RenSharp
 		if (!factory->IsAttached)
 		{
 			factory->AttachToUnmanagedObject();
+		}
+
+		if (!factory->IsRegistered)
+		{
 			factory->RegisterManagedObject();
 		}
 
@@ -2699,6 +2707,10 @@ namespace RenSharp
 		if (!factory->IsAttached)
 		{
 			factory->AttachToUnmanagedObject();
+		}
+
+		if (!factory->IsRegistered)
+		{
 			factory->RegisterManagedObject();
 		}
 
@@ -2716,6 +2728,10 @@ namespace RenSharp
 		if (!factory->IsAttached)
 		{
 			factory->AttachToUnmanagedObject();
+		}
+
+		if (!factory->IsRegistered)
+		{
 			factory->RegisterManagedObject();
 		}
 
