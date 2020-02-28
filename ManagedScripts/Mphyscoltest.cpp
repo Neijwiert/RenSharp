@@ -320,13 +320,13 @@ namespace RenSharp
 	}
 
 	PhysRayCollisionTestClass::PhysRayCollisionTestClass(LineSegClass ray, CollisionGroupType group, RenSharp::CollisionType type)
-		: RayCollisionTestClass(ray, type), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
+		: RayCollisionTestClass(ray, type), CollidedPhysObj(nullptr), CollisionGroup(group), CheckStaticObjs(true), CheckDynamicObjs(true)
 	{
 
 	}
 
 	PhysRayCollisionTestClass::PhysRayCollisionTestClass(LineSegClass ray, CollisionGroupType group)
-		: RayCollisionTestClass(ray, RenSharp::CollisionType::CollisionTypeProjectile), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
+		: RayCollisionTestClass(ray, RenSharp::CollisionType::CollisionTypeProjectile), CollidedPhysObj(nullptr), CollisionGroup(group), CheckStaticObjs(true), CheckDynamicObjs(true)
 	{
 
 	}
@@ -339,10 +339,10 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("collisionTestClass");
 		}
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	PhysRayCollisionTestClass::PhysRayCollisionTestClass(PhysRayCollisionTestClass ^collisionTestClass)
@@ -353,10 +353,10 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("collisionTestClass");
 		}
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	void PhysRayCollisionTestClass::CopyFrom(IPhysRayCollisionTestClass ^collisionTestClass)
@@ -368,10 +368,10 @@ namespace RenSharp
 
 		RayCollisionTestClass::CopyFrom(collisionTestClass);
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	void PhysRayCollisionTestClass::CopyFrom(PhysRayCollisionTestClass ^collisionTestClass)
@@ -383,57 +383,10 @@ namespace RenSharp
 
 		RayCollisionTestClass::CopyFrom(collisionTestClass);
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
-	}
-
-	IPhysClass ^PhysRayCollisionTestClass::CollidedPhysObj::get()
-	{
-		return collidedPhysObj;
-	}
-
-	void PhysRayCollisionTestClass::CollidedPhysObj::set(IPhysClass ^value)
-	{
-		if (value == nullptr || value->PhysClassPointer.ToPointer() == nullptr)
-		{
-			collidedPhysObj = nullptr;
-		}
-		else
-		{
-			collidedPhysObj = value;
-		}
-	}
-
-	CollisionGroupType PhysRayCollisionTestClass::CollisionGroup::get()
-	{
-		return collisionGroup;
-	}
-
-	void PhysRayCollisionTestClass::CollisionGroup::set(CollisionGroupType value)
-	{
-		collisionGroup = value;
-	}
-
-	bool PhysRayCollisionTestClass::CheckStaticObjs::get()
-	{
-		return checkStaticObjs;
-	}
-
-	void PhysRayCollisionTestClass::CheckStaticObjs::set(bool value)
-	{
-		checkStaticObjs = value;
-	}
-
-	bool PhysRayCollisionTestClass::CheckDynamicObjs::get()
-	{
-		return checkDynamicObjs;
-	}
-
-	void PhysRayCollisionTestClass::CheckDynamicObjs::set(bool value)
-	{
-		checkDynamicObjs = value;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	PhysAABoxCollisionTestClassRef::PhysAABoxCollisionTestClassRef(AABoxClass box, Vector3 move, CollisionGroupType group, RenSharp::CollisionType type)
@@ -752,13 +705,13 @@ namespace RenSharp
 	}
 
 	PhysAABoxCollisionTestClass::PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CollisionGroupType group, RenSharp::CollisionType type)
-		: AABoxCollisionTestClass(box, move, type), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
+		: AABoxCollisionTestClass(box, move, type), CollidedPhysObj(nullptr), CollisionGroup(group), CheckStaticObjs(true), CheckDynamicObjs(true)
 	{
 
 	}
 
 	PhysAABoxCollisionTestClass::PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CollisionGroupType group)
-		: AABoxCollisionTestClass(box, move, RenSharp::CollisionType::CollisionTypePhysical), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
+		: AABoxCollisionTestClass(box, move, RenSharp::CollisionType::CollisionTypePhysical), CollidedPhysObj(nullptr), CollisionGroup(group), CheckStaticObjs(true), CheckDynamicObjs(true)
 	{
 
 	}
@@ -771,10 +724,10 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("collisionTestClass");
 		}
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	PhysAABoxCollisionTestClass::PhysAABoxCollisionTestClass(PhysAABoxCollisionTestClass ^collisionTestClass)
@@ -785,10 +738,10 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("collisionTestClass");
 		}
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	void PhysAABoxCollisionTestClass::CopyFrom(IPhysAABoxCollisionTestClass ^collisionTestClass)
@@ -800,10 +753,10 @@ namespace RenSharp
 
 		AABoxCollisionTestClass::CopyFrom(collisionTestClass);
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	void PhysAABoxCollisionTestClass::CopyFrom(PhysAABoxCollisionTestClass ^collisionTestClass)
@@ -815,57 +768,10 @@ namespace RenSharp
 
 		AABoxCollisionTestClass::CopyFrom(collisionTestClass);
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
-	}
-
-	IPhysClass ^PhysAABoxCollisionTestClass::CollidedPhysObj::get()
-	{
-		return collidedPhysObj;
-	}
-
-	void PhysAABoxCollisionTestClass::CollidedPhysObj::set(IPhysClass ^value)
-	{
-		if (value == nullptr || value->PhysClassPointer.ToPointer() == nullptr)
-		{
-			collidedPhysObj = nullptr;
-		}
-		else
-		{
-			collidedPhysObj = value;
-		}
-	}
-
-	CollisionGroupType PhysAABoxCollisionTestClass::CollisionGroup::get()
-	{
-		return collisionGroup;
-	}
-
-	void PhysAABoxCollisionTestClass::CollisionGroup::set(CollisionGroupType value)
-	{
-		collisionGroup = value;
-	}
-
-	bool PhysAABoxCollisionTestClass::CheckStaticObjs::get()
-	{
-		return checkStaticObjs;
-	}
-
-	void PhysAABoxCollisionTestClass::CheckStaticObjs::set(bool value)
-	{
-		checkStaticObjs = value;
-	}
-
-	bool PhysAABoxCollisionTestClass::CheckDynamicObjs::get()
-	{
-		return checkDynamicObjs;
-	}
-
-	void PhysAABoxCollisionTestClass::CheckDynamicObjs::set(bool value)
-	{
-		checkDynamicObjs = value;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	PhysOBBoxCollisionTestClassRef::PhysOBBoxCollisionTestClassRef(OBBoxClass box, Vector3 move, CollisionGroupType group, RenSharp::CollisionType type)
@@ -1184,13 +1090,13 @@ namespace RenSharp
 	}
 
 	PhysOBBoxCollisionTestClass::PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CollisionGroupType group, RenSharp::CollisionType type)
-		: OBBoxCollisionTestClass(box, move, type), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
+		: OBBoxCollisionTestClass(box, move, type), CollidedPhysObj(nullptr), CollisionGroup(group), CheckStaticObjs(true), CheckDynamicObjs(true)
 	{
 
 	}
 
 	PhysOBBoxCollisionTestClass::PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CollisionGroupType group)
-		: OBBoxCollisionTestClass(box, move, RenSharp::CollisionType::CollisionTypePhysical), collidedPhysObj(nullptr), collisionGroup(group), checkStaticObjs(true), checkDynamicObjs(true)
+		: OBBoxCollisionTestClass(box, move, RenSharp::CollisionType::CollisionTypePhysical), CollidedPhysObj(nullptr), CollisionGroup(group), CheckStaticObjs(true), CheckDynamicObjs(true)
 	{
 
 	}
@@ -1203,10 +1109,10 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("collisionTestClass");
 		}
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	PhysOBBoxCollisionTestClass::PhysOBBoxCollisionTestClass(PhysOBBoxCollisionTestClass ^collisionTestClass)
@@ -1217,10 +1123,10 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("collisionTestClass");
 		}
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	void PhysOBBoxCollisionTestClass::CopyFrom(IPhysOBBoxCollisionTestClass ^collisionTestClass)
@@ -1232,10 +1138,10 @@ namespace RenSharp
 
 		OBBoxCollisionTestClass::CopyFrom(collisionTestClass);
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 
 	void PhysOBBoxCollisionTestClass::CopyFrom(PhysOBBoxCollisionTestClass ^collisionTestClass)
@@ -1247,56 +1153,9 @@ namespace RenSharp
 
 		OBBoxCollisionTestClass::CopyFrom(collisionTestClass);
 
-		collidedPhysObj = collisionTestClass->CollidedPhysObj;
-		collisionGroup = collisionTestClass->CollisionGroup;
-		checkStaticObjs = collisionTestClass->CheckStaticObjs;
-		checkDynamicObjs = collisionTestClass->CheckDynamicObjs;
-	}
-
-	IPhysClass ^PhysOBBoxCollisionTestClass::CollidedPhysObj::get()
-	{
-		return collidedPhysObj;
-	}
-
-	void PhysOBBoxCollisionTestClass::CollidedPhysObj::set(IPhysClass ^value)
-	{
-		if (value == nullptr || value->PhysClassPointer.ToPointer() == nullptr)
-		{
-			collidedPhysObj = nullptr;
-		}
-		else
-		{
-			collidedPhysObj = value;
-		}
-	}
-
-	CollisionGroupType PhysOBBoxCollisionTestClass::CollisionGroup::get()
-	{
-		return collisionGroup;
-	}
-
-	void PhysOBBoxCollisionTestClass::CollisionGroup::set(CollisionGroupType value)
-	{
-		collisionGroup = value;
-	}
-
-	bool PhysOBBoxCollisionTestClass::CheckStaticObjs::get()
-	{
-		return checkStaticObjs;
-	}
-
-	void PhysOBBoxCollisionTestClass::CheckStaticObjs::set(bool value)
-	{
-		checkStaticObjs = value;
-	}
-
-	bool PhysOBBoxCollisionTestClass::CheckDynamicObjs::get()
-	{
-		return checkDynamicObjs;
-	}
-
-	void PhysOBBoxCollisionTestClass::CheckDynamicObjs::set(bool value)
-	{
-		checkDynamicObjs = value;
+		CollidedPhysObj = collisionTestClass->CollidedPhysObj;
+		CollisionGroup = collisionTestClass->CollisionGroup;
+		CheckStaticObjs = collisionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = collisionTestClass->CheckDynamicObjs;
 	}
 }

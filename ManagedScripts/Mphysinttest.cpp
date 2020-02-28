@@ -211,7 +211,7 @@ namespace RenSharp
 	}
 
 	PhysAABoxIntersectionTestClass::PhysAABoxIntersectionTestClass(AABoxClass box, CollisionGroupType colGroup, RenSharp::CollisionType colType)
-		: AABoxIntersectionTestClass(box, colType), collisionGroup(colGroup), checkStaticObjs(true), checkDynamicObjs(true), intersectedObjects(nullptr)
+		: AABoxIntersectionTestClass(box, colType), CollisionGroup(colGroup), CheckStaticObjs(true), CheckDynamicObjs(true), intersectedObjects(nullptr)
 	{
 
 	}
@@ -224,9 +224,9 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("intersectionTestClass");
 		}
 
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 		intersectedObjects = gcnew Generic::LinkedList<IPhysClass ^>();
 
 		auto renSharpIntersectionTestClass = dynamic_cast<RenSharpPhysAABoxIntersectionTestClass ^>(intersectionTestClass);
@@ -244,9 +244,9 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("intersectionTestClass");
 		}
 
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 		intersectedObjects = gcnew Generic::LinkedList<IPhysClass ^>();
 
 		IntersectedObjects = intersectionTestClass->IntersectedObjects;
@@ -261,9 +261,9 @@ namespace RenSharp
 
 		AABoxIntersectionTestClass::CopyFrom(intersectionTestClass);
 
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 
 		auto renSharpIntersectionTestClass = dynamic_cast<RenSharpPhysAABoxIntersectionTestClass ^>(intersectionTestClass);
 		if (renSharpIntersectionTestClass != nullptr)
@@ -281,41 +281,11 @@ namespace RenSharp
 
 		AABoxIntersectionTestClass::CopyFrom(intersectionTestClass);
 
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 
 		IntersectedObjects = intersectionTestClass->IntersectedObjects;
-	}
-
-	CollisionGroupType PhysAABoxIntersectionTestClass::CollisionGroup::get()
-	{
-		return collisionGroup;
-	}
-
-	void PhysAABoxIntersectionTestClass::CollisionGroup::set(CollisionGroupType value)
-	{
-		collisionGroup = value;
-	}
-
-	bool PhysAABoxIntersectionTestClass::CheckStaticObjs::get()
-	{
-		return checkStaticObjs;
-	}
-
-	void PhysAABoxIntersectionTestClass::CheckStaticObjs::set(bool value)
-	{
-		checkStaticObjs = value;
-	}
-
-	bool PhysAABoxIntersectionTestClass::CheckDynamicObjs::get()
-	{
-		return checkDynamicObjs;
-	}
-
-	void PhysAABoxIntersectionTestClass::CheckDynamicObjs::set(bool value)
-	{
-		checkDynamicObjs = value;
 	}
 
 	Generic::ICollection<IPhysClass ^> ^PhysAABoxIntersectionTestClass::IntersectedObjects::get()
@@ -520,7 +490,7 @@ namespace RenSharp
 	}
 
 	PhysOBBoxIntersectionTestClass::PhysOBBoxIntersectionTestClass(OBBoxClass box, CollisionGroupType colGroup, RenSharp::CollisionType colType)
-		: OBBoxIntersectionTestClass(box, colType), collisionGroup(colGroup), checkStaticObjs(true), checkDynamicObjs(true), intersectedObjects(nullptr)
+		: OBBoxIntersectionTestClass(box, colType), CollisionGroup(colGroup), CheckStaticObjs(true), CheckDynamicObjs(true), intersectedObjects(nullptr)
 	{
 
 	}
@@ -533,9 +503,9 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("intersectionTestClass");
 		}
 
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 		intersectedObjects = gcnew Generic::LinkedList<IPhysClass ^>();
 
 		auto renSharpIntersectionTestClass = dynamic_cast<RenSharpPhysOBBoxIntersectionTestClass ^>(intersectionTestClass);
@@ -553,9 +523,9 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("intersectionTestClass");
 		}
 
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 		intersectedObjects = gcnew Generic::LinkedList<IPhysClass ^>();
 
 		IntersectedObjects = intersectionTestClass->IntersectedObjects;
@@ -570,9 +540,9 @@ namespace RenSharp
 
 		OBBoxIntersectionTestClass::CopyFrom(intersectionTestClass);
 
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 
 		auto renSharpIntersectionTestClass = dynamic_cast<RenSharpPhysOBBoxIntersectionTestClass ^>(intersectionTestClass);
 		if (renSharpIntersectionTestClass != nullptr)
@@ -590,41 +560,11 @@ namespace RenSharp
 
 		OBBoxIntersectionTestClass::CopyFrom(intersectionTestClass);
 
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 
 		IntersectedObjects = intersectionTestClass->IntersectedObjects;
-	}
-
-	CollisionGroupType PhysOBBoxIntersectionTestClass::CollisionGroup::get()
-	{
-		return collisionGroup;
-	}
-
-	void PhysOBBoxIntersectionTestClass::CollisionGroup::set(CollisionGroupType value)
-	{
-		collisionGroup = value;
-	}
-
-	bool PhysOBBoxIntersectionTestClass::CheckStaticObjs::get()
-	{
-		return checkStaticObjs;
-	}
-
-	void PhysOBBoxIntersectionTestClass::CheckStaticObjs::set(bool value)
-	{
-		checkStaticObjs = value;
-	}
-
-	bool PhysOBBoxIntersectionTestClass::CheckDynamicObjs::get()
-	{
-		return checkDynamicObjs;
-	}
-
-	void PhysOBBoxIntersectionTestClass::CheckDynamicObjs::set(bool value)
-	{
-		checkDynamicObjs = value;
 	}
 
 	Generic::ICollection<IPhysClass ^> ^PhysOBBoxIntersectionTestClass::IntersectedObjects::get()
@@ -918,11 +858,11 @@ namespace RenSharp
 	}
 
 	PhysMeshIntersectionTestClass::PhysMeshIntersectionTestClass(IMeshClass ^mesh, CollisionGroupType colGroup, RenSharp::CollisionType colType)
-		: IntersectionTestClass(colType), mesh(mesh), collisionGroup(colGroup), checkStaticObjs(true), checkDynamicObjs(true), intersectedObjects(nullptr)
+		: IntersectionTestClass(colType), Mesh(mesh), CollisionGroup(colGroup), CheckStaticObjs(true), CheckDynamicObjs(true), intersectedObjects(nullptr)
 	{
 		if (mesh != nullptr && mesh->MeshClassPointer.ToPointer() != nullptr)
 		{
-			boundingBox = mesh->BoundingBox;
+			BoundingBox = mesh->BoundingBox;
 		}
 	}
 
@@ -934,11 +874,11 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("intersectionTestClass");
 		}
 
-		mesh = intersectionTestClass->Mesh;
-		boundingBox = intersectionTestClass->BoundingBox;
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		Mesh = intersectionTestClass->Mesh;
+		BoundingBox = intersectionTestClass->BoundingBox;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 		intersectedObjects = gcnew Generic::LinkedList<IPhysClass ^>();
 
 		auto renSharpIntersectionTestClass = dynamic_cast<RenSharpPhysMeshIntersectionTestClass ^>(intersectionTestClass);
@@ -956,11 +896,11 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("intersectionTestClass");
 		}
 
-		mesh = intersectionTestClass->Mesh;
-		boundingBox = intersectionTestClass->BoundingBox;
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		Mesh = intersectionTestClass->Mesh;
+		BoundingBox = intersectionTestClass->BoundingBox;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 		intersectedObjects = gcnew Generic::LinkedList<IPhysClass ^>();
 
 		IntersectedObjects = intersectionTestClass->IntersectedObjects;
@@ -975,11 +915,11 @@ namespace RenSharp
 
 		IntersectionTestClass::CopyFrom(intersectionTestClass);
 
-		mesh = intersectionTestClass->Mesh;
-		boundingBox = intersectionTestClass->BoundingBox;
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		Mesh = intersectionTestClass->Mesh;
+		BoundingBox = intersectionTestClass->BoundingBox;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 
 		auto renSharpIntersectionTestClass = dynamic_cast<RenSharpPhysMeshIntersectionTestClass ^>(intersectionTestClass);
 		if (renSharpIntersectionTestClass != nullptr)
@@ -997,19 +937,19 @@ namespace RenSharp
 
 		IntersectionTestClass::CopyFrom(intersectionTestClass);
 
-		mesh = intersectionTestClass->Mesh;
-		boundingBox = intersectionTestClass->BoundingBox;
-		collisionGroup = intersectionTestClass->CollisionGroup;
-		checkStaticObjs = intersectionTestClass->CheckStaticObjs;
-		checkDynamicObjs = intersectionTestClass->CheckDynamicObjs;
+		Mesh = intersectionTestClass->Mesh;
+		BoundingBox = intersectionTestClass->BoundingBox;
+		CollisionGroup = intersectionTestClass->CollisionGroup;
+		CheckStaticObjs = intersectionTestClass->CheckStaticObjs;
+		CheckDynamicObjs = intersectionTestClass->CheckDynamicObjs;
 
 		IntersectedObjects = intersectionTestClass->IntersectedObjects;
 	}
 
 	bool PhysMeshIntersectionTestClass::Cull(Vector3 min, Vector3 max)
 	{
-		Vector3 boxMin = Vector3::Subtract(boundingBox.Center, boundingBox.Extent);
-		Vector3 boxMax = Vector3::Add(boundingBox.Center, boundingBox.Extent);
+		Vector3 boxMin = Vector3::Subtract(BoundingBox.Center, BoundingBox.Extent);
+		Vector3 boxMax = Vector3::Add(BoundingBox.Center, BoundingBox.Extent);
 
 		if ((boxMin.X > max.X) || (boxMax.X < min.X)) return true;
 		if ((boxMin.Y > max.Y) || (boxMax.Y < min.Y)) return true;
@@ -1020,71 +960,14 @@ namespace RenSharp
 
 	bool PhysMeshIntersectionTestClass::Cull(AABoxClass box)
 	{
-		Vector3 dc = Vector3::Subtract(box.Center, boundingBox.Center);
-		Vector3 r = Vector3::Add(box.Extent, boundingBox.Extent);
+		Vector3 dc = Vector3::Subtract(box.Center, BoundingBox.Center);
+		Vector3 r = Vector3::Add(box.Extent, BoundingBox.Extent);
 
 		if (Math::Abs(dc.X) > r.X) return true;
 		if (Math::Abs(dc.Y) > r.Y) return true;
 		if (Math::Abs(dc.Z) > r.Z) return true;
 
 		return false;
-	}
-
-	IMeshClass ^PhysMeshIntersectionTestClass::Mesh::get()
-	{
-		return mesh;
-	}
-
-	void PhysMeshIntersectionTestClass::Mesh::set(IMeshClass ^value)
-	{
-		if (value == nullptr || value->MeshClassPointer.ToPointer() == nullptr)
-		{
-			mesh = nullptr;
-		}
-		else
-		{
-			mesh = value;
-		}
-	}
-
-	AABoxClass PhysMeshIntersectionTestClass::BoundingBox::get()
-	{
-		return boundingBox;
-	}
-
-	void PhysMeshIntersectionTestClass::BoundingBox::set(AABoxClass value)
-	{
-		boundingBox = value;
-	}
-
-	CollisionGroupType PhysMeshIntersectionTestClass::CollisionGroup::get()
-	{
-		return collisionGroup;
-	}
-
-	void PhysMeshIntersectionTestClass::CollisionGroup::set(CollisionGroupType value)
-	{
-		collisionGroup = value;
-	}
-
-	bool PhysMeshIntersectionTestClass::CheckStaticObjs::get()
-	{
-		return checkStaticObjs;
-	}
-
-	void PhysMeshIntersectionTestClass::CheckStaticObjs::set(bool value)
-	{
-		checkStaticObjs = value;
-	}
-
-	bool PhysMeshIntersectionTestClass::CheckDynamicObjs::get()
-	{
-		return checkDynamicObjs;
-	}
-
-	void PhysMeshIntersectionTestClass::CheckDynamicObjs::set(bool value)
-	{
-		checkDynamicObjs = value;
 	}
 
 	Generic::ICollection<IPhysClass ^> ^PhysMeshIntersectionTestClass::IntersectedObjects::get()

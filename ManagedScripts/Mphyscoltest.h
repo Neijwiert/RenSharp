@@ -172,13 +172,12 @@ namespace RenSharp
 
 	public ref class PhysRayCollisionTestClass : public RayCollisionTestClass
 	{
-		private:
-			IPhysClass ^collidedPhysObj;
-			CollisionGroupType collisionGroup;
-			bool checkStaticObjs;
-			bool checkDynamicObjs;
-
 		public:
+			IPhysClass ^CollidedPhysObj;
+			CollisionGroupType CollisionGroup;
+			bool CheckStaticObjs;
+			bool CheckDynamicObjs;
+
 			PhysRayCollisionTestClass(LineSegClass ray, CollisionGroupType group, RenSharp::CollisionType type);
 			PhysRayCollisionTestClass(LineSegClass ray, CollisionGroupType group);
 			PhysRayCollisionTestClass(IPhysRayCollisionTestClass ^collisionTestClass);
@@ -186,30 +185,6 @@ namespace RenSharp
 
 			void CopyFrom(IPhysRayCollisionTestClass ^collisionTestClass);
 			void CopyFrom(PhysRayCollisionTestClass ^collisionTestClass);
-
-			property IPhysClass ^CollidedPhysObj
-			{
-				IPhysClass ^get();
-				void set(IPhysClass ^value);
-			}
-
-			property CollisionGroupType CollisionGroup
-			{
-				CollisionGroupType get();
-				void set(CollisionGroupType value);
-			}
-
-			property bool CheckStaticObjs
-			{
-				bool get();
-				void set(bool value);
-			}
-
-			property bool CheckDynamicObjs
-			{
-				bool get();
-				void set(bool value);
-			}
 	};
 
 	public interface class IPhysAABoxCollisionTestClass : public IAABoxCollisionTestClass
@@ -347,13 +322,12 @@ namespace RenSharp
 
 	public ref class PhysAABoxCollisionTestClass : public AABoxCollisionTestClass
 	{
-		private:
-			IPhysClass ^collidedPhysObj;
-			CollisionGroupType collisionGroup;
-			bool checkStaticObjs;
-			bool checkDynamicObjs;
-
 		public:
+			IPhysClass ^CollidedPhysObj;
+			CollisionGroupType CollisionGroup;
+			bool CheckStaticObjs;
+			bool CheckDynamicObjs;
+
 			PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CollisionGroupType group, RenSharp::CollisionType type);
 			PhysAABoxCollisionTestClass(AABoxClass box, Vector3 move, CollisionGroupType group);
 			PhysAABoxCollisionTestClass(IPhysAABoxCollisionTestClass ^collisionTestClass);
@@ -361,30 +335,6 @@ namespace RenSharp
 
 			void CopyFrom(IPhysAABoxCollisionTestClass ^collisionTestClass);
 			void CopyFrom(PhysAABoxCollisionTestClass ^collisionTestClass);
-
-			property IPhysClass ^CollidedPhysObj
-			{
-				IPhysClass ^get();
-				void set(IPhysClass ^value);
-			}
-
-			property CollisionGroupType CollisionGroup
-			{
-				CollisionGroupType get();
-				void set(CollisionGroupType value);
-			}
-
-			property bool CheckStaticObjs
-			{
-				bool get();
-				void set(bool value);
-			}
-
-			property bool CheckDynamicObjs
-			{
-				bool get();
-				void set(bool value);
-			}
 	};
 
 	public interface class IPhysOBBoxCollisionTestClass : public IOBBoxCollisionTestClass
@@ -522,13 +472,12 @@ namespace RenSharp
 
 	public ref class PhysOBBoxCollisionTestClass : public OBBoxCollisionTestClass
 	{
-		private:
-			IPhysClass ^collidedPhysObj;
-			CollisionGroupType collisionGroup;
-			bool checkStaticObjs;
-			bool checkDynamicObjs;
-
 		public:
+			IPhysClass ^CollidedPhysObj;
+			CollisionGroupType CollisionGroup;
+			bool CheckStaticObjs;
+			bool CheckDynamicObjs;
+
 			PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CollisionGroupType group, RenSharp::CollisionType type);
 			PhysOBBoxCollisionTestClass(OBBoxClass box, Vector3 move, CollisionGroupType group);
 			PhysOBBoxCollisionTestClass(IPhysOBBoxCollisionTestClass ^collisionTestClass);
@@ -536,29 +485,5 @@ namespace RenSharp
 
 			void CopyFrom(IPhysOBBoxCollisionTestClass ^collisionTestClass);
 			void CopyFrom(PhysOBBoxCollisionTestClass ^collisionTestClass);
-
-			property IPhysClass ^CollidedPhysObj
-			{
-				IPhysClass ^get();
-				void set(IPhysClass ^value);
-			}
-
-			property CollisionGroupType CollisionGroup
-			{
-				CollisionGroupType get();
-				void set(CollisionGroupType value);
-			}
-
-			property bool CheckStaticObjs
-			{
-				bool get();
-				void set(bool value);
-			}
-
-			property bool CheckDynamicObjs
-			{
-				bool get();
-				void set(bool value);
-			}
 	};
 }

@@ -159,36 +159,19 @@ namespace RenSharp
 	public ref class PhysAABoxIntersectionTestClass : public AABoxIntersectionTestClass
 	{
 		private:
-			CollisionGroupType collisionGroup;
-			bool checkStaticObjs;
-			bool checkDynamicObjs;
-			Generic::ICollection<IPhysClass ^> ^intersectedObjects;
+			Generic::ICollection<IPhysClass^>^ intersectedObjects;
 
 		public:
+			CollisionGroupType CollisionGroup;
+			bool CheckStaticObjs;
+			bool CheckDynamicObjs;
+
 			PhysAABoxIntersectionTestClass(AABoxClass box, CollisionGroupType colGroup, RenSharp::CollisionType colType);
 			PhysAABoxIntersectionTestClass(IPhysAABoxIntersectionTestClass ^intersectionTestClass);
 			PhysAABoxIntersectionTestClass(PhysAABoxIntersectionTestClass ^intersectionTestClass);
 
 			void CopyFrom(IPhysAABoxIntersectionTestClass ^intersectionTestClass);
 			void CopyFrom(PhysAABoxIntersectionTestClass ^intersectionTestClass);
-
-			property CollisionGroupType CollisionGroup
-			{
-				virtual CollisionGroupType get() sealed;
-				virtual void set(CollisionGroupType value) sealed;
-			}
-
-			property bool CheckStaticObjs
-			{
-				virtual bool get() sealed;
-				virtual void set(bool value) sealed;
-			}
-
-			property bool CheckDynamicObjs
-			{
-				virtual bool get() sealed;
-				virtual void set(bool value) sealed;
-			}
 
 			property Generic::ICollection<IPhysClass ^> ^IntersectedObjects
 			{
@@ -317,36 +300,19 @@ namespace RenSharp
 	public ref class PhysOBBoxIntersectionTestClass : public OBBoxIntersectionTestClass
 	{
 		private:
-			CollisionGroupType collisionGroup;
-			bool checkStaticObjs;
-			bool checkDynamicObjs;
 			Generic::ICollection<IPhysClass ^> ^intersectedObjects;
 
 		public:
+			CollisionGroupType CollisionGroup;
+			bool CheckStaticObjs;
+			bool CheckDynamicObjs;
+
 			PhysOBBoxIntersectionTestClass(OBBoxClass box, CollisionGroupType colGroup, RenSharp::CollisionType colType);
 			PhysOBBoxIntersectionTestClass(IPhysOBBoxIntersectionTestClass ^intersectionTestClass);
 			PhysOBBoxIntersectionTestClass(PhysOBBoxIntersectionTestClass ^intersectionTestClass);
 
 			void CopyFrom(IPhysOBBoxIntersectionTestClass ^intersectionTestClass);
 			void CopyFrom(PhysOBBoxIntersectionTestClass ^intersectionTestClass);
-
-			property CollisionGroupType CollisionGroup
-			{
-				virtual CollisionGroupType get() sealed;
-				virtual void set(CollisionGroupType value) sealed;
-			}
-
-			property bool CheckStaticObjs
-			{
-				virtual bool get() sealed;
-				virtual void set(bool value) sealed;
-			}
-
-			property bool CheckDynamicObjs
-			{
-				virtual bool get() sealed;
-				virtual void set(bool value) sealed;
-			}
 
 			property Generic::ICollection<IPhysClass ^> ^IntersectedObjects
 			{
@@ -506,14 +472,15 @@ namespace RenSharp
 	public ref class PhysMeshIntersectionTestClass : public IntersectionTestClass
 	{
 		private:
-			IMeshClass ^mesh;
-			AABoxClass boundingBox;
-			CollisionGroupType collisionGroup;
-			bool checkStaticObjs;
-			bool checkDynamicObjs;
-			Generic::ICollection<IPhysClass ^> ^intersectedObjects;
+			Generic::ICollection<IPhysClass^>^ intersectedObjects;
 
 		public:
+			IMeshClass^ Mesh;
+			AABoxClass BoundingBox;
+			CollisionGroupType CollisionGroup;
+			bool CheckStaticObjs;
+			bool CheckDynamicObjs;
+
 			PhysMeshIntersectionTestClass(IMeshClass ^mesh, CollisionGroupType colGroup, RenSharp::CollisionType colType);
 			PhysMeshIntersectionTestClass(IPhysMeshIntersectionTestClass ^intersectionTestClass);
 			PhysMeshIntersectionTestClass(PhysMeshIntersectionTestClass ^intersectionTestClass);
@@ -522,36 +489,6 @@ namespace RenSharp
 			void CopyFrom(PhysMeshIntersectionTestClass ^intersectionTestClass);
 			bool Cull(Vector3 min, Vector3 max);
 			bool Cull(AABoxClass box);
-
-			property IMeshClass ^Mesh
-			{
-				IMeshClass ^get();
-				void set(IMeshClass ^value);
-			}
-
-			property AABoxClass BoundingBox
-			{
-				AABoxClass get();
-				void set(AABoxClass value);
-			}
-
-			property CollisionGroupType CollisionGroup
-			{
-				virtual CollisionGroupType get() sealed;
-				virtual void set(CollisionGroupType value) sealed;
-			}
-
-			property bool CheckStaticObjs
-			{
-				virtual bool get() sealed;
-				virtual void set(bool value) sealed;
-			}
-
-			property bool CheckDynamicObjs
-			{
-				virtual bool get() sealed;
-				virtual void set(bool value) sealed;
-			}
 
 			property Generic::ICollection<IPhysClass ^> ^IntersectedObjects
 			{
