@@ -4102,7 +4102,7 @@ namespace RenSharp
         {
             var debugDirectory = Directory.CreateDirectory(Path.Combine(Engine.FilePath, "debug"));
             var dateTime = DateTime.UtcNow;
-            using (var stream = new FileStream(Path.Combine(debugDirectory.FullName, $"crashdump.{dateTime.ToString("yyyyMMdd-HHmmss")}-r{Engine.GetTTRevision().ToString("D4")}-da{DA.Version}-rs{Engine.RenSharpVersion}.dmp"), FileMode.Create))
+            using (var stream = new FileStream(Path.Combine(debugDirectory.FullName, $"crashdump.{dateTime.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture)}-r{Engine.GetTTRevision().ToString("D4")}-da{DA.Version}-rs{Engine.RenSharpVersion}.dmp"), FileMode.Create))
             {
                 // A full memory dump is necessary in the case of a managed application, other wise no information
                 // regarding the managed code will be available
