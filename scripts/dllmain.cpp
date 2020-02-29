@@ -346,7 +346,6 @@ bool SCRIPTSAPI Set_Script_Commands(ScriptCommandsClass* commands)
 	Set_Object_Visibility = (sov)Address(tt,"Set_Object_Visibility");
 	Lock_Soldier_Collision_Group = (lscg)Address(tt,"Lock_Soldier_Collision_Group");
 	Unlock_Soldier_Collision_Group = (ulscg)Address(tt,"Unlock_Soldier_Collision_Group");
-	Unlock_Soldier_Collision_Group = (ulscg)Address(tt,"Unlock_Soldier_Collision_Group");
 	Is_Engine_Enabled = (iea)Address(tt,"Is_Engine_Enabled");
 	Stop_Timer = (ss)Address(tt,"Stop_Timer");
 	Create_2D_Wave_Sound_Dialog_Player = (cwsdp)Address(tt,"Create_2D_Wave_Sound_Dialog_Player");
