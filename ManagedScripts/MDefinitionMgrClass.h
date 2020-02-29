@@ -60,6 +60,7 @@ namespace RenSharp
 			static IDefinitionClass ^GetNext(IDefinitionClass ^currDef, uint32 id);
 			static IDefinitionClass ^GetNext(IDefinitionClass ^currDef);
 			static void FreeDefinitions();
+			static System::Collections::Generic::IEnumerable<IDefinitionClass^>^ GetDefinitions();
 
 			property IntPtr DefinitionMgrClassPointer
 			{

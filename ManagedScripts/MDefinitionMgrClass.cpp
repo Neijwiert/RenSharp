@@ -19,8 +19,87 @@ limitations under the License.
 
 #include "MDefinition.h"
 
+using namespace System::Collections::Generic;
+
 namespace RenSharp
 {
+	private ref class DefinitionEnumerable : IEnumerable<IDefinitionClass^>
+	{
+		private:
+			ref class DefinitionEnumerator : IEnumerator<IDefinitionClass^>
+			{
+				private:
+					IDefinitionClass^ current;
+					bool reset;
+
+				public:
+					DefinitionEnumerator()
+						: current(nullptr), reset(true)
+					{
+
+					}
+
+					~DefinitionEnumerator()
+					{
+
+					}
+
+					virtual bool MoveNext() = Collections::Generic::IEnumerator<IDefinitionClass^>::MoveNext
+					{
+						if (reset)
+						{
+							current = DefinitionMgrClass::GetFirst();
+
+							reset = false;
+
+							return (current != nullptr);
+						}
+
+						if (current == nullptr)
+						{
+							return false;
+						}
+
+						current = DefinitionMgrClass::GetNext(current);
+
+						return (current != nullptr);
+					}
+
+					virtual void Reset() = Collections::Generic::IEnumerator<IDefinitionClass^>::Reset
+					{
+						current = nullptr;
+						reset = true;
+					}
+
+					property IDefinitionClass^ Current
+					{
+						virtual IDefinitionClass^ get() = Collections::Generic::IEnumerator<IDefinitionClass^>::Current::get
+						{
+							return current;
+						}
+					}
+
+					property Object^ Current2
+					{
+						virtual Object^ get() = Collections::IEnumerator::Current::get
+						{
+							return Current;
+						}
+					}
+			};
+
+		public:
+			virtual IEnumerator<IDefinitionClass^>^ GetEnumerator() sealed
+			{ 
+				return gcnew DefinitionEnumerator();
+			}
+
+			virtual Collections::IEnumerator^ GetEnumerator2() sealed = Collections::IEnumerable::GetEnumerator
+			{
+				return GetEnumerator();
+			}
+	};
+
 	DefinitionMgrClass::DefinitionMgrClass(IntPtr pointer)
 		: SaveLoadSubSystemClass(pointer)
 	{
@@ -277,6 +356,11 @@ namespace RenSharp
 	void DefinitionMgrClass::FreeDefinitions()
 	{
 		::DefinitionMgrClass::Free_Definitions();
+	}
+
+	IEnumerable<IDefinitionClass^>^ DefinitionMgrClass::GetDefinitions()
+	{
+		return gcnew DefinitionEnumerable();
 	}
 
 	IntPtr DefinitionMgrClass::DefinitionMgrClassPointer::get()
