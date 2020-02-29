@@ -17,6 +17,13 @@ limitations under the License.
 #include "stdafx.h"
 #include "MAudibleSoundClass.h"
 
+#pragma managed(push, off)
+#pragma warning(push)
+#pragma warning(disable : 4251 4244 26495 26454)
+#include <AudibleSoundDefinitionClass.h>
+#pragma warning(pop) 
+#pragma managed(pop)
+
 #include "MAudibleSoundDefinitionClass.h"
 #include "MSoundBufferClass.h"
 #include "MMatrix3D.h"
@@ -489,14 +496,20 @@ namespace RenSharp
 
 	IAudibleSoundDefinitionClass ^AudibleSoundClass::Definition::get()
 	{
-		auto result = InternalAudibleSoundClassPointer->Get_Definition();
-		if (result == nullptr)
+		auto defPtr = InternalAudibleSoundClassPointer->Get_Definition();
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew AudibleSoundDefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IAudibleSoundDefinitionClass^>(result);
+			}
+
+			return gcnew AudibleSoundDefinitionClass(IntPtr(defPtr));
 		}
 	}
 

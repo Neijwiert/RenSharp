@@ -24,6 +24,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <DamageZoneGameObj.h>
+#include <DamageZoneGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -42,6 +43,12 @@ namespace RenSharp
 
 	IDamageZoneGameObjDef^ DamageZoneGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalDamageZoneGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IDamageZoneGameObjDef^>(result);
+		}
+
 		return gcnew DamageZoneGameObjDef(IntPtr(const_cast<::DamageZoneGameObjDef*>(&InternalDamageZoneGameObjPointer->Get_Definition())));
 	}
 

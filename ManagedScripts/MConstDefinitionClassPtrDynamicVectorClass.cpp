@@ -181,14 +181,20 @@ namespace RenSharp
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
 
-		auto result = InternalConstDefinitionClassPtrDynamicVectorClassPointer->operator[](index);
-		if (result == nullptr)
+		auto defPtr = InternalConstDefinitionClassPtrDynamicVectorClassPointer->operator[](index);
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 

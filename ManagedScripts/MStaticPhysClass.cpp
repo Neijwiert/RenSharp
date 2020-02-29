@@ -27,6 +27,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <StaticPhysClass.h>
+#include <StaticPhysDefClass.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -96,7 +97,21 @@ namespace RenSharp
 
 	IStaticPhysDefClass ^StaticPhysClass::StaticPhysDef::get()
 	{
-		return gcnew StaticPhysDefClass(IntPtr(InternalStaticPhysClassPointer->Get_StaticPhysDef()));
+		auto defPtr = InternalStaticPhysClassPointer->Get_StaticPhysDef();
+		if (defPtr == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				safe_cast<IStaticPhysDefClass^>(result);
+			}
+
+			return gcnew StaticPhysDefClass(IntPtr(defPtr));
+		}
 	}
 
 	AABoxClass StaticPhysClass::BoundingBox::get()

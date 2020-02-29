@@ -29,14 +29,20 @@ namespace RenSharp
 
 	IDefinitionClass ^DefinitionMgrClass::FindDefinition(uint32 id, bool twiddle)
 	{
-		auto result = ::DefinitionMgrClass::Find_Definition(id, twiddle);
-		if (result == nullptr)
+		auto defPtr = ::DefinitionMgrClass::Find_Definition(id, twiddle);
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 
@@ -50,16 +56,22 @@ namespace RenSharp
 		IntPtr nameHandle = Marshal::StringToHGlobalAnsi(name);
 		try
 		{
-			auto result = ::DefinitionMgrClass::Find_Named_Definition(
+			auto defPtr = ::DefinitionMgrClass::Find_Named_Definition(
 				reinterpret_cast<char *>(nameHandle.ToPointer()),
 				twiddle);
-			if (result == nullptr)
+			if (defPtr == nullptr)
 			{
 				return nullptr;
 			}
 			else
 			{
-				return gcnew DefinitionClass(IntPtr(result));
+				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+				if (result == nullptr)
+				{
+					result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+				}
+
+				return result;
 			}
 		}
 		finally
@@ -78,17 +90,23 @@ namespace RenSharp
 		IntPtr nameHandle = Marshal::StringToHGlobalAnsi(name);
 		try
 		{
-			auto result = ::DefinitionMgrClass::Find_Typed_Definition(
+			auto defPtr = ::DefinitionMgrClass::Find_Typed_Definition(
 				reinterpret_cast<char *>(nameHandle.ToPointer()),
 				classID,
 				twiddle);
-			if (result == nullptr)
+			if (defPtr == nullptr)
 			{
 				return nullptr;
 			}
 			else
 			{
-				return gcnew DefinitionClass(IntPtr(result));
+				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+				if (result == nullptr)
+				{
+					result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+				}
+
+				return result;
 			}
 		}
 		finally
@@ -121,42 +139,60 @@ namespace RenSharp
 
 	IDefinitionClass ^DefinitionMgrClass::GetFirst(uint32 id, IDefinitionMgrClass::IDType type)
 	{
-		auto result = ::DefinitionMgrClass::Get_First(
+		auto defPtr = ::DefinitionMgrClass::Get_First(
 			id,
 			static_cast<::DefinitionMgrClass::ID_TYPE>(type));
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 
 	IDefinitionClass ^DefinitionMgrClass::GetFirst(uint32 id)
 	{
-		auto result = ::DefinitionMgrClass::Get_First(id);
-		if (result == nullptr)
+		auto defPtr = ::DefinitionMgrClass::Get_First(id);
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 
 	IDefinitionClass ^DefinitionMgrClass::GetFirst()
 	{
-		auto result = ::DefinitionMgrClass::Get_First();
-		if (result == nullptr)
+		auto defPtr = ::DefinitionMgrClass::Get_First();
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 
@@ -167,17 +203,23 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("currDef");
 		}
 
-		auto result = ::DefinitionMgrClass::Get_Next(
+		auto defPtr = ::DefinitionMgrClass::Get_Next(
 			reinterpret_cast<::DefinitionClass *>(currDef->DefinitionClassPointer.ToPointer()),
 			id,
 			static_cast<::DefinitionMgrClass::ID_TYPE>(type));
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 
@@ -188,16 +230,22 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("currDef");
 		}
 
-		auto result = ::DefinitionMgrClass::Get_Next(
+		auto defPtr = ::DefinitionMgrClass::Get_Next(
 			reinterpret_cast<::DefinitionClass *>(currDef->DefinitionClassPointer.ToPointer()),
 			id);
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 
@@ -208,15 +256,21 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("currDef");
 		}
 
-		auto result = ::DefinitionMgrClass::Get_Next(
+		auto defPtr = ::DefinitionMgrClass::Get_Next(
 			reinterpret_cast<::DefinitionClass *>(currDef->DefinitionClassPointer.ToPointer()));
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 

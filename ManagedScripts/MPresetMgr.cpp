@@ -171,14 +171,20 @@ namespace RenSharp
 
 	IDefinitionClass^ PresetClass::Definition::get()
 	{
-		auto result = InternalPresetClassPointer->Get_Definition();
-		if (result == nullptr)
+		auto defPtr = InternalPresetClassPointer->Get_Definition();
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 

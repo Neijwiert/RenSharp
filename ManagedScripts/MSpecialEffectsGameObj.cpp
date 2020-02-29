@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <SpecialEffectsGameObj.h>
+#include <SpecialEffectsGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -41,6 +42,12 @@ namespace RenSharp
 
 	ISpecialEffectsGameObjDef^ SpecialEffectsGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSpecialEffectsGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<ISpecialEffectsGameObjDef^>(result);
+		}
+
 		return gcnew SpecialEffectsGameObjDef(IntPtr(const_cast<::SpecialEffectsGameObjDef*>(&InternalSpecialEffectsGameObjPointer->Get_Definition())));
 	}
 

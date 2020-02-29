@@ -34,14 +34,20 @@ namespace RenSharp
 
 	IDefinitionClass^ TwiddlerClass::Twiddle()
 	{
-		auto result = InternalTwiddlerClassPointer->Twiddle();
-		if (result == nullptr)
+		auto defPtr = InternalTwiddlerClassPointer->Twiddle();
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 

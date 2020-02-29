@@ -50,6 +50,8 @@ namespace RenSharp
 			TypeNaval = ::PurchaseSettingsDefClass::TYPE_NAVAL
 		};
 
+		literal unsigned int PurchaseSettingsDefClassClassID = 0xF008;
+
 		int GetDefinition(int index);
 
 		int GetCost(int index);

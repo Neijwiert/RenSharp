@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class ISpecialEffectsGameObjDef : public IPhysicalGameObjDef
 	{
+		literal unsigned int SpecialEffectsGameObjDefClassID = 12307;
+
 		property IntPtr SpecialEffectsGameObjDefPointer
 		{
 			IntPtr get();

@@ -30,6 +30,8 @@ namespace RenSharp
 
 	public interface class IDamageZoneGameObjDef : public IBaseGameObjDef
 	{
+		literal unsigned int DamageZoneGameObjDefClassID = 12306;
+
 		property IntPtr DamageZoneGameObjDefPointer
 		{
 			IntPtr get();

@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <AirFactoryGameObj.h>
+#include <AirFactoryGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -46,7 +47,13 @@ namespace RenSharp
 
 	IAirFactoryGameObjDef ^AirFactoryGameObj::Definition::get()
 	{
-		return gcnew AirFactoryGameObjDef(IntPtr(const_cast<::AirFactoryGameObjDef *>(&InternalAirFactoryGameObjPointer->Get_Definition())));
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalAirFactoryGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IAirFactoryGameObjDef^>(result);
+		}
+
+		return gcnew AirFactoryGameObjDef(IntPtr(const_cast<::AirFactoryGameObjDef*>(&InternalAirFactoryGameObjPointer->Get_Definition())));;
 	}
 
 	bool AirFactoryGameObj::IsAvailable::get()

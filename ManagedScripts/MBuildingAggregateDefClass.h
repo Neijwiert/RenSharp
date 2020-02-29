@@ -89,6 +89,9 @@ namespace RenSharp
 
 	public interface class IBuildingAggregateDefClass : public IStaticAnimPhysDefClass
 	{
+		literal unsigned int BuildingAggregateDefClassClassID = 36995;
+		literal String^ BuildingAggregateDefClassTypeName = "BuildingAggregateDef";
+
 		property IntPtr BuildingAggregateDefClassPointer
 		{
 			IntPtr get();

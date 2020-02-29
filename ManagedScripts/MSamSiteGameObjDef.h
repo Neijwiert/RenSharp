@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class ISAMSiteGameObjDef : public ISmartGameObjDef
 	{
+		literal unsigned int SAMSiteGameObjDefClassID = 12295;
+
 		property IntPtr SAMSiteGameObjDefPointer
 		{
 			IntPtr get();

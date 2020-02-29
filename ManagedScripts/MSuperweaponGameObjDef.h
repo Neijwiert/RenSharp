@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class ISuperweaponGameObjDef : public IBuildingGameObjDef
 	{
+		literal unsigned int SuperweaponGameObjDefClassID = 53261;
+
 		property IntPtr SuperweaponGameObjDefPointer
 		{
 			IntPtr get();

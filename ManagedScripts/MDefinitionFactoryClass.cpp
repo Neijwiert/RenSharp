@@ -64,14 +64,20 @@ namespace RenSharp
 
 	IUnmanagedContainer<IDefinitionClass^>^ DefinitionFactoryClass::Create()
 	{
-		auto result = InternalDefinitionFactoryClassPointer->Create();
-		if (result == nullptr)
+		auto defPtr = InternalDefinitionFactoryClassPointer->Create();
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew UnmanagedContainer<IDefinitionClass^>(gcnew DefinitionClass(IntPtr(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return gcnew UnmanagedContainer<IDefinitionClass^>(result);
 		}
 	}
 

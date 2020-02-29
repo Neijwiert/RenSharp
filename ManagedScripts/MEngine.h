@@ -183,32 +183,6 @@ namespace RenSharp
 			literal int TTVersionMagic = TT_VERSION_MAGIC;
 			literal float TTVersion = TT_VERSION;
 
-			// engine_obj.h
-			literal int CIDBeacon = CID_Beacon;
-			literal int CIDBuilding = CID_Building;
-			literal int CIDC4 = CID_C4;
-			literal int CIDConstructionYard = CID_ConstructionYard;
-			literal int CIDPowerPlant = CID_PowerPlant;
-			literal int CIDPowerUp = CID_PowerUp;
-			literal int CIDRefinery = CID_Refinery;
-			literal int CIDRepairBay = CID_RepairBay;
-			literal int CIDSamSite = CID_SamSite;
-			literal int CIDScriptZone = CID_ScriptZone;
-			literal int CIDSimple = CID_Simple;
-			literal int CIDSoldier = CID_Soldier;
-			literal int CIDSoldierFactory = CID_SoldierFactory;
-			literal int CIDSpecialEffects = CID_SpecialEffects;
-			literal int CIDVehicle = CID_Vehicle;
-			literal int CIDVehicleFactory = CID_VehicleFactory;
-			literal int CIDWarFactory = CID_WarFactory;
-			literal int CIDAirstrip = CID_Airstrip;
-			literal int CIDCinematic = CID_Cinematic;
-			literal int CIDComCenter = CID_ComCenter;
-			literal int CIDWeapon = CID_Weapon;
-			literal int CIDAmmo = CID_Ammo;
-			literal int CIDExplosion = CID_Explosion;
-			literal int CIDSpawner = CID_Spawner;
-
 			// engine_common.h
 			generic<typename T>
 			where T : IRefCountClass

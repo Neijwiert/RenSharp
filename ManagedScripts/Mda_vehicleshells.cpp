@@ -26,6 +26,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <da_vehicleshells.h>
+#include <VehicleGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -71,14 +72,20 @@ namespace RenSharp
 
 	IVehicleGameObjDef^ DAVehicleShellStruct::Def::get()
 	{
-		auto result = InternalDAVehicleShellStructPointer->Def;
-		if (result == nullptr)
+		auto defPtr = InternalDAVehicleShellStructPointer->Def;
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew VehicleGameObjDef(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<VehicleGameObjDef^>(result);
+			}
+
+			return gcnew VehicleGameObjDef(IntPtr(defPtr));
 		}
 	}
 

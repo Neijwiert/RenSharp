@@ -26,6 +26,7 @@ class DecorationPhysClass;
 
 namespace RenSharp
 {
+	interface class IDecorationPhysDefClass;
 	value class AABoxClass;
 
 	public interface class IDecorationPhysClass : public IDynamicPhysClass
@@ -33,6 +34,11 @@ namespace RenSharp
 		property IntPtr DecorationPhysClassPointer
 		{
 			IntPtr get();
+		}
+
+		property IDecorationPhysDefClass^ DecorationPhysDef
+		{
+			IDecorationPhysDefClass^ get();
 		}
 
 		property AABoxClass BoundingBox
@@ -51,6 +57,11 @@ namespace RenSharp
 			property IntPtr DecorationPhysClassPointer
 			{
 				virtual IntPtr get() sealed;
+			}
+
+			property IDecorationPhysDefClass^ DecorationPhysDef
+			{
+				virtual IDecorationPhysDefClass^ get() sealed;
 			}
 
 			property AABoxClass BoundingBox

@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <ComCenterGameObj.h>
+#include <ComCenterGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -46,6 +47,12 @@ namespace RenSharp
 
 	IComCenterGameObjDef ^ComCenterGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalComCenterGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IComCenterGameObjDef^>(result);
+		}
+
 		return gcnew ComCenterGameObjDef(IntPtr(const_cast<::ComCenterGameObjDef *>(&InternalComCenterGameObjPointer->Get_Definition())));
 	}
 

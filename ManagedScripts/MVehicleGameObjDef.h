@@ -51,6 +51,8 @@ namespace RenSharp
 
 	public interface class IVehicleGameObjDef : public ISmartGameObjDef
 	{
+		literal unsigned int VehicleGameObjDefClassID = 12304;
+
 		int GetEngineSound(VehicleType type);
 
 		property IntPtr VehicleGameObjDefPointer

@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <BuildingGameObj.h>
+#include <BuildingGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -435,6 +436,12 @@ namespace RenSharp
 
 	IBuildingGameObjDef ^BuildingGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalBuildingGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IBuildingGameObjDef^>(result);
+		}
+
 		return gcnew BuildingGameObjDef(IntPtr(const_cast<::BuildingGameObjDef *>(&InternalBuildingGameObjPointer->Get_Definition())));
 	}
 

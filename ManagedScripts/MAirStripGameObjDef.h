@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class IAirStripGameObjDef : public IVehicleFactoryGameObjDef
 	{
+		literal unsigned int AirStripGameObjDefClassID = 53254;
+
 		property IntPtr AirStripGameObjDefPointer
 		{
 			IntPtr get();

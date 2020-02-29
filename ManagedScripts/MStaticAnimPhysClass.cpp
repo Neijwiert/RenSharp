@@ -25,6 +25,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <StaticAnimPhysClass.h>
+#include <StaticAnimPhysDefClass.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -70,14 +71,20 @@ namespace RenSharp
 
 	IStaticAnimPhysDefClass ^StaticAnimPhysClass::StaticAnimPhysDef::get()
 	{
-		auto result = InternalStaticAnimPhysClassPointer->Get_StaticAnimPhysDef();
-		if (result == nullptr)
+		auto defPtr = InternalStaticAnimPhysClassPointer->Get_StaticAnimPhysDef();
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew StaticAnimPhysDefClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IStaticAnimPhysDefClass^>(result);
+			}
+
+			return gcnew StaticAnimPhysDefClass(IntPtr(defPtr));
 		}
 	}
 

@@ -29,6 +29,8 @@ namespace RenSharp
 {
 	public interface class ISpawnerDefClass : public IDefinitionClass
 	{
+		literal unsigned int SpawnerDefClassClassID = 12301;
+
 		property IntPtr SpawnerDefClassPointer
 		{
 			IntPtr get();

@@ -1028,14 +1028,20 @@ namespace RenSharp
 
 	IPhysDefClass ^PhysClass::Definition::get()
 	{
-		auto result = InternalPhysClassPointer->Get_Definition();
-		if (result == nullptr)
+		auto defPtr = InternalPhysClassPointer->Get_Definition();
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew PhysDefClass(IntPtr(const_cast<::PhysDefClass *>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IPhysDefClass^>(result);
+			}
+
+			return gcnew PhysDefClass(IntPtr(const_cast<::PhysDefClass *>(defPtr)));
 		}
 	}
 

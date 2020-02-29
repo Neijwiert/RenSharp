@@ -30,6 +30,7 @@ limitations under the License.
 #include <engine_da.h>
 #include <engine_player.h>
 #include <da_characterrefunds.h>
+#include <SoldierGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -69,14 +70,20 @@ namespace RenSharp
 
 	ISoldierGameObjDef^ DACharacterRefundsPlayerDataClass::Def::get()
 	{
-		auto result = InternalDACharacterRefundsPlayerDataClassPointer->Def;
-		if (result == nullptr)
+		auto defPtr = InternalDACharacterRefundsPlayerDataClassPointer->Def;
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew SoldierGameObjDef(IntPtr(const_cast<::SoldierGameObjDef*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<ISoldierGameObjDef^>(result);
+			}
+
+			return gcnew SoldierGameObjDef(IntPtr(const_cast<::SoldierGameObjDef*>(defPtr)));
 		}
 	}
 

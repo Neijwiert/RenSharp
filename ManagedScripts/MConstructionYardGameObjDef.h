@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class IConstructionYardGameObjDef : public IBuildingGameObjDef
 	{
+		literal unsigned int ConstructionYardGameObjDefClassID = 53258;
+
 		property IntPtr ConstructionYardGameObjDefPointer
 		{
 			IntPtr get();

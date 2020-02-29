@@ -27,6 +27,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <SpawnerClass.h>
+#include <SpawnerDefClass.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -83,7 +84,21 @@ namespace RenSharp
 
 	ISpawnerDefClass^ SpawnerClass::Definition::get()
 	{
-		return gcnew SpawnerDefClass(IntPtr(const_cast<::SpawnerDefClass*>(InternalSpawnerClassPointer->definition)));
+		auto defPtr = InternalSpawnerClassPointer->definition;
+		if (defPtr == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<ISpawnerDefClass^>(result);
+			}
+
+			return gcnew SpawnerDefClass(IntPtr(const_cast<::SpawnerDefClass*>(defPtr)));
+		}
 	}
 
 	void SpawnerClass::Definition::set(ISpawnerDefClass^ value)

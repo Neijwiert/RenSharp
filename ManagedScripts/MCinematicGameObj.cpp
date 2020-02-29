@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <CinematicGameObj.h>
+#include <CinematicGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -46,6 +47,12 @@ namespace RenSharp
 
 	ICinematicGameObjDef ^CinematicGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalCinematicGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<ICinematicGameObjDef^>(result);
+		}
+
 		return gcnew CinematicGameObjDef(IntPtr(const_cast<::CinematicGameObjDef *>(&InternalCinematicGameObjPointer->Get_Definition())));
 	}
 

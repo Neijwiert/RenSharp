@@ -107,6 +107,7 @@ void Internal_Create_Animation_Name_Wrapper(StringClass& target, const char* ani
 #include "RenegadeDispatcher.h"
 #include "McPlayerKill.h"
 #include "McPurchaseResponseEvent.h"
+#include "MC4GameObjDef.h"
 
 using namespace System::Collections::Generic;
 using namespace System::Runtime::InteropServices;
@@ -375,13 +376,13 @@ namespace RenSharp
 		}
 
 		::AmmoDefinitionClass* ammoDefPtr = static_cast<::AmmoDefinitionClass*>(::DefinitionMgrClass::Find_Definition(ammoDefId, false));
-		if (ammoDefPtr == nullptr || ammoDefPtr->Get_Class_ID() != 45058)
+		if (ammoDefPtr == nullptr || ammoDefPtr->Get_Class_ID() != IAmmoDefinitionClass::AmmoDefinitionClassClassID)
 		{
 			return nullptr;
 		}
 
 		::BeaconGameObjDef* beaconDefPtr = static_cast<::BeaconGameObjDef*>(::DefinitionMgrClass::Find_Definition(ammoDefPtr->BeaconDefID, false));
-		if (beaconDefPtr == nullptr || beaconDefPtr->Get_Class_ID() != 12310)
+		if (beaconDefPtr == nullptr || beaconDefPtr->Get_Class_ID() != IBeaconGameObjDef::BeaconGameObjDefClassID)
 		{
 			return nullptr;
 		}
@@ -469,12 +470,20 @@ namespace RenSharp
 			::WeaponDefinitionClass* weaponDefPtr = static_cast<::WeaponDefinitionClass*>(::DefinitionMgrClass::Find_Named_Definition(
 				reinterpret_cast<char*>(weaponPresetNameHandle.ToPointer()),
 				false));
-			if (weaponDefPtr == nullptr || weaponDefPtr->Get_Class_ID() != 45057)
+			if (weaponDefPtr == nullptr)
 			{
 				return nullptr;
 			}
+			else
+			{
+				auto def = DefinitionClass::CreateDefinitionClassWrapper(weaponDefPtr);
+				if (def != nullptr)
+				{
+					return CreateBeacon(safe_cast<IWeaponDefinitionClass^>(def), transform, playerData, usePrimaryAmmo);
+				}
 
-			return CreateBeacon(gcnew WeaponDefinitionClass(IntPtr(weaponDefPtr)), transform, playerData, usePrimaryAmmo);
+				return CreateBeacon(gcnew WeaponDefinitionClass(IntPtr(weaponDefPtr)), transform, playerData, usePrimaryAmmo);
+			}
 		}
 		finally
 		{
@@ -676,7 +685,7 @@ namespace RenSharp
 		}
 
 		::C4GameObjDef* c4ObjDefPtr = static_cast<::C4GameObjDef*>(::DefinitionMgrClass::Find_Definition(c4PresetId, false));
-		if (c4ObjDefPtr == nullptr || c4ObjDefPtr->Get_Class_ID() != 12294)
+		if (c4ObjDefPtr == nullptr || c4ObjDefPtr->Get_Class_ID() != IC4GameObjDef::C4GameObjDefClassID)
 		{
 			return nullptr;
 		}
@@ -820,12 +829,20 @@ namespace RenSharp
 			::AmmoDefinitionClass* ammoDefPtr = static_cast<::AmmoDefinitionClass*>(::DefinitionMgrClass::Find_Named_Definition(
 				reinterpret_cast<char*>(ammoPresetNameHandle.ToPointer()),
 				false));
-			if (ammoDefPtr == nullptr || ammoDefPtr->Get_Class_ID() != 45058)
+			if (ammoDefPtr == nullptr)
 			{
 				return nullptr;
 			}
+			else
+			{
+				auto def = DefinitionClass::CreateDefinitionClassWrapper(ammoDefPtr);
+				if (def != nullptr)
+				{
+					return CreateC4(safe_cast<IAmmoDefinitionClass^>(def), transform, velocity, playerData, detonationMode);
+				}
 
-			return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, velocity, playerData, detonationMode);
+				return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, velocity, playerData, detonationMode);
+			}
 		}
 		finally
 		{
@@ -882,12 +899,20 @@ namespace RenSharp
 			::AmmoDefinitionClass* ammoDefPtr = static_cast<::AmmoDefinitionClass*>(::DefinitionMgrClass::Find_Named_Definition(
 				reinterpret_cast<char*>(ammoPresetNameHandle.ToPointer()),
 				false));
-			if (ammoDefPtr == nullptr || ammoDefPtr->Get_Class_ID() != 45058)
+			if (ammoDefPtr == nullptr)
 			{
 				return nullptr;
 			}
+			else
+			{
+				auto def = DefinitionClass::CreateDefinitionClassWrapper(ammoDefPtr);
+				if (def != nullptr)
+				{
+					return CreateC4(safe_cast<IAmmoDefinitionClass^>(def), transform, playerData, detonationMode);
+				}
 
-			return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, playerData, detonationMode);
+				return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, playerData, detonationMode);
+			}
 		}
 		finally
 		{
@@ -964,12 +989,20 @@ namespace RenSharp
 			::AmmoDefinitionClass* ammoDefPtr = static_cast<::AmmoDefinitionClass*>(::DefinitionMgrClass::Find_Named_Definition(
 				reinterpret_cast<char*>(ammoPresetNameHandle.ToPointer()),
 				false));
-			if (ammoDefPtr == nullptr || ammoDefPtr->Get_Class_ID() != 45058)
+			if (ammoDefPtr == nullptr)
 			{
 				return nullptr;
 			}
+			else
+			{
+				auto def = DefinitionClass::CreateDefinitionClassWrapper(ammoDefPtr);
+				if (def != nullptr)
+				{
+					return CreateC4(safe_cast<IAmmoDefinitionClass^>(def), transform, attachToObj, isAttachedToMCT, playerData, detonationMode);
+				}
 
-			return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, attachToObj, isAttachedToMCT, playerData, detonationMode);
+				return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, attachToObj, isAttachedToMCT, playerData, detonationMode);
+			}
 		}
 		finally
 		{
@@ -7229,16 +7262,22 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		IntPtr nameHandle = Marshal::StringToHGlobalAnsi(name);
 		try
 		{
-			auto result = ::Find_Named_Definition(
+			auto defPtr = ::Find_Named_Definition(
 				reinterpret_cast<char *>(nameHandle.ToPointer()));
 
-			if (result == nullptr)
+			if (defPtr == nullptr)
 			{
 				return nullptr;
 			}
 			else
 			{
-				return gcnew DefinitionClass(IntPtr(result));
+				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+				if (result == nullptr)
+				{
+					result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+				}
+
+				return result;
 			}
 		}
 		finally
@@ -7249,15 +7288,21 @@ static ::cPlayer* NickSavePlayer = nullptr;
 
 	IDefinitionClass ^Engine::FindDefinition(unsigned long id)
 	{
-		auto result = ::Find_Definition(id);
+		auto defPtr = ::Find_Definition(id);
 
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 
@@ -7287,16 +7332,22 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			throw gcnew ArgumentNullException("obj");
 		}
 
-		auto result = ::Get_Phys_Definition(
+		auto defPtr = ::Get_Phys_Definition(
 			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
 
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew DefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result == nullptr)
+			{
+				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
+			}
+
+			return result;
 		}
 	}
 
@@ -11977,16 +12028,22 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		IntPtr weaponHandle = Marshal::StringToHGlobalAnsi(weapon);
 		try
 		{
-			auto result = ::Get_Weapon_Ammo_Definition(
+			auto defPtr = ::Get_Weapon_Ammo_Definition(
 				reinterpret_cast<char *>(weaponHandle.ToPointer()),
 				primaryFire);
-			if (result == nullptr)
+			if (defPtr == nullptr)
 			{
 				return nullptr;
 			}
 			else
 			{
-				return gcnew AmmoDefinitionClass(IntPtr(const_cast<::AmmoDefinitionClass*>(result)));
+				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+				if (result != nullptr)
+				{
+					return safe_cast<IAmmoDefinitionClass^>(result);
+				}
+
+				return gcnew AmmoDefinitionClass(IntPtr(const_cast<::AmmoDefinitionClass*>(defPtr)));
 			}
 		}
 		finally
@@ -12005,15 +12062,21 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		IntPtr weaponHandle = Marshal::StringToHGlobalAnsi(weapon);
 		try
 		{
-			auto result = ::Get_Weapon_Definition(
+			auto defPtr = ::Get_Weapon_Definition(
 				reinterpret_cast<char*>(weaponHandle.ToPointer()));
-			if (result == nullptr)
+			if (defPtr == nullptr)
 			{
 				return nullptr;
 			}
 			else
 			{
-				return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(result)));
+				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+				if (result != nullptr)
+				{
+					return safe_cast<IWeaponDefinitionClass^>(result);
+				}
+
+				return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
 			}
 		}
 		finally
@@ -12029,15 +12092,21 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			throw gcnew ArgumentNullException("obj");
 		}
 
-		auto result = ::Get_Current_Weapon_Definition(
+		auto defPtr = ::Get_Current_Weapon_Definition(
 			reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer()));
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IWeaponDefinitionClass^>(result);
+			}
+
+			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
 		}
 	}
 
@@ -12048,16 +12117,22 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			throw gcnew ArgumentNullException("obj");
 		}
 
-		auto result = ::Get_Position_Weapon_Definition(
+		auto defPtr = ::Get_Position_Weapon_Definition(
 			reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer()),
 			position);
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IWeaponDefinitionClass^>(result);
+			}
+
+			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
 		}
 	}
 
@@ -12071,15 +12146,21 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		IntPtr explosionHandle = Marshal::StringToHGlobalAnsi(explosion);
 		try
 		{
-			auto result = ::Get_Explosion(
+			auto defPtr = ::Get_Explosion(
 				reinterpret_cast<char *>(explosionHandle.ToPointer()));
-			if (result == nullptr)
+			if (defPtr == nullptr)
 			{
 				return nullptr;
 			}
 			else
 			{
-				return gcnew ExplosionDefinitionClass(IntPtr(const_cast<::ExplosionDefinitionClass*>(result)));
+				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+				if (result != nullptr)
+				{
+					return safe_cast<IExplosionDefinitionClass^>(result);
+				}
+
+				return gcnew ExplosionDefinitionClass(IntPtr(const_cast<::ExplosionDefinitionClass*>(defPtr)));
 			}
 		}
 		finally

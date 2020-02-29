@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class IPowerUpGameObjDef : public ISimpleGameObjDef
 	{
+		literal unsigned int PowerUpGameObjDefClassID = 12291;
+
 		property IntPtr PowerUpGameObjDefPointer
 		{
 			IntPtr get();

@@ -96,14 +96,20 @@ namespace RenSharp
 
 	IWeaponDefinitionClass ^WeaponClass::Definition::get()
 	{
-		auto result = InternalWeaponClassPointer->Get_Definition();
-		if (result == nullptr)
+		auto defPtr = InternalWeaponClassPointer->Get_Definition();
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass *>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IWeaponDefinitionClass^>(result);
+			}
+
+			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass *>(defPtr)));
 		}
 	}
 
@@ -375,27 +381,39 @@ namespace RenSharp
 
 	IAmmoDefinitionClass ^WeaponClass::PrimaryAmmoDefinition::get()
 	{
-		auto result = InternalWeaponClassPointer->PrimaryAmmoDefinition;
-		if (result == nullptr)
+		auto defPtr = InternalWeaponClassPointer->PrimaryAmmoDefinition;
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew AmmoDefinitionClass(IntPtr(const_cast<::AmmoDefinitionClass *>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IAmmoDefinitionClass^>(result);
+			}
+
+			return gcnew AmmoDefinitionClass(IntPtr(const_cast<::AmmoDefinitionClass *>(defPtr)));
 		}
 	}
 
 	IAmmoDefinitionClass ^WeaponClass::SecondaryAmmoDefinition::get()
 	{
-		auto result = InternalWeaponClassPointer->SecondaryAmmoDefinition;
-		if (result == nullptr)
+		auto defPtr = InternalWeaponClassPointer->SecondaryAmmoDefinition;
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew AmmoDefinitionClass(IntPtr(const_cast<::AmmoDefinitionClass *>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IAmmoDefinitionClass^>(result);
+			}
+
+			return gcnew AmmoDefinitionClass(IntPtr(const_cast<::AmmoDefinitionClass*>(defPtr)));
 		}
 	}
 

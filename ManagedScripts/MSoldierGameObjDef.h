@@ -30,6 +30,8 @@ namespace RenSharp
 
 	public interface class ISoldierGameObjDef : public ISmartGameObjDef
 	{
+		literal unsigned int SoldierGameObjDefClassID = 12289;
+
 		property IntPtr SoldierGameObjDefPointer
 		{
 			IntPtr get();

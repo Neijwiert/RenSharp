@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <WarFactoryGameObj.h>
+#include <WarFactoryGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -68,6 +69,12 @@ namespace RenSharp
 
 	IWarFactoryGameObjDef ^WarFactoryGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalWarFactoryGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IWarFactoryGameObjDef^>(result);
+		}
+
 		return gcnew WarFactoryGameObjDef(IntPtr(const_cast<::WarFactoryGameObjDef *>(&InternalWarFactoryGameObjPointer->Get_Definition())));
 	}
 

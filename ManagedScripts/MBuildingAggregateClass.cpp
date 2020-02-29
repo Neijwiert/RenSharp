@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <BuildingAggregateClass.h>
+#include <BuildingAggregateDefClass.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -58,14 +59,20 @@ namespace RenSharp
 
 	IBuildingAggregateDefClass^ BuildingAggregateClass::BuildingAggregateDef::get()
 	{
-		auto result = InternalBuildingAggregateClassPointer->Get_BuildingAggregateDef();
-		if (result == nullptr)
+		auto defPtr = InternalBuildingAggregateClassPointer->Get_BuildingAggregateDef();
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew BuildingAggregateDefClass(IntPtr(const_cast<::BuildingAggregateDefClass*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IBuildingAggregateDefClass^>(result);
+			}
+
+			return gcnew BuildingAggregateDefClass(IntPtr(const_cast<::BuildingAggregateDefClass*>(defPtr)));
 		}
 	}
 

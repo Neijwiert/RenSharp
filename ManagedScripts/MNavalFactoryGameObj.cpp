@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <NavalFactoryGameObj.h>
+#include <NavalFactoryGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -46,6 +47,12 @@ namespace RenSharp
 
 	INavalFactoryGameObjDef ^NavalFactoryGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalNavalFactoryGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<INavalFactoryGameObjDef^>(result);
+		}
+
 		return gcnew NavalFactoryGameObjDef(IntPtr(const_cast<::NavalFactoryGameObjDef *>(&InternalNavalFactoryGameObjPointer->Get_Definition())));
 	}
 

@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <SamSiteGameObj.h>
+#include <SamSiteGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -41,6 +42,12 @@ namespace RenSharp
 
 	ISAMSiteGameObjDef^ SAMSiteGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSAMSiteGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<ISAMSiteGameObjDef^>(result);
+		}
+
 		return gcnew SAMSiteGameObjDef(IntPtr(const_cast<::SAMSiteGameObjDef*>(&InternalSAMSiteGameObjPointer->Get_Definition())));
 	}
 

@@ -21,6 +21,7 @@ limitations under the License.
 #pragma managed(push, off)
 
 class DefinitionClass;
+class PhysDefClass;
 
 #pragma managed(pop)
 
@@ -132,6 +133,9 @@ namespace RenSharp
 				virtual bool get() sealed;
 				virtual void set(bool value) sealed;
 			}
+
+		internal:
+			static IDefinitionClass^ CreateDefinitionClassWrapper(const ::DefinitionClass* definitionClassPtr);
 
 		protected:
 			property ::EditableClass *InternalEditableClassPointer

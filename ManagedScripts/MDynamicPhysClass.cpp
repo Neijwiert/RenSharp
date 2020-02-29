@@ -16,6 +16,7 @@ limitations under the License.
 
 #include "stdafx.h"
 #include "MDynamicPhysClass.h"
+#include "MDynamicPhysDefClass.h"
 
 #pragma managed(push, off)
 #pragma warning(push)
@@ -66,6 +67,19 @@ namespace RenSharp
 	IntPtr DynamicPhysClass::DynamicPhysClassPointer::get()
 	{
 		return IntPtr(InternalDynamicPhysClassPointer);
+	}
+
+	IDynamicPhysDefClass^ DynamicPhysClass::DynamicPhysDef::get()
+	{
+		auto result = InternalDynamicPhysClassPointer->Get_Definition();
+		if (result == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			return safe_cast<IDynamicPhysDefClass^>(DefinitionClass::CreateDefinitionClassWrapper(result));
+		}
 	}
 
 	::PostLoadableClass *DynamicPhysClass::InternalPostLoadableClassPointer::get()

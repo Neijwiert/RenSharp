@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class ISimpleGameObjDef : public IPhysicalGameObjDef
 	{
+		literal unsigned int SimpleGameObjDefClassID = 12292;
+
 		property IntPtr SimpleGameObjDefPointer
 		{
 			IntPtr get();

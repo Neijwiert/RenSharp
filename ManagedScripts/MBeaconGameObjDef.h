@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class IBeaconGameObjDef : public ISimpleGameObjDef
 	{
+		literal unsigned int BeaconGameObjDefClassID = 12310;
+
 		property IntPtr BeaconGameObjDefPointer
 		{
 			IntPtr get();

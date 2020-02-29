@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <ConstructionYardGameObj.h>
+#include <ConstructionYardGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -51,6 +52,12 @@ namespace RenSharp
 
 	IConstructionYardGameObjDef ^ConstructionYardGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalConstructionYardGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IConstructionYardGameObjDef^>(result);
+		}
+
 		return gcnew ConstructionYardGameObjDef(IntPtr(const_cast<::ConstructionYardGameObjDef *>(&InternalConstructionYardGameObjPointer->Get_Definition())));
 	}
 

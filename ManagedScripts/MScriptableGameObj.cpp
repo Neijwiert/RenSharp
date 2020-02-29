@@ -22,6 +22,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <ScriptableGameObj.h>
+#include <ScriptableGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -585,6 +586,12 @@ namespace RenSharp
 
 	IScriptableGameObjDef ^ScriptableGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalScriptableGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IScriptableGameObjDef^>(result);
+		}
+
 		return gcnew ScriptableGameObjDef(IntPtr(const_cast<::ScriptableGameObjDef *>(&InternalScriptableGameObjPointer->Get_Definition())));
 	}
 

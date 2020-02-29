@@ -47,6 +47,8 @@ namespace RenSharp
 			AmmoTypeC4Proximity = ::AmmoDefinitionClass::AMMO_TYPE_C4_PROXIMITY
 		};
 
+		literal unsigned int AmmoDefinitionClassClassID = 45058;
+
 		property IntPtr AmmoDefinitionClassPointer
 		{
 			IntPtr get();
@@ -845,6 +847,8 @@ namespace RenSharp
 
 	public interface class IWeaponDefinitionClass : public IDefinitionClass
 	{
+		literal unsigned int WeaponDefinitionClassClassID = 45057;
+
 		property IntPtr WeaponDefinitionClassPointer
 		{
 			IntPtr get();
@@ -1391,6 +1395,8 @@ namespace RenSharp
 
 	public interface class IExplosionDefinitionClass : public IDefinitionClass
 	{
+		literal unsigned int ExplosionDefinitionClassClassID = 45059;
+
 		property IntPtr ExplosionDefinitionClassPointer
 		{
 			IntPtr get();

@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <AirStripGameObj.h>
+#include <AirStripGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -46,6 +47,12 @@ namespace RenSharp
 
 	IAirStripGameObjDef ^AirStripGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalAirStripGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IAirStripGameObjDef^>(result);
+		}
+
 		return gcnew AirStripGameObjDef(IntPtr(const_cast<::AirStripGameObjDef *>(&InternalAirStripGameObjPointer->Get_Definition())));
 	}
 

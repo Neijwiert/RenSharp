@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <SmartGameObj.h>
+#include <SmartGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -129,6 +130,12 @@ namespace RenSharp
 
 	ISmartGameObjDef ^SmartGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSmartGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<ISmartGameObjDef^>(result);
+		}
+
 		return gcnew SmartGameObjDef(IntPtr(const_cast<::SmartGameObjDef *>(&InternalSmartGameObjPointer->Get_Definition())));
 	}
 

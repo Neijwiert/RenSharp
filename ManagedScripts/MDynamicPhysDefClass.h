@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class IDynamicPhysDefClass : public IPhysDefClass
 	{
+		literal String^ DynamicPhysDefClassTypeName = "DynamicPhysDef";
+
 		property IntPtr DynamicPhysDefClassPointer
 		{
 			IntPtr get();

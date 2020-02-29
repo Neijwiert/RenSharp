@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <PowerPlantGameObj.h>
+#include <PowerPlantGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -51,6 +52,12 @@ namespace RenSharp
 
 	IPowerPlantGameObjDef ^PowerPlantGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalPowerPlantGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IPowerPlantGameObjDef^>(result);
+		}
+
 		return gcnew PowerPlantGameObjDef(IntPtr(const_cast<::PowerPlantGameObjDef *>(&InternalPowerPlantGameObjPointer->Get_Definition())));
 	}
 

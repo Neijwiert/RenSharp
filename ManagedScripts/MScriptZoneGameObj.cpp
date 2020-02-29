@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <ScriptZoneGameObj.h>
+#include <ScriptZoneGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -48,6 +49,12 @@ namespace RenSharp
 
 	IScriptZoneGameObjDef ^ScriptZoneGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalScriptZoneGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IScriptZoneGameObjDef^>(result);
+		}
+
 		return gcnew ScriptZoneGameObjDef(IntPtr(const_cast<::ScriptZoneGameObjDef *>(&InternalScriptZoneGameObjPointer->Get_Definition())));
 	}
 

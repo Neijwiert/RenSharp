@@ -181,14 +181,20 @@ namespace RenSharp
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
 
-		auto result = InternalConstWeaponDefinitionClassPtrDynamicVectorClassPointer->operator[](index);
-		if (result == nullptr)
+		auto defPtr = InternalConstWeaponDefinitionClassPtrDynamicVectorClassPointer->operator[](index);
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IWeaponDefinitionClass^>(result);
+			}
+
+			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
 		}
 	}
 

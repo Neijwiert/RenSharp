@@ -36,6 +36,8 @@ namespace RenSharp
 			TeamNod = ::TeamPurchaseSettingsDefClass::TEAM_NOD
 		};
 
+		literal unsigned int TeamPurchaseSettingsDefClassClassID = 0xF009;
+
 		String^ GetEnlistedName(int index);
 
 		unsigned int GetEnlistedString(int index);

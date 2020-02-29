@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <RepairBayGameObj.h>
+#include <RepairBayGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -46,6 +47,12 @@ namespace RenSharp
 
 	IRepairBayGameObjDef ^RepairBayGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalRepairBayGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IRepairBayGameObjDef^>(result);
+		}
+
 		return gcnew RepairBayGameObjDef(IntPtr(const_cast<::RepairBayGameObjDef *>(&InternalRepairBayGameObjPointer->Get_Definition())));
 	}
 

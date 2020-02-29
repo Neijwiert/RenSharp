@@ -26,6 +26,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <RefineryGameObj.h>
+#include <RefineryGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -64,6 +65,12 @@ namespace RenSharp
 
 	IRefineryGameObjDef ^RefineryGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalRefineryGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IRefineryGameObjDef^>(result);
+		}
+
 		return gcnew RefineryGameObjDef(IntPtr(const_cast<::RefineryGameObjDef *>(&InternalRefineryGameObjPointer->Get_Definition())));
 	}
 

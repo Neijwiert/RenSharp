@@ -52,6 +52,8 @@ namespace RenSharp
 
 	public interface class IScriptZoneGameObjDef : public IScriptableGameObjDef
 	{
+		literal unsigned int ScriptZoneGameObjDefClassID = 12302;
+
 		property IntPtr ScriptZoneGameObjDefPointer
 		{
 			IntPtr get();

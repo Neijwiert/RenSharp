@@ -18,6 +18,7 @@ limitations under the License.
 #include "MDecorationPhysClass.h"
 
 #include "MAABoxClass.h"
+#include "MDecorationPhysDefClass.h"
 
 #pragma managed(push, off)
 #pragma warning(push)
@@ -42,6 +43,19 @@ namespace RenSharp
 	IntPtr DecorationPhysClass::DecorationPhysClassPointer::get()
 	{
 		return IntPtr(InternalDecorationPhysClassPointer);
+	}
+
+	IDecorationPhysDefClass^ DecorationPhysClass::DecorationPhysDef::get()
+	{
+		auto defPtr = InternalDecorationPhysClassPointer->Get_Definition();
+		if (defPtr == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			return safe_cast<IDecorationPhysDefClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
+		}
 	}
 
 	AABoxClass DecorationPhysClass::BoundingBox::get()

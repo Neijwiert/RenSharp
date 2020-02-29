@@ -23,6 +23,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <SuperweaponGameObj.h>
+#include <SuperweaponGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -46,6 +47,12 @@ namespace RenSharp
 
 	ISuperweaponGameObjDef ^SuperweaponGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSuperweaponGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<ISuperweaponGameObjDef^>(result);
+		}
+
 		return gcnew SuperweaponGameObjDef(IntPtr(const_cast<::SuperweaponGameObjDef *>(&InternalSuperweaponGameObjPointer->Get_Definition())));
 	}
 

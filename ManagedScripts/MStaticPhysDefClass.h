@@ -28,6 +28,9 @@ namespace RenSharp
 {
 	public interface class IStaticPhysDefClass : public IPhysDefClass
 	{
+		literal unsigned int StaticPhysDefClassClassID = 36871;
+		literal String^ StaticPhysDefClassTypeName = "StaticPhysDef";
+
 		property IntPtr StaticPhysDefClassPointer
 		{
 			IntPtr get();

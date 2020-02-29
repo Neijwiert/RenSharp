@@ -32,6 +32,8 @@ namespace RenSharp
 
 	public interface class IAudibleSoundDefinitionClass : public IDefinitionClass
 	{
+		literal unsigned int AudibleSoundDefinitionClassClassID = 0x5000;
+
 		IUnmanagedContainer<IAudibleSoundClass ^> ^CreateSound(int type);
 
 		void InitializeFromSound(IAudibleSoundClass ^sound);

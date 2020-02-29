@@ -28,6 +28,9 @@ namespace RenSharp
 {
 	public interface class IDecorationPhysDefClass : public IDynamicPhysDefClass
 	{
+		literal unsigned int DecorationPhysDefClassClassID = 36864;
+		literal String^ DecorationPhysDefClassTypeName = "DecorationPhysDef";
+
 		property IntPtr DecorationPhysDefClassPointer
 		{
 			IntPtr get();

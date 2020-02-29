@@ -21,6 +21,14 @@ limitations under the License.
 #include "MPlayerDataClass.h"
 #include "Mweaponmgr.h"
 
+#pragma managed(push, off)
+#pragma warning(push)
+#pragma warning(disable : 4251 4244 26495 26454)
+#include <BeaconGameObjDef.h>
+#include <weaponmgr.h>
+#pragma warning(pop) 
+#pragma managed(pop)
+
 namespace RenSharp
 {
 	BeaconGameObj::BeaconGameObj(IntPtr pointer)
@@ -41,14 +49,20 @@ namespace RenSharp
 
 	IBeaconGameObjDef ^BeaconGameObj::Definition::get()
 	{
-		auto result = const_cast<::BeaconGameObjDef *>(&InternalBeaconGameObjPointer->Get_Definition());
-		if (result == nullptr)
+		auto defPtr = const_cast<::BeaconGameObjDef *>(&InternalBeaconGameObjPointer->Get_Definition());
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew BeaconGameObjDef(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IBeaconGameObjDef^>(result);
+			}
+
+			return gcnew BeaconGameObjDef(IntPtr(defPtr));
 		}
 	}
 
@@ -82,14 +96,20 @@ namespace RenSharp
 
 	IWeaponDefinitionClass ^BeaconGameObj::WeaponDef::get()
 	{
-		auto result = const_cast<::WeaponDefinitionClass *>(InternalBeaconGameObjPointer->Get_WeaponDef());
-		if (result == nullptr)
+		auto defPtr = const_cast<::WeaponDefinitionClass *>(InternalBeaconGameObjPointer->Get_WeaponDef());
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew WeaponDefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IWeaponDefinitionClass^>(result);
+			}
+
+			return gcnew WeaponDefinitionClass(IntPtr(defPtr));
 		}
 	}
 

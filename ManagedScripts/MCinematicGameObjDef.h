@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class ICinematicGameObjDef : public IArmedGameObjDef
 	{
+		literal unsigned int CinematicGameObjDefClassID = 12305;
+
 		property IntPtr CinematicGameObjDefPointer
 		{
 			IntPtr get();

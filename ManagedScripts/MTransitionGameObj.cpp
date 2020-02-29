@@ -25,6 +25,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <TransitionGameObj.h>
+#include <TransitionGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -61,6 +62,12 @@ namespace RenSharp
 
 	ITransitionGameObjDef^ TransitionGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalTransitionGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<ITransitionGameObjDef^>(result);
+		}
+
 		return gcnew TransitionGameObjDef(IntPtr(const_cast<::TransitionGameObjDef*>(&InternalTransitionGameObjPointer->Get_Definition())));
 	}
 

@@ -26,11 +26,18 @@ class DynamicPhysClass;
 
 namespace RenSharp
 {
+	interface class IDynamicPhysDefClass;
+
 	public interface class IDynamicPhysClass : public IPhysClass
 	{
 		property IntPtr DynamicPhysClassPointer
 		{
 			IntPtr get();
+		}
+
+		property IDynamicPhysDefClass^ DynamicPhysDef
+		{
+			IDynamicPhysDefClass^ get();
 		}
 	};
 
@@ -44,6 +51,11 @@ namespace RenSharp
 			property IntPtr DynamicPhysClassPointer
 			{
 				virtual IntPtr get() sealed;
+			}
+
+			property IDynamicPhysDefClass^ DynamicPhysDef
+			{
+				virtual IDynamicPhysDefClass^ get() sealed;
 			}
 
 		protected:

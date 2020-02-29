@@ -53,6 +53,7 @@ namespace RenSharp
 
 	public interface class IBuildingGameObjDef : public IDamageableGameObjDef
 	{
+		literal unsigned int BuildingGameObjDefClassID = 0xD001;
 		literal int BaseCount = BuildingConstants::BASE_COUNT;
 
 		property IntPtr BuildingGameObjDefPointer

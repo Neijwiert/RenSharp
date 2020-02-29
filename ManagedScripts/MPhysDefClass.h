@@ -73,6 +73,8 @@ namespace RenSharp
 
 	public interface class IPhysDefClass : public IDefinitionClass
 	{
+		literal String^ PhysDefClassTypeName = "PhysDef";
+
 		bool IsType(String ^typeName);
 
 		property IntPtr PhysDefClassPointer

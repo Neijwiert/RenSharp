@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <PhysicalGameObj.h>
+#include <PhysicalGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -481,6 +482,12 @@ namespace RenSharp
 
 	IPhysicalGameObjDef ^PhysicalGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalPhysicalGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IPhysicalGameObjDef^>(result);
+		}
+
 		return gcnew PhysicalGameObjDef(IntPtr(const_cast<::PhysicalGameObjDef *>(&InternalPhysicalGameObjPointer->Get_Definition())));
 	}
 

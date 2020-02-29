@@ -32,15 +32,21 @@ namespace RenSharp
 
 	ITeamPurchaseSettingsDefClass^ TeamPurchaseSettingsDefClass::GetDefinition(ITeamPurchaseSettingsDefClass::TeamEnum team)
 	{
-		auto result = ::TeamPurchaseSettingsDefClass::Get_Definition(
+		auto defPtr = ::TeamPurchaseSettingsDefClass::Get_Definition(
 			static_cast<::TeamPurchaseSettingsDefClass::TEAM>(team));
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew TeamPurchaseSettingsDefClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<ITeamPurchaseSettingsDefClass^>(result);
+			}
+
+			return gcnew TeamPurchaseSettingsDefClass(IntPtr(defPtr));
 		}
 	}
 

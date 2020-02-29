@@ -37,6 +37,8 @@ namespace RenSharp
 			CinematicCollisionKill = ::MoveablePhysDefClass::CINEMATIC_COLLISION_KILL
 		};
 
+		literal String^ MoveablePhysDefClassTypeName = "MoveablePhysDef";
+
 		property IntPtr MoveablePhysDefClassPointer
 		{
 			IntPtr get();

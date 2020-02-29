@@ -28,6 +28,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <MoveablePhysClass.h>
+#include <MoveablePhysDefClass.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -198,7 +199,21 @@ namespace RenSharp
 
 	IMoveablePhysDefClass ^MoveablePhysClass::MoveablePhysDef::get()
 	{
-		return gcnew MoveablePhysDefClass(IntPtr(const_cast<::MoveablePhysDefClass *>(InternalMoveablePhysClassPointer->Get_MoveablePhysDef())));
+		auto defPtr = InternalMoveablePhysClassPointer->Get_MoveablePhysDef();
+		if (defPtr == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IMoveablePhysDefClass^>(result);
+			}
+
+			return gcnew MoveablePhysDefClass(IntPtr(const_cast<::MoveablePhysDefClass*>(defPtr)));
+		}
 	}
 
 	float MoveablePhysClass::Mass::get()

@@ -37,6 +37,8 @@ limitations under the License.
 #include <engine_da.h>
 #include <da_player.h>
 #include <da_loot.h>
+#include <weaponmgr.h>
+#include <PowerupGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -682,15 +684,21 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("soldier");
 		}
 
-		auto result = InternalDALootGameFeatureClassPointer->Get_Character_PowerUp_Drop(
+		auto defPtr = InternalDALootGameFeatureClassPointer->Get_Character_PowerUp_Drop(
 			reinterpret_cast<::SoldierGameObj*>(soldier->SoldierGameObjPointer.ToPointer()));
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew PowerUpGameObjDef(IntPtr(const_cast<::PowerUpGameObjDef*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IPowerUpGameObjDef^>(result);
+			}
+
+			return gcnew PowerUpGameObjDef(IntPtr(const_cast<::PowerUpGameObjDef*>(defPtr)));
 		}
 	}
 
@@ -701,15 +709,21 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("soldier");
 		}
 
-		auto result = InternalDALootGameFeatureClassPointer->Get_Character_PowerUp_Drop(
+		auto defPtr = InternalDALootGameFeatureClassPointer->Get_Character_PowerUp_Drop(
 			reinterpret_cast<::SoldierGameObjDef*>(soldier->SoldierGameObjDefPointer.ToPointer()));
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew PowerUpGameObjDef(IntPtr(const_cast<::PowerUpGameObjDef*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IPowerUpGameObjDef^>(result);
+			}
+
+			return gcnew PowerUpGameObjDef(IntPtr(const_cast<::PowerUpGameObjDef*>(defPtr)));
 		}
 	}
 
@@ -763,15 +777,21 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("soldier");
 		}
 
-		auto result = InternalDALootGameFeatureClassPointer->Get_Character_Weapon_Drop(
+		auto defPtr = InternalDALootGameFeatureClassPointer->Get_Character_Weapon_Drop(
 			reinterpret_cast<::SoldierGameObj*>(soldier->SoldierGameObjPointer.ToPointer()));
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IWeaponDefinitionClass^>(result);
+			}
+
+			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
 		}
 	}
 
@@ -782,15 +802,21 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("soldier");
 		}
 
-		auto result = InternalDALootGameFeatureClassPointer->Get_Character_Weapon_Drop(
+		auto defPtr = InternalDALootGameFeatureClassPointer->Get_Character_Weapon_Drop(
 			reinterpret_cast<::SoldierGameObjDef*>(soldier->SoldierGameObjDefPointer.ToPointer()));
-		if (result == nullptr)
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(result)));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IWeaponDefinitionClass^>(result);
+			}
+
+			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
 		}
 	}
 

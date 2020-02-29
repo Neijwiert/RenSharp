@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class IComCenterGameObjDef : public IBuildingGameObjDef
 	{
+		literal unsigned int ComCenterGameObjDefClassID = 53256;
+
 		property IntPtr ComCenterGameObjDefPointer
 		{
 			IntPtr get();

@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class IRepairBayGameObjDef : public IBuildingGameObjDef
 	{
+		literal unsigned int RepairBayGameObjDefClassID = 53257;
+
 		property IntPtr RepairBayGameObjDefPointer
 		{
 			IntPtr get();

@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <ArmedGameObj.h>
+#include <ArmedGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -136,6 +137,12 @@ namespace RenSharp
 
 	IArmedGameObjDef ^ArmedGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalArmedGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IArmedGameObjDef^>(result);
+		}
+
 		return gcnew ArmedGameObjDef(IntPtr(const_cast<::ArmedGameObjDef *>(&InternalArmedGameObjPointer->Get_Definition())));
 	}
 

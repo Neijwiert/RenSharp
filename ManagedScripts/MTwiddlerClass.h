@@ -28,6 +28,8 @@ namespace RenSharp
 {
 	public interface class ITwiddlerClass : public IDefinitionClass
 	{
+		literal unsigned int TwiddlerClassClassID = 57344;
+
 		IDefinitionClass^ Twiddle();
 
 		property IntPtr TwiddlerClassPointer

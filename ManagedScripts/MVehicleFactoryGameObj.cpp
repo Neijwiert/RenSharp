@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4091 4251 4244 26495 26454)
 #include <VehicleFactoryGameObj.h>
+#include <VehicleFactoryGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -134,6 +135,12 @@ namespace RenSharp
 
 	IVehicleFactoryGameObjDef ^VehicleFactoryGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalVehicleFactoryGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IVehicleFactoryGameObjDef^>(result);
+		}
+
 		return gcnew VehicleFactoryGameObjDef(IntPtr(const_cast<::VehicleFactoryGameObjDef *>(&InternalVehicleFactoryGameObjPointer->Get_Definition())));
 	}
 

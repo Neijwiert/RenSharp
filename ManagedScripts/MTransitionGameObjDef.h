@@ -128,6 +128,8 @@ namespace RenSharp
 
 	public interface class ITransitionGameObjDef : public IBaseGameObjDef
 	{
+		literal unsigned int TransitionGameObjDefClassID = 12303;
+
 		property IntPtr TransitionGameObjDefPointer
 		{
 			IntPtr get();

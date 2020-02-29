@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <BaseGameObj.h>
+#include <BaseGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -205,6 +206,12 @@ namespace RenSharp
 
 	IBaseGameObjDef ^BaseGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalBaseGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IBaseGameObjDef^>(result);
+		}
+
 		return gcnew BaseGameObjDef(IntPtr(const_cast<::BaseGameObjDef *>(&InternalBaseGameObjPointer->Get_Definition())));
 	}
 

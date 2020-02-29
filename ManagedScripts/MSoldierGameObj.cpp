@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <SoldierGameObj.h>
+#include <SoldierGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -763,6 +764,12 @@ namespace RenSharp
 
 	ISoldierGameObjDef ^SoldierGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSoldierGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<ISoldierGameObjDef^>(result);
+		}
+
 		return gcnew SoldierGameObjDef(IntPtr(const_cast<::SoldierGameObjDef *>(&InternalSoldierGameObjPointer->Get_Definition())));
 	}
 

@@ -21,6 +21,7 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <SimpleGameObj.h>
+#include <SimpleGameObjDef.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -46,6 +47,12 @@ namespace RenSharp
 
 	ISimpleGameObjDef ^SimpleGameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSimpleGameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<ISimpleGameObjDef^>(result);
+		}
+
 		return gcnew SimpleGameObjDef(IntPtr(const_cast<::SimpleGameObjDef *>(&InternalSimpleGameObjPointer->Get_Definition())));
 	}
 

@@ -21,6 +21,8 @@ limitations under the License.
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <C4GameObj.h>
+#include <C4GameObjDef.h>
+#include <weaponmgr.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -49,6 +51,12 @@ namespace RenSharp
 
 	IC4GameObjDef ^C4GameObj::Definition::get()
 	{
+		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalC4GameObjPointer->Get_Definition());
+		if (result != nullptr)
+		{
+			return safe_cast<IC4GameObjDef^>(result);
+		}
+
 		return gcnew C4GameObjDef(IntPtr(const_cast<::C4GameObjDef *>(&InternalC4GameObjPointer->Get_Definition())));
 	}
 
@@ -92,14 +100,20 @@ namespace RenSharp
 
 	IAmmoDefinitionClass ^C4GameObj::AmmoDef::get()
 	{
-		auto result = const_cast<::AmmoDefinitionClass *>(InternalC4GameObjPointer->Get_Ammo_Def());
-		if (result == nullptr)
+		auto defPtr = const_cast<::AmmoDefinitionClass *>(InternalC4GameObjPointer->Get_Ammo_Def());
+		if (defPtr == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			return gcnew AmmoDefinitionClass(IntPtr(result));
+			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
+			if (result != nullptr)
+			{
+				return safe_cast<IAmmoDefinitionClass^>(result);
+			}
+
+			return gcnew AmmoDefinitionClass(IntPtr(defPtr));
 		}
 	}
 

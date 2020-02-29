@@ -17,10 +17,50 @@ limitations under the License.
 #include "stdafx.h"
 #include "MDefinition.h"
 
+#include "MAirFactoryGameObjDef.h"
+#include "MAirStripGameObjDef.h"
+#include "MBeaconGameObjDef.h"
+#include "MBuildingGameObjDef.h"
+#include "MC4GameObjDef.h"
+#include "MConstructionYardGameObjDef.h"
+#include "MDamageZoneGameObjDef.h"
+#include "MPhysDefClass.h"
+#include "MDynamicPhysDefClass.h"
+#include "MMoveablePhysDefClass.h"
+#include "MNavalFactoryGameObjDef.h"
+#include "MPurchaseSettingsDefClass.h"
+#include "MRefineryGameObjDef.h"
+#include "MRepairBayGameObjDef.h"
+#include "MScriptZoneGameObjDef.h"
+#include "MSimpleGameObjDef.h"
+#include "MTeamPurchaseSettingsDefClass.h"
+#include "MVehicleFactoryGameObjDef.h"
+#include "MVehicleGameObjDef.h"
+#include "MAudibleSoundDefinitionClass.h"
+#include "MStaticPhysDefClass.h"
+#include "MStaticAnimPhysDefClass.h"
+#include "MBuildingAggregateDefClass.h"
+#include "MCinematicGameObjDef.h"
+#include "MComCenterGameObjDef.h"
+#include "MDecorationPhysDefClass.h"
+#include "MPowerPlantGameObjDef.h"
+#include "MSamSiteGameObjDef.h"
+#include "MSoldierFactoryGameObjDef.h"
+#include "MSoldierGameObjDef.h"
+#include "MSpawnerDefClass.h"
+#include "MSpecialEffectsGameObjDef.h"
+#include "MSuperweaponGameObjDef.h"
+#include "MTransitionGameObjDef.h"
+#include "MWarFactoryGameObjDef.h"
+#include "Mweaponmgr.h"
+#include "MPowerUpGameObjDef.h"
+#include "MTwiddlerClass.h"
+
 #pragma managed(push, off)
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <Definition.h>
+#include <PhysDefClass.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -134,6 +174,127 @@ namespace RenSharp
 	void DefinitionClass::IsSaveEnabled::set(bool value)
 	{
 		InternalDefinitionClassPointer->Enable_Save(value);
+	}
+
+	IDefinitionClass^ DefinitionClass::CreateDefinitionClassWrapper(const ::DefinitionClass* definitionClassPtr)
+	{
+		if (definitionClassPtr == nullptr)
+		{
+			throw gcnew ArgumentNullException("definitionClassPtr");
+		}
+
+		IntPtr wrappedDefinitionClassPtr = IntPtr(const_cast<::DefinitionClass*>(definitionClassPtr));
+
+		auto classId = definitionClassPtr->Get_Class_ID();
+		switch (classId)
+		{
+			case IAirFactoryGameObjDef::AirFactoryGameObjDefClassID:
+				return gcnew AirFactoryGameObjDef(wrappedDefinitionClassPtr);
+			case IAirStripGameObjDef::AirStripGameObjDefClassID:
+				return gcnew AirStripGameObjDef(wrappedDefinitionClassPtr);
+			case IBeaconGameObjDef::BeaconGameObjDefClassID:
+				return gcnew BeaconGameObjDef(wrappedDefinitionClassPtr);
+			case IC4GameObjDef::C4GameObjDefClassID:
+				return gcnew C4GameObjDef(wrappedDefinitionClassPtr);
+			case IConstructionYardGameObjDef::ConstructionYardGameObjDefClassID:
+				return gcnew ConstructionYardGameObjDef(wrappedDefinitionClassPtr);
+			case IDamageZoneGameObjDef::DamageZoneGameObjDefClassID:
+				return gcnew DamageZoneGameObjDef(wrappedDefinitionClassPtr);
+			case INavalFactoryGameObjDef::NavalFactoryGameObjDefClassID:
+				return gcnew NavalFactoryGameObjDef(wrappedDefinitionClassPtr);
+			case IPurchaseSettingsDefClass::PurchaseSettingsDefClassClassID:
+				return gcnew PurchaseSettingsDefClass(wrappedDefinitionClassPtr);
+			case IRefineryGameObjDef::RefineryGameObjDefClassID:
+				return gcnew RefineryGameObjDef(wrappedDefinitionClassPtr);
+			case IRepairBayGameObjDef::RepairBayGameObjDefClassID:
+				return gcnew RepairBayGameObjDef(wrappedDefinitionClassPtr);
+			case IScriptZoneGameObjDef::ScriptZoneGameObjDefClassID:
+				return gcnew ScriptZoneGameObjDef(wrappedDefinitionClassPtr);
+			case ITeamPurchaseSettingsDefClass::TeamPurchaseSettingsDefClassClassID:
+				return gcnew TeamPurchaseSettingsDefClass(wrappedDefinitionClassPtr);
+			case IVehicleGameObjDef::VehicleGameObjDefClassID:
+			case 12308: // SakuraBossGameObjDef
+				return gcnew VehicleGameObjDef(wrappedDefinitionClassPtr);
+			case IAudibleSoundDefinitionClass::AudibleSoundDefinitionClassClassID:
+				return gcnew AudibleSoundDefinitionClass(wrappedDefinitionClassPtr);
+			case ICinematicGameObjDef::CinematicGameObjDefClassID:
+				return gcnew CinematicGameObjDef(wrappedDefinitionClassPtr);
+			case IComCenterGameObjDef::ComCenterGameObjDefClassID:
+				return gcnew ComCenterGameObjDef(wrappedDefinitionClassPtr);
+			case IPowerPlantGameObjDef::PowerPlantGameObjDefClassID:
+				return gcnew PowerPlantGameObjDef(wrappedDefinitionClassPtr);
+			case ISAMSiteGameObjDef::SAMSiteGameObjDefClassID:
+				return gcnew SAMSiteGameObjDef(wrappedDefinitionClassPtr);
+			case ISoldierGameObjDef::SoldierGameObjDefClassID:
+			case 12311: // MendozaBossGameObjDefClass
+			case 12312: // RaveshawBossGameObjDefClass
+				return gcnew SoldierGameObjDef(wrappedDefinitionClassPtr);
+			case ISpawnerDefClass::SpawnerDefClassClassID:
+				return gcnew SpawnerDefClass(wrappedDefinitionClassPtr);
+			case ISpecialEffectsGameObjDef::SpecialEffectsGameObjDefClassID:
+				return gcnew SpecialEffectsGameObjDef(wrappedDefinitionClassPtr);
+			case ISuperweaponGameObjDef::SuperweaponGameObjDefClassID:
+				return gcnew SuperweaponGameObjDef(wrappedDefinitionClassPtr);
+			case ITransitionGameObjDef::TransitionGameObjDefClassID:
+				return gcnew TransitionGameObjDef(wrappedDefinitionClassPtr);
+			case IWarFactoryGameObjDef::WarFactoryGameObjDefClassID:
+				return gcnew WarFactoryGameObjDef(wrappedDefinitionClassPtr);
+			case ISoldierFactoryGameObjDef::SoldierFactoryGameObjDefClassID:
+				return gcnew SoldierFactoryGameObjDef(wrappedDefinitionClassPtr);
+			case IVehicleFactoryGameObjDef::VehicleFactoryGameObjDefClassID:
+				return gcnew VehicleFactoryGameObjDef(wrappedDefinitionClassPtr);
+			case IBuildingAggregateDefClass::BuildingAggregateDefClassClassID:
+				return gcnew BuildingAggregateDefClass(wrappedDefinitionClassPtr);
+			case IDecorationPhysDefClass::DecorationPhysDefClassClassID:
+			case 36878: // DynamicAnimPhysDefClass
+			case 36874: // TimedDecorationPhysDefClass
+				return gcnew DecorationPhysDefClass(wrappedDefinitionClassPtr);
+			case IStaticAnimPhysDefClass::StaticAnimPhysDefClassClassID:
+			case 36880: // AccessiblePhysDefClass
+			case 36994: // DamageableStaticPhysDefClass
+			case 36992: // DoorPhysDefClass
+			case 36993: // ElevatorPhysDefClass
+			case 36879: // ShakeableStaticPhysDefClass
+				return gcnew StaticAnimPhysDefClass(wrappedDefinitionClassPtr);
+			case IStaticPhysDefClass::StaticPhysDefClassClassID:
+				return gcnew StaticPhysDefClass(wrappedDefinitionClassPtr);
+			case ISimpleGameObjDef::SimpleGameObjDefClassID:
+				return gcnew SimpleGameObjDef(wrappedDefinitionClassPtr);
+			case IBuildingGameObjDef::BuildingGameObjDefClassID:
+				return gcnew BuildingGameObjDef(wrappedDefinitionClassPtr);
+			case IAmmoDefinitionClass::AmmoDefinitionClassClassID:
+				return gcnew AmmoDefinitionClass(wrappedDefinitionClassPtr);
+			case IWeaponDefinitionClass::WeaponDefinitionClassClassID:
+				return gcnew WeaponDefinitionClass(wrappedDefinitionClassPtr);
+			case IExplosionDefinitionClass::ExplosionDefinitionClassClassID:
+				return gcnew ExplosionDefinitionClass(wrappedDefinitionClassPtr);
+			case IPowerUpGameObjDef::PowerUpGameObjDefClassID:
+				return gcnew PowerUpGameObjDef(wrappedDefinitionClassPtr);
+			case ITwiddlerClass::TwiddlerClassClassID:
+				return gcnew TwiddlerClass(wrappedDefinitionClassPtr);
+			case 36869: // RigidBodyDefClass
+			case 36875: // VehiclePhysDefClass
+			case 36881: // AircraftPhysDefClass
+			case 36868: // Phys3DefClass
+			case 36865: // HumanPhysDefClass
+			case 36867: // MotorVehicleDefClass
+			case 36870: // WheeledVehicleDefClass
+			case 36866: // MotorcycleDefClass
+			case 36873: // ProjectileDefClass
+			case 36876: // TrackedVehicleDefClass
+			case 36877: // VTOLVehicleDefClass
+				return gcnew MoveablePhysDefClass(wrappedDefinitionClassPtr);
+			case 61446: // CharacterClassSettingsDefClass
+			case 61450: // CNCModeSettingsDef
+			case 61445: // EvaSettingsDefClass
+			case 61443: // GlobalSettingsDef
+			case 61444: // HUDGlobalSettingsDef
+			case 61447: // HumanAnimOverrideDef
+			case 61442: // HumanLoiterGlobalSettingsDef
+				return gcnew DefinitionClass(wrappedDefinitionClassPtr);
+			default:
+				return nullptr; // Let caller decide
+		}
 	}
 
 	::EditableClass *DefinitionClass::InternalEditableClassPointer::get()
