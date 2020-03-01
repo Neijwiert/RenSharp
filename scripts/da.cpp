@@ -809,7 +809,7 @@ Register_Console_Function(DACMsgPConsoleFunctionClass);
 class DAHUDMsgConsoleFunctionClass : public ConsoleFunctionClass {
 public:
 	const char* Get_Name() { return "hudmsg"; }
-	const char* Get_Help() { return "HUDMST <red>,<green>,<blue> <message> - Displays a colored message on the HUD of all players. Host only."; }
+	const char* Get_Help() { return "HUDMSG <red>,<green>,<blue> <message> - Displays a colored message on the HUD of all players. Host only."; }
 	void Activate(const char *ArgumentsString) {
 		DATokenParserClass Text(ArgumentsString, ' ');
 		const char *Colors = Text.Get_String();

@@ -550,6 +550,9 @@
     <ClCompile Include="MasterCan_Scripts.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="DefaultConnectionAcceptanceFilter.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABoxClass.h">
@@ -1618,6 +1621,9 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="PresetMgr.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultConnectionAcceptanceFilter.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>

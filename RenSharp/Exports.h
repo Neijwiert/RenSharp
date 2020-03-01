@@ -3329,6 +3329,11 @@ extern "C"
 		delete stringClassTDBObjClassPtrHashTemplateIterator;
 	}
 
+	__declspec(dllexport) void __stdcall DestroyDefaultConnectionAcceptanceFilter(DefaultConnectionAcceptanceFilter* defaultConnectionAcceptanceFilter)
+	{
+		delete defaultConnectionAcceptanceFilter;
+	}
+
 	__declspec(dllexport) float __stdcall WWMathInvSqrt(float a)
 	{
 		return WWMath::Inv_Sqrt(a);

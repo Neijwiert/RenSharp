@@ -99,6 +99,7 @@
     <ClInclude Include="IPriorityQueueNode.h" />
     <ClInclude Include="McPurchaseResponseEvent.h" />
     <ClInclude Include="CriticalUnmanagedContainer.h" />
+    <ClInclude Include="MDefaultConnectionAcceptanceFilter.h" />
     <ClInclude Include="Misc.h" />
     <ClInclude Include="FatalRenSharpException.h" />
     <ClInclude Include="IChatCommandInterface.h" />
@@ -480,6 +481,7 @@
     <ClCompile Include="AbstractUnmanagedObject.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="CriticalUnmanagedContainer.cpp" />
+    <ClCompile Include="MDefaultConnectionAcceptanceFilter.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="FatalRenSharpException.cpp" />
     <ClCompile Include="IChatCommandInterface.cpp" />
