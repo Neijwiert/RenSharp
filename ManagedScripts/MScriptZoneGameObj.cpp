@@ -49,13 +49,7 @@ namespace RenSharp
 
 	IScriptZoneGameObjDef ^ScriptZoneGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalScriptZoneGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IScriptZoneGameObjDef^>(result);
-		}
-
-		return gcnew ScriptZoneGameObjDef(IntPtr(const_cast<::ScriptZoneGameObjDef *>(&InternalScriptZoneGameObjPointer->Get_Definition())));
+		return safe_cast<IScriptZoneGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalScriptZoneGameObjPointer->Get_Definition()));
 	}
 
 	OBBoxClass ScriptZoneGameObj::BoundingBox::get()

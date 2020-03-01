@@ -206,13 +206,7 @@ namespace RenSharp
 
 	IBaseGameObjDef ^BaseGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalBaseGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IBaseGameObjDef^>(result);
-		}
-
-		return gcnew BaseGameObjDef(IntPtr(const_cast<::BaseGameObjDef *>(&InternalBaseGameObjPointer->Get_Definition())));
+		return safe_cast<IBaseGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalBaseGameObjPointer->Get_Definition()));
 	}
 
 	bool BaseGameObj::IsHibernating::get()

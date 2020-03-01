@@ -118,13 +118,7 @@ namespace RenSharp
 
 	IDamageableGameObjDef ^DamageableGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalDamageableGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IDamageableGameObjDef^>(result);
-		}
-
-		return gcnew DamageableGameObjDef(IntPtr(const_cast<::DamageableGameObjDef *>(&InternalDamageableGameObjPointer->Get_Definition())));
+		return safe_cast<IDamageableGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalDamageableGameObjPointer->Get_Definition()));
 	}
 
 	IDefenseObjectClass ^DamageableGameObj::DefenseObject::get()

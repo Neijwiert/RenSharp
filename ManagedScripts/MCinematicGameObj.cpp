@@ -47,13 +47,7 @@ namespace RenSharp
 
 	ICinematicGameObjDef ^CinematicGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalCinematicGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<ICinematicGameObjDef^>(result);
-		}
-
-		return gcnew CinematicGameObjDef(IntPtr(const_cast<::CinematicGameObjDef *>(&InternalCinematicGameObjPointer->Get_Definition())));
+		return safe_cast<ICinematicGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalCinematicGameObjPointer->Get_Definition()));
 	}
 
 	::ArmedGameObj *CinematicGameObj::InternalArmedGameObjPointer::get()

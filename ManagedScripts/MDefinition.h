@@ -95,6 +95,8 @@ namespace RenSharp
 		public:
 			DefinitionClass(IntPtr pointer);
 
+			static IDefinitionClass^ CreateDefinitionClassWrapper(IntPtr definitionClassPtr);
+
 			String ^ToString() override;
 
 			virtual IPersistClass ^Create() sealed;

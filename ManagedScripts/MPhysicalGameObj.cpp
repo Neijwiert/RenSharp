@@ -482,13 +482,7 @@ namespace RenSharp
 
 	IPhysicalGameObjDef ^PhysicalGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalPhysicalGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IPhysicalGameObjDef^>(result);
-		}
-
-		return gcnew PhysicalGameObjDef(IntPtr(const_cast<::PhysicalGameObjDef *>(&InternalPhysicalGameObjPointer->Get_Definition())));
+		return safe_cast<IPhysicalGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalPhysicalGameObjPointer->Get_Definition()));
 	}
 
 	bool PhysicalGameObj::IsAttachedToAnObject::get()

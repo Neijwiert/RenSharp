@@ -47,13 +47,7 @@ namespace RenSharp
 
 	IRepairBayGameObjDef ^RepairBayGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalRepairBayGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IRepairBayGameObjDef^>(result);
-		}
-
-		return gcnew RepairBayGameObjDef(IntPtr(const_cast<::RepairBayGameObjDef *>(&InternalRepairBayGameObjPointer->Get_Definition())));
+		return safe_cast<IRepairBayGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalRepairBayGameObjPointer->Get_Definition()));
 	}
 
 	::PhysObserverClass *RepairBayGameObj::InternalPhysObserverClassPointer::get()

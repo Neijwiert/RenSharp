@@ -91,13 +91,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<ISpawnerDefClass^>(result);
-			}
-
-			return gcnew SpawnerDefClass(IntPtr(const_cast<::SpawnerDefClass*>(defPtr)));
+			return safe_cast<ISpawnerDefClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

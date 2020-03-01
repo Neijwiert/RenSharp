@@ -764,13 +764,7 @@ namespace RenSharp
 
 	ISoldierGameObjDef ^SoldierGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSoldierGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<ISoldierGameObjDef^>(result);
-		}
-
-		return gcnew SoldierGameObjDef(IntPtr(const_cast<::SoldierGameObjDef *>(&InternalSoldierGameObjPointer->Get_Definition())));
+		return safe_cast<ISoldierGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalSoldierGameObjPointer->Get_Definition()));
 	}
 
 	bool SoldierGameObj::IsTurreted::get()

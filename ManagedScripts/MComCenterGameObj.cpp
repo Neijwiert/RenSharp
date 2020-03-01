@@ -47,13 +47,7 @@ namespace RenSharp
 
 	IComCenterGameObjDef ^ComCenterGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalComCenterGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IComCenterGameObjDef^>(result);
-		}
-
-		return gcnew ComCenterGameObjDef(IntPtr(const_cast<::ComCenterGameObjDef *>(&InternalComCenterGameObjPointer->Get_Definition())));
+		return safe_cast<IComCenterGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalComCenterGameObjPointer->Get_Definition()));
 	}
 
 	::PhysObserverClass *ComCenterGameObj::InternalPhysObserverClassPointer::get()

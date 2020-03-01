@@ -66,13 +66,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IBuildingAggregateDefClass^>(result);
-			}
-
-			return gcnew BuildingAggregateDefClass(IntPtr(const_cast<::BuildingAggregateDefClass*>(defPtr)));
+			return safe_cast<IBuildingAggregateDefClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

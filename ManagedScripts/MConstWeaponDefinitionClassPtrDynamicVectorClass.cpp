@@ -188,13 +188,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IWeaponDefinitionClass^>(result);
-			}
-
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
+			return safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

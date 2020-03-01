@@ -69,13 +69,7 @@ namespace RenSharp
 
 	IWarFactoryGameObjDef ^WarFactoryGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalWarFactoryGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IWarFactoryGameObjDef^>(result);
-		}
-
-		return gcnew WarFactoryGameObjDef(IntPtr(const_cast<::WarFactoryGameObjDef *>(&InternalWarFactoryGameObjPointer->Get_Definition())));
+		return safe_cast<IWarFactoryGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalWarFactoryGameObjPointer->Get_Definition()));
 	}
 
 	::VehicleFactoryGameObj *WarFactoryGameObj::InternalVehicleFactoryGameObjPointer::get()

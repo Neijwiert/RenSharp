@@ -52,13 +52,7 @@ namespace RenSharp
 
 	IConstructionYardGameObjDef ^ConstructionYardGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalConstructionYardGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IConstructionYardGameObjDef^>(result);
-		}
-
-		return gcnew ConstructionYardGameObjDef(IntPtr(const_cast<::ConstructionYardGameObjDef *>(&InternalConstructionYardGameObjPointer->Get_Definition())));
+		return safe_cast<IConstructionYardGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalConstructionYardGameObjPointer->Get_Definition()));
 	}
 
 	::PhysObserverClass *ConstructionYardGameObj::InternalPhysObserverClassPointer::get()

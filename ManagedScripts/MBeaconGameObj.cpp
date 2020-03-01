@@ -56,13 +56,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IBeaconGameObjDef^>(result);
-			}
-
-			return gcnew BeaconGameObjDef(IntPtr(defPtr));
+			return safe_cast<IBeaconGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 
@@ -103,13 +97,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IWeaponDefinitionClass^>(result);
-			}
-
-			return gcnew WeaponDefinitionClass(IntPtr(defPtr));
+			return safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

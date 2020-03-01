@@ -42,13 +42,7 @@ namespace RenSharp
 
 	IPowerUpGameObjDef ^PowerUpGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalPowerUpGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IPowerUpGameObjDef^>(result);
-		}
-
-		return gcnew PowerUpGameObjDef(IntPtr(const_cast<::PowerUpGameObjDef *>(&InternalPowerUpGameObjPointer->Get_Definition())));
+		return safe_cast<IPowerUpGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalPowerUpGameObjPointer->Get_Definition()));
 	}
 
 	::SimpleGameObj *PowerUpGameObj::InternalSimpleGameObjPointer::get()

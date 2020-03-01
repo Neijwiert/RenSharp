@@ -130,13 +130,7 @@ namespace RenSharp
 
 	ISmartGameObjDef ^SmartGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSmartGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<ISmartGameObjDef^>(result);
-		}
-
-		return gcnew SmartGameObjDef(IntPtr(const_cast<::SmartGameObjDef *>(&InternalSmartGameObjPointer->Get_Definition())));
+		return safe_cast<ISmartGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalSmartGameObjPointer->Get_Definition()));
 	}
 
 	IControlClass ^SmartGameObj::Control::get()

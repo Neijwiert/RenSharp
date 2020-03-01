@@ -47,13 +47,7 @@ namespace RenSharp
 
 	INavalFactoryGameObjDef ^NavalFactoryGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalNavalFactoryGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<INavalFactoryGameObjDef^>(result);
-		}
-
-		return gcnew NavalFactoryGameObjDef(IntPtr(const_cast<::NavalFactoryGameObjDef *>(&InternalNavalFactoryGameObjPointer->Get_Definition())));
+		return safe_cast<INavalFactoryGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalNavalFactoryGameObjPointer->Get_Definition()));
 	}
 
 	bool NavalFactoryGameObj::IsAvailable::get()

@@ -47,13 +47,7 @@ namespace RenSharp
 
 	ISimpleGameObjDef ^SimpleGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSimpleGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<ISimpleGameObjDef^>(result);
-		}
-
-		return gcnew SimpleGameObjDef(IntPtr(const_cast<::SimpleGameObjDef *>(&InternalSimpleGameObjPointer->Get_Definition())));
+		return safe_cast<ISimpleGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalSimpleGameObjPointer->Get_Definition()));
 	}
 
 	bool SimpleGameObj::IsHiddenObject::get()

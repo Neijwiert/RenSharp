@@ -47,13 +47,7 @@ namespace RenSharp
 
 	IAirStripGameObjDef ^AirStripGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalAirStripGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IAirStripGameObjDef^>(result);
-		}
-
-		return gcnew AirStripGameObjDef(IntPtr(const_cast<::AirStripGameObjDef *>(&InternalAirStripGameObjPointer->Get_Definition())));
+		return safe_cast<IAirStripGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalAirStripGameObjPointer->Get_Definition()));
 	}
 
 	::VehicleFactoryGameObj *AirStripGameObj::InternalVehicleFactoryGameObjPointer::get()

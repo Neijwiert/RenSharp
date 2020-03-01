@@ -79,14 +79,7 @@ namespace RenSharp
 
 	IWeaponDefinitionClass^ UInt32ConstWeaponDefinitionClassPtrHashTemplateIterator::CurrentValue::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(InternalUInt32ConstWeaponDefinitionClassPtrHashTemplateIteratorPointer->getValue());
-		if (result != nullptr)
-		{
-			return safe_cast<IWeaponDefinitionClass^>(result);
-		}
-
-		return gcnew WeaponDefinitionClass(
-			IntPtr(const_cast<::WeaponDefinitionClass*>(InternalUInt32ConstWeaponDefinitionClassPtrHashTemplateIteratorPointer->getValue())));
+		return safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(InternalUInt32ConstWeaponDefinitionClassPtrHashTemplateIteratorPointer->getValue()));
 	}
 
 	bool UInt32ConstWeaponDefinitionClassPtrHashTemplateIterator::IsDone::get()
@@ -133,13 +126,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(*defPtrPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IWeaponDefinitionClass^>(result);
-			}
-
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(*defPtrPtr)));
+			return safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(*defPtrPtr));
 		}
 	}
 
@@ -166,15 +153,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto tmpResult = DefinitionClass::CreateDefinitionClassWrapper(tmp);
-			if (tmpResult != nullptr)
-			{
-				result = safe_cast<IWeaponDefinitionClass^>(tmpResult);
-			}
-			else
-			{
-				result = gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(tmp)));
-			}
+			result = safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(tmp));
 		}
 	}
 
@@ -222,15 +201,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto tmpResult = DefinitionClass::CreateDefinitionClassWrapper(tmp);
-			if (tmpResult != nullptr)
-			{
-				result = safe_cast<IWeaponDefinitionClass^>(tmpResult);
-			}
-			else
-			{
-				result = gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(tmp)));
-			}
+			result = safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(tmp));
 		}
 	}
 

@@ -503,13 +503,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IAudibleSoundDefinitionClass^>(result);
-			}
-
-			return gcnew AudibleSoundDefinitionClass(IntPtr(defPtr));
+			return safe_cast<IAudibleSoundDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

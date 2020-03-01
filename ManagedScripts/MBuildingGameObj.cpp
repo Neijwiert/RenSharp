@@ -436,13 +436,7 @@ namespace RenSharp
 
 	IBuildingGameObjDef ^BuildingGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalBuildingGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IBuildingGameObjDef^>(result);
-		}
-
-		return gcnew BuildingGameObjDef(IntPtr(const_cast<::BuildingGameObjDef *>(&InternalBuildingGameObjPointer->Get_Definition())));
+		return safe_cast<IBuildingGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalBuildingGameObjPointer->Get_Definition()));
 	}
 
 	Vector3 BuildingGameObj::Position::get()

@@ -43,13 +43,7 @@ namespace RenSharp
 
 	IDamageZoneGameObjDef^ DamageZoneGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalDamageZoneGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IDamageZoneGameObjDef^>(result);
-		}
-
-		return gcnew DamageZoneGameObjDef(IntPtr(const_cast<::DamageZoneGameObjDef*>(&InternalDamageZoneGameObjPointer->Get_Definition())));
+		return safe_cast<IDamageZoneGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalDamageZoneGameObjPointer->Get_Definition()));
 	}
 
 	OBBoxClass DamageZoneGameObj::BoundingBox::get()

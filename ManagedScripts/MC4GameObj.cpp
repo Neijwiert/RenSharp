@@ -51,13 +51,7 @@ namespace RenSharp
 
 	IC4GameObjDef ^C4GameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalC4GameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IC4GameObjDef^>(result);
-		}
-
-		return gcnew C4GameObjDef(IntPtr(const_cast<::C4GameObjDef *>(&InternalC4GameObjPointer->Get_Definition())));
+		return safe_cast<IC4GameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalC4GameObjPointer->Get_Definition()));
 	}
 
 	IScriptableGameObj ^C4GameObj::StuckObject::get()
@@ -107,13 +101,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IAmmoDefinitionClass^>(result);
-			}
-
-			return gcnew AmmoDefinitionClass(IntPtr(defPtr));
+			return safe_cast<IAmmoDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

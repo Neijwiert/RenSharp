@@ -65,13 +65,7 @@ namespace RenSharp
 
 	IRefineryGameObjDef ^RefineryGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalRefineryGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IRefineryGameObjDef^>(result);
-		}
-
-		return gcnew RefineryGameObjDef(IntPtr(const_cast<::RefineryGameObjDef *>(&InternalRefineryGameObjPointer->Get_Definition())));
+		return safe_cast<IRefineryGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalRefineryGameObjPointer->Get_Definition()));
 	}
 
 	bool RefineryGameObj::NeedsHarvester::get()

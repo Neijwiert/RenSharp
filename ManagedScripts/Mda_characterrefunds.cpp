@@ -77,13 +77,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<ISoldierGameObjDef^>(result);
-			}
-
-			return gcnew SoldierGameObjDef(IntPtr(const_cast<::SoldierGameObjDef*>(defPtr)));
+			return safe_cast<ISoldierGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

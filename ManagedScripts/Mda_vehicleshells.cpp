@@ -79,13 +79,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<VehicleGameObjDef^>(result);
-			}
-
-			return gcnew VehicleGameObjDef(IntPtr(defPtr));
+			return safe_cast<VehicleGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

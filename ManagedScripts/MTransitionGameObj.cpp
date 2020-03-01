@@ -62,13 +62,7 @@ namespace RenSharp
 
 	ITransitionGameObjDef^ TransitionGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalTransitionGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<ITransitionGameObjDef^>(result);
-		}
-
-		return gcnew TransitionGameObjDef(IntPtr(const_cast<::TransitionGameObjDef*>(&InternalTransitionGameObjPointer->Get_Definition())));
+		return safe_cast<ITransitionGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalTransitionGameObjPointer->Get_Definition()));
 	}
 
 	Matrix3D TransitionGameObj::Transform::get()

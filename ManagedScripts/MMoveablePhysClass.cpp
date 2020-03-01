@@ -206,13 +206,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IMoveablePhysDefClass^>(result);
-			}
-
-			return gcnew MoveablePhysDefClass(IntPtr(const_cast<::MoveablePhysDefClass*>(defPtr)));
+			return safe_cast<IMoveablePhysDefClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

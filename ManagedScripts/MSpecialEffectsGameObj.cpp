@@ -42,13 +42,7 @@ namespace RenSharp
 
 	ISpecialEffectsGameObjDef^ SpecialEffectsGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSpecialEffectsGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<ISpecialEffectsGameObjDef^>(result);
-		}
-
-		return gcnew SpecialEffectsGameObjDef(IntPtr(const_cast<::SpecialEffectsGameObjDef*>(&InternalSpecialEffectsGameObjPointer->Get_Definition())));
+		return safe_cast<ISpecialEffectsGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalSpecialEffectsGameObjPointer->Get_Definition()));
 	}
 
 	::PhysObserverClass* SpecialEffectsGameObj::InternalPhysObserverClassPointer::get()

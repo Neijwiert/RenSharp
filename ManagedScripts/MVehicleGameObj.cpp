@@ -310,13 +310,7 @@ namespace RenSharp
 
 	IVehicleGameObjDef ^VehicleGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalVehicleGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IVehicleGameObjDef^>(result);
-		}
-
-		return gcnew VehicleGameObjDef(IntPtr(const_cast<::VehicleGameObjDef *>(&InternalVehicleGameObjPointer->Get_Definition())));
+		return safe_cast<IVehicleGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalVehicleGameObjPointer->Get_Definition()));
 	}
 
 	bool VehicleGameObj::Use2DAiming::get()

@@ -74,6 +74,11 @@ namespace RenSharp
 
 	}
 
+	IDefinitionClass^ DefinitionClass::CreateDefinitionClassWrapper(IntPtr definitionClassPtr)
+	{
+		return CreateDefinitionClassWrapper(reinterpret_cast<::DefinitionClass*>(definitionClassPtr.ToPointer()));
+	}
+
 	String ^DefinitionClass::ToString()
 	{
 		StringBuilder ^builder = gcnew StringBuilder();
@@ -293,7 +298,7 @@ namespace RenSharp
 			case 61442: // HumanLoiterGlobalSettingsDef
 				return gcnew DefinitionClass(wrappedDefinitionClassPtr);
 			default:
-				return nullptr; // Let caller decide
+				throw gcnew InvalidOperationException(String::Format("Unknown DefinitionClass class ID {0}.", classId)); // Let caller decide
 		}
 	}
 

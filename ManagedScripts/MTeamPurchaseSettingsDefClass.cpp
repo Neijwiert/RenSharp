@@ -40,13 +40,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<ITeamPurchaseSettingsDefClass^>(result);
-			}
-
-			return gcnew TeamPurchaseSettingsDefClass(IntPtr(defPtr));
+			return safe_cast<ITeamPurchaseSettingsDefClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

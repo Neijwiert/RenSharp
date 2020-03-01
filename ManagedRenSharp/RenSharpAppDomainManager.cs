@@ -632,7 +632,7 @@ namespace RenSharp
 
                 IBaseControllerClass controller = (baseController == IntPtr.Zero ? null : new BaseControllerClass(baseController));
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                ISoldierGameObjDef soldierDef = (item == IntPtr.Zero ? null : new SoldierGameObjDef(item));
+                ISoldierGameObjDef soldierDef = (item == IntPtr.Zero ? null : (ISoldierGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 return mEventClass.CharacterPurchaseRequestEvent(controller, cPlayer, ref cost, soldierDef);
             }
@@ -658,7 +658,7 @@ namespace RenSharp
 
                 IBaseControllerClass controller = (baseController == IntPtr.Zero ? null : new BaseControllerClass(baseController));
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                IVehicleGameObjDef vehicleDef = (item == IntPtr.Zero ? null : new VehicleGameObjDef(item));
+                IVehicleGameObjDef vehicleDef = (item == IntPtr.Zero ? null : (IVehicleGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 return mEventClass.VehiclePurchaseRequestEvent(controller, cPlayer, ref cost, vehicleDef);
             }
@@ -684,7 +684,7 @@ namespace RenSharp
 
                 IBaseControllerClass controller = (baseController == IntPtr.Zero ? null : new BaseControllerClass(baseController));
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                IPowerUpGameObjDef powerUpDef = (item == IntPtr.Zero ? null : new PowerUpGameObjDef(item));
+                IPowerUpGameObjDef powerUpDef = (item == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 return mEventClass.PowerUpPurchaseRequestEvent(controller, cPlayer, ref cost, powerUpDef);
             }
@@ -734,7 +734,7 @@ namespace RenSharp
                 }
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                ISoldierGameObjDef soldierDef = (item == IntPtr.Zero ? null : new SoldierGameObjDef(item));
+                ISoldierGameObjDef soldierDef = (item == IntPtr.Zero ? null : (ISoldierGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 mEventClass.CharacterPurchaseEvent(cPlayer, cost, soldierDef);
             }
@@ -759,7 +759,7 @@ namespace RenSharp
                 }
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                IVehicleGameObjDef vehicleDef = (item == IntPtr.Zero ? null : new VehicleGameObjDef(item));
+                IVehicleGameObjDef vehicleDef = (item == IntPtr.Zero ? null :(IVehicleGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 mEventClass.VehiclePurchaseEvent(cPlayer, cost, vehicleDef);
             }
@@ -784,7 +784,7 @@ namespace RenSharp
                 }
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                IPowerUpGameObjDef powerUpDef = (item == IntPtr.Zero ? null : new PowerUpGameObjDef(item));
+                IPowerUpGameObjDef powerUpDef = (item == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 mEventClass.PowerUpPurchaseEvent(cPlayer, cost, powerUpDef);
             }
@@ -1004,7 +1004,7 @@ namespace RenSharp
                 }
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                IPowerUpGameObjDef powerUpDef = (powerUp== IntPtr.Zero ? null : new PowerUpGameObjDef(powerUp));
+                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
                 IPowerUpGameObj puObj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
 
                 return mEventClass.PowerUpGrantRequestEvent(cPlayer, powerUpDef, puObj);
@@ -1030,7 +1030,7 @@ namespace RenSharp
                 }
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : new PowerUpGameObjDef(powerUp));
+                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
                 IPowerUpGameObj puObj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
 
                 mEventClass.PowerUpGrantEvent(cPlayer, powerUpDef, puObj);
@@ -1056,7 +1056,7 @@ namespace RenSharp
                 }
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                IWeaponDefinitionClass weaponDef = (weapon == IntPtr.Zero ? null : new WeaponDefinitionClass(weapon));
+                IWeaponDefinitionClass weaponDef = (weapon == IntPtr.Zero ? null : (IWeaponDefinitionClass)DefinitionClass.CreateDefinitionClassWrapper(weapon));
 
                 return mEventClass.AddWeaponRequestEvent(cPlayer, weaponDef);
             }
@@ -1252,7 +1252,7 @@ namespace RenSharp
                 }
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                ISoldierGameObjDef soldierDef = (soldier == IntPtr.Zero ? null : new SoldierGameObjDef(soldier));
+                ISoldierGameObjDef soldierDef = (soldier == IntPtr.Zero ? null : (ISoldierGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(soldier));
 
                 mEventClass.ChangeCharacterEvent(cPlayer, soldierDef);
             }
@@ -1301,7 +1301,7 @@ namespace RenSharp
                 }
 
                 IVehicleFactoryGameObj vehicleFactory = (factory == IntPtr.Zero ? null : new VehicleFactoryGameObj(factory));
-                IVehicleGameObjDef vehicleObjDef = (vehicle == IntPtr.Zero ? null : new VehicleGameObjDef(vehicle));
+                IVehicleGameObjDef vehicleObjDef = (vehicle == IntPtr.Zero ? null : (IVehicleGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(vehicle));
 
                 IcPlayer cPlayer;
                 if (player == IntPtr.Zero)
@@ -1408,7 +1408,7 @@ namespace RenSharp
 
                 IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
                 IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : new ArmedGameObj(damager));
-                IAmmoDefinitionClass ammoDef = (ammo == IntPtr.Zero ? null : new AmmoDefinitionClass(ammo));
+                IAmmoDefinitionClass ammoDef = (ammo == IntPtr.Zero ? null : (IAmmoDefinitionClass)DefinitionClass.CreateDefinitionClassWrapper(ammo));
 
                 return mEventClass.TTClientDamageRequestEvent(victimObj, damagerObj, ammoDef, bone);
             }
@@ -2269,7 +2269,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : new PowerUpGameObjDef(powerUp));
+                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
                 IPowerUpGameObj powerObj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
 
                 return mObserver.PowerUpGrantRequest(mObserver.Owner, powerUpDef, powerObj);
@@ -2318,7 +2318,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : new PowerUpGameObjDef(powerUp));
+                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
                 IPowerUpGameObj powerObj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
 
                 mObserver.PowerUpGrant(mObserver.Owner, powerUpDef, powerObj);
@@ -2343,7 +2343,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IWeaponDefinitionClass weaponDef = (weapon == IntPtr.Zero ? null : new WeaponDefinitionClass(weapon));
+                IWeaponDefinitionClass weaponDef = (weapon == IntPtr.Zero ? null : (IWeaponDefinitionClass)DefinitionClass.CreateDefinitionClassWrapper(weapon));
 
                 return mObserver.AddWeaponRequest(mObserver.Owner, weaponDef);
             }
@@ -2607,7 +2607,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                ISoldierGameObjDef itemDef = (item == IntPtr.Zero ? null : new SoldierGameObjDef(item));
+                ISoldierGameObjDef itemDef = (item == IntPtr.Zero ? null : (ISoldierGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 return mObserver.CharacterPurchaseRequest(ref cost, itemDef);
             }
@@ -2631,7 +2631,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IVehicleGameObjDef itemDef = (item == IntPtr.Zero ? null : new VehicleGameObjDef(item));
+                IVehicleGameObjDef itemDef = (item == IntPtr.Zero ? null : (IVehicleGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 return mObserver.VehiclePurchaseRequest(ref cost, itemDef);
             }
@@ -2655,7 +2655,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IPowerUpGameObjDef itemDef = (item == IntPtr.Zero ? null : new PowerUpGameObjDef(item));
+                IPowerUpGameObjDef itemDef = (item == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 return mObserver.PowerUpPurchaseRequest(ref cost, itemDef);
             }
@@ -2701,7 +2701,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                ISoldierGameObjDef itemDef = (item == IntPtr.Zero ? null : new SoldierGameObjDef(item));
+                ISoldierGameObjDef itemDef = (item == IntPtr.Zero ? null : (ISoldierGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 mObserver.CharacterPurchase(cost, itemDef);
             }
@@ -2725,7 +2725,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IVehicleGameObjDef itemDef = (item == IntPtr.Zero ? null : new VehicleGameObjDef(item));
+                IVehicleGameObjDef itemDef = (item == IntPtr.Zero ? null : (IVehicleGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 mObserver.VehiclePurchase(cost, itemDef);
             }
@@ -2749,7 +2749,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IPowerUpGameObjDef itemDef = (item == IntPtr.Zero ? null : new PowerUpGameObjDef(item));
+                IPowerUpGameObjDef itemDef = (item == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(item));
 
                 mObserver.PowerUpPurchase(cost, itemDef);
             }
@@ -2867,7 +2867,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : new PowerUpGameObjDef(powerUp));
+                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
                 IPowerUpGameObj obj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
 
                 return mObserver.PowerUpGrantRequest(powerUpDef, obj);
@@ -2892,7 +2892,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : new PowerUpGameObjDef(powerUp));
+                IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
                 IPowerUpGameObj obj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
 
                 mObserver.PowerUpGrant(powerUpDef, obj);
@@ -2917,7 +2917,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IWeaponDefinitionClass weaponDef = (weapon == IntPtr.Zero ? null : new WeaponDefinitionClass(weapon));
+                IWeaponDefinitionClass weaponDef = (weapon == IntPtr.Zero ? null : (IWeaponDefinitionClass)DefinitionClass.CreateDefinitionClassWrapper(weapon));
 
                 return mObserver.AddWeaponRequest(weaponDef);
             }
@@ -3059,7 +3059,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                ISoldierGameObjDef soldierDef = (soldier == IntPtr.Zero ? null : new SoldierGameObjDef(soldier));
+                ISoldierGameObjDef soldierDef = (soldier == IntPtr.Zero ? null : (ISoldierGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(soldier));
 
                 mObserver.ChangeCharacter(soldierDef);
             }

@@ -476,13 +476,7 @@ namespace RenSharp
 			}
 			else
 			{
-				auto def = DefinitionClass::CreateDefinitionClassWrapper(weaponDefPtr);
-				if (def != nullptr)
-				{
-					return CreateBeacon(safe_cast<IWeaponDefinitionClass^>(def), transform, playerData, usePrimaryAmmo);
-				}
-
-				return CreateBeacon(gcnew WeaponDefinitionClass(IntPtr(weaponDefPtr)), transform, playerData, usePrimaryAmmo);
+				return CreateBeacon(safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(weaponDefPtr)), transform, playerData, usePrimaryAmmo);
 			}
 		}
 		finally
@@ -835,13 +829,7 @@ namespace RenSharp
 			}
 			else
 			{
-				auto def = DefinitionClass::CreateDefinitionClassWrapper(ammoDefPtr);
-				if (def != nullptr)
-				{
-					return CreateC4(safe_cast<IAmmoDefinitionClass^>(def), transform, velocity, playerData, detonationMode);
-				}
-
-				return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, velocity, playerData, detonationMode);
+				return CreateC4(safe_cast<IAmmoDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(ammoDefPtr)), transform, velocity, playerData, detonationMode);
 			}
 		}
 		finally
@@ -905,13 +893,7 @@ namespace RenSharp
 			}
 			else
 			{
-				auto def = DefinitionClass::CreateDefinitionClassWrapper(ammoDefPtr);
-				if (def != nullptr)
-				{
-					return CreateC4(safe_cast<IAmmoDefinitionClass^>(def), transform, playerData, detonationMode);
-				}
-
-				return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, playerData, detonationMode);
+				return CreateC4(safe_cast<IAmmoDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(ammoDefPtr)), transform, playerData, detonationMode);
 			}
 		}
 		finally
@@ -995,13 +977,7 @@ namespace RenSharp
 			}
 			else
 			{
-				auto def = DefinitionClass::CreateDefinitionClassWrapper(ammoDefPtr);
-				if (def != nullptr)
-				{
-					return CreateC4(safe_cast<IAmmoDefinitionClass^>(def), transform, attachToObj, isAttachedToMCT, playerData, detonationMode);
-				}
-
-				return CreateC4(gcnew AmmoDefinitionClass(IntPtr(ammoDefPtr)), transform, attachToObj, isAttachedToMCT, playerData, detonationMode);
+				return CreateC4(safe_cast<IAmmoDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(ammoDefPtr)), transform, attachToObj, isAttachedToMCT, playerData, detonationMode);
 			}
 		}
 		finally
@@ -7271,13 +7247,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-				if (result == nullptr)
-				{
-					result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-				}
-
-				return result;
+				return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 			}
 		}
 		finally
@@ -7296,13 +7266,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result == nullptr)
-			{
-				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-			}
-
-			return result;
+			return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 		}
 	}
 
@@ -7341,13 +7305,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result == nullptr)
-			{
-				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-			}
-
-			return result;
+			return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 		}
 	}
 
@@ -12037,13 +11995,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-				if (result != nullptr)
-				{
-					return safe_cast<IAmmoDefinitionClass^>(result);
-				}
-
-				return gcnew AmmoDefinitionClass(IntPtr(const_cast<::AmmoDefinitionClass*>(defPtr)));
+				return safe_cast<IAmmoDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 			}
 		}
 		finally
@@ -12070,13 +12022,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-				if (result != nullptr)
-				{
-					return safe_cast<IWeaponDefinitionClass^>(result);
-				}
-
-				return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
+				return safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 			}
 		}
 		finally
@@ -12100,13 +12046,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IWeaponDefinitionClass^>(result);
-			}
-
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
+			return safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 
@@ -12126,13 +12066,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IWeaponDefinitionClass^>(result);
-			}
-
-			return gcnew WeaponDefinitionClass(IntPtr(const_cast<::WeaponDefinitionClass*>(defPtr)));
+			return safe_cast<IWeaponDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 
@@ -12154,13 +12088,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-				if (result != nullptr)
-				{
-					return safe_cast<IExplosionDefinitionClass^>(result);
-				}
-
-				return gcnew ExplosionDefinitionClass(IntPtr(const_cast<::ExplosionDefinitionClass*>(defPtr)));
+				return safe_cast<IExplosionDefinitionClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 			}
 		}
 		finally

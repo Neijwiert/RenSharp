@@ -42,13 +42,7 @@ namespace RenSharp
 
 	ISAMSiteGameObjDef^ SAMSiteGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSAMSiteGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<ISAMSiteGameObjDef^>(result);
-		}
-
-		return gcnew SAMSiteGameObjDef(IntPtr(const_cast<::SAMSiteGameObjDef*>(&InternalSAMSiteGameObjPointer->Get_Definition())));
+		return safe_cast<ISAMSiteGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalSAMSiteGameObjPointer->Get_Definition()));
 	}
 
 	::SmartGameObj* SAMSiteGameObj::InternalSmartGameObjPointer::get()

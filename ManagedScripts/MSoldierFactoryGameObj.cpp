@@ -47,13 +47,7 @@ namespace RenSharp
 
 	ISoldierFactoryGameObjDef ^SoldierFactoryGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSoldierFactoryGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<ISoldierFactoryGameObjDef^>(result);
-		}
-
-		return gcnew SoldierFactoryGameObjDef(IntPtr(const_cast<::SoldierFactoryGameObjDef *>(&InternalSoldierFactoryGameObjPointer->Get_Definition())));
+		return safe_cast<ISoldierFactoryGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalSoldierFactoryGameObjPointer->Get_Definition()));
 	}
 
 	::PhysObserverClass *SoldierFactoryGameObj::InternalPhysObserverClassPointer::get()

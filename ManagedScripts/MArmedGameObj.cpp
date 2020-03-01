@@ -137,13 +137,7 @@ namespace RenSharp
 
 	IArmedGameObjDef ^ArmedGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalArmedGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IArmedGameObjDef^>(result);
-		}
-
-		return gcnew ArmedGameObjDef(IntPtr(const_cast<::ArmedGameObjDef *>(&InternalArmedGameObjPointer->Get_Definition())));
+		return safe_cast<IArmedGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalArmedGameObjPointer->Get_Definition()));
 	}
 
 	IWeaponClass ^ArmedGameObj::Weapon::get()

@@ -78,13 +78,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IStaticAnimPhysDefClass^>(result);
-			}
-
-			return gcnew StaticAnimPhysDefClass(IntPtr(defPtr));
+			return safe_cast<IStaticAnimPhysDefClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

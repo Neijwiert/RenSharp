@@ -47,13 +47,7 @@ namespace RenSharp
 
 	ISuperweaponGameObjDef ^SuperweaponGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalSuperweaponGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<ISuperweaponGameObjDef^>(result);
-		}
-
-		return gcnew SuperweaponGameObjDef(IntPtr(const_cast<::SuperweaponGameObjDef *>(&InternalSuperweaponGameObjPointer->Get_Definition())));
+		return safe_cast<ISuperweaponGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalSuperweaponGameObjPointer->Get_Definition()));
 	}
 
 	bool SuperweaponGameObj::Launching::get()

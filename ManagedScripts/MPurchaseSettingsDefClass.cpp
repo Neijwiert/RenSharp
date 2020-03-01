@@ -41,13 +41,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result != nullptr)
-			{
-				return safe_cast<IPurchaseSettingsDefClass^>(result);
-			}
-
-			return gcnew PurchaseSettingsDefClass(IntPtr(defPtr));
+			return safe_cast<IPurchaseSettingsDefClass^>(DefinitionClass::CreateDefinitionClassWrapper(defPtr));
 		}
 	}
 

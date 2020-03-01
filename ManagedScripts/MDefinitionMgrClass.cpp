@@ -115,13 +115,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result == nullptr)
-			{
-				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-			}
-
-			return result;
+			return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 		}
 	}
 
@@ -144,13 +138,7 @@ namespace RenSharp
 			}
 			else
 			{
-				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-				if (result == nullptr)
-				{
-					result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-				}
-
-				return result;
+				return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 			}
 		}
 		finally
@@ -179,13 +167,7 @@ namespace RenSharp
 			}
 			else
 			{
-				auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-				if (result == nullptr)
-				{
-					result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-				}
-
-				return result;
+				return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 			}
 		}
 		finally
@@ -227,13 +209,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result == nullptr)
-			{
-				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-			}
-
-			return result;
+			return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 		}
 	}
 
@@ -246,13 +222,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result == nullptr)
-			{
-				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-			}
-
-			return result;
+			return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 		}
 	}
 
@@ -265,13 +235,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result == nullptr)
-			{
-				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-			}
-
-			return result;
+			return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 		}
 	}
 
@@ -292,13 +256,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result == nullptr)
-			{
-				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-			}
-
-			return result;
+			return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 		}
 	}
 
@@ -318,13 +276,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result == nullptr)
-			{
-				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-			}
-
-			return result;
+			return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 		}
 	}
 
@@ -343,13 +295,7 @@ namespace RenSharp
 		}
 		else
 		{
-			auto result = DefinitionClass::CreateDefinitionClassWrapper(defPtr);
-			if (result == nullptr)
-			{
-				result = gcnew DefinitionClass(IntPtr(const_cast<::DefinitionClass*>(defPtr)));
-			}
-
-			return result;
+			return DefinitionClass::CreateDefinitionClassWrapper(defPtr);
 		}
 	}
 

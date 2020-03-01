@@ -47,13 +47,7 @@ namespace RenSharp
 
 	IAirFactoryGameObjDef ^AirFactoryGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalAirFactoryGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IAirFactoryGameObjDef^>(result);
-		}
-
-		return gcnew AirFactoryGameObjDef(IntPtr(const_cast<::AirFactoryGameObjDef*>(&InternalAirFactoryGameObjPointer->Get_Definition())));;
+		return safe_cast<IAirFactoryGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalAirFactoryGameObjPointer->Get_Definition()));
 	}
 
 	bool AirFactoryGameObj::IsAvailable::get()

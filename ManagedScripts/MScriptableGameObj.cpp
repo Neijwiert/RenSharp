@@ -586,13 +586,7 @@ namespace RenSharp
 
 	IScriptableGameObjDef ^ScriptableGameObj::Definition::get()
 	{
-		auto result = DefinitionClass::CreateDefinitionClassWrapper(&InternalScriptableGameObjPointer->Get_Definition());
-		if (result != nullptr)
-		{
-			return safe_cast<IScriptableGameObjDef^>(result);
-		}
-
-		return gcnew ScriptableGameObjDef(IntPtr(const_cast<::ScriptableGameObjDef *>(&InternalScriptableGameObjPointer->Get_Definition())));
+		return safe_cast<IScriptableGameObjDef^>(DefinitionClass::CreateDefinitionClassWrapper(&InternalScriptableGameObjPointer->Get_Definition()));
 	}
 
 	Vector3 ScriptableGameObj::Position::get()
