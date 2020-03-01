@@ -68,7 +68,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew BaseGameObj(IntPtr(result));
+			return BaseGameObj::CreateBaseGameObjWrapper(result);
 		}
 	}
 
@@ -161,7 +161,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew BaseGameObj(IntPtr(result));
+			return BaseGameObj::CreateBaseGameObjWrapper(result);
 		}
 	}
 
@@ -174,7 +174,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew BaseGameObj(IntPtr(result));
+			return BaseGameObj::CreateBaseGameObjWrapper(result);
 		}
 	}
 

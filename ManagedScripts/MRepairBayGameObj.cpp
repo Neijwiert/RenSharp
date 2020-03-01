@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	IRepairBayGameObj ^RepairBayGameObj::AsRepairBayGameObj()
-	{
-		return this;
-	}
-
 	IntPtr RepairBayGameObj::RepairBayGameObjPointer::get()
 	{
 		return IntPtr(InternalRepairBayGameObjPointer);

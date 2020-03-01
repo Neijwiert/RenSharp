@@ -39,11 +39,6 @@ namespace RenSharp
 
 	}
 
-	IC4GameObj ^C4GameObj::AsC4GameObj()
-	{
-		return this;
-	}
-
 	IntPtr C4GameObj::C4GameObjPointer::get()
 	{
 		return IntPtr(InternalC4GameObjPointer);
@@ -63,7 +58,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -76,7 +71,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

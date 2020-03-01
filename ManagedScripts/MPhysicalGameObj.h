@@ -72,18 +72,6 @@ namespace RenSharp
 
 		void ApplyDamageExtended(IOffenseObjectClass ^offense);
 
-		IPowerUpGameObj ^AsPowerUpGameObj();
-
-		IC4GameObj ^AsC4GameObj();
-
-		IBeaconGameObj ^AsBeaconGameObj();
-
-		ISimpleGameObj ^AsSimpleGameObj();
-
-		ICinematicGameObj ^AsCinematicGameObj();
-
-		IArmedGameObj ^AsArmedGameObj();
-
 		void EnableHibernation(bool enable);
 
 		void DoNotHibernate();
@@ -217,8 +205,6 @@ namespace RenSharp
 			virtual void ObjectRemovedFromScene(IPhysClass ^observedObj) sealed;
 			virtual void ObjectShatteredSomething(IPhysClass ^observedObj, IPhysClass ^shatteredObj, int surfaceType) sealed;
 
-			IPhysicalGameObj ^AsPhysicalGameObj() override;
-
 			virtual void Startup() sealed;
 			virtual IPhysClass ^PeekPhysicalObject() sealed;
 			virtual IRenderObjClass ^PeekModel() sealed;
@@ -230,12 +216,6 @@ namespace RenSharp
 			virtual void ApplyDamageExtended(IOffenseObjectClass ^offense, float scale, Vector3 direction) sealed;
 			virtual void ApplyDamageExtended(IOffenseObjectClass ^offense, float scale) sealed;
 			virtual void ApplyDamageExtended(IOffenseObjectClass ^offense) sealed;
-			virtual IPowerUpGameObj ^AsPowerUpGameObj();
-			virtual IC4GameObj ^AsC4GameObj();
-			virtual IBeaconGameObj ^AsBeaconGameObj();
-			virtual ISimpleGameObj ^AsSimpleGameObj();
-			virtual ICinematicGameObj ^AsCinematicGameObj();
-			virtual IArmedGameObj ^AsArmedGameObj();
 			virtual void EnableHibernation(bool enable) sealed;
 			virtual void DoNotHibernate() sealed;
 			virtual void BeginHibernation() sealed;

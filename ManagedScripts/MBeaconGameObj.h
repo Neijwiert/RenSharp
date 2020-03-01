@@ -83,8 +83,6 @@ namespace RenSharp
 
 			BeaconGameObj(IntPtr pointer);
 
-			IBeaconGameObj ^AsBeaconGameObj() override;
-
 			property IntPtr BeaconGameObjPointer
 			{
 				virtual IntPtr get() sealed;

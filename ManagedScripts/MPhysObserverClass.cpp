@@ -136,53 +136,41 @@ namespace RenSharp
 
 	}
 
+	ICombatPhysObserverClass^ CombatPhysObserverClass::CreateCombatPhysObserverClassWrapper(IntPtr combatPhysObserverClassPtr)
+	{
+		return CreateCombatPhysObserverClassWrapper(reinterpret_cast<::CombatPhysObserverClass*>(combatPhysObserverClassPtr.ToPointer()));
+	}
+
 	IUnmanagedContainer<ICombatPhysObserverClass ^> ^CombatPhysObserverClass::CreateCombatPhysObserverClass()
 	{
 		return gcnew UnmanagedContainer<ICombatPhysObserverClass ^>(gcnew CombatPhysObserverClass());
 	}
 
-	IDamageableGameObj ^CombatPhysObserverClass::AsDamageableGameObj()
-	{
-		auto result = InternalCombatPhysObserverClassPointer->As_DamageableGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew DamageableGameObj(IntPtr(result));
-		}
-	}
-
-	IPhysicalGameObj ^CombatPhysObserverClass::AsPhysicalGameObj()
-	{
-		auto result = InternalCombatPhysObserverClassPointer->As_PhysicalGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew PhysicalGameObj(IntPtr(result));
-		}
-	}
-
-	IBuildingGameObj ^CombatPhysObserverClass::AsBuildingGameObj()
-	{
-		auto result = InternalCombatPhysObserverClassPointer->As_BuildingGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew BuildingGameObj(IntPtr(result));
-		}
-	}
-
 	IntPtr CombatPhysObserverClass::CombatPhysObserverClassPointer::get()
 	{
 		return IntPtr(InternalCombatPhysObserverClassPointer);
+	}
+
+	ICombatPhysObserverClass^ CombatPhysObserverClass::CreateCombatPhysObserverClassWrapper(::CombatPhysObserverClass* combatPhysObserverClassPtr)
+	{
+		if (combatPhysObserverClassPtr == nullptr)
+		{
+			throw gcnew ArgumentNullException("combatPhysObserverClassPtr");
+		}
+
+		auto buildingGameObjPtr = combatPhysObserverClassPtr->As_BuildingGameObj();
+		if (buildingGameObjPtr != nullptr)
+		{
+			return safe_cast<ICombatPhysObserverClass^>(BaseGameObj::CreateBaseGameObjWrapper(buildingGameObjPtr));
+		}
+
+		auto physicalGameObjPtr = combatPhysObserverClassPtr->As_PhysicalGameObj();
+		if (physicalGameObjPtr != nullptr)
+		{
+			return safe_cast<ICombatPhysObserverClass^>(BaseGameObj::CreateBaseGameObjWrapper(physicalGameObjPtr));
+		}
+
+		return gcnew CombatPhysObserverClass(IntPtr(combatPhysObserverClassPtr));
 	}
 
 	bool CombatPhysObserverClass::InternalDestroyPointer()

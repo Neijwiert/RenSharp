@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	IAirFactoryGameObj ^AirFactoryGameObj::AsAirFactoryGameObj()
-	{
-		return this;
-	}
-
 	IntPtr AirFactoryGameObj::AirFactoryGameObjPointer::get()
 	{
 		return IntPtr(InternalAirFactoryGameObjPointer);

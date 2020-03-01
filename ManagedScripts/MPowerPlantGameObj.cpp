@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	IPowerPlantGameObj ^PowerPlantGameObj::AsPowerPlantGameObj()
-	{
-		return this;
-	}
-
 	IntPtr PowerPlantGameObj::PowerPlantGameObjPointer::get()
 	{
 		return IntPtr(InternalPowerPlantGameObjPointer);

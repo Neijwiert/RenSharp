@@ -48,7 +48,6 @@ namespace RenSharp
 		public:
 			ConstructionYardGameObj(IntPtr pointer);
 
-			IConstructionYardGameObj ^AsConstructionYardGameObj() override;
 			virtual void SetSpy(bool set) sealed;
 
 			property IntPtr ConstructionYardGameObjPointer

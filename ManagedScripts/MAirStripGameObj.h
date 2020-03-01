@@ -46,8 +46,6 @@ namespace RenSharp
 		public:
 			AirStripGameObj(IntPtr pointer);
 
-			IAirStripGameObj ^AsAirStripGameObj() override;
-
 			property IntPtr AirStripGameObjPointer
 			{
 				virtual IntPtr get() sealed;

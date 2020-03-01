@@ -30,11 +30,6 @@ namespace RenSharp
 
 	}
 
-	IPowerUpGameObj ^PowerUpGameObj::AsPowerUpGameObj()
-	{
-		return this;
-	}
-
 	IntPtr PowerUpGameObj::PowerUpGameObjPointer::get()
 	{
 		return IntPtr(InternalPowerUpGameObjPointer);

@@ -153,7 +153,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -578,7 +578,7 @@ namespace RenSharp
 				}
 			}
 
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -1448,7 +1448,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -1496,7 +1496,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -1634,7 +1634,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -3399,7 +3399,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -3428,7 +3428,7 @@ namespace RenSharp
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -3473,7 +3473,7 @@ namespace RenSharp
 				}
 				else
 				{
-					return gcnew ScriptableGameObj(IntPtr(result));
+					return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 				}
 			}
 			finally
@@ -3760,7 +3760,7 @@ namespace RenSharp
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -4423,7 +4423,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -4445,7 +4445,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -4467,7 +4467,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -5638,7 +5638,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -6160,7 +6160,7 @@ namespace RenSharp
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -6197,7 +6197,7 @@ namespace RenSharp
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally

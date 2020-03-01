@@ -37,11 +37,6 @@ namespace RenSharp
 
 	}
 
-	IScriptZoneGameObj ^ScriptZoneGameObj::AsScriptZoneGameObj()
-	{
-		return this;
-	}
-
 	IntPtr ScriptZoneGameObj::ScriptZoneGameObjPointer::get()
 	{
 		return IntPtr(InternalScriptZoneGameObjPointer);

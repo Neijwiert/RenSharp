@@ -25,25 +25,12 @@ limitations under the License.
 #pragma warning(pop) 
 #pragma managed(pop)
 
-#include "MVehicleFactoryGameObj.h"
 #include "MBuildingGameObjDef.h"
-#include "MPowerPlantGameObj.h"
-#include "MSoldierFactoryGameObj.h"
-#include "MAirFactoryGameObj.h"
-#include "MWarFactoryGameObj.h"
-#include "MRefineryGameObj.h"
-#include "MComCenterGameObj.h"
-#include "MRepairBayGameObj.h"
 #include "MSphereClass.h"
 #include "MBaseControllerClass.h"
 #include "MBuildingAggregateClass.h"
 #include "MAABoxClass.h"
-#include "MConstructionYardGameObj.h"
-#include "MAirFactoryGameObj.h"
-#include "MNavalFactoryGameObj.h"
-#include "MSuperweaponGameObj.h"
 #include "MAudibleSoundClass.h"
-#include "MAirStripGameObj.h"
 
 namespace RenSharp
 {
@@ -189,115 +176,6 @@ namespace RenSharp
 		combatPhysObserverClass->ObjectShatteredSomething(observedObj, shatteredObj, surfaceType);
 	}
 
-	IBuildingGameObj ^BuildingGameObj::AsBuildingGameObj()
-	{
-		return this;
-	}
-
-	IPowerPlantGameObj ^BuildingGameObj::AsPowerPlantGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_PowerPlantGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew PowerPlantGameObj(IntPtr(result));
-		}
-	}
-
-	ISoldierFactoryGameObj ^BuildingGameObj::AsSoldierFactoryGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_SoldierFactoryGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew SoldierFactoryGameObj(IntPtr(result));
-		}
-	}
-
-	IVehicleFactoryGameObj ^BuildingGameObj::AsVehicleFactoryGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_VehicleFactoryGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew VehicleFactoryGameObj(IntPtr(result));
-		}
-	}
-
-	IAirStripGameObj ^BuildingGameObj::AsAirStripGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_AirStripGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew AirStripGameObj(IntPtr(result));
-		}
-	}
-
-	IWarFactoryGameObj ^BuildingGameObj::AsWarFactoryGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_WarFactoryGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew WarFactoryGameObj(IntPtr(result));
-		}
-	}
-
-	IRefineryGameObj ^BuildingGameObj::AsRefineryGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_RefineryGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew RefineryGameObj(IntPtr(result));
-		}
-	}
-
-	IComCenterGameObj ^BuildingGameObj::AsComCenterGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_ComCenterGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew ComCenterGameObj(IntPtr(result));
-		}
-	}
-
-	IRepairBayGameObj ^BuildingGameObj::AsRepairBayGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_RepairBayGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew RepairBayGameObj(IntPtr(result));
-		}
-	}
-
 	void BuildingGameObj::CnCInitialize(IBaseControllerClass ^base)
 	{
 		if (base == nullptr || base->BaseControllerClassPointer.ToPointer() == nullptr)
@@ -346,58 +224,6 @@ namespace RenSharp
 		Vector3::ManagedToUnmanagedVector3(pos, posVec);
 
 		return InternalBuildingGameObjPointer->Find_Closest_Poly(posVec);
-	}
-
-	IConstructionYardGameObj ^BuildingGameObj::AsConstructionYardGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_ConstructionYardGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew ConstructionYardGameObj(IntPtr(result));
-		}
-	}
-
-	IAirFactoryGameObj ^BuildingGameObj::AsAirFactoryGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_AirFactoryGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew AirFactoryGameObj(IntPtr(result));
-		}
-	}
-
-	INavalFactoryGameObj ^BuildingGameObj::AsNavalFactoryGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_NavalFactoryGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew NavalFactoryGameObj(IntPtr(result));
-		}
-	}
-
-	ISuperweaponGameObj ^BuildingGameObj::AsSuperweaponGameObj()
-	{
-		auto result = InternalBuildingGameObjPointer->As_SuperweaponGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew SuperweaponGameObj(IntPtr(result));
-		}
 	}
 
 	IntPtr BuildingGameObj::Pointer::get()

@@ -92,8 +92,6 @@ namespace RenSharp
 		public:
 			ArmedGameObj(IntPtr pointer);
 
-			IArmedGameObj ^AsArmedGameObj() override;
-
 			virtual void ImportStateCs(IntPtr packet) sealed;
 			virtual void ExportStateCs(IntPtr packet) sealed;
 			virtual Matrix3D GetMuzzle(int index) sealed;

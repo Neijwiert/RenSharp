@@ -37,11 +37,6 @@ namespace RenSharp
 
 	}
 
-	IDamageableGameObj ^DamageableGameObj::AsDamageableGameObj()
-	{
-		return this;
-	}
-
 	void DamageableGameObj::ApplyDamage(IOffenseObjectClass ^damager, float scale, int alternateSkin)
 	{
 		if (damager == nullptr || damager->OffenseObjectClassPointer.ToPointer() == nullptr)

@@ -87,8 +87,6 @@ namespace RenSharp
 		public:
 			PowerUpGameObj(IntPtr pointer);
 
-			IPowerUpGameObj ^AsPowerUpGameObj() override;
-
 			property IntPtr PowerUpGameObjPointer
 			{
 				virtual IntPtr get() sealed;

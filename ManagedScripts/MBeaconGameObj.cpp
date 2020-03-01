@@ -37,11 +37,6 @@ namespace RenSharp
 
 	}
 
-	IBeaconGameObj ^BeaconGameObj::AsBeaconGameObj()
-	{
-		return this;
-	}
-
 	IntPtr BeaconGameObj::BeaconGameObjPointer::get()
 	{
 		return IntPtr(InternalBeaconGameObjPointer);

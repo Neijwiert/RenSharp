@@ -928,7 +928,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
 
                 return mEventClass.VehicleEntryRequestEvent(vehicleObj, cPlayer, ref seat);
@@ -953,7 +953,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
 
                 mEventClass.VehicleEnterEvent(vehicleObj, cPlayer, seat);
@@ -978,7 +978,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
 
                 mEventClass.VehicleExitEvent(vehicleObj, cPlayer, seat);
@@ -1005,7 +1005,7 @@ namespace RenSharp
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
                 IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
-                IPowerUpGameObj puObj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
+                IPowerUpGameObj puObj = (powerUpObj == IntPtr.Zero ? null : (IPowerUpGameObj)BaseGameObj.CreateBaseGameObjWrapper(powerUpObj));
 
                 return mEventClass.PowerUpGrantRequestEvent(cPlayer, powerUpDef, puObj);
             }
@@ -1031,7 +1031,7 @@ namespace RenSharp
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
                 IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
-                IPowerUpGameObj puObj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
+                IPowerUpGameObj puObj = (powerUpObj == IntPtr.Zero ? null : (IPowerUpGameObj)BaseGameObj.CreateBaseGameObjWrapper(powerUpObj));
 
                 mEventClass.PowerUpGrantEvent(cPlayer, powerUpDef, puObj);
             }
@@ -1154,7 +1154,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IBeaconGameObj beaconObj = (beacon == IntPtr.Zero ? null : new BeaconGameObj(beacon));
+                IBeaconGameObj beaconObj = (beacon == IntPtr.Zero ? null : (IBeaconGameObj)BaseGameObj.CreateBaseGameObjWrapper(beacon));
 
                 mEventClass.BeaconDeployEvent(beaconObj);
             }
@@ -1178,7 +1178,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IBeaconGameObj beaconObj = (beacon == IntPtr.Zero ? null : new BeaconGameObj(beacon));
+                IBeaconGameObj beaconObj = (beacon == IntPtr.Zero ? null : (IBeaconGameObj)BaseGameObj.CreateBaseGameObjWrapper(beacon));
 
                 mEventClass.BeaconDetonateEvent(beaconObj);
             }
@@ -1202,8 +1202,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IC4GameObj c4Obj = (c4 == IntPtr.Zero ? null : new C4GameObj(c4));
-                ISmartGameObj smartTriggerer = (triggerer == IntPtr.Zero ? null : new SmartGameObj(triggerer));
+                IC4GameObj c4Obj = (c4 == IntPtr.Zero ? null : (IC4GameObj)BaseGameObj.CreateBaseGameObjWrapper(c4));
+                ISmartGameObj smartTriggerer = (triggerer == IntPtr.Zero ? null : (ISmartGameObj)BaseGameObj.CreateBaseGameObjWrapper(triggerer));
 
                 return mEventClass.C4DetonateRequestEvent(c4Obj, smartTriggerer);
             }
@@ -1227,7 +1227,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IC4GameObj c4Obj = (c4 == IntPtr.Zero ? null : new C4GameObj(c4));
+                IC4GameObj c4Obj = (c4 == IntPtr.Zero ? null : (IC4GameObj)BaseGameObj.CreateBaseGameObjWrapper(c4));
 
                 mEventClass.C4DetonateEvent(c4Obj);
             }
@@ -1276,7 +1276,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
 
                 return mEventClass.VehicleFlipEvent(vehicleObj);
             }
@@ -1300,7 +1300,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IVehicleFactoryGameObj vehicleFactory = (factory == IntPtr.Zero ? null : new VehicleFactoryGameObj(factory));
+                IVehicleFactoryGameObj vehicleFactory = (factory == IntPtr.Zero ? null : (IVehicleFactoryGameObj)BaseGameObj.CreateBaseGameObjWrapper(factory));
                 IVehicleGameObjDef vehicleObjDef = (vehicle == IntPtr.Zero ? null : (IVehicleGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(vehicle));
 
                 IcPlayer cPlayer;
@@ -1357,7 +1357,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
 
                 mEventClass.ObjectCreatedEvent(scriptableObj);
             }
@@ -1381,8 +1381,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
-                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : new ArmedGameObj(damager));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
+                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(damager));
 
                 return mEventClass.StockClientDamageRequestEvent(victimObj, damagerObj, damage, warhead);
             }
@@ -1406,8 +1406,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
-                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : new ArmedGameObj(damager));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
+                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(damager));
                 IAmmoDefinitionClass ammoDef = (ammo == IntPtr.Zero ? null : (IAmmoDefinitionClass)DefinitionClass.CreateDefinitionClassWrapper(ammo));
 
                 return mEventClass.TTClientDamageRequestEvent(victimObj, damagerObj, ammoDef, bone);
@@ -1432,8 +1432,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
-                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : new ArmedGameObj(damager));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
+                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(damager));
 
                 return mEventClass.DamageRequestEvent(victimObj, damagerObj, ref damage, ref warhead, scale, type);
             }
@@ -1457,8 +1457,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
-                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : new ArmedGameObj(damager));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
+                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(damager));
 
                 mEventClass.DamageEvent(victimObj, damagerObj, damage, warhead, scale, type);
             }
@@ -1482,8 +1482,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
-                IArmedGameObj killerObj = (killer == IntPtr.Zero ? null : new ArmedGameObj(killer));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
+                IArmedGameObj killerObj = (killer == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(killer));
 
                 mEventClass.KillEvent(victimObj, killerObj, damage, warhead, scale, type);
             }
@@ -1507,8 +1507,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
-                IScriptableGameObj senderObj = (sender == IntPtr.Zero ? null : new ScriptableGameObj(sender));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
+                IScriptableGameObj senderObj = (sender == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(sender));
 
                 mEventClass.CustomEvent(scriptableObj, type, param, senderObj);
             }
@@ -1533,7 +1533,7 @@ namespace RenSharp
                 }
 
                 IcPlayer cPlayer = (player == IntPtr.Zero ? null : new cPlayer(player));
-                IPhysicalGameObj physicalObj = (obj == IntPtr.Zero ? null : new PhysicalGameObj(obj));
+                IPhysicalGameObj physicalObj = (obj == IntPtr.Zero ? null : (IPhysicalGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
 
                 mEventClass.PokeEvent(cPlayer, physicalObj);
             }
@@ -1557,8 +1557,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IScriptZoneGameObj zoneObj = (obj == IntPtr.Zero ? null : new ScriptZoneGameObj(obj));
-                IPhysicalGameObj physicalEnterer = (enterer == IntPtr.Zero ? null : new PhysicalGameObj(enterer));
+                IScriptZoneGameObj zoneObj = (obj == IntPtr.Zero ? null : (IScriptZoneGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
+                IPhysicalGameObj physicalEnterer = (enterer == IntPtr.Zero ? null : (IPhysicalGameObj)BaseGameObj.CreateBaseGameObjWrapper(enterer));
 
                 mEventClass.ZoneEnterEvent(zoneObj, physicalEnterer);
             }
@@ -1582,8 +1582,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IScriptZoneGameObj zoneObj = (obj == IntPtr.Zero ? null : new ScriptZoneGameObj(obj));
-                IPhysicalGameObj physicalExiter = (exiter == IntPtr.Zero ? null : new PhysicalGameObj(exiter));
+                IScriptZoneGameObj zoneObj = (obj == IntPtr.Zero ? null : (IScriptZoneGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
+                IPhysicalGameObj physicalExiter = (exiter == IntPtr.Zero ? null : (IPhysicalGameObj)BaseGameObj.CreateBaseGameObjWrapper(exiter));
 
                 mEventClass.ZoneExitEvent(zoneObj, physicalExiter);
             }
@@ -1607,7 +1607,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(eventClass)}' is not a managed event class.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
 
                 mEventClass.ObjectDestroyedEvent(scriptableObj);
             }
@@ -1669,7 +1669,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
 
                 mObserver.Destroyed(scriptableObj);
             }
@@ -1693,8 +1693,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
-                IScriptableGameObj senderObj = (sender == IntPtr.Zero ? null : new ScriptableGameObj(sender));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
+                IScriptableGameObj senderObj = (sender == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(sender));
 
                 mObserver.Custom(scriptableObj, message, param, senderObj);
             }
@@ -1718,8 +1718,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
-                IScriptableGameObj pokerObj = (poker == IntPtr.Zero ? null : new ScriptableGameObj(poker));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
+                IScriptableGameObj pokerObj = (poker == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(poker));
 
                 mObserver.Poked(scriptableObj, pokerObj);
             }
@@ -1743,8 +1743,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
-                IScriptableGameObj entererObj = (enterer == IntPtr.Zero ? null : new ScriptableGameObj(enterer));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
+                IScriptableGameObj entererObj = (enterer == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(enterer));
 
                 mObserver.Entered(scriptableObj, entererObj);
             }
@@ -1768,8 +1768,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
-                IScriptableGameObj exiterObj = (exiter == IntPtr.Zero ? null : new ScriptableGameObj(exiter));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
+                IScriptableGameObj exiterObj = (exiter == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(exiter));
 
                 mObserver.Exited(scriptableObj, exiterObj);
             }
@@ -1793,7 +1793,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
                 ICombatSound soundObj = (sound == IntPtr.Zero ? null : new CombatSound(sound));
 
                 mObserver.SoundHeard(scriptableObj, soundObj);
@@ -1818,8 +1818,8 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
-                IScriptableGameObj enemyObj = (enemy == IntPtr.Zero ? null : new ScriptableGameObj(enemy));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
+                IScriptableGameObj enemyObj = (enemy == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(enemy));
 
                 mObserver.EnemySeen(scriptableObj, enemyObj);
             }
@@ -1843,7 +1843,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
 
                 mObserver.ActionComplete(scriptableObj, actionID, completeReason);
             }
@@ -1889,7 +1889,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : new ScriptableGameObj(obj));
+                IScriptableGameObj scriptableObj = (obj == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(obj));
 
                 mObserver.AnimationComplete(scriptableObj, name);
             }
@@ -1959,7 +1959,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
 
                 return mObserver.VehicleEntryRequest(mObserver.Owner, vehicleObj, ref seat);
             }
@@ -2007,7 +2007,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
 
                 mObserver.VehicleEnter(mObserver.Owner, vehicleObj, seat);
             }
@@ -2055,7 +2055,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
 
                 mObserver.VehicleExit(mObserver.Owner, vehicleObj, seat);
             }
@@ -2101,7 +2101,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
 
                 return mObserver.DamageDealtRequest(mObserver.Owner, victimObj, ref damage, ref warhead, scale, type);
             }
@@ -2125,7 +2125,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : new ArmedGameObj(damager));
+                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(damager));
 
                 return mObserver.DamageReceivedRequest(mObserver.Owner, damagerObj, ref damage, ref warhead, scale, type);
             }
@@ -2149,7 +2149,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
 
                 mObserver.DamageDealt(mObserver.Owner, victimObj, damage, warhead, scale, type);
             }
@@ -2173,7 +2173,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : new ArmedGameObj(damager));
+                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(damager));
 
                 mObserver.DamageReceived(mObserver.Owner, damagerObj, damage, warhead, scale, type);
             }
@@ -2197,7 +2197,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
 
                 mObserver.KillDealt(mObserver.Owner, victimObj, damage, warhead, scale, type);
             }
@@ -2221,7 +2221,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IArmedGameObj killerObj = (killer == IntPtr.Zero ? null : new ArmedGameObj(killer));
+                IArmedGameObj killerObj = (killer == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(killer));
 
                 mObserver.KillReceived(mObserver.Owner, killerObj, damage, warhead, scale, type);
             }
@@ -2270,7 +2270,7 @@ namespace RenSharp
                 }
 
                 IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
-                IPowerUpGameObj powerObj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
+                IPowerUpGameObj powerObj = (powerUpObj == IntPtr.Zero ? null : (IPowerUpGameObj)BaseGameObj.CreateBaseGameObjWrapper(powerUpObj));
 
                 return mObserver.PowerUpGrantRequest(mObserver.Owner, powerUpDef, powerObj);
             }
@@ -2319,7 +2319,7 @@ namespace RenSharp
                 }
 
                 IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
-                IPowerUpGameObj powerObj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
+                IPowerUpGameObj powerObj = (powerUpObj == IntPtr.Zero ? null : (IPowerUpGameObj)BaseGameObj.CreateBaseGameObjWrapper(powerUpObj));
 
                 mObserver.PowerUpGrant(mObserver.Owner, powerUpDef, powerObj);
             }
@@ -2795,7 +2795,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
 
                 return mObserver.VehicleEntryRequest(vehicleObj, ref seat);
             }
@@ -2819,7 +2819,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
 
                 mObserver.VehicleEnter(vehicleObj, seat);
             }
@@ -2843,7 +2843,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : new VehicleGameObj(vehicle));
+                IVehicleGameObj vehicleObj = (vehicle == IntPtr.Zero ? null : (IVehicleGameObj)BaseGameObj.CreateBaseGameObjWrapper(vehicle));
 
                 mObserver.VehicleExit(vehicleObj, seat);
             }
@@ -2868,7 +2868,7 @@ namespace RenSharp
                 }
 
                 IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
-                IPowerUpGameObj obj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
+                IPowerUpGameObj obj = (powerUpObj == IntPtr.Zero ? null : (IPowerUpGameObj)BaseGameObj.CreateBaseGameObjWrapper(powerUpObj));
 
                 return mObserver.PowerUpGrantRequest(powerUpDef, obj);
             }
@@ -2893,7 +2893,7 @@ namespace RenSharp
                 }
 
                 IPowerUpGameObjDef powerUpDef = (powerUp == IntPtr.Zero ? null : (IPowerUpGameObjDef)DefinitionClass.CreateDefinitionClassWrapper(powerUp));
-                IPowerUpGameObj obj = (powerUpObj == IntPtr.Zero ? null : new PowerUpGameObj(powerUpObj));
+                IPowerUpGameObj obj = (powerUpObj == IntPtr.Zero ? null : (IPowerUpGameObj)BaseGameObj.CreateBaseGameObjWrapper(powerUpObj));
 
                 mObserver.PowerUpGrant(powerUpDef, obj);
             }
@@ -3011,7 +3011,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IC4GameObj c4Obj = (c4 == IntPtr.Zero ? null : new C4GameObj(c4));
+                IC4GameObj c4Obj = (c4 == IntPtr.Zero ? null : (IC4GameObj)BaseGameObj.CreateBaseGameObjWrapper(c4));
 
                 return mObserver.C4DetonateRequest(c4Obj);
             }
@@ -3035,7 +3035,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IC4GameObj c4Obj = (c4 == IntPtr.Zero ? null : new C4GameObj(c4));
+                IC4GameObj c4Obj = (c4 == IntPtr.Zero ? null : (IC4GameObj)BaseGameObj.CreateBaseGameObjWrapper(c4));
 
                 mObserver.C4Detonate(c4Obj);
             }
@@ -3127,7 +3127,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
 
                 return mObserver.DamageDealtRequest(victimObj, ref damage, ref warhead, scale, type);
             }
@@ -3151,7 +3151,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : new ArmedGameObj(damager));
+                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(damager));
 
                 return mObserver.DamageReceivedRequest(damagerObj, ref damage, ref warhead, scale, type);
             }
@@ -3175,7 +3175,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
 
                 mObserver.DamageDealt(victimObj, damage, warhead, scale, type);
             }
@@ -3199,7 +3199,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : new ArmedGameObj(damager));
+                IArmedGameObj damagerObj = (damager == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(damager));
 
                 mObserver.DamageReceived(damagerObj, damage, warhead, scale, type);
             }
@@ -3223,7 +3223,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : new DamageableGameObj(victim));
+                IDamageableGameObj victimObj = (victim == IntPtr.Zero ? null : (IDamageableGameObj)BaseGameObj.CreateBaseGameObjWrapper(victim));
 
                 mObserver.KillDealt(victimObj, damage, warhead, scale, type);
             }
@@ -3247,7 +3247,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IArmedGameObj killerObj = (killer == IntPtr.Zero ? null : new ArmedGameObj(killer));
+                IArmedGameObj killerObj = (killer == IntPtr.Zero ? null : (IArmedGameObj)BaseGameObj.CreateBaseGameObjWrapper(killer));
 
                 mObserver.KillReceived(killerObj, damage, warhead, scale, type);
             }
@@ -3271,7 +3271,7 @@ namespace RenSharp
                     throw new ArgumentException($"Argument '{nameof(observer)}' is not a managed observer.");
                 }
 
-                IScriptableGameObj senderObj = (sender == IntPtr.Zero ? null : new ScriptableGameObj(sender));
+                IScriptableGameObj senderObj = (sender == IntPtr.Zero ? null : (IScriptableGameObj)BaseGameObj.CreateBaseGameObjWrapper(sender));
 
                 mObserver.Custom(senderObj, type, param);
             }

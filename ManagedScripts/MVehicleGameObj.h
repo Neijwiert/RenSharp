@@ -259,8 +259,6 @@ namespace RenSharp
 		public:
 			VehicleGameObj(IntPtr pointer);
 
-			IVehicleGameObj ^AsVehicleGameObj() override;
-
 			virtual void AddOccupant(ISoldierGameObj ^occupant, int seatId) sealed;
 			virtual void AddOccupant(ISoldierGameObj ^occupant) sealed;
 			virtual bool IsEntryPermitted(ISoldierGameObj ^soldier) sealed;

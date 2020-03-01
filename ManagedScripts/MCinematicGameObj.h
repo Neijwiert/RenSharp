@@ -46,8 +46,6 @@ namespace RenSharp
 		public:
 			CinematicGameObj(IntPtr pointer);
 
-			ICinematicGameObj ^AsCinematicGameObj() override;
-
 			property IntPtr CinematicGameObjPointer
 			{
 				virtual IntPtr get() sealed;

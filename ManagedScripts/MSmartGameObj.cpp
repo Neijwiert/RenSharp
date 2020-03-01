@@ -83,11 +83,6 @@ namespace RenSharp
 
 	}
 
-	ISmartGameObj ^SmartGameObj::AsSmartGameObj()
-	{
-		return this;
-	}
-
 	void SmartGameObj::SetAnalogControl(IControlClass::AnalogControl control, float value)
 	{
 		InternalSmartGameObjPointer->Set_Analog_Control(static_cast<::ControlClass::AnalogControl>(control), value);

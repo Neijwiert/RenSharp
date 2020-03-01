@@ -446,7 +446,7 @@ namespace RenSharp
 		// Start observers
 		beaconObj->Post_Re_Init();
 
-		return gcnew BeaconGameObj(IntPtr(beaconObj));
+		return safe_cast<IBeaconGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(beaconObj));
 	}
 
 	IBeaconGameObj^ Engine::CreateBeacon(IWeaponDefinitionClass^ weaponDef, Vector3 position, IPlayerDataClass^ playerData, bool usePrimaryAmmo)
@@ -807,7 +807,7 @@ namespace RenSharp
 		// Start observers
 		c4Obj->Post_Re_Init();
 
-		return gcnew C4GameObj(IntPtr(c4Obj));
+		return safe_cast<IC4GameObj^>(BaseGameObj::CreateBaseGameObjWrapper(c4Obj));
 	}
 
 	IC4GameObj^ Engine::CreateC4(String^ ammoPresetName, Matrix3D transform, Vector3 velocity, IPlayerDataClass^ playerData, int detonationMode)
@@ -1435,7 +1435,7 @@ namespace RenSharp
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -2571,7 +2571,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -5560,7 +5560,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew BuildingGameObj(IntPtr(result));
+			return safe_cast<IBuildingGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -5577,7 +5577,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysicalGameObj(IntPtr(result));
+			return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -5590,7 +5590,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew BuildingGameObj(IntPtr(result));
+			return safe_cast<IBuildingGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -6664,7 +6664,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew PhysicalGameObj(IntPtr(result));
+				return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -6696,7 +6696,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew PhysicalGameObj(IntPtr(result));
+				return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -6720,7 +6720,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew PhysicalGameObj(IntPtr(result));
+			return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -6739,7 +6739,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew PhysicalGameObj(IntPtr(result));
+			return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -6763,7 +6763,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew PhysicalGameObj(IntPtr(result));
+			return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -6787,7 +6787,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew PhysicalGameObj(IntPtr(result));
+			return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -6819,7 +6819,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew SoldierGameObj(IntPtr(result));
+				return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -6856,7 +6856,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew SoldierGameObj(IntPtr(result));
+				return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -6886,7 +6886,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -6911,7 +6911,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -6936,7 +6936,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -6961,7 +6961,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -8439,7 +8439,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew SmartGameObj(IntPtr(result));
+			return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -8452,7 +8452,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew SmartGameObj(IntPtr(result));
+			return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -8465,7 +8465,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew SmartGameObj(IntPtr(result));
+			return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -8489,7 +8489,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew SmartGameObj(IntPtr(result));
+				return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -8511,7 +8511,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew SmartGameObj(IntPtr(result));
+			return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -8540,7 +8540,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew SmartGameObj(IntPtr(result));
+				return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -8569,7 +8569,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew SmartGameObj(IntPtr(result));
+				return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -8626,7 +8626,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 					}
 					else
 					{
-						result->Add(gcnew ScriptableGameObj(IntPtr(currentObj)));
+						result->Add(safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(currentObj)));
 					}
 				}
 
@@ -8668,7 +8668,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew SmartGameObj(IntPtr(result));
+				return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -8698,7 +8698,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew SmartGameObj(IntPtr(result));
+				return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -8918,7 +8918,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9005,7 +9005,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9025,7 +9025,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9091,7 +9091,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9198,7 +9198,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9217,7 +9217,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9236,7 +9236,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9282,7 +9282,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9367,7 +9367,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9415,7 +9415,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9509,7 +9509,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -9544,7 +9544,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -9678,7 +9678,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -9711,7 +9711,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -9967,7 +9967,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -10104,7 +10104,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 
 				if (::wcsistr(pData->PlayerName.Peek_Buffer(), namePtr))
 				{
-					return gcnew ScriptableGameObj(IntPtr(static_cast<::ScriptableGameObj *>(soldierStarObj)));
+					return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(static_cast<::ScriptableGameObj *>(soldierStarObj)));
 				}
 			}
 
@@ -10226,7 +10226,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -11235,7 +11235,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -11262,7 +11262,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -11294,7 +11294,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -11330,7 +11330,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 				}
 				else
 				{
-					result->Add(gcnew ScriptableGameObj(IntPtr(currentObj)));
+					result->Add(safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(currentObj)));
 				}
 			}
 
@@ -11374,7 +11374,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 				}
 				else
 				{
-					result->Add(gcnew ScriptableGameObj(IntPtr(currentObj)));
+					result->Add(safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(currentObj)));
 				}
 			}
 
@@ -11531,15 +11531,13 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			return String::Empty;
 		}
 
-		IDamageableGameObj ^o = obj->AsDamageableGameObj();
-		if (o == nullptr || o->DamageableGameObjPointer.ToPointer() == nullptr)
+		auto damageableGameObjPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer())->As_DamageableGameObj();
+		if (damageableGameObjPtr == nullptr)
 		{
 			return String::Empty;
 		}
 
-		IDamageableGameObjDef ^def = o->Definition;
-
-		return GetTranslatedString(def->TranslatedNameID);
+		return GetTranslatedString(damageableGameObjPtr->Get_Definition().Get_Translated_Name_ID());
 	}
 
 	String^ Engine::GetTranslatedWeapon(IScriptableGameObj^ obj, int position)
@@ -11550,31 +11548,36 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			return String::Empty;
 		}
 
-		IPhysicalGameObj ^o = obj->AsPhysicalGameObj();
-		if (o == nullptr || o->PhysicalGameObjPointer.ToPointer() == nullptr)
+		auto physicalGameObjPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer())->As_PhysicalGameObj();
+		if (physicalGameObjPtr == nullptr)
 		{
 			return String::Empty;
 		}
 
-		IArmedGameObj^ o2 = o->AsArmedGameObj();
-		if (o2 == nullptr || o2->ArmedGameObjPointer.ToPointer() == nullptr)
+		auto armedGameObjPtr = physicalGameObjPtr->As_ArmedGameObj();
+		if (armedGameObjPtr == nullptr)
 		{
 			return String::Empty;
 		}
 
-		IWeaponBagClass^ w = o2->WeaponBag;
-		if (w == nullptr || w->WeaponBagClassPointer.ToPointer() == nullptr)
+		auto weaponBagClassPtr = armedGameObjPtr->Get_Weapon_Bag();
+		if (weaponBagClassPtr == nullptr)
 		{
 			return String::Empty;
 		}
 
-		IWeaponClass^ weapon = w->PeekWeapon(position);
-		if (weapon == nullptr || weapon->WeaponClassPointer.ToPointer() == nullptr)
+		if (position < 0 || position >= weaponBagClassPtr->Get_Count())
+		{
+			throw gcnew ArgumentOutOfRangeException("position");
+		}
+
+		auto weaponClassPtr = weaponBagClassPtr->Peek_Weapon(position);
+		if (weaponClassPtr == nullptr)
 		{
 			return String::Empty;
 		}
 		
-		return GetTranslatedString(weapon->Definition->IconNameID);
+		return GetTranslatedString(weaponClassPtr->Get_Definition()->IconNameID);
 	}
 
 	String^ Engine::GetCurrentTranslatedWeapon(IScriptableGameObj^ obj)
@@ -12278,7 +12281,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12344,7 +12347,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12363,7 +12366,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12382,7 +12385,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12399,7 +12402,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew BeaconGameObj(IntPtr(result));
+			return safe_cast<IBeaconGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12539,7 +12542,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12552,7 +12555,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12579,7 +12582,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -12597,7 +12600,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12630,7 +12633,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12653,7 +12656,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			}
 			else
 			{
-				return gcnew ScriptableGameObj(IntPtr(result));
+				return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 			}
 		}
 		finally
@@ -12671,7 +12674,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12684,7 +12687,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12697,7 +12700,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12710,7 +12713,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12723,7 +12726,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12736,7 +12739,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12749,7 +12752,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12762,7 +12765,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12775,7 +12778,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12788,7 +12791,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12801,7 +12804,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -12814,7 +12817,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

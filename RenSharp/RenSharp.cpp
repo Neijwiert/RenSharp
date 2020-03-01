@@ -26,6 +26,7 @@ limitations under the License.
 #include <metahost.h>
 #include <comdef.h>
 #include "RenSharpHostControl.h"
+#include <ScriptZoneGameObj.h>
 
 // We need this boolean to stop the FDS gracefully the same way 'quit' does
 REF_DEF2(bool, cGameData::IsManualExit, 0x0082F125, 0x0082E30D);

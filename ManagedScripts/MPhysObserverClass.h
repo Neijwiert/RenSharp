@@ -96,12 +96,6 @@ namespace RenSharp
 
 	public interface class ICombatPhysObserverClass : public IPhysObserverClass
 	{
-		IDamageableGameObj ^AsDamageableGameObj();
-
-		IPhysicalGameObj ^AsPhysicalGameObj();
-
-		IBuildingGameObj ^AsBuildingGameObj();
-
 		property IntPtr CombatPhysObserverClassPointer
 		{
 			IntPtr get();
@@ -115,17 +109,17 @@ namespace RenSharp
 
 		public:
 			CombatPhysObserverClass(IntPtr pointer);
-
+			
+			static ICombatPhysObserverClass^ CreateCombatPhysObserverClassWrapper(IntPtr combatPhysObserverClassPtr);
 			static IUnmanagedContainer<ICombatPhysObserverClass ^> ^CreateCombatPhysObserverClass();
-
-			virtual IDamageableGameObj ^AsDamageableGameObj();
-			virtual IPhysicalGameObj ^AsPhysicalGameObj();
-			virtual IBuildingGameObj ^AsBuildingGameObj();
 
 			property IntPtr CombatPhysObserverClassPointer
 			{
 				virtual IntPtr get() sealed;
 			}
+
+		internal:
+			static ICombatPhysObserverClass^ CreateCombatPhysObserverClassWrapper(::CombatPhysObserverClass* combatPhysObserverClassPtr);
 
 		protected:
 			bool InternalDestroyPointer() override;

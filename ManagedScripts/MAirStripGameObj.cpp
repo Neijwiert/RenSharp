@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	IAirStripGameObj ^AirStripGameObj::AsAirStripGameObj()
-	{
-		return this;
-	}
-
 	IntPtr AirStripGameObj::AirStripGameObjPointer::get()
 	{
 		return IntPtr(InternalAirStripGameObjPointer);

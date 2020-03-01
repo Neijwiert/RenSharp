@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	IConstructionYardGameObj ^ConstructionYardGameObj::AsConstructionYardGameObj()
-	{
-		return this;
-	}
-
 	void ConstructionYardGameObj::SetSpy(bool set)
 	{
 		InternalConstructionYardGameObjPointer->Set_Spy(set);

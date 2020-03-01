@@ -31,14 +31,10 @@ limitations under the License.
 #include "MChunkClass.h"
 #include "MReferencerClass.h"
 #include "MScriptableGameObjDef.h"
-#include "MScriptZoneGameObj.h"
 #include "Mscripts.h"
 #include "MGameObjObserverClassPtrSimpleDynVecClass.h"
 #include "MGameObjObserverTimerClassPtrDynamicVectorClass.h"
 #include "MGameObjCustomTimerClassPtrDynamicVectorClass.h"
-#include "MDamageableGameObj.h"
-#include "MBuildingGameObj.h"
-#include "MSoldierGameObj.h"
 #include "MVector3.h"
 #include "RenSharpGameObjObserverClass.h"
 
@@ -194,7 +190,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -474,68 +470,6 @@ namespace RenSharp
 
 		InsertObserver(observer->UnmanagedObject);
 		observer->ReleaseObject();
-	}
-
-	IDamageableGameObj ^ScriptableGameObj::AsDamageableGameObj()
-	{
-		auto result = InternalScriptableGameObjPointer->As_DamageableGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew DamageableGameObj(IntPtr(result));
-		}
-	}
-
-	IBuildingGameObj ^ScriptableGameObj::AsBuildingGameObj()
-	{
-		auto result = InternalScriptableGameObjPointer->As_BuildingGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew BuildingGameObj(IntPtr(result));
-		}
-	}
-
-	ISoldierGameObj ^ScriptableGameObj::AsSoldierGameObj()
-	{
-		auto result = InternalScriptableGameObjPointer->As_SoldierGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew SoldierGameObj(IntPtr(result));
-		}
-	}
-
-	IScriptableGameObj ^ScriptableGameObj::AsScriptableGameObj()
-	{
-		return this;
-	}
-
-	IScriptZoneGameObj ^ScriptableGameObj::AsScriptZoneGameObj()
-	{
-		auto result = InternalScriptableGameObjPointer->As_ScriptZoneGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew ScriptZoneGameObj(IntPtr(result));
-		}
-	}
-
-	IReferenceableClass<IScriptableGameObj ^> ^ScriptableGameObj::AsReferenceableGameObj()
-	{
-		return this;
 	}
 
 	IntPtr ScriptableGameObj::Pointer::get()

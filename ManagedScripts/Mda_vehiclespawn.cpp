@@ -730,7 +730,7 @@ namespace RenSharp
 			}
 			else
 			{
-				result[x] = gcnew VehicleFactoryGameObj(IntPtr(currentFactory));
+				result[x] = safe_cast<IVehicleFactoryGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(currentFactory));
 			}
 		}
 

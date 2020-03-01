@@ -22,6 +22,10 @@ limitations under the License.
 #pragma warning(disable : 4251 4244 26495 26454)
 #include <BaseGameObj.h>
 #include <BaseGameObjDef.h>
+#include <PhysicalGameObj.h>
+#include <ScriptableGameObj.h>
+#include <SmartGameObj.h>
+#include <VehicleGameObj.h>
 #pragma warning(pop) 
 #pragma managed(pop)
 
@@ -30,6 +34,36 @@ limitations under the License.
 #include "MVehicleGameObj.h"
 #include "MSmartGameObj.h"
 #include "MScriptableGameObj.h"
+#include "MSoldierGameObj.h"
+#include "MSamSiteGameObj.h"
+#include "MSamSiteGameObjDef.h"
+#include "MPowerUpGameObj.h"
+#include "MC4GameObj.h"
+#include "MBeaconGameObj.h"
+#include "MCinematicGameObj.h"
+#include "MSpecialEffectsGameObj.h"
+#include "MSpecialEffectsGameObjDef.h"
+#include "MSimpleGameObj.h"
+#include "MArmedGameObj.h"
+#include "MPhysicalGameObj.h"
+#include "MScriptZoneGameObj.h"
+#include "MSoldierFactoryGameObj.h"
+#include "MVehicleFactoryGameObj.h"
+#include "MAirStripGameObj.h"
+#include "MWarFactoryGameObj.h"
+#include "MPowerPlantGameObj.h"
+#include "MRefineryGameObj.h"
+#include "MComCenterGameObj.h"
+#include "MRepairBayGameObj.h"
+#include "MAirFactoryGameObj.h"
+#include "MNavalFactoryGameObj.h"
+#include "MSuperweaponGameObj.h"
+#include "MConstructionYardGameObj.h"
+#include "MDamageableGameObj.h"
+#include "MTransitionGameObj.h"
+#include "MTransitionGameObjDef.h"
+#include "MDamageZoneGameObj.h"
+#include "MDamageZoneGameObjDef.h"
 
 namespace RenSharp
 {
@@ -37,6 +71,11 @@ namespace RenSharp
 		: NetworkObjectClass(pointer)
 	{
 		persistClass = gcnew PersistClass(IntPtr(InternalPersistClassPointer));
+	}
+
+	IBaseGameObj^ BaseGameObj::CreateBaseGameObjWrapper(IntPtr baseGameObjPtr)
+	{
+		return CreateBaseGameObjWrapper(reinterpret_cast<::BaseGameObj*>(baseGameObjPtr.ToPointer()));
 	}
 
 	bool BaseGameObj::Equals(Object ^other)
@@ -101,58 +140,6 @@ namespace RenSharp
 	void BaseGameObj::PostThink()
 	{
 		InternalBaseGameObjPointer->Post_Think();
-	}
-
-	IPhysicalGameObj ^BaseGameObj::AsPhysicalGameObj()
-	{
-		auto result = InternalBaseGameObjPointer->As_PhysicalGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew PhysicalGameObj(IntPtr(result));
-		}
-	}
-
-	IVehicleGameObj ^BaseGameObj::AsVehicleGameObj()
-	{
-		auto result = InternalBaseGameObjPointer->As_VehicleGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew VehicleGameObj(IntPtr(result));
-		}
-	}
-
-	ISmartGameObj ^BaseGameObj::AsSmartGameObj()
-	{
-		auto result = InternalBaseGameObjPointer->As_SmartGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew SmartGameObj(IntPtr(result));
-		}
-	}
-
-	IScriptableGameObj ^BaseGameObj::AsScriptableGameObj()
-	{
-		auto result = InternalBaseGameObjPointer->As_ScriptableGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew ScriptableGameObj(IntPtr(result));
-		}
 	}
 
 	IntPtr BaseGameObj::Pointer::get()
@@ -237,6 +224,196 @@ namespace RenSharp
 	void BaseGameObj::EnableCinematicFreeze::set(bool value)
 	{
 		InternalBaseGameObjPointer->Enable_Cinematic_Freeze(value);
+	}
+
+	IBaseGameObj^ BaseGameObj::CreateBaseGameObjWrapper(::BaseGameObj* baseGameObjPtr)
+	{
+		if (baseGameObjPtr == nullptr)
+		{
+			throw gcnew ArgumentNullException("baseGameObjPtr");
+		}
+
+		auto vehicleGameObjPtr = baseGameObjPtr->As_VehicleGameObj();
+		if (vehicleGameObjPtr != nullptr)
+		{
+			return gcnew VehicleGameObj(IntPtr(vehicleGameObjPtr));
+		}
+		else
+		{
+			auto smartGameObjPtr = baseGameObjPtr->As_SmartGameObj();
+			if (smartGameObjPtr != nullptr)
+			{
+				auto soldierGameObjPtr = smartGameObjPtr->As_SoldierGameObj();
+				if (soldierGameObjPtr != nullptr)
+				{
+					return gcnew SoldierGameObj(IntPtr(soldierGameObjPtr));
+				}
+				else if (smartGameObjPtr->Get_Definition().Get_Class_ID() == ISAMSiteGameObjDef::SAMSiteGameObjDefClassID)
+				{
+					return gcnew SAMSiteGameObj(IntPtr(smartGameObjPtr));
+				}
+
+				return gcnew SmartGameObj(IntPtr(smartGameObjPtr));
+			}
+			else
+			{
+				auto physicalGameObjPtr = baseGameObjPtr->As_PhysicalGameObj();
+				if (physicalGameObjPtr != nullptr)
+				{
+					auto powerUpGameObjPtr = physicalGameObjPtr->As_PowerUpGameObj();
+					if (powerUpGameObjPtr != nullptr)
+					{
+						return gcnew PowerUpGameObj(IntPtr(powerUpGameObjPtr));
+					}
+
+					auto c4GameObjPtr = physicalGameObjPtr->As_C4GameObj();
+					if (c4GameObjPtr != nullptr)
+					{
+						return gcnew C4GameObj(IntPtr(c4GameObjPtr));
+					}
+
+					auto beaconGameObjPtr = physicalGameObjPtr->As_BeaconGameObj();
+					if (beaconGameObjPtr != nullptr)
+					{
+						return gcnew BeaconGameObj(IntPtr(beaconGameObjPtr));
+					}
+
+					auto cinematicGameObjPtr = physicalGameObjPtr->As_CinematicGameObj();
+					if (cinematicGameObjPtr != nullptr)
+					{
+						return gcnew CinematicGameObj(IntPtr(cinematicGameObjPtr));
+					}
+					else if (physicalGameObjPtr->Get_Definition().Get_Class_ID() == ISpecialEffectsGameObjDef::SpecialEffectsGameObjDefClassID)
+					{
+						return gcnew SpecialEffectsGameObj(IntPtr(physicalGameObjPtr));
+					}
+					else
+					{
+						auto simpleGameObjPtr = physicalGameObjPtr->As_SimpleGameObj();
+						if (simpleGameObjPtr != nullptr)
+						{
+							return gcnew SimpleGameObj(IntPtr(simpleGameObjPtr));
+						}
+
+						auto armedGameObjPtr = physicalGameObjPtr->As_ArmedGameObj();
+						if (armedGameObjPtr != nullptr)
+						{
+							return gcnew ArmedGameObj(IntPtr(armedGameObjPtr));
+						}
+
+						return gcnew PhysicalGameObj(IntPtr(physicalGameObjPtr));
+					}
+				}
+				else
+				{
+					auto scriptableGameObjPtr = baseGameObjPtr->As_ScriptableGameObj();
+					if (scriptableGameObjPtr != nullptr)
+					{
+						auto scriptZoneGameObjPtr = scriptableGameObjPtr->As_ScriptZoneGameObj();
+						if (scriptZoneGameObjPtr != nullptr)
+						{
+							return gcnew ScriptZoneGameObj(IntPtr(scriptZoneGameObjPtr));
+						}
+
+						auto buildingGameObjPtr = scriptableGameObjPtr->As_BuildingGameObj();
+						if (buildingGameObjPtr != nullptr)
+						{
+							auto soldierFactoryGameObjPtr = buildingGameObjPtr->As_SoldierFactoryGameObj();
+							if (soldierFactoryGameObjPtr != nullptr)
+							{
+								return gcnew SoldierFactoryGameObj(IntPtr(soldierFactoryGameObjPtr));
+							}
+
+							auto vehicleFactoryGameObjPtr = buildingGameObjPtr->As_VehicleFactoryGameObj();
+							if (vehicleFactoryGameObjPtr != nullptr)
+							{
+								auto airStripGameObjPtr = vehicleFactoryGameObjPtr->As_AirStripGameObj();
+								if (airStripGameObjPtr != nullptr)
+								{
+									return gcnew AirStripGameObj(IntPtr(airStripGameObjPtr));
+								}
+
+								auto warFactoryGameObjPtr = vehicleFactoryGameObjPtr->As_WarFactoryGameObj();
+								if (warFactoryGameObjPtr != nullptr)
+								{
+									return gcnew WarFactoryGameObj(IntPtr(warFactoryGameObjPtr));
+								}
+
+								return gcnew VehicleFactoryGameObj(IntPtr(vehicleFactoryGameObjPtr));
+							}
+
+							auto powerPlantGameObjPtr = buildingGameObjPtr->As_PowerPlantGameObj();
+							if (powerPlantGameObjPtr != nullptr)
+							{
+								return gcnew PowerPlantGameObj(IntPtr(powerPlantGameObjPtr));
+							}
+
+							auto refineryGameObjPtr = buildingGameObjPtr->As_RefineryGameObj();
+							if (refineryGameObjPtr != nullptr)
+							{
+								return gcnew RefineryGameObj(IntPtr(refineryGameObjPtr));
+							}
+
+							auto comCenterGameObjPtr = buildingGameObjPtr->As_ComCenterGameObj();
+							if (comCenterGameObjPtr != nullptr)
+							{
+								return gcnew ComCenterGameObj(IntPtr(comCenterGameObjPtr));
+							}
+
+							auto repairBayGameObjPtr = buildingGameObjPtr->As_RepairBayGameObj();
+							if (repairBayGameObjPtr != nullptr)
+							{
+								return gcnew RepairBayGameObj(IntPtr(repairBayGameObjPtr));
+							}
+
+							auto airFactoryGameObjPtr = buildingGameObjPtr->As_AirFactoryGameObj();
+							if (airFactoryGameObjPtr != nullptr)
+							{
+								return gcnew AirFactoryGameObj(IntPtr(airFactoryGameObjPtr));
+							}
+
+							auto constructionYardGameObjPtr = buildingGameObjPtr->As_ConstructionYardGameObj();
+							if (constructionYardGameObjPtr != nullptr)
+							{
+								return gcnew ConstructionYardGameObj(IntPtr(constructionYardGameObjPtr));
+							}
+
+							auto navalFactoryGameObjPtr = buildingGameObjPtr->As_NavalFactoryGameObj();
+							if (navalFactoryGameObjPtr != nullptr)
+							{
+								return gcnew NavalFactoryGameObj(IntPtr(navalFactoryGameObjPtr));
+							}
+
+							auto superweaponGameObjPtr = buildingGameObjPtr->As_SuperweaponGameObj();
+							if (superweaponGameObjPtr != nullptr)
+							{
+								return gcnew SuperweaponGameObj(IntPtr(superweaponGameObjPtr));
+							}
+
+							return gcnew BuildingGameObj(IntPtr(buildingGameObjPtr));
+						}
+
+						auto damageableGameObjPtr = scriptableGameObjPtr->As_DamageableGameObj();
+						if (damageableGameObjPtr != nullptr)
+						{
+							return gcnew DamageableGameObj(IntPtr(damageableGameObjPtr));
+						}
+
+						return gcnew ScriptableGameObj(IntPtr(scriptableGameObjPtr));
+					}
+					else if (baseGameObjPtr->Get_Definition().Get_Class_ID() == ITransitionGameObjDef::TransitionGameObjDefClassID)
+					{
+						return gcnew TransitionGameObj(IntPtr(baseGameObjPtr));
+					}
+					else if (baseGameObjPtr->Get_Definition().Get_Class_ID() == IDamageZoneGameObjDef::DamageZoneGameObjDefClassID)
+					{
+						return gcnew DamageZoneGameObj(IntPtr(baseGameObjPtr));
+					}
+
+					return gcnew BaseGameObj(IntPtr(baseGameObjPtr));
+				}
+			}
+		}
 	}
 
 	::NetworkObjectClass *BaseGameObj::InternalNetworkObjectClassPointer::get()

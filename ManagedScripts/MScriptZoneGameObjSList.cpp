@@ -68,7 +68,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptZoneGameObj(IntPtr(result));
+			return safe_cast<IScriptZoneGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -161,7 +161,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptZoneGameObj(IntPtr(result));
+			return safe_cast<IScriptZoneGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -174,7 +174,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptZoneGameObj(IntPtr(result));
+			return safe_cast<IScriptZoneGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

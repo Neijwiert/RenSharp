@@ -188,7 +188,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew BuildingGameObj(IntPtr(result));
+			return safe_cast<IBuildingGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

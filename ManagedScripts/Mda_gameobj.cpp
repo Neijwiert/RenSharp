@@ -482,7 +482,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

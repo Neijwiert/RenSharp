@@ -51,8 +51,6 @@ namespace RenSharp
 		public:
 			SimpleGameObj(IntPtr pointer);
 
-			ISimpleGameObj ^AsSimpleGameObj() override;
-
 			property IntPtr SimpleGameObjPointer
 			{
 				virtual IntPtr get() sealed;

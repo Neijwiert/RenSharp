@@ -46,8 +46,6 @@ namespace RenSharp
 		public:
 			PowerPlantGameObj(IntPtr pointer);
 
-			IPowerPlantGameObj ^AsPowerPlantGameObj() override;
-
 			property IntPtr PowerPlantGameObjPointer
 			{
 				virtual IntPtr get() sealed;

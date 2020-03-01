@@ -51,22 +51,6 @@ namespace RenSharp
 
 	public interface class IBuildingGameObj : public IDamageableGameObj, public ICombatPhysObserverClass
 	{	
-		IPowerPlantGameObj ^AsPowerPlantGameObj();
-
-		ISoldierFactoryGameObj ^AsSoldierFactoryGameObj();
-
-		IVehicleFactoryGameObj ^AsVehicleFactoryGameObj();
-
-		IAirStripGameObj ^AsAirStripGameObj();
-
-		IWarFactoryGameObj ^AsWarFactoryGameObj();
-
-		IRefineryGameObj ^AsRefineryGameObj();
-
-		IComCenterGameObj ^AsComCenterGameObj();
-
-		IRepairBayGameObj ^AsRepairBayGameObj();
-
 		void CnCInitialize(IBaseControllerClass ^base);
 
 		void OnDestroyed();
@@ -78,14 +62,6 @@ namespace RenSharp
 		IBuildingAggregateClass ^FindMCT();
 
 		float FindClosestPoly(Vector3 pos);
-
-		IConstructionYardGameObj ^AsConstructionYardGameObj();
-
-		IAirFactoryGameObj ^AsAirFactoryGameObj();
-
-		INavalFactoryGameObj ^AsNavalFactoryGameObj();
-
-		ISuperweaponGameObj ^AsSuperweaponGameObj();
 
 		property IntPtr BuildingGameObjPointer
 		{
@@ -171,25 +147,12 @@ namespace RenSharp
 			virtual int ObjectExpired(IPhysClass ^observedObj) sealed;
 			virtual void ObjectRemovedFromScene(IPhysClass ^observedObj) sealed;
 			virtual void ObjectShatteredSomething(IPhysClass ^observedObj, IPhysClass ^shatteredObj, int surfaceType) sealed;
-			IBuildingGameObj ^AsBuildingGameObj() override;
-			virtual IPowerPlantGameObj ^AsPowerPlantGameObj();
-			virtual ISoldierFactoryGameObj ^AsSoldierFactoryGameObj();
-			virtual IVehicleFactoryGameObj ^AsVehicleFactoryGameObj();
-			virtual IAirStripGameObj ^AsAirStripGameObj();
-			virtual IWarFactoryGameObj ^AsWarFactoryGameObj();
-			virtual IRefineryGameObj ^AsRefineryGameObj();
-			virtual IComCenterGameObj ^AsComCenterGameObj();
-			virtual IRepairBayGameObj ^AsRepairBayGameObj();
 			virtual void CnCInitialize(IBaseControllerClass ^base) sealed;
 			virtual void OnDestroyed() sealed;
 			virtual void OnDamaged() sealed;
 			virtual void OnRevived() sealed;
 			virtual IBuildingAggregateClass ^FindMCT() sealed;
 			virtual float FindClosestPoly(Vector3 pos) sealed;
-			virtual IConstructionYardGameObj ^AsConstructionYardGameObj();
-			virtual IAirFactoryGameObj ^AsAirFactoryGameObj();
-			virtual INavalFactoryGameObj ^AsNavalFactoryGameObj();
-			virtual ISuperweaponGameObj ^AsSuperweaponGameObj();
 
 			property IntPtr Pointer
 			{

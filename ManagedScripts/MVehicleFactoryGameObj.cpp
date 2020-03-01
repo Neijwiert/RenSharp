@@ -106,11 +106,6 @@ namespace RenSharp
 
 	}
 
-	IVehicleFactoryGameObj ^VehicleFactoryGameObj::AsVehicleFactoryGameObj()
-	{
-		return this;
-	}
-
 	bool VehicleFactoryGameObj::RequestVehicle(int definitionId, float generationTime, ISoldierGameObj ^player)
 	{
 		if (player == nullptr || player->SoldierGameObjPointer.ToPointer() == nullptr)

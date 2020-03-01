@@ -51,8 +51,6 @@ namespace RenSharp
 		public:
 			SuperweaponGameObj(IntPtr pointer);
 
-			ISuperweaponGameObj ^AsSuperweaponGameObj() override;
-
 			property IntPtr SuperweaponGameObjPointer
 			{
 				virtual IntPtr get() sealed;

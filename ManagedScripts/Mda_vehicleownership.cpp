@@ -121,7 +121,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew VehicleGameObj(IntPtr(result));
+			return safe_cast<IVehicleGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -337,7 +337,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew VehicleGameObj(IntPtr(result));
+			return safe_cast<IVehicleGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

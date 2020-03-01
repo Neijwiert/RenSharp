@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	IComCenterGameObj ^ComCenterGameObj::AsComCenterGameObj()
-	{
-		return this;
-	}
-
 	IntPtr ComCenterGameObj::ComCenterGameObjPointer::get()
 	{
 		return IntPtr(InternalComCenterGameObjPointer);

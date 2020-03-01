@@ -460,11 +460,6 @@ namespace RenSharp
 
 	}
 
-	ISoldierGameObj ^SoldierGameObj::AsSoldierGameObj()
-	{
-		return this;
-	}
-
 	void SoldierGameObj::ReInit(ISoldierGameObjDef ^definition)
 	{
 		if (definition == nullptr || definition->SoldierGameObjDefPointer.ToPointer() == nullptr)
@@ -865,7 +860,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew VehicleGameObj(IntPtr(result));
+			return safe_cast<IVehicleGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

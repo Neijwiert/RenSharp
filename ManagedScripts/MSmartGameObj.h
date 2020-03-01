@@ -172,8 +172,6 @@ namespace RenSharp
 		public:
 			SmartGameObj(IntPtr pointer);
 
-			ISmartGameObj ^AsSmartGameObj() override;
-
 			virtual void SetAnalogControl(IControlClass::AnalogControl control, float value) sealed;
 			virtual void GenerateControl() sealed;
 			virtual void ApplyControl() sealed;

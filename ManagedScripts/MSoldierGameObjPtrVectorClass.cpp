@@ -97,7 +97,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

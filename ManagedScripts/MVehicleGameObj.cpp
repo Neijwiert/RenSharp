@@ -171,11 +171,6 @@ namespace RenSharp
 
 	}
 
-	IVehicleGameObj ^VehicleGameObj::AsVehicleGameObj()
-	{
-		return this;
-	}
-
 	void VehicleGameObj::AddOccupant(ISoldierGameObj ^occupant, int seatId)
 	{
 		if (occupant == nullptr || occupant->SoldierGameObjPointer.ToPointer() == nullptr)
@@ -271,7 +266,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -347,7 +342,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -360,7 +355,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -373,7 +368,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -414,7 +409,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 
@@ -516,7 +511,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew SoldierGameObj(IntPtr(result));
+			return safe_cast<ISoldierGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

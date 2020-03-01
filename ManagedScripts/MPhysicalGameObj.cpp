@@ -25,16 +25,10 @@ limitations under the License.
 #pragma warning(pop) 
 #pragma managed(pop)
 
-#include "MSimpleGameObj.h"
-#include "MPowerUpGameObj.h"
-#include "MC4GameObj.h"
-#include "MBeaconGameObj.h"
-#include "MCinematicGameObj.h"
 #include "MMatrix3D.h"
 #include "MPhysClass.h"
 #include "MRenderObjClass.h"
 #include "MOffenseObjectClass.h"
-#include "MArmedGameObj.h"
 #include "MAnimControlClass.h"
 
 namespace RenSharp
@@ -119,11 +113,6 @@ namespace RenSharp
 	void PhysicalGameObj::ObjectShatteredSomething(IPhysClass ^observedObj, IPhysClass ^shatteredObj, int surfaceType)
 	{
 		combatPhysObserverClass->ObjectShatteredSomething(observedObj, shatteredObj, surfaceType);
-	}
-
-	IPhysicalGameObj ^PhysicalGameObj::AsPhysicalGameObj()
-	{
-		return this;
 	}
 
 	void PhysicalGameObj::Startup()
@@ -312,84 +301,6 @@ namespace RenSharp
 
 		InternalPhysicalGameObjPointer->Apply_Damage_Extended(
 			*reinterpret_cast<::OffenseObjectClass *>(offense->OffenseObjectClassPointer.ToPointer()));
-	}
-
-	IPowerUpGameObj ^PhysicalGameObj::AsPowerUpGameObj()
-	{
-		auto result = InternalPhysicalGameObjPointer->As_PowerUpGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew PowerUpGameObj(IntPtr(result));
-		}
-	}
-
-	IC4GameObj ^PhysicalGameObj::AsC4GameObj()
-	{
-		auto result = InternalPhysicalGameObjPointer->As_C4GameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew C4GameObj(IntPtr(result));
-		}
-	}
-
-	IBeaconGameObj ^PhysicalGameObj::AsBeaconGameObj()
-	{
-		auto result = InternalPhysicalGameObjPointer->As_BeaconGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew BeaconGameObj(IntPtr(result));
-		}
-	}
-
-	ISimpleGameObj ^PhysicalGameObj::AsSimpleGameObj()
-	{
-		auto result = InternalPhysicalGameObjPointer->As_SimpleGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew SimpleGameObj(IntPtr(result));
-		}
-	}
-
-	ICinematicGameObj ^PhysicalGameObj::AsCinematicGameObj()
-	{
-		auto result = InternalPhysicalGameObjPointer->As_CinematicGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew CinematicGameObj(IntPtr(result));
-		}
-	}
-
-	IArmedGameObj ^PhysicalGameObj::AsArmedGameObj()
-	{
-		auto result = InternalPhysicalGameObjPointer->As_ArmedGameObj();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew ArmedGameObj(IntPtr(result));
-		}
 	}
 
 	void PhysicalGameObj::EnableHibernation(bool enable)
@@ -621,7 +532,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ScriptableGameObj(IntPtr(result));
+			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

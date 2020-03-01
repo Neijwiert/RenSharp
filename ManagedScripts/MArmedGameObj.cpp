@@ -56,11 +56,6 @@ namespace RenSharp
 
 	}
 
-	IArmedGameObj ^ArmedGameObj::AsArmedGameObj()
-	{
-		return this;
-	}
-
 	void ArmedGameObj::ImportStateCs(IntPtr packet)
 	{
 		if (packet.ToPointer() == nullptr)

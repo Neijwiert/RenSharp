@@ -46,8 +46,6 @@ namespace RenSharp
 		public:
 			WarFactoryGameObj(IntPtr pointer);
 
-			IWarFactoryGameObj ^AsWarFactoryGameObj() override;
-
 			property IntPtr WarFactoryGameObjPointer
 			{
 				virtual IntPtr get() sealed;

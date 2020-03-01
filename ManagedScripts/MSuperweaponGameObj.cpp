@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	ISuperweaponGameObj ^SuperweaponGameObj::AsSuperweaponGameObj()
-	{
-		return this;
-	}
-
 	IntPtr SuperweaponGameObj::SuperweaponGameObjPointer::get()
 	{
 		return IntPtr(InternalSuperweaponGameObjPointer);

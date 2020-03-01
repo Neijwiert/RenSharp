@@ -62,7 +62,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew DamageableGameObj(IntPtr(result));
+			return safe_cast<IDamageableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

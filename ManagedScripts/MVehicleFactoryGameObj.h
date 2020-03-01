@@ -87,8 +87,6 @@ namespace RenSharp
 		public:
 			VehicleFactoryGameObj(IntPtr pointer);
 
-			IVehicleFactoryGameObj ^AsVehicleFactoryGameObj() override;
-
 			virtual bool RequestVehicle(int definitionId, float generationTime, ISoldierGameObj ^player) sealed;
 			virtual bool RequestVehicle(int definitionId, float generationTime) sealed;
 

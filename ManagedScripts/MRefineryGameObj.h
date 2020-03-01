@@ -92,7 +92,6 @@ namespace RenSharp
 		public:
 			RefineryGameObj(IntPtr pointer);
 
-			IRefineryGameObj ^AsRefineryGameObj() override;
 			virtual void DestroyHarvester() sealed;
 			virtual void BlockHarvesterSpawn() sealed;
 			virtual void SetAllowHarvesterSpawn() sealed;

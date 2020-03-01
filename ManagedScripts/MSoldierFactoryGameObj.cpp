@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	ISoldierFactoryGameObj ^SoldierFactoryGameObj::AsSoldierFactoryGameObj()
-	{
-		return this;
-	}
-
 	IntPtr SoldierFactoryGameObj::SoldierFactoryGameObjPointer::get()
 	{
 		return IntPtr(InternalSoldierFactoryGameObjPointer);

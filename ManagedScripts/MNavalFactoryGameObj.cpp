@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	INavalFactoryGameObj ^NavalFactoryGameObj::AsNavalFactoryGameObj()
-	{
-		return this;
-	}
-
 	IntPtr NavalFactoryGameObj::NavalFactoryGameObjPointer::get()
 	{
 		return IntPtr(InternalNavalFactoryGameObjPointer);

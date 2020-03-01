@@ -520,7 +520,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ArmedGameObj(IntPtr(result));
+			return safe_cast<IArmedGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

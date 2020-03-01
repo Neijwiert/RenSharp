@@ -373,7 +373,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysicalGameObj(IntPtr(object));
+			return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(object));
 		}
 	}
 
@@ -405,7 +405,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysicalGameObj(IntPtr(icon));
+			return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(icon));
 		}
 	}
 
@@ -442,7 +442,7 @@ namespace RenSharp
 			}
 			else
 			{
-				result[x] = gcnew PhysicalGameObj(IntPtr(currentRadar));
+				result[x] = safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(currentRadar));
 			}
 		}
 

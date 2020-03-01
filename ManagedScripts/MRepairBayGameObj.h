@@ -46,8 +46,6 @@ namespace RenSharp
 		public:
 			RepairBayGameObj(IntPtr pointer);
 
-			IRepairBayGameObj ^AsRepairBayGameObj() override;
-
 			property IntPtr RepairBayGameObjPointer
 			{
 				virtual IntPtr get() sealed;

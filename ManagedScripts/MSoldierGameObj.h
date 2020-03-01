@@ -414,8 +414,6 @@ namespace RenSharp
 		public:
 			SoldierGameObj(IntPtr pointer);
 
-			ISoldierGameObj ^AsSoldierGameObj() override;
-
 			virtual void ReInit(ISoldierGameObjDef ^definition) sealed;
 			virtual void ApplyDamageIgnoreVehicleCheck(IOffenseObjectClass ^damager, float scale, int alternateSkin) sealed;
 			virtual void ApplyDamageIgnoreVehicleCheck(IOffenseObjectClass ^damager, float scale) sealed;

@@ -100,8 +100,6 @@ namespace RenSharp
 		public:
 			DamageableGameObj(IntPtr pointer);
 
-			IDamageableGameObj ^AsDamageableGameObj() override;
-
 			virtual void ApplyDamage(IOffenseObjectClass ^damager, float scale, int alternateSkin) sealed;
 			virtual void ApplyDamage(IOffenseObjectClass ^damager, float scale) sealed;
 			virtual void ApplyDamage(IOffenseObjectClass ^damager) sealed;

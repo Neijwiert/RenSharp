@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	ICinematicGameObj ^CinematicGameObj::AsCinematicGameObj()
-	{
-		return this;
-	}
-
 	IntPtr CinematicGameObj::CinematicGameObjPointer::get()
 	{
 		return IntPtr(InternalCinematicGameObjPointer);

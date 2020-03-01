@@ -71,8 +71,6 @@ namespace RenSharp
 		public:
 			ScriptZoneGameObj(IntPtr pointer);
 
-			IScriptZoneGameObj ^AsScriptZoneGameObj() override;
-
 			property IntPtr ScriptZoneGameObjPointer
 			{
 				virtual IntPtr get() sealed;

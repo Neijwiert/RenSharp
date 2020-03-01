@@ -424,7 +424,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew SmartGameObj(IntPtr(result));
+			return safe_cast<ISmartGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

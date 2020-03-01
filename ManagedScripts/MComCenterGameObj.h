@@ -46,8 +46,6 @@ namespace RenSharp
 		public:
 			ComCenterGameObj(IntPtr pointer);
 
-			IComCenterGameObj ^AsComCenterGameObj() override;
-
 			property IntPtr ComCenterGameObjPointer
 			{
 				virtual IntPtr get() sealed;

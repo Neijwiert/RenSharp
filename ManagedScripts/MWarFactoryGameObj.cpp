@@ -57,11 +57,6 @@ namespace RenSharp
 
 	}
 
-	IWarFactoryGameObj ^WarFactoryGameObj::AsWarFactoryGameObj()
-	{
-		return this;
-	}
-
 	IntPtr WarFactoryGameObj::WarFactoryGameObjPointer::get()
 	{
 		return IntPtr(InternalWarFactoryGameObjPointer);

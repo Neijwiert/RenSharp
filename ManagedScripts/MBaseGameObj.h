@@ -39,14 +39,6 @@ namespace RenSharp
 
 		void PostThink();
 
-		IPhysicalGameObj ^AsPhysicalGameObj();
-
-		IVehicleGameObj ^AsVehicleGameObj();
-
-		ISmartGameObj ^AsSmartGameObj();
-
-		IScriptableGameObj ^AsScriptableGameObj();
-
 		property IntPtr BaseGameObjPointer
 		{
 			IntPtr get();
@@ -88,6 +80,8 @@ namespace RenSharp
 		public:
 			BaseGameObj(IntPtr pointer);
 
+			static IBaseGameObj^ CreateBaseGameObjWrapper(IntPtr baseGameObjPtr);
+
 			bool Equals(Object ^other) override;
 
 			virtual void OnPostLoad() sealed;
@@ -96,10 +90,6 @@ namespace RenSharp
 
 			virtual void Think() sealed;
 			virtual void PostThink() sealed;
-			virtual IPhysicalGameObj ^AsPhysicalGameObj();
-			virtual IVehicleGameObj ^AsVehicleGameObj();
-			virtual ISmartGameObj ^AsSmartGameObj();
-			virtual IScriptableGameObj ^AsScriptableGameObj();
 
 			property IntPtr Pointer
 			{
@@ -161,6 +151,9 @@ namespace RenSharp
 				virtual bool get() sealed;
 				virtual void set(bool value) sealed;
 			}
+
+		internal:
+			static IBaseGameObj^ CreateBaseGameObjWrapper(::BaseGameObj* baseGameObjPtr);
 
 		protected:
 			property ::NetworkObjectClass *InternalNetworkObjectClassPointer

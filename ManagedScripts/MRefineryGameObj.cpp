@@ -38,11 +38,6 @@ namespace RenSharp
 
 	}
 
-	IRefineryGameObj ^RefineryGameObj::AsRefineryGameObj()
-	{
-		return this;
-	}
-
 	void RefineryGameObj::DestroyHarvester()
 	{
 		InternalRefineryGameObjPointer->Destroy_Harvester();
@@ -92,7 +87,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew VehicleGameObj(IntPtr(result));
+			return safe_cast<IVehicleGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
 		}
 	}
 

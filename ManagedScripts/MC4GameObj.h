@@ -77,8 +77,6 @@ namespace RenSharp
 		public:
 			C4GameObj(IntPtr pointer);
 
-			IC4GameObj ^AsC4GameObj() override;
-
 			property IntPtr C4GameObjPointer
 			{
 				virtual IntPtr get() sealed;

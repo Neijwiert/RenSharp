@@ -69,18 +69,6 @@ namespace RenSharp
 
 		void InsertObserver(IUnmanagedContainer<IGameObjObserverClass^>^ observer);
 
-		IScriptableGameObj ^AsScriptableGameObj();
-
-		IDamageableGameObj ^AsDamageableGameObj();
-
-		IBuildingGameObj ^AsBuildingGameObj();
-
-		ISoldierGameObj ^AsSoldierGameObj();
-
-		IScriptZoneGameObj ^AsScriptZoneGameObj();
-
-		IReferenceableClass<IScriptableGameObj ^> ^AsReferenceableGameObj();
-
 		property IntPtr ReferenceableGameObjPointer
 		{
 			IntPtr get();
@@ -194,12 +182,6 @@ namespace RenSharp
 			virtual void InsertObserver(IGameObjObserverClass ^observer) sealed;
 			virtual void InsertObserver(IRenSharpGameObjObserverClass^ observer) sealed;
 			virtual void InsertObserver(IUnmanagedContainer<IGameObjObserverClass^>^ observer) sealed;
-			virtual IDamageableGameObj ^AsDamageableGameObj();
-			virtual IBuildingGameObj ^AsBuildingGameObj();
-			virtual ISoldierGameObj ^AsSoldierGameObj();
-			IScriptableGameObj ^AsScriptableGameObj() override;
-			virtual IScriptZoneGameObj ^AsScriptZoneGameObj();
-			virtual IReferenceableClass<IScriptableGameObj ^> ^AsReferenceableGameObj();
 
 			property IntPtr Pointer
 			{

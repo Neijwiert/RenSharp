@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	ISimpleGameObj ^SimpleGameObj::AsSimpleGameObj()
-	{
-		return this;
-	}
-
 	IntPtr SimpleGameObj::SimpleGameObjPointer::get()
 	{
 		return IntPtr(InternalSimpleGameObjPointer);
