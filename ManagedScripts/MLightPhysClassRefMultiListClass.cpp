@@ -126,7 +126,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew LightPhysClass(IntPtr(result));
+			return safe_cast<ILightPhysClass^>(PhysClass::CreatePhysClassWrapper(result));
 		}
 	}
 
@@ -139,7 +139,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew LightPhysClass(IntPtr(result));
+			return safe_cast<ILightPhysClass^>(PhysClass::CreatePhysClassWrapper(result));
 		}
 	}
 
@@ -152,7 +152,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew LightPhysClass(IntPtr(result));
+			return safe_cast<ILightPhysClass^>(PhysClass::CreatePhysClassWrapper(result));
 		}
 	}
 
@@ -188,6 +188,11 @@ namespace RenSharp
 		Pointer = IntPtr::Zero;
 
 		return true;
+	}
+
+	::GenericMultiListClass* LightPhysClassRefMultiListClass::InternalGenericMultiListClassPointer::get()
+	{
+		return InternalLightPhysClassRefMultiListClassPointer;
 	}
 
 	::RefMultiListClass<::LightPhysClass> *LightPhysClassRefMultiListClass::InternalLightPhysClassRefMultiListClassPointer::get()
@@ -227,7 +232,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew LightPhysClass(IntPtr(result));
+			return safe_cast<ILightPhysClass^>(PhysClass::CreatePhysClassWrapper(result));
 		}
 	}
 
@@ -240,7 +245,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew LightPhysClass(IntPtr(result));
+			return safe_cast<ILightPhysClass^>(PhysClass::CreatePhysClassWrapper(result));
 		}
 	}
 

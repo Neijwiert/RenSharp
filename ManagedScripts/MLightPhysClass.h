@@ -51,8 +51,6 @@ namespace RenSharp
 		public:
 			LightPhysClass(IntPtr pointer);
 
-			ILightPhysClass ^AsLightPhysClass() override;
-
 			property IntPtr LightPhysClassPointer
 			{
 				virtual IntPtr get() sealed;

@@ -190,6 +190,11 @@ namespace RenSharp
 		return true;
 	}
 
+	::GenericMultiListClass* MaterialEffectClassRefMultiListClass::InternalGenericMultiListClassPointer::get()
+	{
+		return InternalMaterialEffectClassRefMultiListClassPointer;
+	}
+
 	::RefMultiListClass<::MaterialEffectClass> *MaterialEffectClassRefMultiListClass::InternalMaterialEffectClassRefMultiListClassPointer::get()
 	{
 		return reinterpret_cast<::RefMultiListClass<::MaterialEffectClass> *>(Pointer.ToPointer());

@@ -109,7 +109,6 @@ namespace RenSharp
 		public:
 			MoveablePhysClass(IntPtr pointer);
 
-			IMoveablePhysClass ^AsMoveablePhysClass() override;
 			virtual void SetMass(float mass) sealed;
 			virtual bool CanTeleport(Matrix3D newTM, bool checkDynOnly, IMultiListClass<IPhysClass ^> ^resultList) sealed;
 			virtual bool CanTeleport(Matrix3D newTM, bool checkDynOnly) sealed;

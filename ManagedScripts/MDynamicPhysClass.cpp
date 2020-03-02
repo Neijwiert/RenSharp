@@ -59,11 +59,6 @@ namespace RenSharp
 
 	}
 
-	IDynamicPhysClass ^DynamicPhysClass::AsDynamicPhysClass()
-	{
-		return this;
-	}
-
 	IntPtr DynamicPhysClass::DynamicPhysClassPointer::get()
 	{
 		return IntPtr(InternalDynamicPhysClassPointer);

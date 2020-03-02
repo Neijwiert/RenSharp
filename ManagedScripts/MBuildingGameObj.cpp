@@ -213,7 +213,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew BuildingAggregateClass(IntPtr(result));
+			return safe_cast<IBuildingAggregateClass^>(PhysClass::CreatePhysClassWrapper(result));
 		}
 	}
 

@@ -64,6 +64,11 @@ namespace RenSharp
 		protected:
 			bool InternalDestroyPointer() override;
 
+			property ::GenericMultiListClass* InternalGenericMultiListClassPointer
+			{
+				::GenericMultiListClass* get() override;
+			}
+
 			property ::RefMultiListClass<::LightPhysClass> *InternalLightPhysClassRefMultiListClassPointer
 			{
 				virtual ::RefMultiListClass<::LightPhysClass> *get();

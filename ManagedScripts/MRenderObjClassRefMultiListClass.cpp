@@ -190,6 +190,11 @@ namespace RenSharp
 		return true;
 	}
 
+	::GenericMultiListClass* RenderObjClassRefMultiListClass::InternalGenericMultiListClassPointer::get()
+	{
+		return InternalRenderObjClassRefMultiListClassPointer;
+	}
+
 	::RefMultiListClass<::RenderObjClass>* RenderObjClassRefMultiListClass::InternalRenderObjClassRefMultiListClassPointer::get()
 	{
 		return reinterpret_cast<::RefMultiListClass<::RenderObjClass>*>(Pointer.ToPointer());

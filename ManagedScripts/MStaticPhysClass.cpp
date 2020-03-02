@@ -56,11 +56,6 @@ namespace RenSharp
 
 	}
 
-	IStaticPhysClass ^StaticPhysClass::AsStaticPhysClass()
-	{
-		return this;
-	}
-
 	bool StaticPhysClass::Intersects(OBBoxClass box)
 	{
 		::OBBoxClass boxBox;

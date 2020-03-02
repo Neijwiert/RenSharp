@@ -126,7 +126,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysClass(IntPtr(result));
+			return PhysClass::CreatePhysClassWrapper(result);
 		}
 	}
 
@@ -139,7 +139,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysClass(IntPtr(result));
+			return PhysClass::CreatePhysClassWrapper(result);
 		}
 	}
 
@@ -152,7 +152,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysClass(IntPtr(result));
+			return PhysClass::CreatePhysClassWrapper(result);
 		}
 	}
 
@@ -188,6 +188,11 @@ namespace RenSharp
 		Pointer = IntPtr::Zero;
 
 		return true;
+	}
+
+	::GenericMultiListClass* PhysClassRefMultiListClass::InternalGenericMultiListClassPointer::get()
+	{
+		return InternalPhysClassRefMultiListClassPointer;
 	}
 
 	::RefMultiListClass<::PhysClass>* PhysClassRefMultiListClass::InternalPhysClassRefMultiListClassPointer::get()
@@ -227,7 +232,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysClass(IntPtr(result));
+			return PhysClass::CreatePhysClassWrapper(result);
 		}
 	}
 
@@ -240,7 +245,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysClass(IntPtr(result));
+			return PhysClass::CreatePhysClassWrapper(result);
 		}
 	}
 

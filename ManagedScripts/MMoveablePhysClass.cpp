@@ -77,11 +77,6 @@ namespace RenSharp
 
 	}
 
-	IMoveablePhysClass ^MoveablePhysClass::AsMoveablePhysClass()
-	{
-		return this;
-	}
-
 	void MoveablePhysClass::SetMass(float mass)
 	{
 		InternalMoveablePhysClassPointer->Set_Mass(mass);
@@ -188,7 +183,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysClass(IntPtr(result));
+			return PhysClass::CreatePhysClassWrapper(result);
 		}
 	}
 
@@ -340,7 +335,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysClass(IntPtr(carrier));
+			return PhysClass::CreatePhysClassWrapper(carrier);
 		}
 	}
 

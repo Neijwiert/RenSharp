@@ -32,11 +32,6 @@ namespace RenSharp
 
 	}
 
-	ILightPhysClass ^LightPhysClass::AsLightPhysClass()
-	{
-		return this;
-	}
-
 	IntPtr LightPhysClass::LightPhysClassPointer::get()
 	{
 		return IntPtr(InternalLightPhysClassPointer);

@@ -31,6 +31,8 @@ limitations under the License.
 #include "MMaterialEffectClassRefMultiListClass.h"
 #include "MVector3.h"
 #include "MAABoxClass.h"
+#include "MBuildingAggregateClass.h"
+#include "MBuildingAggregateDefClass.h"
 
 namespace RenSharp
 {
@@ -39,6 +41,11 @@ namespace RenSharp
 	{
 		persistClass = gcnew PersistClass(IntPtr(InternalPersistClassPointer));
 		multiListObjectClass = gcnew MultiListObjectClass(IntPtr(InternalMultiListObjectClassPointer));
+	}
+
+	IPhysClass^ PhysClass::CreatePhysClassWrapper(IntPtr physClassPtr)
+	{
+		return CreatePhysClassWrapper(reinterpret_cast<::PhysClass*>(physClassPtr.ToPointer()));
 	}
 
 	bool PhysClass::Equals(Object ^other)
@@ -539,32 +546,6 @@ namespace RenSharp
 		InternalPhysClassPointer->Force_Awake();
 	}
 
-	IDynamicPhysClass ^PhysClass::AsDynamicPhysClass()
-	{
-		auto result = InternalPhysClassPointer->As_DynamicPhysClass();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew DynamicPhysClass(IntPtr(result));
-		}
-	}
-
-	IMoveablePhysClass ^PhysClass::AsMoveablePhysClass()
-	{
-		auto result = InternalPhysClassPointer->As_MoveablePhysClass();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew MoveablePhysClass(IntPtr(result));
-		}
-	}
-
 	IntPtr PhysClass::AsPhys3Class()
 	{
 		return IntPtr(InternalPhysClassPointer->As_Phys3Class());
@@ -610,32 +591,6 @@ namespace RenSharp
 		return IntPtr(InternalPhysClassPointer->As_VTOLVehicleClass());
 	}
 
-	IStaticPhysClass ^PhysClass::AsStaticPhysClass()
-	{
-		auto result = InternalPhysClassPointer->As_StaticPhysClass();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew StaticPhysClass(IntPtr(result));
-		}
-	}
-
-	IStaticAnimPhysClass ^PhysClass::AsStaticAnimPhysClass()
-	{
-		auto result = InternalPhysClassPointer->As_StaticAnimPhysClass();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew StaticAnimPhysClass(IntPtr(result));
-		}
-	}
-
 	IntPtr PhysClass::AsElevatorPhysClass()
 	{
 		return IntPtr(InternalPhysClassPointer->As_ElevatorPhysClass());
@@ -651,19 +606,6 @@ namespace RenSharp
 		return IntPtr(InternalPhysClassPointer->As_DoorPhysClass());
 	}
 
-	IDecorationPhysClass ^PhysClass::AsDecorationPhysClass()
-	{
-		auto result = InternalPhysClassPointer->As_DecorationPhysClass();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew DecorationPhysClass(IntPtr(result));
-		}
-	}
-
 	IntPtr PhysClass::AsTimedDecorationPhysClass()
 	{
 		return IntPtr(InternalPhysClassPointer->As_TimedDecorationPhysClass());
@@ -672,19 +614,6 @@ namespace RenSharp
 	IntPtr PhysClass::AsDynamicAnimPhysClass()
 	{
 		return IntPtr(InternalPhysClassPointer->As_DynamicAnimPhysClass());
-	}
-
-	ILightPhysClass ^PhysClass::AsLightPhysClass()
-	{
-		auto result = InternalPhysClassPointer->As_LightPhysClass();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew LightPhysClass(IntPtr(result));
-		}
 	}
 
 	IntPtr PhysClass::AsRenderObjPhysClass()
@@ -1052,6 +981,57 @@ namespace RenSharp
 	void PhysClass::LastVisibleFrame::set(unsigned int value)
 	{
 		InternalPhysClassPointer->Set_Last_Visible_Frame(value);
+	}
+
+	IPhysClass^ PhysClass::CreatePhysClassWrapper(::PhysClass* physClassPtr)
+	{
+		if (physClassPtr == nullptr)
+		{
+			throw gcnew ArgumentNullException("physClassPtr");
+		}
+
+		auto lightPhysClassPtr = physClassPtr->As_LightPhysClass();
+		if (lightPhysClassPtr != nullptr)
+		{
+			return gcnew LightPhysClass(IntPtr(lightPhysClassPtr));
+		}
+
+		auto decorationPhysClassPtr = physClassPtr->As_DecorationPhysClass();
+		if (decorationPhysClassPtr != nullptr)
+		{
+			return gcnew DecorationPhysClass(IntPtr(decorationPhysClassPtr));
+		}
+
+		auto moveablePhysClassPtr = physClassPtr->As_MoveablePhysClass();
+		if (moveablePhysClassPtr != nullptr)
+		{
+			return gcnew MoveablePhysClass(IntPtr(moveablePhysClassPtr));
+		}
+
+		auto dynamicPhysClassPtr = physClassPtr->As_DynamicPhysClass();
+		if (dynamicPhysClassPtr != nullptr)
+		{
+			return gcnew DynamicPhysClass(IntPtr(dynamicPhysClassPtr));
+		}
+
+		auto staticAnimPhysClassPtr = physClassPtr->As_StaticAnimPhysClass();
+		if (staticAnimPhysClassPtr != nullptr)
+		{
+			if (physClassPtr->Get_Definition()->Get_Class_ID() == IBuildingAggregateDefClass::BuildingAggregateDefClassClassID)
+			{
+				return gcnew BuildingAggregateClass(IntPtr(staticAnimPhysClassPtr));
+			}
+
+			return gcnew StaticAnimPhysClass(IntPtr(staticAnimPhysClassPtr));
+		}
+
+		auto staticPhysClassPtr = physClassPtr->As_StaticPhysClass();
+		if (staticPhysClassPtr != nullptr)
+		{
+			return gcnew StaticPhysClass(IntPtr(staticPhysClassPtr));
+		}
+		
+		return gcnew PhysClass(IntPtr(physClassPtr));
 	}
 
 	bool PhysClass::GetFlag(unsigned int flag)

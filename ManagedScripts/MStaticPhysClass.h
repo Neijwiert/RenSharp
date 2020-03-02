@@ -72,7 +72,6 @@ namespace RenSharp
 		public:
 			StaticPhysClass(IntPtr pointer);
 
-			IStaticPhysClass ^AsStaticPhysClass() override;
 			virtual bool Intersects(OBBoxClass box) sealed;
 			virtual void SaveState(IChunkSaveClass ^cSave) sealed;
 			virtual void LoadState(IChunkLoadClass ^cLoad) sealed;

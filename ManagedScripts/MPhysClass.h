@@ -198,10 +198,6 @@ namespace RenSharp
 
 		void ForceAwake();
 
-		IDynamicPhysClass ^AsDynamicPhysClass();
-
-		IMoveablePhysClass ^AsMoveablePhysClass();
-
 		IntPtr AsPhys3Class();
 
 		IntPtr AsHumanPhysClass();
@@ -220,23 +216,15 @@ namespace RenSharp
 
 		IntPtr AsVTOLVehicleClass();
 
-		IStaticPhysClass ^AsStaticPhysClass();
-
-		IStaticAnimPhysClass ^AsStaticAnimPhysClass();
-
 		IntPtr AsElevatorPhysClass();
 
 		IntPtr AsDamageableStaticPhysClass();
 
 		IntPtr AsDoorPhysClass();
 
-		IDecorationPhysClass ^AsDecorationPhysClass();
-
 		IntPtr AsTimedDecorationPhysClass();
 
 		IntPtr AsDynamicAnimPhysClass();
-
-		ILightPhysClass ^AsLightPhysClass();
 
 		IntPtr AsRenderObjPhysClass();
 
@@ -441,6 +429,8 @@ namespace RenSharp
 		public:
 			PhysClass(IntPtr pointer);
 
+			static IPhysClass^ CreatePhysClassWrapper(IntPtr physClassPtr);
+
 			bool Equals(Object ^other) override;
 
 			virtual void OnPostLoad() sealed;
@@ -479,8 +469,6 @@ namespace RenSharp
 			virtual void DecIgnoreCounter() sealed;
 			virtual void EnableDebugDisplay(bool onoff) sealed;
 			virtual void ForceAwake() sealed;
-			virtual IDynamicPhysClass ^AsDynamicPhysClass();
-			virtual IMoveablePhysClass ^AsMoveablePhysClass();
 			virtual IntPtr AsPhys3Class();
 			virtual IntPtr AsHumanPhysClass();
 			virtual IntPtr AsRigidBodyClass();
@@ -490,15 +478,11 @@ namespace RenSharp
 			virtual IntPtr AsMotorcycleClass();
 			virtual IntPtr AsTrackedVehicleClass();
 			virtual IntPtr AsVTOLVehicleClass();
-			virtual IStaticPhysClass ^AsStaticPhysClass();
-			virtual IStaticAnimPhysClass ^AsStaticAnimPhysClass();
 			virtual IntPtr AsElevatorPhysClass();
 			virtual IntPtr AsDamageableStaticPhysClass();
 			virtual IntPtr AsDoorPhysClass();
-			virtual IDecorationPhysClass ^AsDecorationPhysClass();
 			virtual IntPtr AsTimedDecorationPhysClass();
 			virtual IntPtr AsDynamicAnimPhysClass();
-			virtual ILightPhysClass ^AsLightPhysClass();
 			virtual IntPtr AsRenderObjPhysClass();
 			virtual IntPtr AsProjectileClass();
 			virtual IntPtr AsAccessiblePhysClass();
@@ -702,6 +686,9 @@ namespace RenSharp
 				virtual unsigned int get() sealed;
 				virtual void set(unsigned int value) sealed;
 			}
+
+		internal:
+			static IPhysClass^ CreatePhysClassWrapper(::PhysClass* physClassPtr);
 
 		protected:
 			bool GetFlag(unsigned int flag);

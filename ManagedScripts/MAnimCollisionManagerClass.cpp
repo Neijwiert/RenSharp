@@ -473,7 +473,7 @@ namespace RenSharp
 
 		auto &parent = helper->GetParent();
 
-		return gcnew PhysClass(IntPtr(&parent));
+		return PhysClass::CreatePhysClassWrapper(&parent);
 	}
 
 	IAnimCollisionManagerClass::AnimModeType AnimCollisionManagerClass::AnimationMode::get()

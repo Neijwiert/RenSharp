@@ -129,7 +129,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew PhysClass(IntPtr(result));
+			return PhysClass::CreatePhysClassWrapper(result);
 		}
 	}
 

@@ -262,8 +262,16 @@ class ObserverImpClass;
 #include <AABTreeCull.h>
 #include <GridCull.h>
 #include <MixFileFactoryClass.h>
-#include <PhysicsSceneClass.h>
 #include <CriticalSectionClass.h>
+
+// Temporary fix until new TT version is pushed
+#pragma push_macro("TT_EXPORTS")
+#undef TT_EXPORTS
+#define TT_EXPORTS
+
+#include <PhysicsSceneClass.h>
+
+#pragma pop_macro("TT_EXPORTS")
 
 #pragma warning(pop) 
 #pragma managed(pop)

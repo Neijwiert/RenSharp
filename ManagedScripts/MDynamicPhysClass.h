@@ -46,8 +46,6 @@ namespace RenSharp
 		public:
 			DynamicPhysClass(IntPtr pointer);
 
-			IDynamicPhysClass ^AsDynamicPhysClass() override;
-
 			property IntPtr DynamicPhysClassPointer
 			{
 				virtual IntPtr get() sealed;

@@ -59,11 +59,6 @@ namespace RenSharp
 
 	}
 
-	IStaticAnimPhysClass ^StaticAnimPhysClass::AsStaticAnimPhysClass()
-	{
-		return this;
-	}
-
 	IntPtr StaticAnimPhysClass::StaticAnimPhysClassPointer::get()
 	{
 		return IntPtr(InternalStaticAnimPhysClassPointer);

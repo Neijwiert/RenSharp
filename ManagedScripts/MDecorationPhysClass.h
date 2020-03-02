@@ -52,8 +52,6 @@ namespace RenSharp
 		public:
 			DecorationPhysClass(IntPtr pointer);
 
-			IDecorationPhysClass ^AsDecorationPhysClass() override;
-
 			property IntPtr DecorationPhysClassPointer
 			{
 				virtual IntPtr get() sealed;

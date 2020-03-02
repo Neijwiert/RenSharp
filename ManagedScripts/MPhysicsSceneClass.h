@@ -25,7 +25,16 @@ limitations under the License.
 #pragma managed(push, off)
 #pragma warning(push)
 #pragma warning(disable : 4251 4244 26495 26454)
+
+// Temporary fix until new TT version is pushed
+#pragma push_macro("TT_EXPORTS")
+#undef TT_EXPORTS
+#define TT_EXPORTS
+
 #include <PhysicsSceneClass.h>
+
+#pragma pop_macro("TT_EXPORTS")
+
 #pragma warning(pop) 
 #pragma managed(pop)
 

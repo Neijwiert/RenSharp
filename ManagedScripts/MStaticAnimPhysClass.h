@@ -53,8 +53,6 @@ namespace RenSharp
 		public:
 			StaticAnimPhysClass(IntPtr pointer);
 
-			IStaticAnimPhysClass ^AsStaticAnimPhysClass() override;
-
 			property IntPtr StaticAnimPhysClassPointer
 			{
 				virtual IntPtr get() sealed;

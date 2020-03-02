@@ -35,11 +35,6 @@ namespace RenSharp
 
 	}
 
-	IDecorationPhysClass ^DecorationPhysClass::AsDecorationPhysClass()
-	{
-		return this;
-	}
-
 	IntPtr DecorationPhysClass::DecorationPhysClassPointer::get()
 	{
 		return IntPtr(InternalDecorationPhysClassPointer);
