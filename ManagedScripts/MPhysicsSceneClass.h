@@ -533,6 +533,21 @@ namespace RenSharp
 			unsigned int get();
 			void set(unsigned int value);
 		}
+
+		property Collections::Generic::IEnumerable<IPhysClass^>^ DynamicObjects
+		{
+			Collections::Generic::IEnumerable<IPhysClass^>^ get();
+		}
+
+		property Collections::Generic::IEnumerable<IPhysClass^>^ StaticObjects
+		{
+			Collections::Generic::IEnumerable<IPhysClass^>^ get();
+		}
+
+		property Collections::Generic::IEnumerable<IPhysClass^>^ LightObjects
+		{
+			Collections::Generic::IEnumerable<IPhysClass^>^ get();
+		}
 	};
 
 	public ref class PhysicsSceneClass : public SceneClass, public IPhysicsSceneClass
@@ -716,6 +731,21 @@ namespace RenSharp
 			{
 				virtual unsigned int get() sealed;
 				virtual void set(unsigned int value) sealed;
+			}
+
+			property Collections::Generic::IEnumerable<IPhysClass^>^ DynamicObjects
+			{
+				virtual Collections::Generic::IEnumerable<IPhysClass^>^ get() sealed;
+			}
+
+			property Collections::Generic::IEnumerable<IPhysClass^>^ StaticObjects
+			{
+				virtual Collections::Generic::IEnumerable<IPhysClass^>^ get() sealed;
+			}
+
+			property Collections::Generic::IEnumerable<IPhysClass^>^ LightObjects
+			{
+				virtual  Collections::Generic::IEnumerable<IPhysClass^>^ get() sealed;
 			}
 
 		protected:

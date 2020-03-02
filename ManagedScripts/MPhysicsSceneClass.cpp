@@ -563,6 +563,21 @@ namespace RenSharp
 		InternalPhysicsSceneClassPointer->CurrentFrameNumber = value;
 	}
 
+	Collections::Generic::IEnumerable<IPhysClass^>^ PhysicsSceneClass::DynamicObjects::get()
+	{
+		return ObjList;
+	}
+
+	Collections::Generic::IEnumerable<IPhysClass^>^ PhysicsSceneClass::StaticObjects::get()
+	{
+		return StaticObjList;
+	}
+
+	Collections::Generic::IEnumerable<IPhysClass^>^ PhysicsSceneClass::LightObjects::get()
+	{
+		return StaticLightList;
+	}
+
 	void PhysicsSceneClass::InternalVisReset()
 	{
 		auto helper = reinterpret_cast<PhysicsSceneClassHelper*>(InternalPhysicsSceneClassPointer);
