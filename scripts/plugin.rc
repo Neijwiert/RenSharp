@@ -71,12 +71,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Black-Cell.net"
             VALUE "FileDescription", "Dragonade Plugin"
-            VALUE "FileVersion", "1.9"
+            VALUE "FileVersion", "1.10.1"
             VALUE "LegalCopyright", "Copyright (C) 2017 Black-Cell.net"
             VALUE "InternalName", "Dragonade Plugin"
             VALUE "OriginalFilename", ""
             VALUE "ProductName", "Dragonade Plugin"
-            VALUE "ProductVersion", "1.9"
+            VALUE "ProductVersion", "1.10.1"
         END
     END
     BLOCK "VarFileInfo"

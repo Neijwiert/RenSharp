@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Neijwiert.RenSharp</id>
-    <version>1.4.0.0</version>
+    <version>1.5.0.0</version>
     <authors>Neijwiert</authors>
     <owners>Neijwiert</owners>
     <license type="expression">Apache-2.0</license>
@@ -10,12 +10,21 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C++/CLI wrapper for Command and Conquer Renegade Dragonade FDS manager</description>
     <releaseNotes>
-	- Resolved issue https://github.com/Neijwiert/RenSharp/issues/4
-	- Updated to Draganade 1.100
-	- Added missing methods in ArmorWarheadManager
-	- Added support for generating dump files when an event fails fatally.
-	- Added HRESULT value to messages when initialization fails
-	- Made the messages produced by the unmanaged RenSharp plugin more verbose.
+	- Fixed wrongly implemented Send___ engine calls. They should not take ownership of the created cNetEvent instances.
+	- Changed the signature of SendPlayerKillMessage and SendPurchaseResponse to return the proper class instances in stead of IntPtrs
+	- Updated to DA1.10
+	- Fixed RenSharp initialization not properly checking the result of IClrRuntimeHost::GetVersionString
+	- Fixed issue where an IUnmanagedAttachable could be attached, but not registered.
+	- It is now possible to change some values dynamically in chat commands, key hooks and console functions. You can now also get the registered chat command in an RenSharpEventClass.
+	- Made sure to write dump files as an invariant culture date time.
+	- Resolved issue https://github.com/Neijwiert/RenSharp/issues/5
+	- Resolved issue https://github.com/Neijwiert/RenSharp/issues/7
+	- Added method DefinitionMgrClass::GetDefinitions, which returns an IEnumerable<IDefinition> for all definitions.
+	- Updated to DA1.10.1
+	- Resolved issue https://github.com/Neijwiert/RenSharp/issues/8
+	- Resolved issue https://github.com/Neijwiert/RenSharp/issues/10 
+	- Fixed a missing override for dynamic pointer casting in some RefMultiListClasses.
+	- Added some enumerable helper properties in PhysicsSceneClass
 	</releaseNotes>
     <copyright>Copyright 2020 Neijwiert</copyright>
     <tags>RenSharp Renegade</tags>
