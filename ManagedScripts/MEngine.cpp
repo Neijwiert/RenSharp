@@ -2605,7 +2605,7 @@ namespace RenSharp
 		}
 
 		::Update_Network_Object(
-			reinterpret_cast<::ScriptableGameObj *>(obj->NetworkObjectClassPointer.ToPointer()));
+			reinterpret_cast<::NetworkObjectClass *>(obj->NetworkObjectClassPointer.ToPointer()));
 	}
 
 	void Engine::UpdateNetworkObjectPlayer(INetworkObjectClass ^object, int id)
