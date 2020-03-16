@@ -20,18 +20,18 @@ limitations under the License.
 namespace RenSharp
 {
 	RenSharpTimerStruct::RenSharpTimerStruct(ITimerInterface^ owner, TimeSpan duration, bool repeat, int number, Object^ data)
-		: owner(owner), startTime(DateTime::Now), duration(duration), repeat(repeat), number(number), data(data), action(nullptr)
+		: owner(owner), startTime(::Commands->Get_Sync_Time()), duration(duration), repeat(repeat), number(number), data(data), action(nullptr)
 	{
 	}
 
 	RenSharpTimerStruct::RenSharpTimerStruct(ITimerInterface^ owner, TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action)
-		: owner(owner), startTime(DateTime::Now), duration(duration), repeat(repeat), number(int::MinValue), data(nullptr), action(action)
+		: owner(owner), startTime(::Commands->Get_Sync_Time()), duration(duration), repeat(repeat), number(int::MinValue), data(nullptr), action(action)
 	{
 	}
 
 	void RenSharpTimerStruct::Reset()
 	{
-		startTime = DateTime::Now;
+		startTime = ::Commands->Get_Sync_Time();
 	}
 
 	ITimerInterface^ RenSharpTimerStruct::Owner::get()
@@ -39,7 +39,7 @@ namespace RenSharp
 		return owner;
 	}
 
-	DateTime RenSharpTimerStruct::StartTime::get()
+	unsigned int RenSharpTimerStruct::StartTime::get()
 	{
 		return startTime;
 	}

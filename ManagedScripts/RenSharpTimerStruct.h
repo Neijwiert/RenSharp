@@ -26,7 +26,7 @@ namespace RenSharp
 	{
 		private:
 			ITimerInterface ^owner;
-			DateTime startTime;
+			unsigned int startTime;
 			TimeSpan duration;
 			bool repeat;
 			int number;
@@ -44,9 +44,9 @@ namespace RenSharp
 				ITimerInterface ^get();
 			}
 
-			property DateTime StartTime
+			property unsigned int StartTime
 			{
-				DateTime get();
+				unsigned int get();
 			}
 
 			property TimeSpan Duration
