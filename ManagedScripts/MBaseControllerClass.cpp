@@ -30,6 +30,19 @@ namespace RenSharp
 
 	}
 
+	IBaseControllerClass^ BaseControllerClass::FindBase(int team)
+	{
+		auto result = ::BaseControllerClass::Find_Base(team);
+		if (result == nullptr)
+		{
+			return nullptr;
+		}
+		else
+		{
+			return gcnew BaseControllerClass(IntPtr(result));
+		}
+	}
+
 	IBuildingGameObj ^BaseControllerClass::FindBuilding(unsigned int type)
 	{
 		auto result = InternalBaseControllerClassPointer->Find_Building(type);

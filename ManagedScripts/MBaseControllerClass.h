@@ -116,6 +116,8 @@ namespace RenSharp
 		public:
 			BaseControllerClass(IntPtr pointer);
 
+			static IBaseControllerClass^ FindBase(int team);
+
 			virtual IBuildingGameObj ^FindBuilding(unsigned int type) sealed;
 			virtual void DestroyBase() sealed;
 
