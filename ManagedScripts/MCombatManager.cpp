@@ -17,6 +17,13 @@ limitations under the License.
 #include "stdafx.h"
 #include "MCombatManager.h"
 
+#pragma managed(push, off)
+#pragma warning(push)
+#pragma warning(disable : 4251 4244 26495 26454 4091)
+REF_DEF2(bool, CombatManager::FriendlyFirePermitted, 0x00855EFC, 0x008550E4);
+#pragma warning(pop) 
+#pragma managed(pop)
+
 #include "Imports.h"
 #include "MArmedGameObj.h"
 #include "MPhysicalGameObj.h"
@@ -191,5 +198,15 @@ namespace RenSharp
 	bool CombatManager::IsGameplayPermitted::get()
 	{
 		return ::CombatManager::Is_Gameplay_Permitted();
+	}
+
+	bool CombatManager::IsFriendlyFirePermitted::get()
+	{
+		return ::CombatManager::Is_Friendly_Fire_Permitted();
+	}
+
+	void CombatManager::IsFriendlyFirePermitted::set(bool value)
+	{
+		::CombatManager::Set_Friendly_Fire_Permitted(value);
 	}
 }

@@ -132,5 +132,11 @@ namespace RenSharp
 			{
 				bool get();
 			}
+
+			static property bool IsFriendlyFirePermitted
+			{
+				bool get();
+				void set(bool value);
+			}
 	};
 }
