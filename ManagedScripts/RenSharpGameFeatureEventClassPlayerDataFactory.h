@@ -577,6 +577,16 @@ namespace RenSharp
 				RenSharpTimerManager::StartTimer(this, number, duration);
 			}
 
+			virtual void StartTimer(TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action) sealed
+			{
+				RenSharpTimerManager::StartTimer(this, duration, repeat, action);
+			}
+
+			virtual void StartTimer(TimeSpan duration, System::Action<RenSharpTimerStruct^>^ action) sealed
+			{
+				RenSharpTimerManager::StartTimer(this, duration, action);
+			}
+
 			virtual void StopTimer(int number, Object^ data) sealed
 			{
 				RenSharpTimerManager::StopTimer(this, number, data);
@@ -596,6 +606,11 @@ namespace RenSharp
 				RenSharpTimerManager::StopTimer(this, number);
 
 				InternalDAEventClassPointer->Stop_Timer(number);
+			}
+
+			virtual void StopTimer(System::Action<RenSharpTimerStruct^>^ action) sealed
+			{
+				RenSharpTimerManager::StopTimer(this, action);
 			}
 
 			virtual bool IsTimer(int number, Object^ data) sealed
@@ -630,6 +645,11 @@ namespace RenSharp
 				}
 
 				return InternalDAEventClassPointer->Is_Timer(number);
+			}
+
+			virtual bool IsTimer(System::Action<RenSharpTimerStruct^>^ action) sealed
+			{
+				return RenSharpTimerManager::IsTimer(this, action);
 			}
 
 			virtual void ClearTimers() sealed

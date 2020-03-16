@@ -561,6 +561,16 @@ namespace RenSharp
 		RenSharpTimerManager::StartTimer(this, number, duration);
 	}
 
+	void RenSharpGameModeEventClass::StartTimer(TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StartTimer(this, duration, repeat, action);
+	}
+
+	void RenSharpGameModeEventClass::StartTimer(TimeSpan duration, System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StartTimer(this, duration, action);
+	}
+
 	void RenSharpGameModeEventClass::StopTimer(int number, Object^ data)
 	{
 		RenSharpTimerManager::StopTimer(this, number, data);
@@ -580,6 +590,11 @@ namespace RenSharp
 		RenSharpTimerManager::StopTimer(this, number);
 
 		InternalDAEventClassPointer->Stop_Timer(number);
+	}
+
+	void RenSharpGameModeEventClass::StopTimer(System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StopTimer(this, action);
 	}
 
 	bool RenSharpGameModeEventClass::IsTimer(int number, Object^ data)
@@ -614,6 +629,11 @@ namespace RenSharp
 		}
 
 		return InternalDAEventClassPointer->Is_Timer(number);
+	}
+
+	bool RenSharpGameModeEventClass::IsTimer(System::Action<RenSharpTimerStruct^>^ action)
+	{
+		return RenSharpTimerManager::IsTimer(this, action);
 	}
 
 	void RenSharpGameModeEventClass::ClearTimers()

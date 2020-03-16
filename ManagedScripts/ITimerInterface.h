@@ -32,13 +32,21 @@ namespace RenSharp
 
 		void StartTimer(int number, TimeSpan duration);
 
+		void StartTimer(TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action);
+
+		void StartTimer(TimeSpan duration, System::Action<RenSharpTimerStruct^>^ action);
+
 		void StopTimer(int number, Object ^data);
 
 		void StopTimer(int number);
 
+		void StopTimer(System::Action<RenSharpTimerStruct^>^ action);
+
 		bool IsTimer(int number, Object ^data);
 
 		bool IsTimer(int number);
+
+		bool IsTimer(System::Action<RenSharpTimerStruct^>^ action);
 
 		void ClearTimers();
 
