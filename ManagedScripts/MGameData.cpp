@@ -17,6 +17,16 @@ limitations under the License.
 #include "stdafx.h"
 #include "MGameData.h"
 
+#pragma managed(push, off)
+#pragma warning(push)
+#pragma warning(disable : 4251 4244 26495 26454)
+
+REF_DEF2(bool, cGameData::IsManualExit, 0x0082F125, 0x0082E30D);
+REF_DEF2(bool, cGameData::IsManualRestart, 0x0082F124, 0x0082E30C);
+
+#pragma warning(pop) 
+#pragma managed(pop)
+
 #include "Imports.h"
 #include "UnmanagedContainer.h"
 #include "McPlayer.h"
@@ -467,6 +477,26 @@ namespace RenSharp
 	bool cGameData::IsValidPlayerType(int playerType)
 	{
 		return InternalcGameDataPointer->Is_Valid_Player_Type(playerType);
+	}
+
+	bool cGameData::IsManualExit::get()
+	{
+		return ::cGameData::Is_Manual_Exit();
+	}
+
+	void cGameData::IsManualExit::set(bool value)
+	{
+		::cGameData::Set_Manual_Exit(value);
+	}
+
+	bool cGameData::IsManualRestart::get()
+	{
+		return ::cGameData::Is_Manual_Restart();
+	}
+
+	void cGameData::IsManualRestart::set(bool value)
+	{
+		::cGameData::Set_Manual_Restart(value);
 	}
 
 	IntPtr cGameData::cGameDataPointer::get()

@@ -730,6 +730,18 @@ namespace RenSharp
 			virtual void SetMapCyle(int map, String^ name) sealed;
 			virtual bool IsValidPlayerType(int playerType) sealed;
 
+			static property bool IsManualExit
+			{
+				bool get();
+				void set(bool value);
+			}
+
+			static property bool IsManualRestart
+			{
+				bool get();
+				void set(bool value);
+			}
+
 			property IntPtr cGameDataPointer
 			{
 				virtual IntPtr get() sealed;
