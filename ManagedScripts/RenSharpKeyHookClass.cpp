@@ -89,6 +89,16 @@ namespace RenSharp
 		RenSharpTimerManager::StartTimer(this, number, duration);
 	}
 
+	void RenSharpKeyHookClass::StartTimer(TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StartTimer(this, duration, repeat, action);
+	}
+
+	void RenSharpKeyHookClass::StartTimer(TimeSpan duration, System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StartTimer(this, duration, action);
+	}
+
 	void RenSharpKeyHookClass::StopTimer(int number, Object^ data)
 	{
 		RenSharpTimerManager::StopTimer(this, number, data);
@@ -99,6 +109,11 @@ namespace RenSharp
 		RenSharpTimerManager::StopTimer(this, number);
 	}
 
+	void RenSharpKeyHookClass::StopTimer(System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StopTimer(this, action);
+	}
+
 	bool RenSharpKeyHookClass::IsTimer(int number, Object^ data)
 	{
 		return RenSharpTimerManager::IsTimer(this, number, data);
@@ -107,6 +122,11 @@ namespace RenSharp
 	bool RenSharpKeyHookClass::IsTimer(int number)
 	{
 		return RenSharpTimerManager::IsTimer(this, number);
+	}
+
+	bool RenSharpKeyHookClass::IsTimer(System::Action<RenSharpTimerStruct^>^ action)
+	{
+		return RenSharpTimerManager::IsTimer(this, action);
 	}
 
 	void RenSharpKeyHookClass::ClearTimers()

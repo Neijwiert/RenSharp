@@ -31,9 +31,11 @@ namespace RenSharp
 			bool repeat;
 			int number;
 			Object ^data;
+			Action<RenSharpTimerStruct^>^ action;
 
 		public:
 			RenSharpTimerStruct(ITimerInterface ^owner, TimeSpan duration, bool repeat, int number, Object ^data);
+			RenSharpTimerStruct(ITimerInterface^ owner, TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action);
 
 			void Reset();
 
@@ -69,6 +71,12 @@ namespace RenSharp
 			{
 				Object ^get();
 				void set(Object ^value);
+			}
+
+			property System::Action<RenSharpTimerStruct^>^ Action
+			{
+				System::Action<RenSharpTimerStruct^>^ get();
+				void set(System::Action<RenSharpTimerStruct^>^ value);
 			}
 	};
 }

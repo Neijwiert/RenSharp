@@ -368,6 +368,16 @@ namespace RenSharp
 		RenSharpTimerManager::StartTimer(this, number, duration);
 	}
 
+	void RenSharpGameObjObserverClass::StartTimer(TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StartTimer(this, duration, repeat, action);
+	}
+
+	void RenSharpGameObjObserverClass::StartTimer(TimeSpan duration, System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StartTimer(this, duration, action);
+	}
+
 	void RenSharpGameObjObserverClass::StopTimer(int number, Object^ data)
 	{
 		RenSharpTimerManager::StopTimer(this, number, data);
@@ -382,6 +392,11 @@ namespace RenSharp
 		InternalDAGameObjObserverClassPointer->Stop_Timer(number);
 	}
 
+	void RenSharpGameObjObserverClass::StopTimer(System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StopTimer(this, action);
+	}
+
 	bool RenSharpGameObjObserverClass::IsTimer(int number, Object^ data)
 	{
 		return (RenSharpTimerManager::IsTimer(this, number, data) ||
@@ -392,6 +407,11 @@ namespace RenSharp
 	{
 		return (RenSharpTimerManager::IsTimer(this, number) ||
 			InternalDAGameObjObserverClassPointer->Is_Timer(number));
+	}
+
+	bool RenSharpGameObjObserverClass::IsTimer(System::Action<RenSharpTimerStruct^>^ action)
+	{
+		return RenSharpTimerManager::IsTimer(this, action);
 	}
 
 	void RenSharpGameObjObserverClass::ClearTimers()

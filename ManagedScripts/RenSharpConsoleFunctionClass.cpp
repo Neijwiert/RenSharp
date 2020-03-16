@@ -134,6 +134,16 @@ namespace RenSharp
 		RenSharpTimerManager::StartTimer(this, number, duration);
 	}
 
+	void RenSharpConsoleFunctionClass::StartTimer(TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StartTimer(this, duration, repeat, action);
+	}
+
+	void RenSharpConsoleFunctionClass::StartTimer(TimeSpan duration, System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StartTimer(this, duration, action);
+	}
+
 	void RenSharpConsoleFunctionClass::StopTimer(int number, Object^ data)
 	{
 		RenSharpTimerManager::StopTimer(this, number, data);
@@ -144,6 +154,11 @@ namespace RenSharp
 		RenSharpTimerManager::StopTimer(this, number);
 	}
 
+	void RenSharpConsoleFunctionClass::StopTimer(System::Action<RenSharpTimerStruct^>^ action)
+	{
+		RenSharpTimerManager::StopTimer(this, action);
+	}
+
 	bool RenSharpConsoleFunctionClass::IsTimer(int number, Object^ data)
 	{
 		return RenSharpTimerManager::IsTimer(this, number, data);
@@ -152,6 +167,11 @@ namespace RenSharp
 	bool RenSharpConsoleFunctionClass::IsTimer(int number)
 	{
 		return RenSharpTimerManager::IsTimer(this, number);
+	}
+
+	bool RenSharpConsoleFunctionClass::IsTimer(System::Action<RenSharpTimerStruct^>^ action)
+	{
+		return RenSharpTimerManager::IsTimer(this, action);
 	}
 
 	void RenSharpConsoleFunctionClass::ClearTimers()

@@ -82,10 +82,14 @@ namespace RenSharp
 			virtual void StartTimer(int number, TimeSpan duration, bool repeat, Object^ data) sealed;
 			virtual void StartTimer(int number, TimeSpan duration, bool repeat) sealed;
 			virtual void StartTimer(int number, TimeSpan duration) sealed;
+			virtual void StartTimer(TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action) sealed;
+			virtual void StartTimer(TimeSpan duration, System::Action<RenSharpTimerStruct^>^ action) sealed;
 			virtual void StopTimer(int number, Object^ data) sealed;
 			virtual void StopTimer(int number) sealed;
+			virtual void StopTimer(System::Action<RenSharpTimerStruct^>^ action) sealed;
 			virtual bool IsTimer(int number, Object^ data) sealed;
 			virtual bool IsTimer(int number) sealed;
+			virtual bool IsTimer(System::Action<RenSharpTimerStruct^>^ action) sealed;
 			virtual void ClearTimers() sealed;
 
 			virtual void InitUnmanagedAttachable() sealed;

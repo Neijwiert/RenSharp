@@ -41,10 +41,14 @@ namespace RenSharp
 			static void StartTimer(ITimerInterface^ owner, int number, TimeSpan duration, bool repeat, Object^ data);
 			static void StartTimer(ITimerInterface^ owner, int number, TimeSpan duration, bool repeat);
 			static void StartTimer(ITimerInterface^ owner, int number, TimeSpan duration);
+			static void StartTimer(ITimerInterface^ owner, TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action);
+			static void StartTimer(ITimerInterface^ owner, TimeSpan duration, System::Action<RenSharpTimerStruct^>^ action);
 			static void StopTimer(ITimerInterface^ owner, int number, Object^ data);
 			static void StopTimer(ITimerInterface^ owner, int number);
+			static void StopTimer(ITimerInterface^ owner, System::Action<RenSharpTimerStruct^>^ action);
 			static bool IsTimer(ITimerInterface^ owner, int number, Object^ data);
 			static bool IsTimer(ITimerInterface^ owner, int number);
+			static bool IsTimer(ITimerInterface^ owner, System::Action<RenSharpTimerStruct^>^ action);
 			static void ClearTimers(ITimerInterface^ owner);
 			static Collections::Generic::IEnumerable<RenSharpTimerStruct^>^ GetTimers(ITimerInterface^ owner);
 	};
