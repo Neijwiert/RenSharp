@@ -58,7 +58,7 @@ namespace RenSharp
 				RenSharpTimerStruct^ currentTimer = pair.Value[index];
 
 				unsigned int elapsedTime = ::Commands->Get_Sync_Time() - currentTimer->StartTime;
-				if (elapsedTime >= static_cast<unsigned int>(currentTimer->Duration.TotalMilliseconds))
+				if (elapsedTime >= static_cast<unsigned int>(Math::Max(0.0, currentTimer->Duration.TotalMilliseconds)))
 				{
 					if (currentTimer->Owner != nullptr)
 					{
