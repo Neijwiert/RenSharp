@@ -4477,13 +4477,18 @@ namespace RenSharp
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Is_A_Star(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Is_A_Star(objPtr);
 	}
 
 	void ScriptCommands::ControlEnable(IScriptableGameObj ^obj, bool enable)
