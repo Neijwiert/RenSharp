@@ -53,7 +53,7 @@ namespace RenSharp
 	{
 		for each (auto pair in timers)
 		{
-			for (int index = pair.Value->Count - 1; index >= 0; index--)
+			for (int index = pair.Value->Count - 1; index >= 0 && pair.Value->Count > 0; index--)
 			{
 				RenSharpTimerStruct^ currentTimer = pair.Value[index];
 
