@@ -312,6 +312,8 @@ namespace RenSharp
 		public:
 			GameObjObserverClass(IntPtr pointer);
 
+			static IGameObjObserverClass^ CreateGameObjObserverClassWrapper(IntPtr gameObjObserverClass);
+
 			String ^ToString() override;
 			bool Equals(Object ^other) override;
 
@@ -357,6 +359,9 @@ namespace RenSharp
 			{
 				virtual bool get() sealed;
 			}
+
+		internal:
+			static IGameObjObserverClass^ CreateGameObjObserverClassWrapper(::GameObjObserverClass* gameObjObserverClassPtr);
 
 		protected:
 			bool InternalDestroyPointer() override;

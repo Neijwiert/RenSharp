@@ -22,6 +22,7 @@ limitations under the License.
 #include "Maction.h"
 #include "Mda_player.h"
 #include "Imports.h"
+#include "Mda_gameobj.h"
 
 #pragma managed(push, off)
 #pragma warning(push)
@@ -59,27 +60,20 @@ namespace RenSharp
 			}
 	};
 
-	class GameObjObserverClassHelper : public ::GameObjObserverClass
+	bool IsDAGameObjObserverClass(::GameObjObserverClass* observer)
 	{
-		private:
-			GameObjObserverClassHelper() = default;
+		observer->Owner();
+		_asm
+		{
+			cmp ecx, 1
+			jnz False
+		}
 
-		public:
-			static bool IsDAGameObjObserverClass(::GameObjObserverClass *observer)
-			{
-				observer->Owner();
-				_asm
-				{
-					cmp ecx, 1
-					jnz False
-				}
+		return true;
 
-				return true;
-
-			False:
-				return false;
-			}
-	};
+	False:
+		return false;
+	}
 
 #pragma managed(pop)
 
@@ -191,6 +185,11 @@ namespace RenSharp
 		: AbstractUnmanagedObject(pointer)
 	{
 
+	}
+
+	IGameObjObserverClass^ GameObjObserverClass::CreateGameObjObserverClassWrapper(IntPtr gameObjObserverClass)
+	{
+		return CreateGameObjObserverClassWrapper(reinterpret_cast<::GameObjObserverClass*>(gameObjObserverClass.ToPointer()));
 	}
 
 	String ^GameObjObserverClass::ToString()
@@ -559,26 +558,44 @@ namespace RenSharp
 
 	IScriptableGameObj ^GameObjObserverClass::Owner::get()
 	{
-		auto result = InternalGameObjObserverClassPointer->Owner();
+		::ScriptableGameObj* result;
+
+		// Owner() is hijacked by DA to identify DA observers
+		if (IsDAGameObjObserverClass(InternalGameObjObserverClassPointer))
+		{
+			auto daObserver = static_cast<::DAGameObjObserverClass*>(InternalGameObjObserverClassPointer);
+
+			result = daObserver->Get_Owner();
+		}
+		else
+		{
+			result = InternalGameObjObserverClassPointer->Owner();
+		}
+
 		if (result == nullptr)
 		{
 			return nullptr;
 		}
 		else
 		{
-			// Owner() is hijacked by DA to identify DA observers
-			if (GameObjObserverClassHelper::IsDAGameObjObserverClass(InternalGameObjObserverClassPointer))
-			{
-				auto daResult = static_cast<::DAGameObjObserverClass *>(InternalGameObjObserverClassPointer);
-
-				result = daResult->Get_Owner();
-				if (result == nullptr)
-				{
-					return nullptr;
-				}
-			}
-
 			return safe_cast<IScriptableGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
+		}
+	}
+
+	IGameObjObserverClass^ GameObjObserverClass::CreateGameObjObserverClassWrapper(::GameObjObserverClass* gameObjObserverClassPtr)
+	{
+		if (gameObjObserverClassPtr == nullptr)
+		{
+			throw gcnew ArgumentNullException("gameObjObserverClassPtr");
+		}
+
+		if (IsDAGameObjObserverClass(gameObjObserverClassPtr))
+		{
+			return gcnew DAGameObjObserverClass(IntPtr(static_cast<::DAGameObjObserverClass*>(gameObjObserverClassPtr)));
+		}
+		else
+		{
+			return gcnew GameObjObserverClass(IntPtr(gameObjObserverClassPtr));
 		}
 	}
 
