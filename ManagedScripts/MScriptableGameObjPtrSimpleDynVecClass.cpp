@@ -186,7 +186,7 @@ namespace RenSharp
 
 	bool ScriptableGameObjPtrSimpleDynVecClass::DeleteIndex(int index, bool allowShrink)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -196,7 +196,7 @@ namespace RenSharp
 
 	bool ScriptableGameObjPtrSimpleDynVecClass::DeleteIndex(int index)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -278,7 +278,7 @@ namespace RenSharp
 
 	IScriptableGameObj ^ScriptableGameObjPtrSimpleDynVecClass::default::get(int index)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -296,7 +296,7 @@ namespace RenSharp
 
 	void ScriptableGameObjPtrSimpleDynVecClass::default::set(int index, IScriptableGameObj ^value)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}

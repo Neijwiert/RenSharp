@@ -148,7 +148,7 @@ namespace RenSharp
 
 	bool IntSimpleDynVecClass::DeleteIndex(int index, bool allowShrink)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -240,7 +240,7 @@ namespace RenSharp
 
 	int IntSimpleDynVecClass::default::get(int index)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -250,7 +250,7 @@ namespace RenSharp
 
 	void IntSimpleDynVecClass::default::set(int index, int value)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}

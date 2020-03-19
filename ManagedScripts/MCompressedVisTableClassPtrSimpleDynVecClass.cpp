@@ -186,7 +186,7 @@ namespace RenSharp
 
 	bool CompressedVisTableClassPtrSimpleDynVecClass::DeleteIndex(int index, bool allowShrink)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -196,7 +196,7 @@ namespace RenSharp
 
 	bool CompressedVisTableClassPtrSimpleDynVecClass::DeleteIndex(int index)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -278,7 +278,7 @@ namespace RenSharp
 
 	ICompressedVisTableClass^ CompressedVisTableClassPtrSimpleDynVecClass::default::get(int index)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -296,7 +296,7 @@ namespace RenSharp
 
 	void CompressedVisTableClassPtrSimpleDynVecClass::default::set(int index, ICompressedVisTableClass^ value)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}

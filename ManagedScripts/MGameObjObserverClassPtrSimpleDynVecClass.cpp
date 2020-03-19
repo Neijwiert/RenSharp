@@ -186,7 +186,7 @@ namespace RenSharp
 
 	bool GameObjObserverClassPtrSimpleDynVecClass::DeleteIndex(int index, bool allowShrink)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -196,7 +196,7 @@ namespace RenSharp
 
 	bool GameObjObserverClassPtrSimpleDynVecClass::DeleteIndex(int index)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -278,7 +278,7 @@ namespace RenSharp
 
 	IGameObjObserverClass ^GameObjObserverClassPtrSimpleDynVecClass::default::get(int index)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}
@@ -290,13 +290,13 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew GameObjObserverClass(IntPtr(result));
+			return GameObjObserverClass::CreateGameObjObserverClassWrapper(result);
 		}
 	}
 
 	void GameObjObserverClassPtrSimpleDynVecClass::default::set(int index, IGameObjObserverClass ^value)
 	{
-		if (index < 0 || index > Count)
+		if (index < 0 || index >= Count)
 		{
 			throw gcnew ArgumentOutOfRangeException("index");
 		}

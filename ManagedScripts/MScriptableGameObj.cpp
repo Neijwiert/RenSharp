@@ -410,7 +410,7 @@ namespace RenSharp
 			}
 			else
 			{
-				return gcnew GameObjObserverClass(IntPtr(result));
+				return GameObjObserverClass::CreateGameObjObserverClassWrapper(result);
 			}
 		}
 		finally
