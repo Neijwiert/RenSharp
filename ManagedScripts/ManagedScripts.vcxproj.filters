@@ -1203,6 +1203,9 @@
     <ClInclude Include="MDefaultConnectionAcceptanceFilter.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="MConversationMgrClass.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -2337,6 +2340,9 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="MDefaultConnectionAcceptanceFilter.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MConversationMgrClass.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>

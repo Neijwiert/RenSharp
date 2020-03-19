@@ -97,6 +97,7 @@
     <ClInclude Include="BaseRenegadeDispatcherOperation.h" />
     <ClInclude Include="IPriorityQueue.h" />
     <ClInclude Include="IPriorityQueueNode.h" />
+    <ClInclude Include="MConversationMgrClass.h" />
     <ClInclude Include="McPurchaseResponseEvent.h" />
     <ClInclude Include="CriticalUnmanagedContainer.h" />
     <ClInclude Include="MDefaultConnectionAcceptanceFilter.h" />
@@ -476,6 +477,7 @@
     <ClCompile Include="BaseRenegadeDispatcherOperation.cpp" />
     <ClCompile Include="IPriorityQueue.cpp" />
     <ClCompile Include="IPriorityQueueNode.cpp" />
+    <ClCompile Include="MConversationMgrClass.cpp" />
     <ClCompile Include="McPurchaseResponseEvent.cpp" />
     <ClCompile Include="MAABTreeCull.cpp" />
     <ClCompile Include="AbstractUnmanagedObject.cpp" />
