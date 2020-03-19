@@ -18,6 +18,7 @@ limitations under the License.
 #include "RenSharpTimerManager.h"
 
 #include "RenSharpTimerStruct.h"
+#include "MTimeManager.h"
 
 namespace RenSharp
 {
@@ -57,8 +58,8 @@ namespace RenSharp
 			{
 				RenSharpTimerStruct^ currentTimer = pair.Value[index];
 
-				unsigned int elapsedTime = ::Commands->Get_Sync_Time() - currentTimer->StartTime;
-				if (elapsedTime >= static_cast<unsigned int>(Math::Max(0.0, currentTimer->Duration.TotalMilliseconds)))
+				currentTimer->RemainingTime -= TimeManager::FrameSeconds;
+				if (currentTimer->RemainingTime <= 0)
 				{
 					if (currentTimer->Owner != nullptr)
 					{

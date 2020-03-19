@@ -20,18 +20,26 @@ limitations under the License.
 namespace RenSharp
 {
 	RenSharpTimerStruct::RenSharpTimerStruct(ITimerInterface^ owner, TimeSpan duration, bool repeat, int number, Object^ data)
-		: owner(owner), startTime(::Commands->Get_Sync_Time()), duration(duration), repeat(repeat), number(number), data(data), action(nullptr)
+		: owner(owner), remainingTime(static_cast<float>(duration.TotalSeconds)), duration(duration), repeat(repeat), number(number), data(data), action(nullptr)
 	{
 	}
 
 	RenSharpTimerStruct::RenSharpTimerStruct(ITimerInterface^ owner, TimeSpan duration, bool repeat, System::Action<RenSharpTimerStruct^>^ action)
-		: owner(owner), startTime(::Commands->Get_Sync_Time()), duration(duration), repeat(repeat), number(int::MinValue), data(nullptr), action(action)
+		: owner(owner), remainingTime(static_cast<float>(duration.TotalSeconds)), duration(duration), repeat(repeat), number(int::MinValue), data(nullptr), action(action)
 	{
 	}
 
 	void RenSharpTimerStruct::Reset()
 	{
-		startTime = ::Commands->Get_Sync_Time();
+		if (remainingTime < 0)
+		{
+			remainingTime += static_cast<float>(duration.TotalSeconds);
+			remainingTime = Math::Max(0.0f, remainingTime);
+		}
+		else
+		{
+			remainingTime = static_cast<float>(duration.TotalSeconds);
+		}
 	}
 
 	ITimerInterface^ RenSharpTimerStruct::Owner::get()
@@ -39,9 +47,14 @@ namespace RenSharp
 		return owner;
 	}
 
-	unsigned int RenSharpTimerStruct::StartTime::get()
+	float RenSharpTimerStruct::RemainingTime::get()
 	{
-		return startTime;
+		return remainingTime;
+	}
+
+	void RenSharpTimerStruct::RemainingTime::set(float value)
+	{
+		remainingTime = value;
 	}
 
 	TimeSpan RenSharpTimerStruct::Duration::get()

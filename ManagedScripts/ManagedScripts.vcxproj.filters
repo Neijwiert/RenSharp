@@ -1206,6 +1206,9 @@
     <ClInclude Include="MConversationMgrClass.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="MTimeManager.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -2343,6 +2346,9 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="MConversationMgrClass.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MTimeManager.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>

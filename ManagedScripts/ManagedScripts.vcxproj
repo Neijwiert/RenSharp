@@ -398,6 +398,7 @@
     <ClInclude Include="MTexProjectClassMultiListClass.h" />
     <ClInclude Include="MTexProjectClassTypedAABTreeCullSystemClass.h" />
     <ClInclude Include="MTexProjectClassTypedGridCullSystemClass.h" />
+    <ClInclude Include="MTimeManager.h" />
     <ClInclude Include="MTransitionGameObj.h" />
     <ClInclude Include="MTransitionGameObjDef.h" />
     <ClInclude Include="MTransitionDataClassPtrDynamicVectorClass.h" />
@@ -780,6 +781,7 @@
     <ClCompile Include="MTexProjectClassMultiListClass.cpp" />
     <ClCompile Include="MTexProjectClassTypedAABTreeCullSystemClass.cpp" />
     <ClCompile Include="MTexProjectClassTypedGridCullSystemClass.cpp" />
+    <ClCompile Include="MTimeManager.cpp" />
     <ClCompile Include="MTransitionGameObj.cpp" />
     <ClCompile Include="MTransitionGameObjDef.cpp" />
     <ClCompile Include="MTransitionDataClassPtrDynamicVectorClass.cpp" />
