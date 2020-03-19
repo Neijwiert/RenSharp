@@ -3608,7 +3608,7 @@ namespace RenSharp
 			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
 	}
 
-	bool Engine::GetRandomPathfindSpot(Vector3 center, float range, [Out] Vector3 returnPosition)
+	bool Engine::GetRandomPathfindSpot(Vector3 center, float range, [Out] Vector3% returnPosition)
 	{
 		if (::Get_Random_Pathfind_Spot == nullptr)
 		{
@@ -3628,6 +3628,8 @@ namespace RenSharp
 		}
 		else
 		{
+			returnPosition = Vector3();
+
 			return false;
 		}
 	}

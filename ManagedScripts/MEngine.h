@@ -421,7 +421,7 @@ namespace RenSharp
 			static void SetHUDHelpTextPlayer(IScriptableGameObj ^obj, int string, Color color);
 			static void ChangeStringPlayer(IScriptableGameObj ^obj, int id, String ^string);
 			static void ForcePositionUpdate(IScriptableGameObj ^obj);
-			static bool GetRandomPathfindSpot(Vector3 center, float range, [Out] Vector3 returnPosition);
+			static bool GetRandomPathfindSpot(Vector3 center, float range, [Out] Vector3% returnPosition);
 			static void SetHUDHelpTextPlayerText(IScriptableGameObj ^obj, int replaceStringId, String ^replaceText, Color color);
 			static void GrantWeapon(IScriptableGameObj ^object, String ^grantWeaponName, bool grantWeapon, int grantWeaponRounds, bool grantWeaponClips);
 			static void SetObjectVisibilityForPlayer(IScriptableGameObj ^player, int objectId, bool visible);
