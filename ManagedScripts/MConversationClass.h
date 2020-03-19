@@ -141,6 +141,7 @@ namespace RenSharp
 		property Vector3 Position
 		{
 			Vector3 get();
+			void set(Vector3 value);
 		}
 	};
 
@@ -177,6 +178,7 @@ namespace RenSharp
 			property Vector3 Position
 			{
 				virtual Vector3 get() sealed;
+				virtual void set(Vector3 value) sealed;
 			}
 
 		protected:

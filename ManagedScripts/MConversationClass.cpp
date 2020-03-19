@@ -231,6 +231,13 @@ namespace RenSharp
 		return result;
 	}
 
+	void OratorClass::Position::set(Vector3 value)
+	{
+		::Vector3 valueVec;
+
+		Vector3::ManagedToUnmanagedVector3(value, InternalOratorClassPointer->Get_Position());
+	}
+
 	bool OratorClass::InternalDestroyPointer()
 	{
 		Imports::DestroyOratorClass(InternalOratorClassPointer);
