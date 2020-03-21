@@ -3942,6 +3942,10 @@ namespace RenSharp
 		{
 			throw gcnew ArgumentNullException("soundPresetName");
 		}
+		else if (creator == nullptr || creator->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			throw gcnew ArgumentNullException("creator");
+		}
 
 		::Vector3 positionVec;
 
