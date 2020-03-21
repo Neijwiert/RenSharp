@@ -114,6 +114,8 @@ namespace RenSharp
 
 		void SetTurnVelocity(float vel);
 
+		void SetLoitersAllowed(bool allowed);
+
 		property IntPtr HumanStateClassPointer
 		{
 			IntPtr get();
@@ -159,6 +161,7 @@ namespace RenSharp
 			virtual void DropWeapon() sealed;
 			virtual void RaiseWeapon() sealed;
 			virtual void SetTurnVelocity(float vel) sealed;
+			virtual void SetLoitersAllowed(bool allowed) sealed;
 
 			property IntPtr HumanStateClassPointer
 			{

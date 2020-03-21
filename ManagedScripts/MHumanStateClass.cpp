@@ -68,6 +68,11 @@ namespace RenSharp
 		InternalHumanStateClassPointer->Set_Turn_Velocity(vel);
 	}
 
+	void HumanStateClass::SetLoitersAllowed(bool allowed)
+	{
+		InternalHumanStateClassPointer->Set_Loiters_Allowed(allowed);
+	}
+
 	IntPtr HumanStateClass::HumanStateClassPointer::get()
 	{
 		return IntPtr(InternalHumanStateClassPointer);
