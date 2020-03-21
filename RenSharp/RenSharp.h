@@ -61,7 +61,7 @@ class RenSharpRootEventClass : public DAEventClass
 		void On_Fatal_Exception(const char *exception);
 		void On_Fatal_Exception_Callback(const char* exception);
 		HRESULT Init();
-		void Shutdown(bool fatal = false);
+		void Shutdown();
 		bool Is_Shutting_Down() const;
 
 		virtual void Game_Over_Event();

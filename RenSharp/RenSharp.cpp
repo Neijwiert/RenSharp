@@ -38,10 +38,13 @@ BOOL WINAPI ConsoleCtrlHandlerRoutine(_In_ DWORD dwCtrlType)
 {
 	if (dwCtrlType == CTRL_CLOSE_EVENT || dwCtrlType == CTRL_LOGOFF_EVENT || dwCtrlType == CTRL_SHUTDOWN_EVENT)
 	{
+		// Shut down can not be canceled when user does one of the above actions. FDS does not have enough time to quit properly.
+		Console_Output("WARNING: Console has not been shut down properly. Use 'quit' in stead.");
+
 		RenSharpRootEventClass::Get_Instance().Shutdown();
 	}
 
-	return TRUE;
+	return FALSE; // Let next one handle shut down
 }
 
 RenSharpRootEventClass::RenSharpRootEventClass()
@@ -196,7 +199,8 @@ HRESULT RenSharpRootEventClass::Init()
 					{
 						Console_Output("ERROR: Failed to set the host control (HRESULT: %d)\n", hr);
 
-						delete hostControl;
+						// Prevent shut down from getting the rsInterface, etc.
+						hostControl->Release();
 						hostControl = nullptr;
 					}
 				}
@@ -227,7 +231,7 @@ HRESULT RenSharpRootEventClass::Init()
 	return hr;
 }
 
-void RenSharpRootEventClass::Shutdown(bool fatal)
+void RenSharpRootEventClass::Shutdown()
 {
 	shutdown = true;
 	
@@ -235,26 +239,23 @@ void RenSharpRootEventClass::Shutdown(bool fatal)
 
 	if (clrRuntimeHost != nullptr)
 	{
-		if (!fatal)
+		if (hostControl != nullptr)
 		{
-			if (hostControl != nullptr)
+			// Call shutdown
+			RenSharpInterface* rsInterface = hostControl->GetRenSharpInterface();
+			if (rsInterface != nullptr)
 			{
-				// Call shutdown
-				RenSharpInterface* rsInterface = hostControl->GetRenSharpInterface();
-				if (rsInterface != nullptr)
-				{
-					rsInterface->Shutdown();
+				rsInterface->Shutdown();
 
-					rsInterface->Release();
-					rsInterface = nullptr;
-				}
-				
-				delete hostControl;
-				hostControl = nullptr;
+				rsInterface->Release();
+				rsInterface = nullptr;
 			}
-
-			clrRuntimeHost->Stop();
+				
+			hostControl->Release();
+			hostControl = nullptr;
 		}
+
+		clrRuntimeHost->Stop();
 
 		clrRuntimeHost->Release();
 		clrRuntimeHost = nullptr;
@@ -294,7 +295,7 @@ void RenSharpRootEventClass::Think()
 	{
 		shutdownPending = false;
 
-		Shutdown(true);
+		Shutdown();
 
 		return;
 	}
@@ -331,7 +332,7 @@ void RenSharpRootEventClass::EventClass_Destructed(RenSharpEventClass* eventClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -358,7 +359,7 @@ void RenSharpRootEventClass::EventClass_Settings_Loaded_Event(RenSharpEventClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -387,7 +388,7 @@ bool RenSharpRootEventClass::EventClass_Chat_Event(RenSharpEventClass* eventClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -418,7 +419,7 @@ bool RenSharpRootEventClass::EventClass_Chat_Command_Event(RenSharpEventClass* e
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -449,7 +450,7 @@ bool RenSharpRootEventClass::EventClass_Key_Hook_Event(RenSharpEventClass* event
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -480,7 +481,7 @@ bool RenSharpRootEventClass::EventClass_Host_Chat_Event(RenSharpEventClass* even
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -511,7 +512,7 @@ bool RenSharpRootEventClass::EventClass_Radio_Event(RenSharpEventClass* eventCla
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -557,7 +558,7 @@ ConnectionAcceptanceFilter::STATUS RenSharpRootEventClass::EventClass_Connection
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -586,7 +587,7 @@ void RenSharpRootEventClass::EventClass_Player_Pre_Join_Event(RenSharpEventClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -613,7 +614,7 @@ void RenSharpRootEventClass::EventClass_Player_Join_Event(RenSharpEventClass* ev
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -640,7 +641,7 @@ void RenSharpRootEventClass::EventClass_Player_Leave_Event(RenSharpEventClass* e
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -667,7 +668,7 @@ void RenSharpRootEventClass::EventClass_Player_Loaded_Event(RenSharpEventClass* 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -694,7 +695,7 @@ void RenSharpRootEventClass::EventClass_Name_Change_Event(RenSharpEventClass* ev
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -721,7 +722,7 @@ void RenSharpRootEventClass::EventClass_Level_Loaded_Event(RenSharpEventClass* e
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -748,7 +749,7 @@ void RenSharpRootEventClass::EventClass_Remix_Event(RenSharpEventClass* eventCla
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -775,7 +776,7 @@ void RenSharpRootEventClass::EventClass_Rebalance_Event(RenSharpEventClass* even
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -802,7 +803,7 @@ void RenSharpRootEventClass::EventClass_Swap_Event(RenSharpEventClass* eventClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -829,7 +830,7 @@ void RenSharpRootEventClass::EventClass_Game_Over_Event(RenSharpEventClass* even
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -856,7 +857,7 @@ void RenSharpRootEventClass::EventClass_Console_Output_Event(RenSharpEventClass*
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -883,7 +884,7 @@ void RenSharpRootEventClass::EventClass_Ren_Log_Event(RenSharpEventClass* eventC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -910,7 +911,7 @@ void RenSharpRootEventClass::EventClass_DA_Log_Event(RenSharpEventClass* eventCl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -939,7 +940,7 @@ int RenSharpRootEventClass::EventClass_Character_Purchase_Request_Event(RenSharp
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -970,7 +971,7 @@ int RenSharpRootEventClass::EventClass_Vehicle_Purchase_Request_Event(RenSharpEv
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1001,7 +1002,7 @@ int RenSharpRootEventClass::EventClass_PowerUp_Purchase_Request_Event(RenSharpEv
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1032,7 +1033,7 @@ int RenSharpRootEventClass::EventClass_Custom_Purchase_Request_Event(RenSharpEve
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1061,7 +1062,7 @@ void RenSharpRootEventClass::EventClass_Character_Purchase_Event(RenSharpEventCl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1088,7 +1089,7 @@ void RenSharpRootEventClass::EventClass_Vehicle_Purchase_Event(RenSharpEventClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1115,7 +1116,7 @@ void RenSharpRootEventClass::EventClass_PowerUp_Purchase_Event(RenSharpEventClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1142,7 +1143,7 @@ void RenSharpRootEventClass::EventClass_Custom_Purchase_Event(RenSharpEventClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1171,7 +1172,7 @@ bool RenSharpRootEventClass::EventClass_Refill_Event(RenSharpEventClass* eventCl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1202,7 +1203,7 @@ bool RenSharpRootEventClass::EventClass_Suicide_Event(RenSharpEventClass* eventC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1233,7 +1234,7 @@ bool RenSharpRootEventClass::EventClass_Team_Change_Request_Event(RenSharpEventC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1262,7 +1263,7 @@ void RenSharpRootEventClass::EventClass_Team_Change_Event(RenSharpEventClass* ev
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1291,7 +1292,7 @@ bool RenSharpRootEventClass::EventClass_Vehicle_Entry_Request_Event(RenSharpEven
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1320,7 +1321,7 @@ void RenSharpRootEventClass::EventClass_Vehicle_Enter_Event(RenSharpEventClass* 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1347,7 +1348,7 @@ void RenSharpRootEventClass::EventClass_Vehicle_Exit_Event(RenSharpEventClass* e
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1376,7 +1377,7 @@ bool RenSharpRootEventClass::EventClass_PowerUp_Grant_Request_Event(RenSharpEven
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1405,7 +1406,7 @@ void RenSharpRootEventClass::EventClass_PowerUp_Grant_Event(RenSharpEventClass* 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1434,7 +1435,7 @@ bool RenSharpRootEventClass::EventClass_Add_Weapon_Request_Event(RenSharpEventCl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1463,7 +1464,7 @@ void RenSharpRootEventClass::EventClass_Add_Weapon_Event(RenSharpEventClass* eve
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1490,7 +1491,7 @@ void RenSharpRootEventClass::EventClass_Remove_Weapon_Event(RenSharpEventClass* 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1517,7 +1518,7 @@ void RenSharpRootEventClass::EventClass_Clear_Weapons_Event(RenSharpEventClass* 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1544,7 +1545,7 @@ void RenSharpRootEventClass::EventClass_Beacon_Deploy_Event(RenSharpEventClass* 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1571,7 +1572,7 @@ void RenSharpRootEventClass::EventClass_Beacon_Detonate_Event(RenSharpEventClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1600,7 +1601,7 @@ bool RenSharpRootEventClass::EventClass_C4_Detonate_Request_Event(RenSharpEventC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1629,7 +1630,7 @@ void RenSharpRootEventClass::EventClass_C4_Detonate_Event(RenSharpEventClass* ev
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1656,7 +1657,7 @@ void RenSharpRootEventClass::EventClass_Change_Character_Event(RenSharpEventClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1685,7 +1686,7 @@ bool RenSharpRootEventClass::EventClass_Vehicle_Flip_Event(RenSharpEventClass* e
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1716,7 +1717,7 @@ bool RenSharpRootEventClass::EventClass_Request_Vehicle_Event(RenSharpEventClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1745,7 +1746,7 @@ void RenSharpRootEventClass::EventClass_Think(RenSharpEventClass* eventClass)
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1772,7 +1773,7 @@ void RenSharpRootEventClass::EventClass_Object_Created_Event(RenSharpEventClass*
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1801,7 +1802,7 @@ bool RenSharpRootEventClass::EventClass_Stock_Client_Damage_Request_Event(RenSha
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1832,7 +1833,7 @@ bool RenSharpRootEventClass::EventClass_TT_Client_Damage_Request_Event(RenSharpE
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1863,7 +1864,7 @@ bool RenSharpRootEventClass::EventClass_Damage_Request_Event(RenSharpEventClass*
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -1892,7 +1893,7 @@ void RenSharpRootEventClass::EventClass_Damage_Event(RenSharpEventClass* eventCl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1919,7 +1920,7 @@ void RenSharpRootEventClass::EventClass_Kill_Event(RenSharpEventClass* eventClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1946,7 +1947,7 @@ void RenSharpRootEventClass::EventClass_Custom_Event(RenSharpEventClass* eventCl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -1973,7 +1974,7 @@ void RenSharpRootEventClass::EventClass_Poke_Event(RenSharpEventClass* eventClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2000,7 +2001,7 @@ void RenSharpRootEventClass::EventClass_Zone_Enter_Event(RenSharpEventClass* eve
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2027,7 +2028,7 @@ void RenSharpRootEventClass::EventClass_Zone_Exit_Event(RenSharpEventClass* even
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2054,7 +2055,7 @@ void RenSharpRootEventClass::EventClass_Object_Destroyed_Event(RenSharpEventClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2081,7 +2082,7 @@ void RenSharpRootEventClass::EventClass_Timer_Expired(RenSharpEventClass* eventC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2108,7 +2109,7 @@ void RenSharpRootEventClass::Observer_Destructed(RenSharpGameObjObserverClass *o
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2135,7 +2136,7 @@ void RenSharpRootEventClass::Observer_Destroyed(RenSharpGameObjObserverClass *ob
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2162,7 +2163,7 @@ void RenSharpRootEventClass::Observer_Custom(RenSharpGameObjObserverClass *obser
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2189,7 +2190,7 @@ void RenSharpRootEventClass::Observer_Poked(RenSharpGameObjObserverClass *observ
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2216,7 +2217,7 @@ void RenSharpRootEventClass::Observer_Entered(RenSharpGameObjObserverClass *obse
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2243,7 +2244,7 @@ void RenSharpRootEventClass::Observer_Exited(RenSharpGameObjObserverClass *obser
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2270,7 +2271,7 @@ void RenSharpRootEventClass::Observer_Sound_Heard(RenSharpGameObjObserverClass *
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2297,7 +2298,7 @@ void RenSharpRootEventClass::Observer_Enemy_Seen(RenSharpGameObjObserverClass *o
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2324,7 +2325,7 @@ void RenSharpRootEventClass::Observer_Action_Complete(RenSharpGameObjObserverCla
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2351,7 +2352,7 @@ void RenSharpRootEventClass::Observer_Timer_Expired(RenSharpGameObjObserverClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2378,7 +2379,7 @@ void RenSharpRootEventClass::Observer_Animation_Complete(RenSharpGameObjObserver
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2405,7 +2406,7 @@ void RenSharpRootEventClass::Observer_Init(RenSharpGameObjObserverClass *observe
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2434,7 +2435,7 @@ bool RenSharpRootEventClass::Observer_Vehicle_Entry_Request(RenSharpGameObjObser
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -2465,7 +2466,7 @@ bool RenSharpRootEventClass::Observer_Vehicle_Entry_Request(RenSharpGameObjObser
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -2494,7 +2495,7 @@ void RenSharpRootEventClass::Observer_Vehicle_Enter(RenSharpGameObjObserverClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2521,7 +2522,7 @@ void RenSharpRootEventClass::Observer_Vehicle_Enter(RenSharpGameObjObserverClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2548,7 +2549,7 @@ void RenSharpRootEventClass::Observer_Vehicle_Exit(RenSharpGameObjObserverClass 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2575,7 +2576,7 @@ void RenSharpRootEventClass::Observer_Vehicle_Exit(RenSharpGameObjObserverClass 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2604,7 +2605,7 @@ bool RenSharpRootEventClass::Observer_Vehicle_Flip(RenSharpGameObjObserverClass 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -2635,7 +2636,7 @@ bool RenSharpRootEventClass::Observer_Damage_Dealt_Request(RenSharpGameObjObserv
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -2666,7 +2667,7 @@ bool RenSharpRootEventClass::Observer_Damage_Received_Request(RenSharpGameObjObs
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -2695,7 +2696,7 @@ void RenSharpRootEventClass::Observer_Damage_Dealt(RenSharpGameObjObserverClass 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2722,7 +2723,7 @@ void RenSharpRootEventClass::Observer_Damage_Received(RenSharpGameObjObserverCla
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2749,7 +2750,7 @@ void RenSharpRootEventClass::Observer_Kill_Dealt(RenSharpGameObjObserverClass *o
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2776,7 +2777,7 @@ void RenSharpRootEventClass::Observer_Kill_Received(RenSharpGameObjObserverClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2805,7 +2806,7 @@ bool RenSharpRootEventClass::Observer_PowerUp_Grant_Request(RenSharpGameObjObser
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -2836,7 +2837,7 @@ bool RenSharpRootEventClass::Observer_PowerUp_Grant_Request(RenSharpGameObjObser
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -2865,7 +2866,7 @@ void RenSharpRootEventClass::Observer_PowerUp_Grant(RenSharpGameObjObserverClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2892,7 +2893,7 @@ void RenSharpRootEventClass::Observer_PowerUp_Grant(RenSharpGameObjObserverClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2921,7 +2922,7 @@ bool RenSharpRootEventClass::Observer_Add_Weapon_Request(RenSharpGameObjObserver
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -2950,7 +2951,7 @@ void RenSharpRootEventClass::Observer_Add_Weapon(RenSharpGameObjObserverClass *o
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -2977,7 +2978,7 @@ void RenSharpRootEventClass::Observer_Remove_Weapon(RenSharpGameObjObserverClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3004,7 +3005,7 @@ void RenSharpRootEventClass::Observer_Clear_Weapons(RenSharpGameObjObserverClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3031,7 +3032,7 @@ void RenSharpRootEventClass::PlayerObserver_Destructed(RenSharpPlayerObserverCla
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3058,7 +3059,7 @@ void RenSharpRootEventClass::PlayerObserver_Init(RenSharpPlayerObserverClass *ob
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3085,7 +3086,7 @@ void RenSharpRootEventClass::PlayerObserver_Join(RenSharpPlayerObserverClass *ob
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3112,7 +3113,7 @@ void RenSharpRootEventClass::PlayerObserver_Leave(RenSharpPlayerObserverClass *o
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3139,7 +3140,7 @@ void RenSharpRootEventClass::PlayerObserver_Level_Loaded(RenSharpPlayerObserverC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3166,7 +3167,7 @@ void RenSharpRootEventClass::PlayerObserver_Player_Loaded(RenSharpPlayerObserver
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3193,7 +3194,7 @@ void RenSharpRootEventClass::PlayerObserver_Name_Change(RenSharpPlayerObserverCl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3220,7 +3221,7 @@ void RenSharpRootEventClass::PlayerObserver_Team_Change(RenSharpPlayerObserverCl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3249,7 +3250,7 @@ int RenSharpRootEventClass::PlayerObserver_Character_Purchase_Request(RenSharpPl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3280,7 +3281,7 @@ int RenSharpRootEventClass::PlayerObserver_Vehicle_Purchase_Request(RenSharpPlay
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3311,7 +3312,7 @@ int RenSharpRootEventClass::PlayerObserver_PowerUp_Purchase_Request(RenSharpPlay
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3342,7 +3343,7 @@ int RenSharpRootEventClass::PlayerObserver_Custom_Purchase_Request(RenSharpPlaye
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3371,7 +3372,7 @@ void RenSharpRootEventClass::PlayerObserver_Character_Purchase(RenSharpPlayerObs
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3398,7 +3399,7 @@ void RenSharpRootEventClass::PlayerObserver_Vehicle_Purchase(RenSharpPlayerObser
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3425,7 +3426,7 @@ void RenSharpRootEventClass::PlayerObserver_PowerUp_Purchase(RenSharpPlayerObser
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3452,7 +3453,7 @@ void RenSharpRootEventClass::PlayerObserver_Custom_Purchase(RenSharpPlayerObserv
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3481,7 +3482,7 @@ bool RenSharpRootEventClass::PlayerObserver_Vehicle_Entry_Request(RenSharpPlayer
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3510,7 +3511,7 @@ void RenSharpRootEventClass::PlayerObserver_Vehicle_Enter(RenSharpPlayerObserver
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3537,7 +3538,7 @@ void RenSharpRootEventClass::PlayerObserver_Vehicle_Exit(RenSharpPlayerObserverC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3566,7 +3567,7 @@ bool RenSharpRootEventClass::PlayerObserver_PowerUp_Grant_Request(RenSharpPlayer
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3595,7 +3596,7 @@ void RenSharpRootEventClass::PlayerObserver_PowerUp_Grant(RenSharpPlayerObserver
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3624,7 +3625,7 @@ bool RenSharpRootEventClass::PlayerObserver_Add_Weapon_Request(RenSharpPlayerObs
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3653,7 +3654,7 @@ void RenSharpRootEventClass::PlayerObserver_Add_Weapon(RenSharpPlayerObserverCla
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3680,7 +3681,7 @@ void RenSharpRootEventClass::PlayerObserver_Remove_Weapon(RenSharpPlayerObserver
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3707,7 +3708,7 @@ void RenSharpRootEventClass::PlayerObserver_Clear_Weapons(RenSharpPlayerObserver
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3736,7 +3737,7 @@ bool RenSharpRootEventClass::PlayerObserver_C4_Detonate_Request(RenSharpPlayerOb
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3765,7 +3766,7 @@ void RenSharpRootEventClass::PlayerObserver_C4_Detonate(RenSharpPlayerObserverCl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3792,7 +3793,7 @@ void RenSharpRootEventClass::PlayerObserver_Change_Character(RenSharpPlayerObser
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3819,7 +3820,7 @@ void RenSharpRootEventClass::PlayerObserver_Created(RenSharpPlayerObserverClass 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3846,7 +3847,7 @@ void RenSharpRootEventClass::PlayerObserver_Destroyed(RenSharpPlayerObserverClas
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3875,7 +3876,7 @@ bool RenSharpRootEventClass::PlayerObserver_Damage_Dealt_Request(RenSharpPlayerO
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3906,7 +3907,7 @@ bool RenSharpRootEventClass::PlayerObserver_Damage_Received_Request(RenSharpPlay
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -3935,7 +3936,7 @@ void RenSharpRootEventClass::PlayerObserver_Damage_Dealt(RenSharpPlayerObserverC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3962,7 +3963,7 @@ void RenSharpRootEventClass::PlayerObserver_Damage_Received(RenSharpPlayerObserv
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -3989,7 +3990,7 @@ void RenSharpRootEventClass::PlayerObserver_Kill_Dealt(RenSharpPlayerObserverCla
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4016,7 +4017,7 @@ void RenSharpRootEventClass::PlayerObserver_Kill_Received(RenSharpPlayerObserver
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4043,7 +4044,7 @@ void RenSharpRootEventClass::PlayerObserver_Custom(RenSharpPlayerObserverClass *
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4070,7 +4071,7 @@ void RenSharpRootEventClass::PlayerObserver_Poked(RenSharpPlayerObserverClass *o
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4097,7 +4098,7 @@ void RenSharpRootEventClass::PlayerObserver_Timer_Expired(RenSharpPlayerObserver
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4124,7 +4125,7 @@ void RenSharpRootEventClass::PlayerObserver_Think(RenSharpPlayerObserverClass *o
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4151,7 +4152,7 @@ void RenSharpRootEventClass::ConsoleFunction_Destructed(RenSharpConsoleFunctionC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4178,7 +4179,7 @@ void RenSharpRootEventClass::ConsoleFunction_Activate(RenSharpConsoleFunctionCla
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4205,7 +4206,7 @@ void RenSharpRootEventClass::GameFeatureFactory_Destructed(RenSharpGameFeatureFa
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4234,7 +4235,7 @@ DAGameFeatureClass* RenSharpRootEventClass::GameFeatureFactory_Create_Instance(R
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -4263,7 +4264,7 @@ void RenSharpRootEventClass::GameFeature_Destructed(RenSharpGameFeatureClass* ga
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4290,7 +4291,7 @@ void RenSharpRootEventClass::GameFeature_Init(RenSharpGameFeatureClass* gameFeat
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4317,7 +4318,7 @@ void RenSharpRootEventClass::PlayerDataFactory_Destructed(RenSharpPlayerDataFact
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4346,7 +4347,7 @@ DAPlayerDataClass* RenSharpRootEventClass::PlayerDataFactory_Create_Data(RenShar
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -4375,7 +4376,7 @@ void RenSharpRootEventClass::PlayerData_Destructed(RenSharpPlayerDataClass* play
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4402,7 +4403,7 @@ void RenSharpRootEventClass::PlayerData_Init(RenSharpPlayerDataClass* playerData
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4429,7 +4430,7 @@ void RenSharpRootEventClass::PlayerData_Clear_Level(RenSharpPlayerDataClass* pla
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4456,7 +4457,7 @@ void RenSharpRootEventClass::PlayerData_Clear_Session(RenSharpPlayerDataClass* p
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4483,7 +4484,7 @@ void RenSharpRootEventClass::GameModeFactory_Destructed(RenSharpGameModeFactoryC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4512,7 +4513,7 @@ DAGameModeClass* RenSharpRootEventClass::GameModeFactory_Create_Instance(RenShar
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -4541,7 +4542,7 @@ void RenSharpRootEventClass::GameMode_Destructed(RenSharpGameModeClass* gameMode
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4568,7 +4569,7 @@ void RenSharpRootEventClass::GameMode_Init(RenSharpGameModeClass* gameMode)
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4595,7 +4596,7 @@ void RenSharpRootEventClass::CrateModifierFactory_Destructed(RenSharpCrateModifi
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4624,7 +4625,7 @@ DACrateModifierClass* RenSharpRootEventClass::CrateModifierFactory_Create(RenSha
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -4653,7 +4654,7 @@ void RenSharpRootEventClass::CrateModifier_Destructed(RenSharpCrateModifierClass
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4680,7 +4681,7 @@ void RenSharpRootEventClass::CrateModifier_Init(RenSharpCrateModifierClass* crat
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4707,7 +4708,7 @@ void RenSharpRootEventClass::CrateModifier_Calculate_Odds(RenSharpCrateModifierC
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4734,7 +4735,7 @@ void RenSharpRootEventClass::Crate_Destructed(RenSharpCrateClass* crate)
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4761,7 +4762,7 @@ void RenSharpRootEventClass::Crate_Init(RenSharpCrateClass* crate)
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4788,7 +4789,7 @@ void RenSharpRootEventClass::Crate_Settings_Loaded(RenSharpCrateClass* crate)
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4815,7 +4816,7 @@ void RenSharpRootEventClass::Crate_Calculate_Odds(RenSharpCrateClass* crate, cPl
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4844,7 +4845,7 @@ bool RenSharpRootEventClass::Crate_Can_Activate(RenSharpCrateClass* crate, cPlay
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -4873,7 +4874,7 @@ void RenSharpRootEventClass::Crate_Activate(RenSharpCrateClass* crate, cPlayer* 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4900,7 +4901,7 @@ void RenSharpRootEventClass::CrateFactory_Destructed(RenSharpCrateFactoryClass* 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4929,7 +4930,7 @@ DACrateClass* RenSharpRootEventClass::CrateFactory_Create_Instance(RenSharpCrate
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 
@@ -4958,7 +4959,7 @@ void RenSharpRootEventClass::Node_Destructed(RenSharpNodeClass* node)
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -4985,7 +4986,7 @@ void RenSharpRootEventClass::Node_Init(RenSharpNodeClass* node, const INIClass* 
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -5012,7 +5013,7 @@ void RenSharpRootEventClass::Node_Contested_Event(RenSharpNodeClass* node)
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
@@ -5039,7 +5040,7 @@ void RenSharpRootEventClass::Node_Capture_Event(RenSharpNodeClass* node)
 
 		if (FAILED(hr))
 		{
-			Shutdown(true);
+			Shutdown();
 		}
 	}
 }
