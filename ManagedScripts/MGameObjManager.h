@@ -28,10 +28,12 @@ namespace RenSharp
 	interface class IBeaconGameObj;
 	interface class IVehicleGameObj;
 	interface class IScriptZoneGameObj;
+	interface class IPhysicalGameObj;
 
 	public ref class GameObjManager abstract sealed
 	{
 		public:
+			static IPhysicalGameObj^ FindPhysicalGameObj(int networkId);
 			static ISmartGameObj ^FindSmartGameObj(int networkId);
 			static void Add(IBaseGameObj ^obj);
 			static void Remove(IBaseGameObj ^obj);

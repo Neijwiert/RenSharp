@@ -38,6 +38,33 @@ limitations under the License.
 
 namespace RenSharp
 {
+	IPhysicalGameObj^ GameObjManager::FindPhysicalGameObj(int networkId)
+	{
+		if (!networkId)
+		{
+			return nullptr;
+		}
+
+		for (auto node = ::GameObjManager::GameObjList.Head(); node; node = node->Next())
+		{
+			auto obj = node->Data();
+			if (obj->Get_Network_ID() == networkId)
+			{
+				auto result = obj->As_PhysicalGameObj();
+				if (result == nullptr)
+				{
+					return nullptr;
+				}
+				else
+				{
+					return safe_cast<IPhysicalGameObj^>(BaseGameObj::CreateBaseGameObjWrapper(result));
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
 	ISmartGameObj ^GameObjManager::FindSmartGameObj(int networkId)
 	{
 		auto result = ::GameObjManager::Find_SmartGameObj(networkId);
