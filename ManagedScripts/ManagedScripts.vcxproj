@@ -438,6 +438,7 @@
     <ClInclude Include="Mwwmath.h" />
     <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="PriorityQueueNode.h" />
+    <ClInclude Include="RefCountClassUnmanagedContainer.h" />
     <ClInclude Include="RenegadeDispatcher.h" />
     <ClInclude Include="RenegadeDispatcherOperationStatus.h" />
     <ClInclude Include="RenegadeDispatcherTaskOperation.h" />
@@ -822,6 +823,7 @@
     <ClCompile Include="Mwwmath.cpp" />
     <ClCompile Include="PriorityQueue.cpp" />
     <ClCompile Include="PriorityQueueNode.cpp" />
+    <ClCompile Include="RefCountClassUnmanagedContainer.cpp" />
     <ClCompile Include="RenegadeDispatcher.cpp" />
     <ClCompile Include="RenegadeDispatcherOperationStatus.cpp" />
     <ClCompile Include="RenegadeDispatcherTaskOperation.cpp" />

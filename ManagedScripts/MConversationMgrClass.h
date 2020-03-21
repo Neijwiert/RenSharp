@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 
 #include "MSaveLoadSubSystemClass.h"
+#include "IUnmanagedContainer.h"
 
 using namespace System;
 
@@ -43,8 +44,8 @@ namespace RenSharp
 		public:
 			ConversationMgrClass(IntPtr pointer);
 
-			static IConversationClass^ FindConversation(String^ name);
-			static IConversationClass^ FindConversation(int id);
+			static IUnmanagedContainer<IConversationClass^>^ FindConversation(String^ name);
+			static IUnmanagedContainer<IConversationClass^>^ FindConversation(int id);
 
 			property IntPtr ConversationMgrClassPointer
 			{

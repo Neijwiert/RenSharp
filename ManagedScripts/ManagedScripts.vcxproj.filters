@@ -1212,6 +1212,9 @@
     <ClInclude Include="MGlobalSettingsDef.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="RefCountClassUnmanagedContainer.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -2356,6 +2359,9 @@
     </ClCompile>
     <ClCompile Include="GlobalSettingsDef.cpp">
       <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RefCountClassUnmanagedContainer.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

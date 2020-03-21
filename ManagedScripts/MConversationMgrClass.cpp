@@ -52,6 +52,7 @@ AT2(0x006D6C90, 0x006D6530);
 #pragma managed(pop)
 
 #include "MConversationClass.h"
+#include "RefCountClassUnmanagedContainer.h"
 
 namespace RenSharp
 {
@@ -61,7 +62,7 @@ namespace RenSharp
 
 	}
 
-	IConversationClass^ ConversationMgrClass::FindConversation(String^ name)
+	IUnmanagedContainer<IConversationClass^>^ ConversationMgrClass::FindConversation(String^ name)
 	{
 		if (name == nullptr)
 		{
@@ -78,7 +79,7 @@ namespace RenSharp
 			}
 			else
 			{
-				return gcnew ConversationClass(IntPtr(result));
+				return gcnew RefCountClassUnmanagedContainer<IConversationClass^>(gcnew ConversationClass(IntPtr(result)));
 			}
 		}
 		finally
@@ -87,7 +88,7 @@ namespace RenSharp
 		}
 	}
 
-	IConversationClass^ ConversationMgrClass::FindConversation(int id)
+	IUnmanagedContainer<IConversationClass^>^ ConversationMgrClass::FindConversation(int id)
 	{
 		auto result = Find_Conversation(id);
 		if (result == nullptr)
@@ -96,7 +97,7 @@ namespace RenSharp
 		}
 		else
 		{
-			return gcnew ConversationClass(IntPtr(result));
+			return gcnew RefCountClassUnmanagedContainer<IConversationClass^>(gcnew ConversationClass(IntPtr(result)));
 		}
 	}
 
