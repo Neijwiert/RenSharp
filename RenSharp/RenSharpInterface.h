@@ -247,29 +247,29 @@ struct RenSharpInterface : IUnknown
 	virtual HRESULT __stdcall GameModeInit(RenSharpGameModeClass* gameMode) = 0;
 
 	// RenSharpCrateModifierFactoryClass
-	virtual HRESULT __stdcall CrateModifierFactoryDestructed(RenSharpCrateModifierFactoryClass* factory);
-	virtual HRESULT __stdcall CrateModifierFactoryCreate(RenSharpCrateModifierFactoryClass* factory, const char* parameters, DACrateModifierClass** result);
+	virtual HRESULT __stdcall CrateModifierFactoryDestructed(RenSharpCrateModifierFactoryClass* factory) = 0;
+	virtual HRESULT __stdcall CrateModifierFactoryCreate(RenSharpCrateModifierFactoryClass* factory, const char* parameters, DACrateModifierClass** result) = 0;
 
 	// RenSharpCrateModifierClass
-	virtual HRESULT __stdcall CrateModifierDestructed(RenSharpCrateModifierClass* crateModifier);
-	virtual HRESULT __stdcall CrateModifierInit(RenSharpCrateModifierClass* crateModifier, const char* parameters);
-	virtual HRESULT __stdcall CrateModifierCalculateOdds(RenSharpCrateModifierClass* crateModifier, float* odds, cPlayer* player);
+	virtual HRESULT __stdcall CrateModifierDestructed(RenSharpCrateModifierClass* crateModifier) = 0;
+	virtual HRESULT __stdcall CrateModifierInit(RenSharpCrateModifierClass* crateModifier, const char* parameters) = 0;
+	virtual HRESULT __stdcall CrateModifierCalculateOdds(RenSharpCrateModifierClass* crateModifier, float* odds, cPlayer* player) = 0;
 
 	// RenSharpCrateClass
-	virtual HRESULT __stdcall CrateDestructed(RenSharpCrateClass* crate);
-	virtual HRESULT __stdcall CrateInit(RenSharpCrateClass* crate);
-	virtual HRESULT __stdcall CrateSettingsLoaded(RenSharpCrateClass* crate);
-	virtual HRESULT __stdcall CrateCalculateOdds(RenSharpCrateClass* crate, cPlayer* player);
-	virtual HRESULT __stdcall CrateCanActivate(RenSharpCrateClass* crate, cPlayer* player, BOOL* result);
-	virtual HRESULT __stdcall CrateActivate(RenSharpCrateClass* crate, cPlayer* player);
+	virtual HRESULT __stdcall CrateDestructed(RenSharpCrateClass* crate) = 0;
+	virtual HRESULT __stdcall CrateInit(RenSharpCrateClass* crate) = 0;
+	virtual HRESULT __stdcall CrateSettingsLoaded(RenSharpCrateClass* crate) = 0;
+	virtual HRESULT __stdcall CrateCalculateOdds(RenSharpCrateClass* crate, cPlayer* player) = 0;
+	virtual HRESULT __stdcall CrateCanActivate(RenSharpCrateClass* crate, cPlayer* player, BOOL* result) = 0;
+	virtual HRESULT __stdcall CrateActivate(RenSharpCrateClass* crate, cPlayer* player) = 0;
 
 	// RenSharpCrateFactoryClass
-	virtual HRESULT __stdcall CrateFactoryDestructed(RenSharpCrateFactoryClass* factory);
-	virtual HRESULT __stdcall CrateFactoryCreateInstance(RenSharpCrateFactoryClass* factory, DACrateClass** result);
+	virtual HRESULT __stdcall CrateFactoryDestructed(RenSharpCrateFactoryClass* factory) = 0;
+	virtual HRESULT __stdcall CrateFactoryCreateInstance(RenSharpCrateFactoryClass* factory, DACrateClass** result) = 0;
 
 	// RenSharpNodeClass
-	virtual HRESULT __stdcall NodeDestructed(RenSharpNodeClass* node);
-	virtual HRESULT __stdcall NodeInit(RenSharpNodeClass* node, const INIClass* ini, const char* header);
-	virtual HRESULT __stdcall NodeContestedEvent(RenSharpNodeClass* node);
-	virtual HRESULT __stdcall NodeCaptureEvent(RenSharpNodeClass* node);
+	virtual HRESULT __stdcall NodeDestructed(RenSharpNodeClass* node) = 0;
+	virtual HRESULT __stdcall NodeInit(RenSharpNodeClass* node, const INIClass* ini, const char* header) = 0;
+	virtual HRESULT __stdcall NodeContestedEvent(RenSharpNodeClass* node) = 0;
+	virtual HRESULT __stdcall NodeCaptureEvent(RenSharpNodeClass* node) = 0;
 };
