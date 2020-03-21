@@ -101,6 +101,7 @@
     <ClInclude Include="McPurchaseResponseEvent.h" />
     <ClInclude Include="CriticalUnmanagedContainer.h" />
     <ClInclude Include="MDefaultConnectionAcceptanceFilter.h" />
+    <ClInclude Include="MGlobalSettingsDef.h" />
     <ClInclude Include="Misc.h" />
     <ClInclude Include="FatalRenSharpException.h" />
     <ClInclude Include="IChatCommandInterface.h" />
@@ -476,6 +477,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseRenegadeDispatcherOperation.cpp" />
+    <ClCompile Include="GlobalSettingsDef.cpp" />
     <ClCompile Include="IPriorityQueue.cpp" />
     <ClCompile Include="IPriorityQueueNode.cpp" />
     <ClCompile Include="MConversationMgrClass.cpp" />

@@ -55,6 +55,7 @@ limitations under the License.
 #include "Mweaponmgr.h"
 #include "MPowerUpGameObjDef.h"
 #include "MTwiddlerClass.h"
+#include "MGlobalSettingsDef.h"
 
 #pragma managed(push, off)
 #pragma warning(push)
@@ -289,16 +290,17 @@ namespace RenSharp
 			case 36876: // TrackedVehicleDefClass
 			case 36877: // VTOLVehicleDefClass
 				return gcnew MoveablePhysDefClass(wrappedDefinitionClassPtr);
+			case IGlobalSettingsDef::GlobalSettingsDefClassID:
+				return gcnew GlobalSettingsDef(wrappedDefinitionClassPtr);
 			case 61446: // CharacterClassSettingsDefClass
 			case 61450: // CNCModeSettingsDef
 			case 61445: // EvaSettingsDefClass
-			case 61443: // GlobalSettingsDef
 			case 61444: // HUDGlobalSettingsDef
 			case 61447: // HumanAnimOverrideDef
 			case 61442: // HumanLoiterGlobalSettingsDef
 				return gcnew DefinitionClass(wrappedDefinitionClassPtr);
 			default:
-				throw gcnew InvalidOperationException(String::Format("Unknown DefinitionClass class ID {0}.", classId)); // Let caller decide
+				throw gcnew InvalidOperationException(String::Format("Unknown DefinitionClass class ID {0}.", classId));
 		}
 	}
 
