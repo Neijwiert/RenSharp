@@ -592,6 +592,14 @@ namespace RenSharp
 		managedObservers->Clear();
 	}
 
+	void ScriptableGameObj::RenSharpThink()
+	{
+		for each (auto observer in managedObservers->Values)
+		{
+			observer->Think(observer->Owner);
+		}
+	}
+
 	void ScriptableGameObj::RegisterManagedObserver(IRenSharpGameObjObserverClass^ observer)
 	{
 		if (observer == nullptr)

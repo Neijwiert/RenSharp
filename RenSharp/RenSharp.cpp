@@ -308,6 +308,30 @@ void RenSharpRootEventClass::Think()
 		return;
 	}
 	*/
+
+	if (shutdown || hostControl == nullptr)
+	{
+		return;
+	}
+
+	RenSharpInterface* rsInterface = hostControl->GetRenSharpInterface();
+	if (rsInterface != nullptr)
+	{
+		HRESULT hr;
+		if (FAILED(hr = rsInterface->Think()))
+		{
+			_com_error error(hr);
+			Console_Output("ERROR: Failed to call Think: %s\n", error.ErrorMessage());
+		}
+
+		rsInterface->Release();
+		rsInterface = nullptr;
+
+		if (FAILED(hr))
+		{
+			Shutdown();
+		}
+	}
 }
 
 void RenSharpRootEventClass::EventClass_Destructed(RenSharpEventClass* eventClass)

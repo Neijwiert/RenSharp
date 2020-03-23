@@ -178,6 +178,11 @@ namespace RenSharp
 
 	}
 
+	void RenSharpGameObjObserverClass::Think(IScriptableGameObj^ obj)
+	{
+
+	}
+
 	void RenSharpGameObjObserverClass::Destroyed(IScriptableGameObj ^obj)
 	{
 

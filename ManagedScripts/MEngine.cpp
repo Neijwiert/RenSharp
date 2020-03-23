@@ -204,6 +204,11 @@ namespace RenSharp
 		DANodeManagerClass::Shutdown();
 	}
 
+	void Engine::Think()
+	{
+		ScriptableGameObj::RenSharpThink();
+	}
+
 	void Engine::OnManagedConsoleFunctionDestructed(IntPtr function)
 	{
 		IRenSharpConsoleFunctionClass^ managedConsoleFunction = AsManagedConsoleFunction(function);

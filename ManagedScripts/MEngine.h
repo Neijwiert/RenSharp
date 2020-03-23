@@ -168,6 +168,7 @@ namespace RenSharp
 		public:
 			static bool Init();
 			static void Shutdown();
+			static void Think();
 
 			// Custom stuff
 			static void OnManagedConsoleFunctionDestructed(IntPtr function);

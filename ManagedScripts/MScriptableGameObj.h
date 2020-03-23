@@ -252,6 +252,7 @@ namespace RenSharp
 
 		internal:
 			static void Shutdown();
+			static void RenSharpThink();
 
 			static void RegisterManagedObserver(IRenSharpGameObjObserverClass^ observer);
 			static void UnregisterManagedObserver(IRenSharpGameObjObserverClass^ observer);

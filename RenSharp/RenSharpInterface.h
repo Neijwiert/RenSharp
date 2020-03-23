@@ -74,6 +74,7 @@ struct RenSharpInterface : IUnknown
 	virtual HRESULT __stdcall FreePointer(void *ptr) = 0;
 	virtual HRESULT __stdcall Init(BOOL *result) = 0;
 	virtual HRESULT __stdcall Shutdown() = 0;
+	virtual HRESULT __stdcall Think() = 0;
 
 	// RenSharpEventClass
 	virtual HRESULT __stdcall EventClassDestructed(RenSharpEventClass* eventClass) = 0;

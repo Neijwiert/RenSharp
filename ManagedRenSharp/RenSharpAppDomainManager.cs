@@ -132,6 +132,11 @@ namespace RenSharp
             }
         }
 
+        public void Think()
+        {
+            Engine.Think();
+        }
+
         public void EventClassDestructed(IntPtr eventClass)
         {
             try

@@ -47,6 +47,8 @@ namespace RenSharp
 	{
 		void Init(IScriptableGameObj^ obj);
 
+		void Think(IScriptableGameObj^ obj);
+
 		void Destroyed(IScriptableGameObj^ obj);
 
 		void Custom(IScriptableGameObj^ obj, int type, int param, IScriptableGameObj^ sender);
@@ -157,6 +159,7 @@ namespace RenSharp
 			virtual void ManagedRegistered();
 
 			virtual void Init(IScriptableGameObj ^obj);
+			virtual void Think(IScriptableGameObj^ obj);
 			virtual void Destroyed(IScriptableGameObj ^obj);
 			virtual void Custom(IScriptableGameObj ^obj, int type, int param, IScriptableGameObj ^sender);
 			virtual void SoundHeard(IScriptableGameObj ^obj, ICombatSound ^sound);

@@ -30,6 +30,8 @@ namespace RenSharp
 
         void Shutdown();
 
+        void Think();
+
 
         // RenSharpEventClass
         void EventClassDestructed(IntPtr eventClass);
