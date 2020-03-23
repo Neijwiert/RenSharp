@@ -38,7 +38,7 @@ namespace RenSharp
 	template<typename Tag, typename Tag::type M>
 	struct Rob
 	{
-		friend typename Tag::type get(Tag)
+		friend typename Tag::type StealValue(Tag)
 		{
 			return M;
 		}

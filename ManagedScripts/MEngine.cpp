@@ -259,7 +259,7 @@ namespace RenSharp
 	struct BeaconGameObjWeaponDef
 	{
 		typedef const ::WeaponDefinitionClass* (::BeaconGameObj::* type);
-		friend type get(BeaconGameObjWeaponDef);
+		friend type StealValue(BeaconGameObjWeaponDef);
 	};
 
 	template struct Rob<BeaconGameObjWeaponDef, &::BeaconGameObj::WeaponDef>;
@@ -267,7 +267,7 @@ namespace RenSharp
 	struct BeaconGameObjPlayer
 	{
 		typedef ::PlayerDataClass* (::BeaconGameObj::* type);
-		friend type get(BeaconGameObjPlayer);
+		friend type StealValue(BeaconGameObjPlayer);
 	};
 
 	template struct Rob<BeaconGameObjPlayer, &::BeaconGameObj::Player>;
@@ -275,7 +275,7 @@ namespace RenSharp
 	struct BeaconGameObjArmTime
 	{
 		typedef float (::BeaconGameObj::* type);
-		friend type get(BeaconGameObjArmTime);
+		friend type StealValue(BeaconGameObjArmTime);
 	};
 
 	template struct Rob<BeaconGameObjArmTime, &::BeaconGameObj::ArmTime>;
@@ -283,7 +283,7 @@ namespace RenSharp
 	struct BeaconGameObjState
 	{
 		typedef int(::BeaconGameObj::* type);
-		friend type get(BeaconGameObjState);
+		friend type StealValue(BeaconGameObjState);
 	};
 
 	template struct Rob<BeaconGameObjState, & ::BeaconGameObj::State>;
@@ -291,7 +291,7 @@ namespace RenSharp
 	struct BeaconGameObjOwner
 	{
 		typedef ReferencerClass (::BeaconGameObj::* type);
-		friend type get(BeaconGameObjOwner);
+		friend type StealValue(BeaconGameObjOwner);
 	};
 
 	template struct Rob<BeaconGameObjOwner, &::BeaconGameObj::Owner>;
@@ -299,7 +299,7 @@ namespace RenSharp
 	struct BeaconGameObjDetonateTime
 	{
 		typedef float(::BeaconGameObj::* type);
-		friend type get(BeaconGameObjDetonateTime);
+		friend type StealValue(BeaconGameObjDetonateTime);
 	};
 
 	template struct Rob<BeaconGameObjDetonateTime, & ::BeaconGameObj::DetonateTime>;
@@ -325,8 +325,8 @@ namespace RenSharp
 
 		::BeaconGameObj* beaconPtr = reinterpret_cast<::BeaconGameObj*>(beacon->BeaconGameObjPointer.ToPointer());
 
-		auto& bPlayer = (*beaconPtr).*get(BeaconGameObjPlayer());
-		auto& bOwner = (*beaconPtr).*get(BeaconGameObjOwner());
+		auto& bPlayer = (*beaconPtr).*StealValue(BeaconGameObjPlayer());
+		auto& bOwner = (*beaconPtr).*StealValue(BeaconGameObjOwner());
 
 		if (ownerPtr == nullptr)
 		{
@@ -353,7 +353,7 @@ namespace RenSharp
 
 		::BeaconGameObj* beaconPtr = reinterpret_cast<::BeaconGameObj*>(beacon->BeaconGameObjPointer.ToPointer());
 
-		auto& bArmTime = (*beaconPtr).*get(BeaconGameObjDetonateTime());
+		auto& bArmTime = (*beaconPtr).*StealValue(BeaconGameObjDetonateTime());
 
 		bArmTime = detonateTime;
 	}
@@ -413,11 +413,11 @@ namespace RenSharp
 		Matrix3D::ManagedToUnmanagedMatrix3D(transform, mat);
 		beaconObj->Set_Transform(mat);
 
-		auto& bWeaponDef = (*beaconObj).*get(BeaconGameObjWeaponDef());
-		auto& bPlayer = (*beaconObj).*get(BeaconGameObjPlayer());
-		auto& bArmTime = (*beaconObj).*get(BeaconGameObjArmTime());
-		auto& bState = (*beaconObj).*get(BeaconGameObjState());
-		auto& bOwner = (*beaconObj).*get(BeaconGameObjOwner());
+		auto& bWeaponDef = (*beaconObj).*StealValue(BeaconGameObjWeaponDef());
+		auto& bPlayer = (*beaconObj).*StealValue(BeaconGameObjPlayer());
+		auto& bArmTime = (*beaconObj).*StealValue(BeaconGameObjArmTime());
+		auto& bState = (*beaconObj).*StealValue(BeaconGameObjState());
+		auto& bOwner = (*beaconObj).*StealValue(BeaconGameObjOwner());
 
 		bWeaponDef = reinterpret_cast<::WeaponDefinitionClass*>(weaponDef->WeaponDefinitionClassPointer.ToPointer());
 		bPlayer = (playerData == nullptr || playerData->PlayerDataClassPointer.ToPointer() == nullptr ? nullptr : reinterpret_cast<::PlayerDataClass*>(playerData->PlayerDataClassPointer.ToPointer()));
@@ -498,7 +498,7 @@ namespace RenSharp
 	struct C4GameObjDetonationMode
 	{
 		typedef int(::C4GameObj::* type);
-		friend type get(C4GameObjDetonationMode);
+		friend type StealValue(C4GameObjDetonationMode);
 	};
 
 	template struct Rob<C4GameObjDetonationMode, &::C4GameObj::DetonationMode>;
@@ -506,7 +506,7 @@ namespace RenSharp
 	struct C4GameObjAttached
 	{
 		typedef bool(::C4GameObj::* type);
-		friend type get(C4GameObjAttached);
+		friend type StealValue(C4GameObjAttached);
 	};
 
 	template struct Rob<C4GameObjAttached, &::C4GameObj::attached>;
@@ -514,7 +514,7 @@ namespace RenSharp
 	struct C4GameObjAmmoDef
 	{
 		typedef const ::AmmoDefinitionClass* (::C4GameObj::* type);
-		friend type get(C4GameObjAmmoDef);
+		friend type StealValue(C4GameObjAmmoDef);
 	};
 
 	template struct Rob<C4GameObjAmmoDef, &::C4GameObj::AmmoDef>;
@@ -522,7 +522,7 @@ namespace RenSharp
 	struct C4GameObjPlayer
 	{
 		typedef ::PlayerDataClass* (::C4GameObj::* type);
-		friend type get(C4GameObjPlayer);
+		friend type StealValue(C4GameObjPlayer);
 	};
 
 	template struct Rob<C4GameObjPlayer, &::C4GameObj::Player>;
@@ -530,7 +530,7 @@ namespace RenSharp
 	struct C4GameObjAttachObject
 	{
 		typedef ::ReferencerClass (::C4GameObj::* type);
-		friend type get(C4GameObjAttachObject);
+		friend type StealValue(C4GameObjAttachObject);
 	};
 
 	template struct Rob<C4GameObjAttachObject, &::C4GameObj::attachObject>;
@@ -538,7 +538,7 @@ namespace RenSharp
 	struct C4GameObjAttachLocation
 	{
 		typedef ::Vector3 (::C4GameObj::* type);
-		friend type get(C4GameObjAttachLocation);
+		friend type StealValue(C4GameObjAttachLocation);
 	};
 
 	template struct Rob<C4GameObjAttachLocation, &::C4GameObj::AttachLocation>;
@@ -546,7 +546,7 @@ namespace RenSharp
 	struct C4GameObjAttachBoneIndex
 	{
 		typedef int(::C4GameObj::* type);
-		friend type get(C4GameObjAttachBoneIndex);
+		friend type StealValue(C4GameObjAttachBoneIndex);
 	};
 
 	template struct Rob<C4GameObjAttachBoneIndex, &::C4GameObj::AttachBoneIndex>;
@@ -554,7 +554,7 @@ namespace RenSharp
 	struct C4GameObjIsAttachedToMCT
 	{
 		typedef bool(::C4GameObj::* type);
-		friend type get(C4GameObjIsAttachedToMCT);
+		friend type StealValue(C4GameObjIsAttachedToMCT);
 	};
 
 	template struct Rob<C4GameObjIsAttachedToMCT, &::C4GameObj::IsAttachedToMCT>;
@@ -562,7 +562,7 @@ namespace RenSharp
 	struct C4GameObjAttachedToDynamic
 	{
 		typedef bool(::C4GameObj::* type);
-		friend type get(C4GameObjAttachedToDynamic);
+		friend type StealValue(C4GameObjAttachedToDynamic);
 	};
 
 	template struct Rob<C4GameObjAttachedToDynamic, &::C4GameObj::attachedToDynamic>;
@@ -570,7 +570,7 @@ namespace RenSharp
 	struct C4GameObjTriggerTime
 	{
 		typedef float(::C4GameObj::* type);
-		friend type get(C4GameObjTriggerTime);
+		friend type StealValue(C4GameObjTriggerTime);
 	};
 
 	template struct Rob<C4GameObjTriggerTime, &::C4GameObj::TriggerTime>;
@@ -604,8 +604,8 @@ namespace RenSharp
 
 		::C4GameObj* c4Ptr = reinterpret_cast<::C4GameObj*>(c4->C4GameObjPointer.ToPointer());
 
-		auto& c4Player = (*c4Ptr).*get(C4GameObjPlayer());
-		auto& c4Owner = (*c4Ptr).*get(C4GameObjOwner());
+		auto& c4Player = (*c4Ptr).*StealValue(C4GameObjPlayer());
+		auto& c4Owner = (*c4Ptr).*StealValue(C4GameObjOwner());
 
 		if (ownerPtr == nullptr)
 		{
@@ -636,7 +636,7 @@ namespace RenSharp
 			return;
 		}
 
-		auto& c4TriggerTime = (*c4Ptr).*get(C4GameObjTriggerTime());
+		auto& c4TriggerTime = (*c4Ptr).*StealValue(C4GameObjTriggerTime());
 
 		c4TriggerTime = triggerTime;
 	}
@@ -654,7 +654,7 @@ namespace RenSharp
 			return;
 		}
 
-		auto& c4IsAttachedToMCT = (*c4Ptr).*get(C4GameObjIsAttachedToMCT());
+		auto& c4IsAttachedToMCT = (*c4Ptr).*StealValue(C4GameObjIsAttachedToMCT());
 
 		c4IsAttachedToMCT = isAttachedToMCT;
 
@@ -728,18 +728,18 @@ namespace RenSharp
 			}
 		}
 
-		auto& c4AmmoDef = (*c4Obj).*get(C4GameObjAmmoDef());
-		auto& c4DetonationMode = (*c4Obj).*get(C4GameObjDetonationMode());
-		auto& c4Player = (*c4Obj).*get(C4GameObjPlayer());
-		auto& c4TriggerTime = (*c4Obj).*get(C4GameObjTriggerTime());
-		auto& c4Owner = (*c4Obj).*get(C4GameObjOwner());
+		auto& c4AmmoDef = (*c4Obj).*StealValue(C4GameObjAmmoDef());
+		auto& c4DetonationMode = (*c4Obj).*StealValue(C4GameObjDetonationMode());
+		auto& c4Player = (*c4Obj).*StealValue(C4GameObjPlayer());
+		auto& c4TriggerTime = (*c4Obj).*StealValue(C4GameObjTriggerTime());
+		auto& c4Owner = (*c4Obj).*StealValue(C4GameObjOwner());
 
-		auto& c4Attached = (*c4Obj).*get(C4GameObjAttached());
-		auto& c4AttachObject = (*c4Obj).*get(C4GameObjAttachObject());
-		auto& c4AttachLocation = (*c4Obj).*get(C4GameObjAttachLocation());
-		auto& c4AttachBoneIndex = (*c4Obj).*get(C4GameObjAttachBoneIndex());
-		auto& c4IsAttachedToMCT = (*c4Obj).*get(C4GameObjIsAttachedToMCT());
-		auto& c4AttachedToDynamic = (*c4Obj).*get(C4GameObjAttachedToDynamic());
+		auto& c4Attached = (*c4Obj).*StealValue(C4GameObjAttached());
+		auto& c4AttachObject = (*c4Obj).*StealValue(C4GameObjAttachObject());
+		auto& c4AttachLocation = (*c4Obj).*StealValue(C4GameObjAttachLocation());
+		auto& c4AttachBoneIndex = (*c4Obj).*StealValue(C4GameObjAttachBoneIndex());
+		auto& c4IsAttachedToMCT = (*c4Obj).*StealValue(C4GameObjIsAttachedToMCT());
+		auto& c4AttachedToDynamic = (*c4Obj).*StealValue(C4GameObjAttachedToDynamic());
 
 		c4AmmoDef = ammoDefPtr;
 		c4DetonationMode = detonationMode;
@@ -864,7 +864,7 @@ namespace RenSharp
 
 		::C4GameObj* c4ObjPtr = reinterpret_cast<::C4GameObj*>(c4Obj->C4GameObjPointer.ToPointer());
 
-		auto& c4Attached = (*c4ObjPtr).*get(C4GameObjAttached());
+		auto& c4Attached = (*c4ObjPtr).*StealValue(C4GameObjAttached());
 
 		c4Attached = true;
 
@@ -933,10 +933,10 @@ namespace RenSharp
 
 		::C4GameObj* c4ObjPtr = reinterpret_cast<::C4GameObj*>(c4Obj->C4GameObjPointer.ToPointer());
 
-		auto& c4Attached = (*c4ObjPtr).*get(C4GameObjAttached());
-		auto& c4AttachObject = (*c4ObjPtr).*get(C4GameObjAttachObject());
-		auto& c4IsAttachedToMCT = (*c4ObjPtr).*get(C4GameObjIsAttachedToMCT());
-		auto& c4AttachLocation = (*c4ObjPtr).*get(C4GameObjAttachLocation());
+		auto& c4Attached = (*c4ObjPtr).*StealValue(C4GameObjAttached());
+		auto& c4AttachObject = (*c4ObjPtr).*StealValue(C4GameObjAttachObject());
+		auto& c4IsAttachedToMCT = (*c4ObjPtr).*StealValue(C4GameObjIsAttachedToMCT());
+		auto& c4AttachLocation = (*c4ObjPtr).*StealValue(C4GameObjAttachLocation());
 
 		c4Attached = true;
 		c4AttachObject = reinterpret_cast<::BuildingGameObj*>(attachToObj->BuildingGameObjPointer.ToPointer());

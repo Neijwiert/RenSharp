@@ -39,7 +39,7 @@ namespace RenSharp
 	struct DAPlayerClassData
 	{
 		typedef ::DynamicVectorClass<::DAPlayerDataClass*> (::DAPlayerClass::*type);
-		friend type get(DAPlayerClassData);
+		friend type StealValue(DAPlayerClassData);
 	};
 
 	template struct Rob<DAPlayerClassData, &::DAPlayerClass::Data>;
@@ -80,7 +80,7 @@ namespace RenSharp
 				auto daPlayerOwner = cPlayerOwner->Get_DA_Player();
 				if (daPlayerOwner != nullptr)
 				{
-					auto& data = (*daPlayerOwner).*get(DAPlayerClassData());
+					auto& data = (*daPlayerOwner).*StealValue(DAPlayerClassData());
 
 					data.DeleteObj(InternalDAPlayerDataClassPointer);
 				}

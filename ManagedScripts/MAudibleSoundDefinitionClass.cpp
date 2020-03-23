@@ -179,6 +179,23 @@ namespace RenSharp
 		return InternalAudibleSoundDefinitionClassPointer->Get_Logical_Type();
 	}
 
+#pragma managed(push, off)
+	struct AudibleSoundDefinitionClassm_Is3DSound
+	{
+		typedef bool (::AudibleSoundDefinitionClass::* type);
+		friend type StealValue(AudibleSoundDefinitionClassm_Is3DSound);
+	};
+
+	template struct Rob<AudibleSoundDefinitionClassm_Is3DSound, & ::AudibleSoundDefinitionClass::m_Is3DSound>;
+#pragma managed(pop)
+
+	bool AudibleSoundDefinitionClass::Is3DSound::get()
+	{
+		auto& is3DSound = (*InternalAudibleSoundDefinitionClassPointer).*StealValue(AudibleSoundDefinitionClassm_Is3DSound());
+
+		return is3DSound;
+	}
+
 	::DefinitionClass *AudibleSoundDefinitionClass::InternalDefinitionClassPointer::get()
 	{
 		return InternalAudibleSoundDefinitionClassPointer;

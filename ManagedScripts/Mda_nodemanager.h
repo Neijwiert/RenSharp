@@ -219,7 +219,7 @@ namespace RenSharp
 	struct DANodeManagerClassNodes
 	{
 		typedef ::DynamicVectorClass<::DABaseNodeClass*>(::DANodeManagerClass::* type);
-		friend type get(DANodeManagerClassNodes);
+		friend type StealValue(DANodeManagerClassNodes);
 	};
 
 	template struct Rob<DANodeManagerClassNodes, &::DANodeManagerClass::Nodes>;
@@ -577,7 +577,7 @@ namespace RenSharp
 					throw gcnew ArgumentNullException("header");
 				}
 
-				auto& nodes = (*InternalDANodeManagerClassPointer).*get(DANodeManagerClassNodes());
+				auto& nodes = (*InternalDANodeManagerClassPointer).*StealValue(DANodeManagerClassNodes());
 
 				T newNode = gcnew T();
 				static_cast<IUnmanagedAttachable<IDABaseNodeClass^>^>(newNode)->InitUnmanagedAttachable();

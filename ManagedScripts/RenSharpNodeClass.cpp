@@ -65,7 +65,7 @@ namespace RenSharp
 			auto nodeManager = ::DANodeManagerClass::Get_Instance();
 			if (nodeManager != nullptr)
 			{
-				auto& nodes = (*nodeManager).*get(DANodeManagerClassNodes());
+				auto& nodes = (*nodeManager).*StealValue(DANodeManagerClassNodes());
 
 				nodes.DeleteObj(InternalDABaseNodeClassPointer);
 			}

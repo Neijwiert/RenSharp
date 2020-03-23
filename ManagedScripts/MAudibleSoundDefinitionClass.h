@@ -117,6 +117,11 @@ namespace RenSharp
 		{
 			int get();
 		}
+
+		property bool Is3DSound
+		{
+			bool get();
+		}
 	};
 
 	public ref class AudibleSoundDefinitionClass : public DefinitionClass, public IAudibleSoundDefinitionClass
@@ -204,6 +209,11 @@ namespace RenSharp
 			property int LogicalType
 			{
 				virtual int get() sealed;
+			}
+
+			property bool Is3DSound
+			{
+				virtual bool get() sealed;
 			}
 
 		protected:
