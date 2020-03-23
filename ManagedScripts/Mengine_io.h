@@ -52,17 +52,27 @@ namespace RenSharp
 
 		int Read(array<std::uint8_t> ^buffer);
 
+		int Read(array<std::uint8_t>^ buffer, int offset, int count);
+
 		int Seek(int offset, int origin);
 
 		int Tell();
 
 		int Write(array<std::uint8_t> ^buffer);
 
+		int Write(array<std::uint8_t>^ buffer, int offset, int count);
+
 		void Close();
 
 		void Error(int a, int b, String ^c);
 
 		void Bias(int start, int length);
+
+		void Flush();
+
+		void SetLength(int length);
+
+		System::IO::Stream^ AsStream(int mode);
 
 		property IntPtr FileClassPointer
 		{
@@ -121,12 +131,17 @@ namespace RenSharp
 			virtual int Open(int mode) sealed;
 			virtual int Open() sealed;
 			virtual int Read(array<std::uint8_t> ^buffer) sealed;
+			virtual int Read(array<std::uint8_t>^ buffer, int offset, int count) sealed;
 			virtual int Seek(int offset, int origin) sealed;
 			virtual int Tell() sealed;
 			virtual int Write(array<std::uint8_t> ^buffer) sealed;
+			virtual int Write(array<std::uint8_t>^ buffer, int offset, int count) sealed;
 			virtual void Close() sealed;
 			virtual void Error(int a, int b, String ^c) sealed;
 			virtual void Bias(int start, int length) sealed;
+			virtual void Flush() sealed;
+			virtual void SetLength(int length) sealed;
+			virtual System::IO::Stream^ AsStream(int mode) sealed;
 
 			property IntPtr FileClassPointer
 			{

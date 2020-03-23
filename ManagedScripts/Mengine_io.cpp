@@ -27,6 +27,153 @@ using namespace System::Text;
 
 namespace RenSharp
 {
+	ref class FileClassStream sealed : Stream
+	{
+		private:
+			bool _disposedResources = false;
+			initonly IFileClass^ _file;
+			initonly bool _canRead;
+			initonly bool _canWrite;
+
+		public:
+			FileClassStream(IFileClass^ file, int mode)
+			{
+				if (file == nullptr || file->FileClassPointer.ToPointer() == nullptr)
+				{
+					throw gcnew ArgumentNullException("file");
+				}
+
+				_file = file;
+
+				if (!file->IsAvailable())
+				{
+					throw gcnew IOException(String::Format("File not available ({0}).", GetLastError()));
+				}
+
+				if (_file->Open(mode) != 1)
+				{
+					throw gcnew IOException(String::Format("Failed to open {0}.", GetLastError()));
+				}
+
+				_canRead = (mode == 1 || mode == 0);
+				_canWrite = (mode == 2 || mode == 3);
+			}
+
+			~FileClassStream()
+			{
+				this->!FileClassStream();
+			}
+
+			void Flush() override
+			{
+				_file->Flush();
+			}
+
+			int Read(array<std::uint8_t>^ buffer, int offset, int count) override
+			{
+				if (!CanRead)
+				{
+					throw gcnew NotSupportedException("Reading is not supported.");
+				}
+
+				return _file->Read(buffer, offset, count);
+			}
+
+			long long Seek(long long offset, SeekOrigin origin) override
+			{
+				int result = _file->Seek(static_cast<int>(offset), static_cast<int>(origin));
+				if (result == -1)
+				{
+					throw gcnew IOException(String::Format("Failed to seek {0}.", GetLastError()));
+				}
+
+				return result;
+			}
+
+			void SetLength(long long value) override
+			{
+				_file->SetLength(static_cast<int>(value));
+			}
+
+			void Write(array<std::uint8_t>^ buffer, int offset, int count) override
+			{
+				if (!CanWrite)
+				{
+					throw gcnew NotSupportedException("Writing is not supported.");
+				}
+
+				if (_file->Write(buffer, offset, count) != count)
+				{
+					throw gcnew IOException(String::Format("Failed to write {0}.", GetLastError()));
+				}
+			}
+
+			property bool CanRead
+			{
+				bool get() override
+				{
+					return _canRead;
+				}
+			}
+
+			property bool CanSeek
+			{
+				bool get() override
+				{
+					return true;
+				}
+			}
+
+			property bool CanWrite
+			{
+				bool get() override
+				{
+					return _canWrite;
+				}
+			}
+
+			property long long Length
+			{
+				long long get() override
+				{
+					return _file->Size;
+				}
+			}
+
+			property long long Position
+			{
+				long long get() override
+				{
+					return _file->Tell();
+				}
+				void set(long long value) override
+				{
+					if (_file->Seek((int)value, 0) == -1)
+					{
+						throw gcnew IOException(String::Format("Failed to seek {0}.", GetLastError()));
+					}
+				}
+			}
+
+			property IFileClass^ File
+			{
+				IFileClass^ get()
+				{
+					return _file;
+				}
+			}
+		protected:
+			!FileClassStream()
+			{
+				if (!_disposedResources)
+				{
+					_file->Close();
+
+					_disposedResources = true;
+				}
+			}
+	};
+
 	FileClass::FileClass()
 	{
 
@@ -137,6 +284,32 @@ namespace RenSharp
 		return InternalFileClassPointer->Read(bufferPtr, buffer->Length);
 	}
 
+	int FileClass::Read(array<std::uint8_t>^ buffer, int offset, int count)
+	{
+		if (buffer == nullptr)
+		{
+			throw gcnew ArgumentNullException("buffer");
+		}
+		else if (offset + count > buffer->Length)
+		{
+			throw gcnew ArgumentException(String::Format("The sum of offset ({0}) and count ({1}) is larger than the buffer length.", offset, count));
+		}
+		else if (offset < 0)
+		{
+			throw gcnew ArgumentOutOfRangeException(String::Format("offset ({0}) is negative.", offset));
+		}
+		else if (count < 0)
+		{
+			throw gcnew ArgumentOutOfRangeException(String::Format("count ({0}) is negative.", count));
+		}
+
+		pin_ptr<std::uint8_t> pinnedBuffer = &buffer[0];
+		std::uint8_t* bufferPtr = pinnedBuffer;
+		bufferPtr += offset;
+
+		return InternalFileClassPointer->Read(bufferPtr, count);
+	}
+
 	int FileClass::Seek(int offset, int origin)
 	{
 		return InternalFileClassPointer->Seek(offset, origin);
@@ -158,6 +331,32 @@ namespace RenSharp
 		std::uint8_t *bufferPtr = pinnedBuffer;
 
 		return InternalFileClassPointer->Write(bufferPtr, buffer->Length);
+	}
+
+	int FileClass::Write(array<std::uint8_t>^ buffer, int offset, int count)
+	{
+		if (buffer == nullptr)
+		{
+			throw gcnew ArgumentNullException("buffer");
+		}
+		else if (offset + count > buffer->Length)
+		{
+			throw gcnew ArgumentException(String::Format("The sum of offset ({0}) and count ({1}) is larger than the buffer length.", offset, count));
+		}
+		else if (offset < 0)
+		{
+			throw gcnew ArgumentOutOfRangeException(String::Format("offset ({0}) is negative.", offset));
+		}
+		else if (count < 0)
+		{
+			throw gcnew ArgumentOutOfRangeException(String::Format("count ({0}) is negative.", count));
+		}
+
+		pin_ptr<std::uint8_t> pinnedBuffer = &buffer[0];
+		std::uint8_t* bufferPtr = pinnedBuffer;
+		bufferPtr += offset;
+
+		return InternalFileClassPointer->Write(bufferPtr, count);
 	}
 
 	void FileClass::Close()
@@ -188,6 +387,47 @@ namespace RenSharp
 	void FileClass::Bias(int start, int length)
 	{
 		InternalFileClassPointer->Bias(start, length);
+	}
+
+	void FileClass::Flush()
+	{
+		if (!FlushFileBuffers(InternalFileClassPointer->Get_File_Handle()))
+		{
+			throw gcnew IOException(String::Format("Failed to flush ({0}).", GetLastError()));
+		}
+	}
+
+	void FileClass::SetLength(int length)
+	{
+		auto fileHandle = InternalFileClassPointer->Get_File_Handle();
+		DWORD originalPosition = SetFilePointer(fileHandle, 0, NULL, FILE_CURRENT);
+		if (originalPosition == INVALID_SET_FILE_POINTER)
+		{
+			throw gcnew IOException(String::Format("Failed to set the file pointer ({0}).", GetLastError()));
+		}
+
+		if (SetFilePointer(fileHandle, length, nullptr, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+		{
+			throw gcnew IOException(String::Format("Failed to set the file pointer ({0}).", GetLastError()));
+		}
+
+		if (SetEndOfFile(fileHandle) == FALSE)
+		{
+			throw gcnew IOException(String::Format("Failed to set the end of the file ({0}).", GetLastError()));
+		}
+
+		if (originalPosition < static_cast<DWORD>(length))
+		{
+			if (SetFilePointer(fileHandle, originalPosition, nullptr, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+			{
+				throw gcnew IOException(String::Format("Failed to set the file pointer ({0}).", GetLastError()));
+			}
+		}
+	}
+
+	Stream^ FileClass::AsStream(int mode)
+	{
+		return gcnew FileClassStream(this, mode);
 	}
 
 	IntPtr FileClass::FileClassPointer::get()
