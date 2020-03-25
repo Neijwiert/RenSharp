@@ -196,6 +196,23 @@ namespace RenSharp
 		return is3DSound;
 	}
 
+#pragma managed(push, off)
+	struct AudibleSoundDefinitionClassm_LoopCount
+	{
+		typedef int(::AudibleSoundDefinitionClass::* type);
+		friend type StealValue(AudibleSoundDefinitionClassm_LoopCount);
+	};
+
+	template struct Rob<AudibleSoundDefinitionClassm_LoopCount, & ::AudibleSoundDefinitionClass::m_LoopCount>;
+#pragma managed(pop)
+
+	int AudibleSoundDefinitionClass::LoopCount::get()
+	{
+		auto& loopCount = (*InternalAudibleSoundDefinitionClassPointer).*StealValue(AudibleSoundDefinitionClassm_LoopCount());
+
+		return loopCount;
+	}
+
 	::DefinitionClass *AudibleSoundDefinitionClass::InternalDefinitionClassPointer::get()
 	{
 		return InternalAudibleSoundDefinitionClassPointer;
