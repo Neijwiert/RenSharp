@@ -27,7 +27,7 @@ namespace RenSharp
 		private:
 			bool disposedResources;
 
-			static Collections::Generic::IDictionary<ITimerInterface^, Collections::Generic::IList<RenSharpTimerStruct^>^>^ timers;
+			static Collections::Generic::IList<Collections::Generic::IList<RenSharpTimerStruct^>^>^ timers;
 
 		public:
 			static RenSharpTimerManager();
@@ -51,5 +51,8 @@ namespace RenSharp
 			static bool IsTimer(ITimerInterface^ owner, System::Action<RenSharpTimerStruct^>^ action);
 			static void ClearTimers(ITimerInterface^ owner);
 			static Collections::Generic::IEnumerable<RenSharpTimerStruct^>^ GetTimers(ITimerInterface^ owner);
+
+		private:
+			static Collections::Generic::IList<RenSharpTimerStruct^>^ FindTimerList(ITimerInterface^ owner);
 	};
 }

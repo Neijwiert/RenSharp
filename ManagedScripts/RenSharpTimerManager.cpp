@@ -24,7 +24,7 @@ namespace RenSharp
 {
 	static RenSharpTimerManager::RenSharpTimerManager()
 	{
-		timers = gcnew Collections::Generic::Dictionary<ITimerInterface^, Collections::Generic::IList<RenSharpTimerStruct^>^>();
+		timers = gcnew Collections::Generic::List<Collections::Generic::IList<RenSharpTimerStruct^>^>();
 	}
 
 	RenSharpTimerManager::RenSharpTimerManager()
@@ -52,11 +52,12 @@ namespace RenSharp
 
 	void RenSharpTimerManager::Think()
 	{
-		for each (auto pair in timers)
+		for (int interfaceIndex = timers->Count - 1; interfaceIndex >= 0 && timers->Count > 0; interfaceIndex--)
 		{
-			for (int index = pair.Value->Count - 1; index >= 0 && pair.Value->Count > 0; index--)
+			auto timerList = timers[interfaceIndex];
+			for (int timerIndex = timerList->Count - 1; timerIndex >= 0 && timerList->Count > 0; timerIndex--)
 			{
-				RenSharpTimerStruct^ currentTimer = pair.Value[index];
+				RenSharpTimerStruct^ currentTimer = timerList[timerIndex];
 
 				currentTimer->RemainingTime -= TimeManager::FrameSeconds;
 				if (currentTimer->RemainingTime <= 0)
@@ -79,9 +80,14 @@ namespace RenSharp
 					}
 					else
 					{
-						pair.Value->RemoveAt(index);
+						timerList->RemoveAt(timerIndex);
 					}
 				}
+			}
+
+			if (timerList->Count <= 0)
+			{
+				timers->RemoveAt(interfaceIndex);
 			}
 		}
 	}
@@ -93,12 +99,12 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("owner");
 		}
 
-		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers;
-		if (!timers->TryGetValue(owner, eventTimers))
+		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers = FindTimerList(owner);
+		if (eventTimers == nullptr)
 		{
 			eventTimers = gcnew Collections::Generic::List<RenSharpTimerStruct^>();
 
-			timers->Add(owner, eventTimers);
+			timers->Add(eventTimers);
 		}
 
 		eventTimers->Add(gcnew RenSharpTimerStruct(owner, duration, repeat, number, data));
@@ -121,12 +127,12 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("owner");
 		}
 
-		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers;
-		if (!timers->TryGetValue(owner, eventTimers))
+		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers = FindTimerList(owner);
+		if (eventTimers == nullptr)
 		{
 			eventTimers = gcnew Collections::Generic::List<RenSharpTimerStruct^>();
 
-			timers->Add(owner, eventTimers);
+			timers->Add(eventTimers);
 		}
 
 		eventTimers->Add(gcnew RenSharpTimerStruct(owner, duration, repeat, action));
@@ -144,8 +150,8 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("owner");
 		}
 
-		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers;
-		if (timers->TryGetValue(owner, eventTimers))
+		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers = FindTimerList(owner);
+		if (eventTimers != nullptr)
 		{
 			for (int index = eventTimers->Count - 1; index >= 0; index--)
 			{
@@ -154,11 +160,6 @@ namespace RenSharp
 				{
 					eventTimers->RemoveAt(index);
 				}
-			}
-
-			if (eventTimers->Count <= 0)
-			{
-				timers->Remove(owner);
 			}
 		}
 	}
@@ -179,8 +180,8 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("action");
 		}
 
-		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers;
-		if (timers->TryGetValue(owner, eventTimers))
+		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers = FindTimerList(owner);
+		if (eventTimers != nullptr)
 		{
 			for (int index = eventTimers->Count - 1; index >= 0; index--)
 			{
@@ -189,11 +190,6 @@ namespace RenSharp
 				{
 					eventTimers->RemoveAt(index);
 				}
-			}
-
-			if (eventTimers->Count <= 0)
-			{
-				timers->Remove(owner);
 			}
 		}
 	}
@@ -205,8 +201,8 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("owner");
 		}
 
-		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers;
-		if (timers->TryGetValue(owner, eventTimers))
+		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers = FindTimerList(owner);
+		if (eventTimers != nullptr)
 		{
 			for each (RenSharpTimerStruct ^ timer in eventTimers)
 			{
@@ -236,8 +232,8 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("action");
 		}
 
-		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers;
-		if (timers->TryGetValue(owner, eventTimers))
+		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers = FindTimerList(owner);
+		if (eventTimers != nullptr)
 		{
 			for each (RenSharpTimerStruct ^ timer in eventTimers)
 			{
@@ -258,7 +254,15 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("owner");
 		}
 
-		timers->Remove(owner);
+		for (int interfaceIndex = 0; interfaceIndex < timers->Count; interfaceIndex++)
+		{
+			if (Object::ReferenceEquals(timers[interfaceIndex], owner))
+			{
+				timers->RemoveAt(interfaceIndex);
+
+				return;
+			}
+		}
 	}
 
 	Collections::Generic::IEnumerable<RenSharpTimerStruct^>^ RenSharpTimerManager::GetTimers(ITimerInterface^ owner)
@@ -268,14 +272,27 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("owner");
 		}
 
-		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers;
-		if (timers->TryGetValue(owner, eventTimers))
+		Collections::Generic::IList<RenSharpTimerStruct^>^ eventTimers = FindTimerList(owner);
+		if (eventTimers != nullptr)
 		{
 			return eventTimers;
 		}
 		else
 		{
-			return gcnew Collections::Generic::List<RenSharpTimerStruct^>();
+			return System::Linq::Enumerable::Empty<RenSharpTimerStruct^>();
 		}
+	}
+
+	Collections::Generic::IList<RenSharpTimerStruct^>^ RenSharpTimerManager::FindTimerList(ITimerInterface^ owner)
+	{
+		for each (auto timerList in timers)
+		{
+			if (timerList->Count > 0 && Object::ReferenceEquals(owner, timerList[0]->Owner))
+			{
+				return timerList;
+			}
+		}
+
+		return nullptr;
 	}
 }
