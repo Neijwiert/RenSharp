@@ -1215,6 +1215,9 @@
     <ClInclude Include="RefCountClassUnmanagedContainer.h">
       <Filter>Header Files\RenSharp Core</Filter>
     </ClInclude>
+    <ClInclude Include="RenSharpBasicTimerImplementation.h">
+      <Filter>Header Files\RenSharp Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -2361,6 +2364,9 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="RefCountClassUnmanagedContainer.cpp">
+      <Filter>Source Files\RenSharp Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RebSharpBasicTimerImplementation.cpp">
       <Filter>Source Files\RenSharp Core</Filter>
     </ClCompile>
   </ItemGroup>

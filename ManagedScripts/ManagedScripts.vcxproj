@@ -442,6 +442,7 @@
     <ClInclude Include="RenegadeDispatcher.h" />
     <ClInclude Include="RenegadeDispatcherOperationStatus.h" />
     <ClInclude Include="RenegadeDispatcherTaskOperation.h" />
+    <ClInclude Include="RenSharpBasicTimerImplementation.h" />
     <ClInclude Include="RenSharpChatCommandClass.h" />
     <ClInclude Include="RenSharpChatCommandManager.h" />
     <ClInclude Include="RenSharpChatCommandStruct.h" />
@@ -823,6 +824,7 @@
     <ClCompile Include="Mwwmath.cpp" />
     <ClCompile Include="PriorityQueue.cpp" />
     <ClCompile Include="PriorityQueueNode.cpp" />
+    <ClCompile Include="RebSharpBasicTimerImplementation.cpp" />
     <ClCompile Include="RefCountClassUnmanagedContainer.cpp" />
     <ClCompile Include="RenegadeDispatcher.cpp" />
     <ClCompile Include="RenegadeDispatcherOperationStatus.cpp" />
