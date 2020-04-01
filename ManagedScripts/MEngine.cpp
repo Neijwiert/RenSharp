@@ -136,6 +136,16 @@ namespace RenSharp
 				surfaceTypeStrings[x] = gcnew String(currentString);
 			}
 		}
+		bufferedConsoleFunctionList = nullptr;
+		bufferedTheFileFactory = nullptr;
+		bufferedFilePath = nullptr;
+		bufferedAppDataPath = nullptr;
+		bufferedRegistryPath = nullptr;
+		bufferedTheGame = nullptr;
+		bufferedTheSkirmishGame = nullptr;
+		bufferedTheCncGame = nullptr;
+		bufferedTheSinglePlayerGame = nullptr;
+		bufferedScriptCommands = nullptr;
 
 		dispatchers = gcnew Generic::Dictionary<Threading::Thread^, RenegadeDispatcher^>();
 	}
@@ -14736,7 +14746,12 @@ static ::cPlayer* NickSavePlayer = nullptr;
 
 	IDynamicVectorClass<IConsoleFunctionClass ^> ^Engine::ConsoleFunctionList::get()
 	{
-		return gcnew ConsoleFunctionClassPtrDynamicVectorClass(IntPtr(&::ConsoleFunctionList));
+		if (bufferedConsoleFunctionList == nullptr)
+		{
+			bufferedConsoleFunctionList = gcnew ConsoleFunctionClassPtrDynamicVectorClass(IntPtr(&::ConsoleFunctionList));
+		}
+
+		return bufferedConsoleFunctionList;
 	}
 
 	void Engine::ConsoleFunctionList::set(IDynamicVectorClass<IConsoleFunctionClass ^> ^value)
@@ -14758,7 +14773,13 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew FileFactoryClass(IntPtr(theFileFactory));
+			auto theFileFactoryPtr = IntPtr(theFileFactory);
+			if (bufferedTheFileFactory == nullptr || !bufferedTheFileFactory->FileFactoryClassPointer.Equals(theFileFactoryPtr))
+			{
+				bufferedTheFileFactory = gcnew FileFactoryClass(theFileFactoryPtr);
+			}
+
+			return bufferedTheFileFactory;
 		}
 	}
 
@@ -14771,7 +14792,14 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew String(filePath);
+			static const char* bufferedFilePathPtr = nullptr;
+			if (bufferedFilePathPtr == nullptr || bufferedFilePath == nullptr)
+			{
+				bufferedFilePathPtr = filePath;
+				bufferedFilePath = gcnew String(bufferedFilePathPtr);
+			}
+
+			return bufferedFilePath;
 		}
 	}
 
@@ -14784,7 +14812,14 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew String(appDataPath);
+			static const char* bufferedAppDataPathPtr = nullptr;
+			if (bufferedAppDataPathPtr == nullptr || bufferedAppDataPath == nullptr)
+			{
+				bufferedAppDataPathPtr = appDataPath;
+				bufferedAppDataPath = gcnew String(bufferedAppDataPathPtr);
+			}
+
+			return bufferedAppDataPath;
 		}
 	}
 
@@ -14797,7 +14832,14 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew String(registryPath);
+			static const char* bufferedRegistryPathPtr = nullptr;
+			if (bufferedRegistryPathPtr == nullptr || bufferedRegistryPath == nullptr)
+			{
+				bufferedRegistryPathPtr = registryPath;
+				bufferedRegistryPath = gcnew String(bufferedRegistryPathPtr);
+			}
+
+			return bufferedRegistryPath;
 		}
 	}
 
@@ -14815,7 +14857,13 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew ScriptCommands(IntPtr(result));
+			auto commandsPtr = IntPtr(result);
+			if (bufferedScriptCommands == nullptr || !bufferedScriptCommands->ScriptCommandsPointer.Equals(commandsPtr))
+			{
+				bufferedScriptCommands = gcnew ScriptCommands(commandsPtr);
+			}
+
+			return bufferedScriptCommands;
 		}
 	}
 
@@ -14880,7 +14928,13 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew cGameData(IntPtr(result));
+			auto theGamePtr = IntPtr(result);
+			if (bufferedTheGame == nullptr || !bufferedTheGame->cGameDataPointer.Equals(theGamePtr))
+			{
+				bufferedTheGame = gcnew cGameData(theGamePtr);
+			}
+
+			return bufferedTheGame;
 		}
 	}
 
@@ -14893,7 +14947,13 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew cGameDataSkirmish(IntPtr(result));
+			auto theSkirmishGamePtr = IntPtr(result);
+			if (bufferedTheSkirmishGame == nullptr || !bufferedTheSkirmishGame->cGameDataSkirmishPointer.Equals(theSkirmishGamePtr))
+			{
+				bufferedTheSkirmishGame = gcnew cGameDataSkirmish(theSkirmishGamePtr);
+			}
+
+			return bufferedTheSkirmishGame;
 		}
 	}
 
@@ -14906,7 +14966,13 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew cGameDataCnC(IntPtr(result));
+			auto theCncGamePtr = IntPtr(result);
+			if (bufferedTheCncGame == nullptr || !bufferedTheCncGame->cGameDataCnCPointer.Equals(theCncGamePtr))
+			{
+				bufferedTheCncGame = gcnew cGameDataCnC(theCncGamePtr);
+			}
+
+			return  bufferedTheCncGame;
 		}
 	}
 
@@ -14919,7 +14985,13 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			return gcnew cGameDataSinglePlayer(IntPtr(result));
+			auto theSinglePlayerGamePtr = IntPtr(result);
+			if (bufferedTheSinglePlayerGame == nullptr || !bufferedTheSinglePlayerGame->cGameDataSinglePlayerPointer.Equals(theSinglePlayerGamePtr))
+			{
+				bufferedTheSinglePlayerGame = gcnew cGameDataSinglePlayer(theSinglePlayerGamePtr);
+			}
+
+			return bufferedTheSinglePlayerGame;
 		}
 	}
 

@@ -164,6 +164,16 @@ namespace RenSharp
 
 			// w3d.h
 			static array<String^>^ surfaceTypeStrings;
+			static IDynamicVectorClass<IConsoleFunctionClass^>^ bufferedConsoleFunctionList;
+			static IFileFactoryClass^ bufferedTheFileFactory;
+			static String^ bufferedFilePath;
+			static String^ bufferedAppDataPath;
+			static String^ bufferedRegistryPath;
+			static IcGameData^ bufferedTheGame;
+			static IcGameDataSkirmish^ bufferedTheSkirmishGame;
+			static IcGameDataCnC^ bufferedTheCncGame;
+			static IcGameDataSinglePlayer^ bufferedTheSinglePlayerGame;
+			static IScriptCommands^ bufferedScriptCommands;
 
 		public:
 			static bool Init();
