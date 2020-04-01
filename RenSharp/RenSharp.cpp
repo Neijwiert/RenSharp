@@ -39,7 +39,7 @@ BOOL WINAPI ConsoleCtrlHandlerRoutine(_In_ DWORD dwCtrlType)
 	if (dwCtrlType == CTRL_CLOSE_EVENT || dwCtrlType == CTRL_LOGOFF_EVENT || dwCtrlType == CTRL_SHUTDOWN_EVENT)
 	{
 		// Shut down can not be canceled when user does one of the above actions. FDS does not have enough time to quit properly.
-		Console_Output("WARNING: Console has not been shut down properly. Use 'quit' in stead.");
+		Console_Output("WARNING: Console has not been shut down properly. Use 'quit' in stead.\n");
 
 		RenSharpRootEventClass::Get_Instance().Shutdown();
 	}
