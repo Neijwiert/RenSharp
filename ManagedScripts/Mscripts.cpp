@@ -2676,7 +2676,7 @@ namespace RenSharp
 		return ScriptCommandsPointer.Equals(otherThis->ScriptCommandsPointer);
 	}
 
-	void ScriptCommands::DebugMessage(String ^format, ...array<Object ^> ^args)
+	void ScriptCommands::DebugMessage(String^ format, ...array<Object^>^ args)
 	{
 		if (InternalScriptCommandsPointer->Debug_Message == nullptr)
 		{
@@ -2691,11 +2691,11 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("args");
 		}
 
-		String ^message = String::Format(format, args);
+		String^ message = String::Format(format, args);
 		IntPtr messageHandle = Marshal::StringToHGlobalAnsi(message);
 		try
 		{
-			InternalScriptCommandsPointer->Debug_Message(reinterpret_cast<char *>(messageHandle.ToPointer()));
+			InternalScriptCommandsPointer->Debug_Message(reinterpret_cast<char*>(messageHandle.ToPointer()));
 		}
 		finally
 		{
@@ -2703,41 +2703,53 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::ActionReset(IScriptableGameObj ^obj, float priority)
+	void ScriptCommands::ActionReset(IScriptableGameObj^ obj, float priority)
 	{
 		if (InternalScriptCommandsPointer->Action_Reset == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Action_Reset(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()), priority);
+		InternalScriptCommandsPointer->Action_Reset(objPtr, priority);
 	}
 
-	void ScriptCommands::ActionGoto(IScriptableGameObj ^obj, ActionParamsStruct ^params)
+	void ScriptCommands::ActionGoto(IScriptableGameObj^ obj, ActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Goto == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
-		}
 		else if (params == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		auto unsafeParams = SafeActionParamsStruct::CreateSafeActionParamsStruct(params);
 		try
 		{
 			InternalScriptCommandsPointer->Action_Goto(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				*reinterpret_cast<::ActionParamsStruct *>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
+				objPtr,
+				*reinterpret_cast<::ActionParamsStruct*>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
 		}
 		finally
 		{
@@ -2753,47 +2765,59 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::ActionGoto(IScriptableGameObj ^obj, IActionParamsStruct ^params)
+	void ScriptCommands::ActionGoto(IScriptableGameObj^ obj, IActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Goto == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr || params->ActionParamsStructPointer.ToPointer() == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		InternalScriptCommandsPointer->Action_Goto(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			*reinterpret_cast<::ActionParamsStruct *>(params->ActionParamsStructPointer.ToPointer()));
+			objPtr,
+			*reinterpret_cast<::ActionParamsStruct*>(params->ActionParamsStructPointer.ToPointer()));
 	}
 
-	void ScriptCommands::ActionAttack(IScriptableGameObj ^obj, ActionParamsStruct ^params)
+	void ScriptCommands::ActionAttack(IScriptableGameObj^ obj, ActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Attack == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
-		}
 		else if (params == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		auto unsafeParams = SafeActionParamsStruct::CreateSafeActionParamsStruct(params);
 		try
 		{
 			InternalScriptCommandsPointer->Action_Attack(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				*reinterpret_cast<::ActionParamsStruct *>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
+				objPtr,
+				*reinterpret_cast<::ActionParamsStruct*>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
 		}
 		finally
 		{
@@ -2809,47 +2833,59 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::ActionAttack(IScriptableGameObj ^obj, IActionParamsStruct ^params)
+	void ScriptCommands::ActionAttack(IScriptableGameObj^ obj, IActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Attack == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr || params->ActionParamsStructPointer.ToPointer() == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		InternalScriptCommandsPointer->Action_Attack(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			*reinterpret_cast<::ActionParamsStruct *>(params->ActionParamsStructPointer.ToPointer()));
+			objPtr,
+			*reinterpret_cast<::ActionParamsStruct*>(params->ActionParamsStructPointer.ToPointer()));
 	}
 
-	void ScriptCommands::ActionPlayAnimation(IScriptableGameObj ^obj, ActionParamsStruct ^params)
+	void ScriptCommands::ActionPlayAnimation(IScriptableGameObj^ obj, ActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Play_Animation == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
-		}
 		else if (params == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		auto unsafeParams = SafeActionParamsStruct::CreateSafeActionParamsStruct(params);
 		try
 		{
 			InternalScriptCommandsPointer->Action_Play_Animation(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				*reinterpret_cast<::ActionParamsStruct *>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
+				objPtr,
+				*reinterpret_cast<::ActionParamsStruct*>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
 		}
 		finally
 		{
@@ -2865,47 +2901,59 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::ActionPlayAnimation(IScriptableGameObj ^obj, IActionParamsStruct ^params)
+	void ScriptCommands::ActionPlayAnimation(IScriptableGameObj^ obj, IActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Play_Animation == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr || params->ActionParamsStructPointer.ToPointer() == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		InternalScriptCommandsPointer->Action_Play_Animation(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			*reinterpret_cast<::ActionParamsStruct *>(params->ActionParamsStructPointer.ToPointer()));
+			objPtr,
+			*reinterpret_cast<::ActionParamsStruct*>(params->ActionParamsStructPointer.ToPointer()));
 	}
 
-	void ScriptCommands::ActionEnterExit(IScriptableGameObj ^obj, ActionParamsStruct ^params)
+	void ScriptCommands::ActionEnterExit(IScriptableGameObj^ obj, ActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Enter_Exit == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
-		}
 		else if (params == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		auto unsafeParams = SafeActionParamsStruct::CreateSafeActionParamsStruct(params);
 		try
 		{
 			InternalScriptCommandsPointer->Action_Enter_Exit(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				*reinterpret_cast<::ActionParamsStruct *>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
+				objPtr,
+				*reinterpret_cast<::ActionParamsStruct*>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
 		}
 		finally
 		{
@@ -2921,47 +2969,59 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::ActionEnterExit(IScriptableGameObj ^obj, IActionParamsStruct ^params)
+	void ScriptCommands::ActionEnterExit(IScriptableGameObj^ obj, IActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Enter_Exit == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr || params->ActionParamsStructPointer.ToPointer() == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		InternalScriptCommandsPointer->Action_Enter_Exit(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			*reinterpret_cast<::ActionParamsStruct *>(params->ActionParamsStructPointer.ToPointer()));
+			objPtr,
+			*reinterpret_cast<::ActionParamsStruct*>(params->ActionParamsStructPointer.ToPointer()));
 	}
 
-	void ScriptCommands::ActionFaceLocation(IScriptableGameObj ^obj, ActionParamsStruct ^params)
+	void ScriptCommands::ActionFaceLocation(IScriptableGameObj^ obj, ActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Face_Location == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
-		}
 		else if (params == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		auto unsafeParams = SafeActionParamsStruct::CreateSafeActionParamsStruct(params);
 		try
 		{
 			InternalScriptCommandsPointer->Action_Face_Location(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				*reinterpret_cast<::ActionParamsStruct *>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
+				objPtr,
+				*reinterpret_cast<::ActionParamsStruct*>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
 		}
 		finally
 		{
@@ -2977,47 +3037,59 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::ActionFaceLocation(IScriptableGameObj ^obj, IActionParamsStruct ^params)
+	void ScriptCommands::ActionFaceLocation(IScriptableGameObj^ obj, IActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Face_Location == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr || params->ActionParamsStructPointer.ToPointer() == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		InternalScriptCommandsPointer->Action_Face_Location(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			*reinterpret_cast<::ActionParamsStruct *>(params->ActionParamsStructPointer.ToPointer()));
+			objPtr,
+			*reinterpret_cast<::ActionParamsStruct*>(params->ActionParamsStructPointer.ToPointer()));
 	}
 
-	void ScriptCommands::ActionDock(IScriptableGameObj ^obj, ActionParamsStruct ^params)
+	void ScriptCommands::ActionDock(IScriptableGameObj^ obj, ActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Dock == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
-		}
 		else if (params == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		auto unsafeParams = SafeActionParamsStruct::CreateSafeActionParamsStruct(params);
 		try
 		{
 			InternalScriptCommandsPointer->Action_Dock(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				*reinterpret_cast<::ActionParamsStruct *>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
+				objPtr,
+				*reinterpret_cast<::ActionParamsStruct*>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
 		}
 		finally
 		{
@@ -3033,47 +3105,59 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::ActionDock(IScriptableGameObj ^obj, IActionParamsStruct ^params)
+	void ScriptCommands::ActionDock(IScriptableGameObj^ obj, IActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Dock == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr || params->ActionParamsStructPointer.ToPointer() == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		InternalScriptCommandsPointer->Action_Dock(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			*reinterpret_cast<::ActionParamsStruct *>(params->ActionParamsStructPointer.ToPointer()));
+			objPtr,
+			*reinterpret_cast<::ActionParamsStruct*>(params->ActionParamsStructPointer.ToPointer()));
 	}
 
-	void ScriptCommands::ActionFollowInput(IScriptableGameObj ^obj, ActionParamsStruct ^params)
+	void ScriptCommands::ActionFollowInput(IScriptableGameObj^ obj, ActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Follow_Input == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
-		}
 		else if (params == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		auto unsafeParams = SafeActionParamsStruct::CreateSafeActionParamsStruct(params);
 		try
 		{
 			InternalScriptCommandsPointer->Action_Follow_Input(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				*reinterpret_cast<::ActionParamsStruct *>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
+				objPtr,
+				*reinterpret_cast<::ActionParamsStruct*>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()));
 		}
 		finally
 		{
@@ -3089,48 +3173,60 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::ActionFollowInput(IScriptableGameObj ^obj, IActionParamsStruct ^params)
+	void ScriptCommands::ActionFollowInput(IScriptableGameObj^ obj, IActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Action_Follow_Input == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr || params->ActionParamsStructPointer.ToPointer() == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		InternalScriptCommandsPointer->Action_Follow_Input(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			*reinterpret_cast<::ActionParamsStruct *>(params->ActionParamsStructPointer.ToPointer()));
+			objPtr,
+			*reinterpret_cast<::ActionParamsStruct*>(params->ActionParamsStructPointer.ToPointer()));
 	}
 
-	void ScriptCommands::ModifyAction(IScriptableGameObj ^obj, int actionID, ActionParamsStruct ^params, bool modifyMove, bool modifyAttack)
+	void ScriptCommands::ModifyAction(IScriptableGameObj^ obj, int actionID, ActionParamsStruct^ params, bool modifyMove, bool modifyAttack)
 	{
 		if (InternalScriptCommandsPointer->Modify_Action == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		auto unsafeParams = SafeActionParamsStruct::CreateSafeActionParamsStruct(params);
 		try
 		{
 			InternalScriptCommandsPointer->Modify_Action(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+				objPtr,
 				actionID,
-				*reinterpret_cast<::ActionParamsStruct *>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()),
+				*reinterpret_cast<::ActionParamsStruct*>(unsafeParams->UnmanagedObject->ActionParamsStructPointer.ToPointer()),
 				modifyMove,
 				modifyAttack);
 		}
@@ -3148,59 +3244,76 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::ModifyAction(IScriptableGameObj ^obj, int actionID, IActionParamsStruct ^params, bool modifyMove, bool modifyAttack)
+	void ScriptCommands::ModifyAction(IScriptableGameObj^ obj, int actionID, IActionParamsStruct^ params, bool modifyMove, bool modifyAttack)
 	{
 		if (InternalScriptCommandsPointer->Modify_Action == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr || params->ActionParamsStructPointer.ToPointer() == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		InternalScriptCommandsPointer->Modify_Action(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			actionID,
-			*reinterpret_cast<::ActionParamsStruct *>(params->ActionParamsStructPointer.ToPointer()),
+			*reinterpret_cast<::ActionParamsStruct*>(params->ActionParamsStructPointer.ToPointer()),
 			modifyMove,
 			modifyAttack);
 	}
 
-	int ScriptCommands::GetActionID(IScriptableGameObj ^obj)
+	int ScriptCommands::GetActionID(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Action_ID == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Action_ID(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Action_ID(objPtr);
 	}
 
-	bool ScriptCommands::GetActionParams(IScriptableGameObj ^obj, [Out] ActionParamsStruct ^%params)
+	bool ScriptCommands::GetActionParams(IScriptableGameObj^ obj, [Out] ActionParamsStruct^% params)
 	{
 		if (InternalScriptCommandsPointer->Get_Action_Params == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		::ActionParamsStruct pParams;
-
-		if (InternalScriptCommandsPointer->Get_Action_Params(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()), pParams))
+		if (InternalScriptCommandsPointer->Get_Action_Params(objPtr, pParams))
 		{
-			IActionParamsStruct ^safeParams = gcnew ActionParamsStructRef(IntPtr(&pParams));
+			IActionParamsStruct^ safeParams = gcnew ActionParamsStructRef(IntPtr(&pParams));
 
 			params = safeParams->ToActionParamsStruct();
 
@@ -3214,59 +3327,77 @@ namespace RenSharp
 		}
 	}
 
-	bool ScriptCommands::GetActionParams(IScriptableGameObj ^obj, IActionParamsStruct ^params)
+	bool ScriptCommands::GetActionParams(IScriptableGameObj^ obj, IActionParamsStruct^ params)
 	{
 		if (InternalScriptCommandsPointer->Get_Action_Params == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (params == nullptr || params->ActionParamsStructPointer.ToPointer() == nullptr)
 		{
 			throw gcnew ArgumentNullException("params");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		return InternalScriptCommandsPointer->Get_Action_Params(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			*reinterpret_cast<::ActionParamsStruct *>(params->ActionParamsStructPointer.ToPointer()));
+			objPtr,
+			*reinterpret_cast<::ActionParamsStruct*>(params->ActionParamsStructPointer.ToPointer()));
 	}
 
-	bool ScriptCommands::IsPerformingPathfindAction(IScriptableGameObj ^obj)
+	bool ScriptCommands::IsPerformingPathfindAction(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Is_Performing_Pathfind_Action == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Is_Performing_Pathfind_Action(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Is_Performing_Pathfind_Action(objPtr);
 	}
 
-	void ScriptCommands::SetPosition(IScriptableGameObj ^obj, Vector3 position)
+	void ScriptCommands::SetPosition(IScriptableGameObj^ obj, Vector3 position)
 	{
 		if (InternalScriptCommandsPointer->Set_Position == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		::Vector3 positionVec;
 
 		Vector3::ManagedToUnmanagedVector3(position, positionVec);
 
-		InternalScriptCommandsPointer->Set_Position(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()), positionVec);
+		InternalScriptCommandsPointer->Set_Position(objPtr, positionVec);
 	}
 
-	Vector3 ScriptCommands::GetPosition(IScriptableGameObj ^obj)
+	Vector3 ScriptCommands::GetPosition(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Position == nullptr)
 		{
@@ -3274,10 +3405,10 @@ namespace RenSharp
 		}
 		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			return Vector3(0, 0, 0); // Unsafe to call Get_Position when obj == nullptr
 		}
 
-		::Vector3 tmp = InternalScriptCommandsPointer->Get_Position(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		::Vector3 tmp = InternalScriptCommandsPointer->Get_Position(reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer()));
 
 		Vector3 result;
 		Vector3::UnmanagedToManagedVector3(tmp, result);
@@ -3285,124 +3416,177 @@ namespace RenSharp
 		return result;
 	}
 
-	Vector3 ScriptCommands::GetBonePosition(IScriptableGameObj ^obj, String ^boneName)
+	Vector3 ScriptCommands::GetBonePosition(IScriptableGameObj^ obj, String^ boneName)
 	{
 		if (InternalScriptCommandsPointer->Get_Bone_Position == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (boneName == nullptr)
 		{
 			throw gcnew ArgumentNullException("boneName");
 		}
 
-		IntPtr boneNameHandle = Marshal::StringToHGlobalAnsi(boneName);
-		try
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
+		Vector3 result;
+		if (boneName == nullptr)
 		{
 			::Vector3 tmp = InternalScriptCommandsPointer->Get_Bone_Position(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				reinterpret_cast<char *>(boneNameHandle.ToPointer()));
+				objPtr,
+				nullptr);
 
-			Vector3 result;
 			Vector3::UnmanagedToManagedVector3(tmp, result);
-
-			return result;
 		}
-		finally
+		else
 		{
-			Marshal::FreeHGlobal(boneNameHandle);
+			IntPtr boneNameHandle = Marshal::StringToHGlobalAnsi(boneName);
+			try
+			{
+				::Vector3 tmp = InternalScriptCommandsPointer->Get_Bone_Position(
+					objPtr,
+					reinterpret_cast<char*>(boneNameHandle.ToPointer()));
+
+				Vector3::UnmanagedToManagedVector3(tmp, result);
+			}
+			finally
+			{
+				Marshal::FreeHGlobal(boneNameHandle);
+			}
 		}
+
+		return result;
 	}
 
-	float ScriptCommands::GetFacing(IScriptableGameObj ^obj)
+	float ScriptCommands::GetFacing(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Facing == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Facing(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Facing(objPtr);
 	}
 
-	void ScriptCommands::SetFacing(IScriptableGameObj ^obj, float degrees)
+	void ScriptCommands::SetFacing(IScriptableGameObj^ obj, float degrees)
 	{
 		if (InternalScriptCommandsPointer->Set_Facing == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Set_Facing(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()), degrees);
+		InternalScriptCommandsPointer->Set_Facing(objPtr, degrees);
 	}
 
-	void ScriptCommands::DisableAllCollisions(IScriptableGameObj ^obj)
+	void ScriptCommands::DisableAllCollisions(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Disable_All_Collisions == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Disable_All_Collisions(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Disable_All_Collisions(objPtr);
 	}
 
-	void ScriptCommands::DisablePhysicalCollisions(IScriptableGameObj ^obj)
+	void ScriptCommands::DisablePhysicalCollisions(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Disable_Physical_Collisions == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Disable_Physical_Collisions(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Disable_Physical_Collisions(objPtr);
 	}
 
-	void ScriptCommands::EnableCollisions(IScriptableGameObj ^obj)
+	void ScriptCommands::EnableCollisions(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Enable_Collisions == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Enable_Collisions(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Enable_Collisions(objPtr);
 	}
 
-	void ScriptCommands::DestroyObject(IScriptableGameObj ^obj)
+	void ScriptCommands::DestroyObject(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Destroy_Object == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Destroy_Object(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Destroy_Object(objPtr);
 	}
 
-	IScriptableGameObj ^ScriptCommands::FindObject(int objId)
+	IScriptableGameObj^ ScriptCommands::FindObject(int objId)
 	{
 		if (InternalScriptCommandsPointer->Find_Object == nullptr)
 		{
@@ -3420,7 +3604,7 @@ namespace RenSharp
 		}
 	}
 
-	IScriptableGameObj ^ScriptCommands::CreateObject(String ^typeName, Vector3 position)
+	IScriptableGameObj^ ScriptCommands::CreateObject(String^ typeName, Vector3 position)
 	{
 		if (InternalScriptCommandsPointer->Create_Object == nullptr)
 		{
@@ -3438,7 +3622,7 @@ namespace RenSharp
 		IntPtr typeNameHandle = Marshal::StringToHGlobalAnsi(typeName);
 		try
 		{
-			auto result = InternalScriptCommandsPointer->Create_Object(reinterpret_cast<char *>(typeNameHandle.ToPointer()), positionVec);
+			auto result = InternalScriptCommandsPointer->Create_Object(reinterpret_cast<char*>(typeNameHandle.ToPointer()), positionVec);
 			if (result == nullptr)
 			{
 				return nullptr;
@@ -3454,15 +3638,11 @@ namespace RenSharp
 		}
 	}
 
-	IScriptableGameObj ^ScriptCommands::CreateObjectAtBone(IScriptableGameObj ^hostObj, String ^newObjTypeName, String ^boneName)
+	IScriptableGameObj^ ScriptCommands::CreateObjectAtBone(IScriptableGameObj^ hostObj, String^ newObjTypeName, String^ boneName)
 	{
 		if (InternalScriptCommandsPointer->Create_Object_At_Bone == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (hostObj == nullptr || hostObj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("hostObj");
 		}
 		else if (newObjTypeName == nullptr)
 		{
@@ -3473,6 +3653,16 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("boneName");
 		}
 
+		::ScriptableGameObj* hostObjPtr;
+		if (hostObj == nullptr || hostObj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			hostObjPtr = nullptr;
+		}
+		else
+		{
+			hostObjPtr = reinterpret_cast<::ScriptableGameObj*>(hostObj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		IntPtr newObjTypeNameHandle = Marshal::StringToHGlobalAnsi(newObjTypeName);
 		try
 		{
@@ -3480,9 +3670,9 @@ namespace RenSharp
 			try
 			{
 				auto result = InternalScriptCommandsPointer->Create_Object_At_Bone(
-					reinterpret_cast<::ScriptableGameObj *>(hostObj->ScriptableGameObjPointer.ToPointer()),
-					reinterpret_cast<char *>(newObjTypeNameHandle.ToPointer()),
-					reinterpret_cast<char *>(boneNameHandle.ToPointer()));
+					hostObjPtr,
+					reinterpret_cast<char*>(newObjTypeNameHandle.ToPointer()),
+					reinterpret_cast<char*>(boneNameHandle.ToPointer()));
 
 				if (result == nullptr)
 				{
@@ -3504,46 +3694,64 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::GetID(IScriptableGameObj ^obj)
+	int ScriptCommands::GetID(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_ID == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_ID(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_ID(objPtr);
 	}
 
-	int ScriptCommands::GetPresetID(IScriptableGameObj ^obj)
+	int ScriptCommands::GetPresetID(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Preset_ID == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Preset_ID(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Preset_ID(objPtr);
 	}
 
-	String ^ScriptCommands::GetPresetName(IScriptableGameObj ^obj)
+	String^ ScriptCommands::GetPresetName(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Preset_Name == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		auto result = InternalScriptCommandsPointer->Get_Preset_Name(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		auto result = InternalScriptCommandsPointer->Get_Preset_Name(objPtr);
 		if (result == nullptr)
 		{
 			return nullptr;
@@ -3554,15 +3762,25 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::AttachScript(IScriptableGameObj ^object, String ^scriptName, String ^scriptParams, ...array<Object^>^ args)
+	void ScriptCommands::AttachScript(IScriptableGameObj^ object, String^ scriptName, String^ scriptParams, ...array<Object^>^ args)
 	{
 		if (InternalScriptCommandsPointer->Attach_Script == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+		else if (scriptName == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			throw gcnew ArgumentNullException("scriptName");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		IntPtr scriptNameHandle = Marshal::StringToHGlobalAnsi(scriptName);
@@ -3571,8 +3789,8 @@ namespace RenSharp
 			if (scriptParams == nullptr)
 			{
 				InternalScriptCommandsPointer->Attach_Script(
-					reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
-					reinterpret_cast<char *>(scriptNameHandle.ToPointer()),
+					objPtr,
+					reinterpret_cast<char*>(scriptNameHandle.ToPointer()),
 					nullptr);
 			}
 			else
@@ -3581,9 +3799,9 @@ namespace RenSharp
 				try
 				{
 					InternalScriptCommandsPointer->Attach_Script(
-						reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
-						reinterpret_cast<char *>(scriptNameHandle.ToPointer()),
-						reinterpret_cast<char *>(scriptParamsHandle.ToPointer()));
+						objPtr,
+						reinterpret_cast<char*>(scriptNameHandle.ToPointer()),
+						reinterpret_cast<char*>(scriptParamsHandle.ToPointer()));
 				}
 				finally
 				{
@@ -3597,21 +3815,27 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::AddToDirtyCullList(IScriptableGameObj ^object)
+	void ScriptCommands::AddToDirtyCullList(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Add_To_Dirty_Cull_List == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Add_To_Dirty_Cull_List(reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Add_To_Dirty_Cull_List(objPtr);
 	}
 
-	void ScriptCommands::StartTimer(IScriptableGameObj ^obj, IScriptClass ^script, float duration, int timerId)
+	void ScriptCommands::StartTimer(IScriptableGameObj^ obj, IScriptClass^ script, float duration, int timerId)
 	{
 		if (InternalScriptCommandsPointer->Start_Timer == nullptr)
 		{
@@ -3627,21 +3851,27 @@ namespace RenSharp
 		}
 
 		InternalScriptCommandsPointer->Start_Timer(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			reinterpret_cast<::ScriptClass *>(script->ScriptClassPointer.ToPointer()),
+			reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer()),
+			reinterpret_cast<::ScriptClass*>(script->ScriptClassPointer.ToPointer()),
 			duration,
 			timerId);
 	}
 
-	void ScriptCommands::TriggerWeapon(IScriptableGameObj ^obj, bool trigger, Vector3 target, bool primary)
+	void ScriptCommands::TriggerWeapon(IScriptableGameObj^ obj, bool trigger, Vector3 target, bool primary)
 	{
 		if (InternalScriptCommandsPointer->Trigger_Weapon == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		::Vector3 targetVec;
@@ -3649,27 +3879,33 @@ namespace RenSharp
 		Vector3::ManagedToUnmanagedVector3(target, targetVec);
 
 		InternalScriptCommandsPointer->Trigger_Weapon(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			trigger,
 			targetVec,
 			primary);
 	}
 
-	void ScriptCommands::SelectWeapon(IScriptableGameObj ^obj, String ^weaponName)
+	void ScriptCommands::SelectWeapon(IScriptableGameObj^ obj, String^ weaponName)
 	{
 		if (InternalScriptCommandsPointer->Select_Weapon == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		if (weaponName == nullptr)
 		{
 			InternalScriptCommandsPointer->Select_Weapon(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+				objPtr,
 				nullptr);
 		}
 		else
@@ -3678,8 +3914,8 @@ namespace RenSharp
 			try
 			{
 				InternalScriptCommandsPointer->Select_Weapon(
-					reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-					reinterpret_cast<char *>(weaponNameHandle.ToPointer()));
+					objPtr,
+					reinterpret_cast<char*>(weaponNameHandle.ToPointer()));
 			}
 			finally
 			{
@@ -3688,51 +3924,69 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::SendCustomEvent(IScriptableGameObj ^from, IScriptableGameObj ^to, int type, int param, float delay)
+	void ScriptCommands::SendCustomEvent(IScriptableGameObj^ from, IScriptableGameObj^ to, int type, int param, float delay)
 	{
 		if (InternalScriptCommandsPointer->Send_Custom_Event == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (from == nullptr || from->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* fromPtr;
+		if (from == nullptr || from->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("from");
+			fromPtr = nullptr;
 		}
-		else if (to == nullptr || to->ScriptableGameObjPointer.ToPointer() == nullptr)
+		else
 		{
-			throw gcnew ArgumentNullException("to");
+			fromPtr = reinterpret_cast<::ScriptableGameObj*>(from->ScriptableGameObjPointer.ToPointer());
+		}
+
+		::ScriptableGameObj* toPtr;
+		if (to == nullptr || to->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			toPtr = nullptr;
+		}
+		else
+		{
+			toPtr = reinterpret_cast<::ScriptableGameObj*>(to->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Send_Custom_Event(
-			reinterpret_cast<::ScriptableGameObj *>(from->ScriptableGameObjPointer.ToPointer()),
-			reinterpret_cast<::ScriptableGameObj *>(to->ScriptableGameObjPointer.ToPointer()),
+			fromPtr,
+			toPtr,
 			type,
 			param,
 			delay);
 	}
 
-	void ScriptCommands::SendDamagedEvent(IScriptableGameObj ^object, IScriptableGameObj ^damager)
+	void ScriptCommands::SendDamagedEvent(IScriptableGameObj^ object, IScriptableGameObj^ damager)
 	{
 		if (InternalScriptCommandsPointer->Send_Damaged_Event == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		if (damager == nullptr || damager->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
 			InternalScriptCommandsPointer->Send_Damaged_Event(
-				reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+				objPtr,
 				nullptr);
 		}
 		else
 		{
 			InternalScriptCommandsPointer->Send_Damaged_Event(
-				reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
-				reinterpret_cast<::ScriptableGameObj *>(damager->ScriptableGameObjPointer.ToPointer()));
+				reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer()),
+				reinterpret_cast<::ScriptableGameObj*>(damager->ScriptableGameObjPointer.ToPointer()));
 		}
 	}
 
@@ -3756,7 +4010,7 @@ namespace RenSharp
 		return InternalScriptCommandsPointer->Get_Random_Int(min, max);
 	}
 
-	IScriptableGameObj ^ScriptCommands::FindRandomSimpleObject(String ^presetName)
+	IScriptableGameObj^ ScriptCommands::FindRandomSimpleObject(String^ presetName)
 	{
 		if (InternalScriptCommandsPointer->Find_Random_Simple_Object == nullptr)
 		{
@@ -3770,7 +4024,7 @@ namespace RenSharp
 		IntPtr presetNameHandle = Marshal::StringToHGlobalAnsi(presetName);
 		try
 		{
-			auto result = InternalScriptCommandsPointer->Find_Random_Simple_Object(reinterpret_cast<char *>(presetNameHandle.ToPointer()));
+			auto result = InternalScriptCommandsPointer->Find_Random_Simple_Object(reinterpret_cast<char*>(presetNameHandle.ToPointer()));
 			if (result == nullptr)
 			{
 				return nullptr;
@@ -3786,23 +4040,29 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::SetModel(IScriptableGameObj ^obj, String ^modelName)
+	void ScriptCommands::SetModel(IScriptableGameObj^ obj, String^ modelName)
 	{
 		if (InternalScriptCommandsPointer->Set_Model == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		IntPtr modelNameHandle = Marshal::StringToHGlobalAnsi(modelName);
 		try
 		{
 			InternalScriptCommandsPointer->Set_Model(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				reinterpret_cast<char *>(modelNameHandle.ToPointer()));
+				objPtr,
+				reinterpret_cast<char*>(modelNameHandle.ToPointer()));
 		}
 		finally
 		{
@@ -3810,15 +4070,21 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::SetAnimation(IScriptableGameObj ^obj, String ^animName, bool looping, String ^subObjName, float startFrame, float endFrame, bool isBlended)
+	void ScriptCommands::SetAnimation(IScriptableGameObj^ obj, String^ animName, bool looping, String^ subObjName, float startFrame, float endFrame, bool isBlended)
 	{
 		if (InternalScriptCommandsPointer->Set_Animation == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		if (animName == nullptr)
@@ -3826,7 +4092,7 @@ namespace RenSharp
 			if (subObjName == nullptr)
 			{
 				InternalScriptCommandsPointer->Set_Animation(
-					reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+					objPtr,
 					nullptr,
 					looping,
 					nullptr,
@@ -3840,10 +4106,10 @@ namespace RenSharp
 				try
 				{
 					InternalScriptCommandsPointer->Set_Animation(
-						reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+						objPtr,
 						nullptr,
 						looping,
-						reinterpret_cast<char *>(subObjNameHandle.ToPointer()),
+						reinterpret_cast<char*>(subObjNameHandle.ToPointer()),
 						startFrame,
 						endFrame,
 						isBlended);
@@ -3862,8 +4128,8 @@ namespace RenSharp
 				if (subObjName == nullptr)
 				{
 					InternalScriptCommandsPointer->Set_Animation(
-						reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-						reinterpret_cast<char *>(animNameHandle.ToPointer()),
+						objPtr,
+						reinterpret_cast<char*>(animNameHandle.ToPointer()),
 						looping,
 						nullptr,
 						startFrame,
@@ -3876,10 +4142,10 @@ namespace RenSharp
 					try
 					{
 						InternalScriptCommandsPointer->Set_Animation(
-							reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-							reinterpret_cast<char *>(animNameHandle.ToPointer()),
+							objPtr,
+							reinterpret_cast<char*>(animNameHandle.ToPointer()),
 							looping,
-							reinterpret_cast<char *>(subObjNameHandle.ToPointer()),
+							reinterpret_cast<char*>(subObjNameHandle.ToPointer()),
 							startFrame,
 							endFrame,
 							isBlended);
@@ -3897,21 +4163,27 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::SetAnimationFrame(IScriptableGameObj ^obj, String ^animName, int frame)
+	void ScriptCommands::SetAnimationFrame(IScriptableGameObj^ obj, String^ animName, int frame)
 	{
 		if (InternalScriptCommandsPointer->Set_Animation_Frame == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		if (animName == nullptr)
 		{
 			InternalScriptCommandsPointer->Set_Animation_Frame(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+				objPtr,
 				nullptr,
 				frame);
 		}
@@ -3921,8 +4193,8 @@ namespace RenSharp
 			try
 			{
 				InternalScriptCommandsPointer->Set_Animation_Frame(
-					reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-					reinterpret_cast<char *>(animNameHandle.ToPointer()),
+					objPtr,
+					reinterpret_cast<char*>(animNameHandle.ToPointer()),
 					frame);
 			}
 			finally
@@ -3932,7 +4204,7 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::CreateSound(String ^soundPresetName, Vector3 position, IScriptableGameObj ^creator)
+	int ScriptCommands::CreateSound(String^ soundPresetName, Vector3 position, IScriptableGameObj^ creator)
 	{
 		if (InternalScriptCommandsPointer->Create_Sound == nullptr)
 		{
@@ -3941,10 +4213,6 @@ namespace RenSharp
 		else if (soundPresetName == nullptr)
 		{
 			throw gcnew ArgumentNullException("soundPresetName");
-		}
-		else if (creator == nullptr || creator->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("creator");
 		}
 
 		::Vector3 positionVec;
@@ -3957,16 +4225,16 @@ namespace RenSharp
 			if (creator == nullptr || creator->ScriptableGameObjPointer.ToPointer() == nullptr)
 			{
 				return InternalScriptCommandsPointer->Create_Sound(
-					reinterpret_cast<char *>(soundPresetNameHandle.ToPointer()),
+					reinterpret_cast<char*>(soundPresetNameHandle.ToPointer()),
 					positionVec,
 					nullptr);
 			}
 			else
 			{
 				return InternalScriptCommandsPointer->Create_Sound(
-					reinterpret_cast<char *>(soundPresetNameHandle.ToPointer()),
+					reinterpret_cast<char*>(soundPresetNameHandle.ToPointer()),
 					positionVec,
-					reinterpret_cast<::ScriptableGameObj *>(creator->ScriptableGameObjPointer.ToPointer()));
+					reinterpret_cast<::ScriptableGameObj*>(creator->ScriptableGameObjPointer.ToPointer()));
 			}
 		}
 		finally
@@ -3975,7 +4243,7 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::Create2DSound(String ^soundPresetName)
+	int ScriptCommands::Create2DSound(String^ soundPresetName)
 	{
 		if (InternalScriptCommandsPointer->Create_2D_Sound == nullptr)
 		{
@@ -3989,7 +4257,7 @@ namespace RenSharp
 		IntPtr soundPresetNameHandle = Marshal::StringToHGlobalAnsi(soundPresetName);
 		try
 		{
-			return InternalScriptCommandsPointer->Create_2D_Sound(reinterpret_cast<char *>(soundPresetNameHandle.ToPointer()));
+			return InternalScriptCommandsPointer->Create_2D_Sound(reinterpret_cast<char*>(soundPresetNameHandle.ToPointer()));
 		}
 		finally
 		{
@@ -3997,7 +4265,7 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::Create2DWAVSound(String ^wavFilename)
+	int ScriptCommands::Create2DWAVSound(String^ wavFilename)
 	{
 		if (InternalScriptCommandsPointer->Create_2D_WAV_Sound == nullptr)
 		{
@@ -4011,7 +4279,7 @@ namespace RenSharp
 		IntPtr wavFilenameHandle = Marshal::StringToHGlobalAnsi(wavFilename);
 		try
 		{
-			return InternalScriptCommandsPointer->Create_2D_WAV_Sound(reinterpret_cast<char *>(wavFilenameHandle.ToPointer()));
+			return InternalScriptCommandsPointer->Create_2D_WAV_Sound(reinterpret_cast<char*>(wavFilenameHandle.ToPointer()));
 		}
 		finally
 		{
@@ -4019,7 +4287,7 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::Create3DWAVSoundAtBone(String ^wavFilename, IScriptableGameObj ^obj, String ^boneName)
+	int ScriptCommands::Create3DWAVSoundAtBone(String^ wavFilename, IScriptableGameObj^ obj, String^ boneName)
 	{
 		if (InternalScriptCommandsPointer->Create_3D_WAV_Sound_At_Bone == nullptr)
 		{
@@ -4031,7 +4299,7 @@ namespace RenSharp
 		}
 		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			return 0; // Unsafe to call it.
 		}
 
 		IntPtr wavFilenameHandle = Marshal::StringToHGlobalAnsi(wavFilename);
@@ -4040,8 +4308,8 @@ namespace RenSharp
 			if (boneName == nullptr)
 			{
 				return InternalScriptCommandsPointer->Create_3D_WAV_Sound_At_Bone(
-					reinterpret_cast<char *>(wavFilenameHandle.ToPointer()),
-					reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+					reinterpret_cast<char*>(wavFilenameHandle.ToPointer()),
+					reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer()),
 					nullptr);
 			}
 			else
@@ -4050,9 +4318,9 @@ namespace RenSharp
 				try
 				{
 					return InternalScriptCommandsPointer->Create_3D_WAV_Sound_At_Bone(
-						reinterpret_cast<char *>(wavFilenameHandle.ToPointer()),
-						reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-						reinterpret_cast<char *>(boneNameHandle.ToPointer()));
+						reinterpret_cast<char*>(wavFilenameHandle.ToPointer()),
+						reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer()),
+						reinterpret_cast<char*>(boneNameHandle.ToPointer()));
 				}
 				finally
 				{
@@ -4066,7 +4334,7 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::Create3DSoundAtBone(String ^soundPresetName, IScriptableGameObj ^obj, String ^boneName)
+	int ScriptCommands::Create3DSoundAtBone(String^ soundPresetName, IScriptableGameObj^ obj, String^ boneName)
 	{
 		if (InternalScriptCommandsPointer->Create_3D_Sound_At_Bone == nullptr)
 		{
@@ -4078,7 +4346,7 @@ namespace RenSharp
 		}
 		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			return 0; // Unsafe to call it
 		}
 
 		IntPtr soundPresetNameHandle = Marshal::StringToHGlobalAnsi(soundPresetName);
@@ -4087,8 +4355,8 @@ namespace RenSharp
 			if (boneName == nullptr)
 			{
 				return InternalScriptCommandsPointer->Create_3D_Sound_At_Bone(
-					reinterpret_cast<char *>(soundPresetNameHandle.ToPointer()),
-					reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+					reinterpret_cast<char*>(soundPresetNameHandle.ToPointer()),
+					reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer()),
 					nullptr);
 			}
 			else
@@ -4097,9 +4365,9 @@ namespace RenSharp
 				try
 				{
 					return InternalScriptCommandsPointer->Create_3D_Sound_At_Bone(
-						reinterpret_cast<char *>(soundPresetNameHandle.ToPointer()),
-						reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-						reinterpret_cast<char *>(boneNameHandle.ToPointer()));
+						reinterpret_cast<char*>(soundPresetNameHandle.ToPointer()),
+						reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer()),
+						reinterpret_cast<char*>(boneNameHandle.ToPointer()));
 				}
 				finally
 				{
@@ -4113,7 +4381,7 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::CreateLogicalSound(IScriptableGameObj ^creator, int type, Vector3 position, float radius)
+	int ScriptCommands::CreateLogicalSound(IScriptableGameObj^ creator, int type, Vector3 position, float radius)
 	{
 		if (InternalScriptCommandsPointer->Create_Logical_Sound == nullptr)
 		{
@@ -4135,7 +4403,7 @@ namespace RenSharp
 		else
 		{
 			return InternalScriptCommandsPointer->Create_Logical_Sound(
-				reinterpret_cast<::ScriptableGameObj *>(creator->ScriptableGameObjPointer.ToPointer()),
+				reinterpret_cast<::ScriptableGameObj*>(creator->ScriptableGameObjPointer.ToPointer()),
 				type,
 				positionVec,
 				radius);
@@ -4162,23 +4430,29 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Stop_Sound(soundId, destroySound);
 	}
 
-	void ScriptCommands::MonitorSound(IScriptableGameObj ^obj, int soundId)
+	void ScriptCommands::MonitorSound(IScriptableGameObj^ obj, int soundId)
 	{
 		if (InternalScriptCommandsPointer->Monitor_Sound == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Monitor_Sound(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			soundId);
 	}
 
-	void ScriptCommands::SetBackgroundMusic(String ^wavFilename)
+	void ScriptCommands::SetBackgroundMusic(String^ wavFilename)
 	{
 		if (InternalScriptCommandsPointer->Set_Background_Music == nullptr)
 		{
@@ -4192,7 +4466,7 @@ namespace RenSharp
 		IntPtr wavFilenameHandle = Marshal::StringToHGlobalAnsi(wavFilename);
 		try
 		{
-			InternalScriptCommandsPointer->Set_Background_Music(reinterpret_cast<char *>(wavFilenameHandle.ToPointer()));
+			InternalScriptCommandsPointer->Set_Background_Music(reinterpret_cast<char*>(wavFilenameHandle.ToPointer()));
 		}
 		finally
 		{
@@ -4200,7 +4474,7 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::FadeBackgroundMusic(String ^wavFilename, int fadeOutTime, int fadeInTime)
+	void ScriptCommands::FadeBackgroundMusic(String^ wavFilename, int fadeOutTime, int fadeInTime)
 	{
 		if (InternalScriptCommandsPointer->Fade_Background_Music == nullptr)
 		{
@@ -4215,7 +4489,7 @@ namespace RenSharp
 		try
 		{
 			InternalScriptCommandsPointer->Fade_Background_Music(
-				reinterpret_cast<char *>(wavFilenameHandle.ToPointer()),
+				reinterpret_cast<char*>(wavFilenameHandle.ToPointer()),
 				fadeOutTime,
 				fadeInTime);
 		}
@@ -4235,115 +4509,157 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Stop_Background_Music();
 	}
 
-	float ScriptCommands::GetHealth(IScriptableGameObj ^obj)
+	float ScriptCommands::GetHealth(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Health == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Health(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Health(objPtr);
 	}
 
-	float ScriptCommands::GetMaxHealth(IScriptableGameObj ^obj)
+	float ScriptCommands::GetMaxHealth(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Max_Health == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Max_Health(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Max_Health(objPtr);
 	}
 
-	void ScriptCommands::SetHealth(IScriptableGameObj ^obj, float health)
+	void ScriptCommands::SetHealth(IScriptableGameObj^ obj, float health)
 	{
 		if (InternalScriptCommandsPointer->Set_Health == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Health(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			health);
 	}
 
-	float ScriptCommands::GetShieldStrength(IScriptableGameObj ^obj)
+	float ScriptCommands::GetShieldStrength(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Shield_Strength == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Shield_Strength(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Shield_Strength(objPtr);
 	}
 
-	float ScriptCommands::GetMaxShieldStrength(IScriptableGameObj ^obj)
+	float ScriptCommands::GetMaxShieldStrength(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Max_Shield_Strength == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Max_Shield_Strength(reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Max_Shield_Strength(objPtr);
 	}
 
-	void ScriptCommands::SetShieldStrength(IScriptableGameObj ^obj, float strength)
+	void ScriptCommands::SetShieldStrength(IScriptableGameObj^ obj, float strength)
 	{
 		if (InternalScriptCommandsPointer->Set_Shield_Strength == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Shield_Strength(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			strength);
 	}
 
-	void ScriptCommands::SetShieldType(IScriptableGameObj ^obj, String ^name)
+	void ScriptCommands::SetShieldType(IScriptableGameObj^ obj, String^ name)
 	{
 		if (InternalScriptCommandsPointer->Set_Shield_Type == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (name == nullptr)
 		{
 			throw gcnew ArgumentNullException("name");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		IntPtr nameHandle = Marshal::StringToHGlobalAnsi(name);
 		try
 		{
 			InternalScriptCommandsPointer->Set_Shield_Type(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				reinterpret_cast<char *>(nameHandle.ToPointer()));
+				objPtr,
+				reinterpret_cast<char*>(nameHandle.ToPointer()));
 		}
 		finally
 		{
@@ -4351,34 +4667,45 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::GetPlayerType(IScriptableGameObj ^obj)
+	int ScriptCommands::GetPlayerType(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Get_Player_Type == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Player_Type(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Player_Type(objPtr);
 	}
 
-	void ScriptCommands::SetPlayerType(IScriptableGameObj ^obj, int type)
+	void ScriptCommands::SetPlayerType(IScriptableGameObj^ obj, int type)
 	{
 		if (InternalScriptCommandsPointer->Set_Player_Type == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Player_Type(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			type);
 	}
 
@@ -4398,7 +4725,7 @@ namespace RenSharp
 		return InternalScriptCommandsPointer->Get_Distance(p1Vec, p2Vec);
 	}
 
-	void ScriptCommands::SetCameraHost(IScriptableGameObj ^obj)
+	void ScriptCommands::SetCameraHost(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Set_Camera_Host == nullptr)
 		{
@@ -4412,7 +4739,7 @@ namespace RenSharp
 		else
 		{
 			InternalScriptCommandsPointer->Set_Camera_Host(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+				reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer()));
 		}
 	}
 
@@ -4430,7 +4757,7 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Force_Camera_Look(targetVec);
 	}
 
-	IScriptableGameObj ^ScriptCommands::GetTheStar()
+	IScriptableGameObj^ ScriptCommands::GetTheStar()
 	{
 		if (InternalScriptCommandsPointer->Get_The_Star == nullptr)
 		{
@@ -4448,7 +4775,7 @@ namespace RenSharp
 		}
 	}
 
-	IScriptableGameObj ^ScriptCommands::GetAStar(Vector3 pos)
+	IScriptableGameObj^ ScriptCommands::GetAStar(Vector3 pos)
 	{
 		if (InternalScriptCommandsPointer->Get_A_Star == nullptr)
 		{
@@ -4470,7 +4797,7 @@ namespace RenSharp
 		}
 	}
 
-	IScriptableGameObj ^ScriptCommands::FindClosestSoldier(Vector3 pos, float minDist, float maxDist, bool onlyHuman)
+	IScriptableGameObj^ ScriptCommands::FindClosestSoldier(Vector3 pos, float minDist, float maxDist, bool onlyHuman)
 	{
 		if (InternalScriptCommandsPointer->Find_Closest_Soldier == nullptr)
 		{
@@ -4492,7 +4819,7 @@ namespace RenSharp
 		}
 	}
 
-	bool ScriptCommands::IsAStar(IScriptableGameObj ^obj)
+	bool ScriptCommands::IsAStar(IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Is_A_Star == nullptr)
 		{
@@ -4512,23 +4839,29 @@ namespace RenSharp
 		return InternalScriptCommandsPointer->Is_A_Star(objPtr);
 	}
 
-	void ScriptCommands::ControlEnable(IScriptableGameObj ^obj, bool enable)
+	void ScriptCommands::ControlEnable(IScriptableGameObj^ obj, bool enable)
 	{
 		if (InternalScriptCommandsPointer->Control_Enable == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Control_Enable(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			enable);
 	}
 
-	String ^ScriptCommands::GetDamageBoneName()
+	String^ ScriptCommands::GetDamageBoneName()
 	{
 		if (InternalScriptCommandsPointer->Get_Damage_Bone_Name == nullptr)
 		{
@@ -4556,39 +4889,55 @@ namespace RenSharp
 		return InternalScriptCommandsPointer->Get_Damage_Bone_Direction();
 	}
 
-	bool ScriptCommands::IsObjectVisible(IScriptableGameObj ^looker, IScriptableGameObj ^obj)
+	bool ScriptCommands::IsObjectVisible(IScriptableGameObj^ looker, IScriptableGameObj^ obj)
 	{
 		if (InternalScriptCommandsPointer->Is_Object_Visible == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (looker == nullptr || looker->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* lookerPtr;
+		if (looker == nullptr || looker->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("looker");
+			lookerPtr = nullptr;
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		else
 		{
-			throw gcnew ArgumentNullException("obj");
+			lookerPtr = reinterpret_cast<::ScriptableGameObj*>(looker->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Is_Object_Visible(
-			reinterpret_cast<::ScriptableGameObj *>(looker->ScriptableGameObjPointer.ToPointer()),
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()));
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
+		return InternalScriptCommandsPointer->Is_Object_Visible(lookerPtr, objPtr);
 	}
 
-	void ScriptCommands::EnableEnemySeen(IScriptableGameObj ^obj, bool enable)
+	void ScriptCommands::EnableEnemySeen(IScriptableGameObj^ obj, bool enable)
 	{
 		if (InternalScriptCommandsPointer->Enable_Enemy_Seen == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Enable_Enemy_Seen(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			enable);
 	}
 
@@ -4612,7 +4961,7 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Display_Text(stringId);
 	}
 
-	void ScriptCommands::DisplayFloat(float value, String ^format)
+	void ScriptCommands::DisplayFloat(float value, String^ format)
 	{
 		if (InternalScriptCommandsPointer->Display_Float == nullptr)
 		{
@@ -4628,7 +4977,7 @@ namespace RenSharp
 		{
 			InternalScriptCommandsPointer->Display_Float(
 				value,
-				reinterpret_cast<char *>(formatHandle.ToPointer()));
+				reinterpret_cast<char*>(formatHandle.ToPointer()));
 		}
 		finally
 		{
@@ -4636,7 +4985,7 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::DisplayInt(int value, String ^format)
+	void ScriptCommands::DisplayInt(int value, String^ format)
 	{
 		if (InternalScriptCommandsPointer->Display_Int == nullptr)
 		{
@@ -4652,7 +5001,7 @@ namespace RenSharp
 		{
 			InternalScriptCommandsPointer->Display_Int(
 				value,
-				reinterpret_cast<char *>(formatHandle.ToPointer()));
+				reinterpret_cast<char*>(formatHandle.ToPointer()));
 		}
 		finally
 		{
@@ -4660,7 +5009,7 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::SaveData(IntPtr saver, int id, array<std::uint8_t> ^data)
+	void ScriptCommands::SaveData(IntPtr saver, int id, array<std::uint8_t>^ data)
 	{
 		if (InternalScriptCommandsPointer->Save_Data == nullptr)
 		{
@@ -4676,10 +5025,10 @@ namespace RenSharp
 		}
 
 		pin_ptr<std::uint8_t> pinnedData = &data[0];
-		std::uint8_t *dataPtr = pinnedData;
+		std::uint8_t* dataPtr = pinnedData;
 
 		InternalScriptCommandsPointer->Save_Data(
-			*reinterpret_cast<::ScriptSaver *>(saver.ToPointer()),
+			*reinterpret_cast<::ScriptSaver*>(saver.ToPointer()),
 			id,
 			data->Length,
 			dataPtr);
@@ -4697,12 +5046,12 @@ namespace RenSharp
 		}
 
 		InternalScriptCommandsPointer->Save_Pointer(
-			*reinterpret_cast<::ScriptSaver *>(saver.ToPointer()),
+			*reinterpret_cast<::ScriptSaver*>(saver.ToPointer()),
 			id,
 			pointer.ToPointer());
 	}
 
-	bool ScriptCommands::LoadBegin(IntPtr loader, int %id)
+	bool ScriptCommands::LoadBegin(IntPtr loader, int% id)
 	{
 		if (InternalScriptCommandsPointer->Load_Begin == nullptr)
 		{
@@ -4716,7 +5065,7 @@ namespace RenSharp
 		int tmpId = id;
 
 		bool result = InternalScriptCommandsPointer->Load_Begin(
-			*reinterpret_cast<::ScriptLoader *>(loader.ToPointer()),
+			*reinterpret_cast<::ScriptLoader*>(loader.ToPointer()),
 			&tmpId);
 
 		id = tmpId;
@@ -4724,7 +5073,7 @@ namespace RenSharp
 		return result;
 	}
 
-	void ScriptCommands::LoadData(IntPtr loader, array<std::uint8_t> ^data)
+	void ScriptCommands::LoadData(IntPtr loader, array<std::uint8_t>^ data)
 	{
 		if (InternalScriptCommandsPointer->Load_Data == nullptr)
 		{
@@ -4740,15 +5089,15 @@ namespace RenSharp
 		}
 
 		pin_ptr<std::uint8_t> pinnedData = &data[0];
-		std::uint8_t *dataPtr = pinnedData;
+		std::uint8_t* dataPtr = pinnedData;
 
 		InternalScriptCommandsPointer->Load_Data(
-			*reinterpret_cast<::ScriptLoader *>(loader.ToPointer()),
+			*reinterpret_cast<::ScriptLoader*>(loader.ToPointer()),
 			data->Length,
 			dataPtr);
 	}
 
-	void ScriptCommands::LoadPointer(IntPtr loader, IntPtr %pointer)
+	void ScriptCommands::LoadPointer(IntPtr loader, IntPtr% pointer)
 	{
 		if (InternalScriptCommandsPointer->Load_Pointer == nullptr)
 		{
@@ -4759,10 +5108,10 @@ namespace RenSharp
 			throw gcnew ArgumentNullException("loader");
 		}
 
-		void *tmpPointer = pointer.ToPointer();
+		void* tmpPointer = pointer.ToPointer();
 
 		InternalScriptCommandsPointer->Load_Pointer(
-			*reinterpret_cast<::ScriptLoader *>(loader.ToPointer()),
+			*reinterpret_cast<::ScriptLoader*>(loader.ToPointer()),
 			&tmpPointer);
 
 		pointer = IntPtr(tmpPointer);
@@ -4780,7 +5129,7 @@ namespace RenSharp
 		}
 
 		InternalScriptCommandsPointer->Load_End(
-			*reinterpret_cast<::ScriptLoader *>(loader.ToPointer()));
+			*reinterpret_cast<::ScriptLoader*>(loader.ToPointer()));
 	}
 
 	void ScriptCommands::BeginChunk(IntPtr saver, unsigned int chunkID)
@@ -4795,7 +5144,7 @@ namespace RenSharp
 		}
 
 		InternalScriptCommandsPointer->Begin_Chunk(
-			*reinterpret_cast<::ScriptSaver *>(saver.ToPointer()),
+			*reinterpret_cast<::ScriptSaver*>(saver.ToPointer()),
 			chunkID);
 	}
 
@@ -4811,10 +5160,10 @@ namespace RenSharp
 		}
 
 		InternalScriptCommandsPointer->End_Chunk(
-			*reinterpret_cast<::ScriptSaver *>(saver.ToPointer()));
+			*reinterpret_cast<::ScriptSaver*>(saver.ToPointer()));
 	}
 
-	bool ScriptCommands::OpenChunk(IntPtr loader, unsigned int %chunkID)
+	bool ScriptCommands::OpenChunk(IntPtr loader, unsigned int% chunkID)
 	{
 		if (InternalScriptCommandsPointer->Open_Chunk == nullptr)
 		{
@@ -4828,7 +5177,7 @@ namespace RenSharp
 		unsigned int tmpChunkID = chunkID;
 
 		bool result = InternalScriptCommandsPointer->Open_Chunk(
-			*reinterpret_cast<::ScriptLoader *>(loader.ToPointer()),
+			*reinterpret_cast<::ScriptLoader*>(loader.ToPointer()),
 			&tmpChunkID);
 
 		chunkID = tmpChunkID;
@@ -4848,7 +5197,7 @@ namespace RenSharp
 		}
 
 		InternalScriptCommandsPointer->Close_Chunk(
-			*reinterpret_cast<::ScriptLoader *>(loader.ToPointer()));
+			*reinterpret_cast<::ScriptLoader*>(loader.ToPointer()));
 	}
 
 	void ScriptCommands::ClearRadarMarkers()
@@ -4888,35 +5237,47 @@ namespace RenSharp
 			colorType);
 	}
 
-	void ScriptCommands::SetObjRadarBlipShape(IScriptableGameObj ^obj, int shapeType)
+	void ScriptCommands::SetObjRadarBlipShape(IScriptableGameObj^ obj, int shapeType)
 	{
 		if (InternalScriptCommandsPointer->Set_Obj_Radar_Blip_Shape == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Obj_Radar_Blip_Shape(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			shapeType);
 	}
 
-	void ScriptCommands::SetObjRadarBlipColor(IScriptableGameObj ^obj, int colorType)
+	void ScriptCommands::SetObjRadarBlipColor(IScriptableGameObj^ obj, int colorType)
 	{
 		if (InternalScriptCommandsPointer->Set_Obj_Radar_Blip_Color == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Obj_Radar_Blip_Color(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			colorType);
 	}
 
@@ -5016,7 +5377,7 @@ namespace RenSharp
 		return InternalScriptCommandsPointer->Get_Safe_Flight_Height(xPos, yPos);
 	}
 
-	void ScriptCommands::CreateExplosion(String ^explosionDefName, Vector3 pos, IScriptableGameObj ^creator)
+	void ScriptCommands::CreateExplosion(String^ explosionDefName, Vector3 pos, IScriptableGameObj^ creator)
 	{
 		if (InternalScriptCommandsPointer->Create_Explosion == nullptr)
 		{
@@ -5037,16 +5398,16 @@ namespace RenSharp
 			if (creator == nullptr || creator->ScriptableGameObjPointer.ToPointer() == nullptr)
 			{
 				InternalScriptCommandsPointer->Create_Explosion(
-					reinterpret_cast<char *>(explosionDefNameHandle.ToPointer()),
+					reinterpret_cast<char*>(explosionDefNameHandle.ToPointer()),
 					posVec,
 					nullptr);
 			}
 			else
 			{
 				InternalScriptCommandsPointer->Create_Explosion(
-					reinterpret_cast<char *>(explosionDefNameHandle.ToPointer()),
+					reinterpret_cast<char*>(explosionDefNameHandle.ToPointer()),
 					posVec,
-					reinterpret_cast<::ScriptableGameObj *>(creator->ScriptableGameObjPointer.ToPointer()));
+					reinterpret_cast<::ScriptableGameObj*>(creator->ScriptableGameObjPointer.ToPointer()));
 			}
 		}
 		finally
@@ -5055,7 +5416,7 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::CreateExplosionAtBone(String ^explosionDefName, IScriptableGameObj ^object, String ^boneName, IScriptableGameObj ^creator)
+	void ScriptCommands::CreateExplosionAtBone(String^ explosionDefName, IScriptableGameObj^ object, String^ boneName, IScriptableGameObj^ creator)
 	{
 		if (InternalScriptCommandsPointer->Create_Explosion_At_Bone == nullptr)
 		{
@@ -5065,13 +5426,19 @@ namespace RenSharp
 		{
 			throw gcnew ArgumentNullException("explosionDefName");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("object");
-		}
 		else if (boneName == nullptr)
 		{
 			throw gcnew ArgumentNullException("boneName");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		IntPtr explosionDefNameHandle = Marshal::StringToHGlobalAnsi(explosionDefName);
@@ -5083,18 +5450,18 @@ namespace RenSharp
 				if (creator == nullptr || creator->ScriptableGameObjPointer.ToPointer() == nullptr)
 				{
 					InternalScriptCommandsPointer->Create_Explosion_At_Bone(
-						reinterpret_cast<char *>(explosionDefNameHandle.ToPointer()),
-						reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
-						reinterpret_cast<char *>(boneNameHandle.ToPointer()),
+						reinterpret_cast<char*>(explosionDefNameHandle.ToPointer()),
+						objPtr,
+						reinterpret_cast<char*>(boneNameHandle.ToPointer()),
 						nullptr);
 				}
 				else
 				{
 					InternalScriptCommandsPointer->Create_Explosion_At_Bone(
-						reinterpret_cast<char *>(explosionDefNameHandle.ToPointer()),
-						reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
-						reinterpret_cast<char *>(boneNameHandle.ToPointer()),
-						reinterpret_cast<::ScriptableGameObj *>(creator->ScriptableGameObjPointer.ToPointer()));
+						reinterpret_cast<char*>(explosionDefNameHandle.ToPointer()),
+						objPtr,
+						reinterpret_cast<char*>(boneNameHandle.ToPointer()),
+						reinterpret_cast<::ScriptableGameObj*>(creator->ScriptableGameObjPointer.ToPointer()));
 				}
 			}
 			finally
@@ -5128,27 +5495,33 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Mission_Complete(success);
 	}
 
-	void ScriptCommands::GivePowerUp(IScriptableGameObj ^obj, String ^presetName, bool displayOnHUD)
+	void ScriptCommands::GivePowerUp(IScriptableGameObj^ obj, String^ presetName, bool displayOnHUD)
 	{
 		if (InternalScriptCommandsPointer->Give_PowerUp == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("obj");
 		}
 		else if (presetName == nullptr)
 		{
 			throw gcnew ArgumentNullException("presetName");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
 		IntPtr presetNameHandle = Marshal::StringToHGlobalAnsi(presetName);
 		try
 		{
 			InternalScriptCommandsPointer->Give_PowerUp(
-				reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-				reinterpret_cast<char *>(presetNameHandle.ToPointer()),
+				objPtr,
+				reinterpret_cast<char*>(presetNameHandle.ToPointer()),
 				displayOnHUD);
 		}
 		finally
@@ -5157,125 +5530,171 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::InnateDisable(IScriptableGameObj ^object)
+	void ScriptCommands::InnateDisable(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Innate_Disable == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Innate_Disable(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Innate_Disable(objPtr);
 	}
 
-	void ScriptCommands::InnateEnable(IScriptableGameObj ^object)
+	void ScriptCommands::InnateEnable(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Innate_Enable == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Innate_Enable(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Innate_Enable(objPtr);
 	}
 
-	bool ScriptCommands::InnateSoldierEnableEnemySeen(IScriptableGameObj ^obj, bool state)
+	bool ScriptCommands::InnateSoldierEnableEnemySeen(IScriptableGameObj^ obj, bool state)
 	{
 		if (InternalScriptCommandsPointer->Innate_Soldier_Enable_Enemy_Seen == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		return InternalScriptCommandsPointer->Innate_Soldier_Enable_Enemy_Seen(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			state);
 	}
 
-	bool ScriptCommands::InnateSoldierEnableGunshotHeard(IScriptableGameObj ^obj, bool state)
+	bool ScriptCommands::InnateSoldierEnableGunshotHeard(IScriptableGameObj^ obj, bool state)
 	{
 		if (InternalScriptCommandsPointer->Innate_Soldier_Enable_Gunshot_Heard == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		return InternalScriptCommandsPointer->Innate_Soldier_Enable_Gunshot_Heard(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			state);
 	}
 
-	bool ScriptCommands::InnateSoldierEnableFootstepsHeard(IScriptableGameObj ^obj, bool state)
+	bool ScriptCommands::InnateSoldierEnableFootstepsHeard(IScriptableGameObj^ obj, bool state)
 	{
 		if (InternalScriptCommandsPointer->Innate_Soldier_Enable_Footsteps_Heard == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		return InternalScriptCommandsPointer->Innate_Soldier_Enable_Footsteps_Heard(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			state);
 	}
 
-	bool ScriptCommands::InnateSoldierEnableBulletHeard(IScriptableGameObj ^obj, bool state)
+	bool ScriptCommands::InnateSoldierEnableBulletHeard(IScriptableGameObj^ obj, bool state)
 	{
 		if (InternalScriptCommandsPointer->Innate_Soldier_Enable_Bullet_Heard == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		return InternalScriptCommandsPointer->Innate_Soldier_Enable_Bullet_Heard(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			state);
 	}
 
-	bool ScriptCommands::InnateSoldierEnableActions(IScriptableGameObj ^obj, bool state)
+	bool ScriptCommands::InnateSoldierEnableActions(IScriptableGameObj^ obj, bool state)
 	{
 		if (InternalScriptCommandsPointer->Innate_Soldier_Enable_Actions == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		return InternalScriptCommandsPointer->Innate_Soldier_Enable_Actions(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			state);
 	}
 
-	void ScriptCommands::SetInnateSoldierHomeLocation(IScriptableGameObj ^obj, Vector3 homePos, float homeRadius)
+	void ScriptCommands::SetInnateSoldierHomeLocation(IScriptableGameObj^ obj, Vector3 homePos, float homeRadius)
 	{
 		if (InternalScriptCommandsPointer->Set_Innate_Soldier_Home_Location == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		::Vector3 homePosVec;
@@ -5283,68 +5702,92 @@ namespace RenSharp
 		Vector3::ManagedToUnmanagedVector3(homePos, homePosVec);
 
 		InternalScriptCommandsPointer->Set_Innate_Soldier_Home_Location(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			homePosVec,
 			homeRadius);
 	}
 
-	void ScriptCommands::SetInnateAggressiveness(IScriptableGameObj ^obj, float aggressiveness)
+	void ScriptCommands::SetInnateAggressiveness(IScriptableGameObj^ obj, float aggressiveness)
 	{
 		if (InternalScriptCommandsPointer->Set_Innate_Aggressiveness == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Innate_Aggressiveness(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			aggressiveness);
 	}
 
-	void ScriptCommands::SetInnateTakeCoverProbability(IScriptableGameObj ^obj, float probability)
+	void ScriptCommands::SetInnateTakeCoverProbability(IScriptableGameObj^ obj, float probability)
 	{
 		if (InternalScriptCommandsPointer->Set_Innate_Take_Cover_Probability == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Innate_Take_Cover_Probability(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			probability);
 	}
 
-	void ScriptCommands::SetInnateIsStationary(IScriptableGameObj ^obj, bool stationary)
+	void ScriptCommands::SetInnateIsStationary(IScriptableGameObj^ obj, bool stationary)
 	{
 		if (InternalScriptCommandsPointer->Set_Innate_Is_Stationary == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Innate_Is_Stationary(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			stationary);
 	}
 
-	void ScriptCommands::InnateForceStateBulletHeard(IScriptableGameObj ^obj, Vector3 pos)
+	void ScriptCommands::InnateForceStateBulletHeard(IScriptableGameObj^ obj, Vector3 pos)
 	{
 		if (InternalScriptCommandsPointer->Innate_Force_State_Bullet_Heard == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		::Vector3 posVec;
@@ -5352,19 +5795,25 @@ namespace RenSharp
 		Vector3::ManagedToUnmanagedVector3(pos, posVec);
 
 		InternalScriptCommandsPointer->Innate_Force_State_Bullet_Heard(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			posVec);
 	}
 
-	void ScriptCommands::InnateForceStateFootstepsHeard(IScriptableGameObj ^obj, Vector3 pos)
+	void ScriptCommands::InnateForceStateFootstepsHeard(IScriptableGameObj^ obj, Vector3 pos)
 	{
 		if (InternalScriptCommandsPointer->Innate_Force_State_Footsteps_Heard == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		::Vector3 posVec;
@@ -5372,19 +5821,25 @@ namespace RenSharp
 		Vector3::ManagedToUnmanagedVector3(pos, posVec);
 
 		InternalScriptCommandsPointer->Innate_Force_State_Footsteps_Heard(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			posVec);
 	}
 
-	void ScriptCommands::InnateForceStateGunshotsHeard(IScriptableGameObj ^obj, Vector3 pos)
+	void ScriptCommands::InnateForceStateGunshotsHeard(IScriptableGameObj^ obj, Vector3 pos)
 	{
 		if (InternalScriptCommandsPointer->Innate_Force_State_Gunshots_Heard == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
 		}
 
 		::Vector3 posVec;
@@ -5392,31 +5847,43 @@ namespace RenSharp
 		Vector3::ManagedToUnmanagedVector3(pos, posVec);
 
 		InternalScriptCommandsPointer->Innate_Force_State_Gunshots_Heard(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			posVec);
 	}
 
-	void ScriptCommands::InnateForceStateEnemySeen(IScriptableGameObj ^obj, IScriptableGameObj ^enemy)
+	void ScriptCommands::InnateForceStateEnemySeen(IScriptableGameObj^ obj, IScriptableGameObj^ enemy)
 	{
 		if (InternalScriptCommandsPointer->Innate_Force_State_Enemy_Seen == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (obj == nullptr || obj->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("obj");
+			objPtr = nullptr;
 		}
-		else if (enemy == nullptr || enemy->ScriptableGameObjPointer.ToPointer() == nullptr)
+		else
 		{
-			throw gcnew ArgumentNullException("enemy");
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(obj->ScriptableGameObjPointer.ToPointer());
+		}
+
+		::ScriptableGameObj* enemyPtr;
+		if (enemy == nullptr || enemy->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			enemyPtr = nullptr;
+		}
+		else
+		{
+			enemyPtr = reinterpret_cast<::ScriptableGameObj*>(enemy->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Innate_Force_State_Enemy_Seen(
-			reinterpret_cast<::ScriptableGameObj *>(obj->ScriptableGameObjPointer.ToPointer()),
-			reinterpret_cast<::ScriptableGameObj *>(enemy->ScriptableGameObjPointer.ToPointer()));
+			objPtr,
+			enemyPtr);
 	}
 
-	void ScriptCommands::StaticAnimPhysGotoFrame(int objId, float frame, String ^animName)
+	void ScriptCommands::StaticAnimPhysGotoFrame(int objId, float frame, String^ animName)
 	{
 		if (InternalScriptCommandsPointer->Static_Anim_Phys_Goto_Frame == nullptr)
 		{
@@ -5435,7 +5902,7 @@ namespace RenSharp
 				InternalScriptCommandsPointer->Static_Anim_Phys_Goto_Frame(
 					objId,
 					frame,
-					reinterpret_cast<char *>(animNameHandle.ToPointer()));
+					reinterpret_cast<char*>(animNameHandle.ToPointer()));
 			}
 			finally
 			{
@@ -5444,7 +5911,7 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::StaticAnimPhysGotoLastFrame(int objId, String ^animName)
+	void ScriptCommands::StaticAnimPhysGotoLastFrame(int objId, String^ animName)
 	{
 		if (InternalScriptCommandsPointer->Static_Anim_Phys_Goto_Last_Frame == nullptr)
 		{
@@ -5462,7 +5929,7 @@ namespace RenSharp
 			{
 				InternalScriptCommandsPointer->Static_Anim_Phys_Goto_Last_Frame(
 					objId,
-					reinterpret_cast<char *>(animNameHandle.ToPointer()));
+					reinterpret_cast<char*>(animNameHandle.ToPointer()));
 			}
 			finally
 			{
@@ -5481,7 +5948,7 @@ namespace RenSharp
 		return InternalScriptCommandsPointer->Get_Sync_Time();
 	}
 
-	void ScriptCommands::AddObjective(int id, int type, int status, int shortDescriptionId, String ^descriptionSoundFilename, int longDescriptionId)
+	void ScriptCommands::AddObjective(int id, int type, int status, int shortDescriptionId, String^ descriptionSoundFilename, int longDescriptionId)
 	{
 		if (InternalScriptCommandsPointer->Add_Objective == nullptr)
 		{
@@ -5500,7 +5967,7 @@ namespace RenSharp
 				type,
 				status,
 				shortDescriptionId,
-				reinterpret_cast<char *>(descriptionSoundFilenameHandle.ToPointer()),
+				reinterpret_cast<char*>(descriptionSoundFilenameHandle.ToPointer()),
 				longDescriptionId);
 		}
 		finally
@@ -5553,23 +6020,29 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Set_Objective_Radar_Blip(id, positionVec);
 	}
 
-	void ScriptCommands::SetObjectiveRadarBlipObject(int id, IScriptableGameObj ^unit)
+	void ScriptCommands::SetObjectiveRadarBlipObject(int id, IScriptableGameObj^ unit)
 	{
 		if (InternalScriptCommandsPointer->Set_Objective_Radar_Blip_Object == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (unit == nullptr || unit->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* unitPtr;
+		if (unit == nullptr || unit->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("unit");
+			unitPtr = nullptr;
+		}
+		else
+		{
+			unitPtr = reinterpret_cast<::ScriptableGameObj*>(unit->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Objective_Radar_Blip_Object(
 			id,
-			reinterpret_cast<::ScriptableGameObj *>(unit->ScriptableGameObjPointer.ToPointer()));
+			unitPtr);
 	}
 
-	void ScriptCommands::SetObjectiveHUDInfo(int id, float priority, String ^textureName, int messageId)
+	void ScriptCommands::SetObjectiveHUDInfo(int id, float priority, String^ textureName, int messageId)
 	{
 		if (InternalScriptCommandsPointer->Set_Objective_HUD_Info == nullptr)
 		{
@@ -5586,7 +6059,7 @@ namespace RenSharp
 			InternalScriptCommandsPointer->Set_Objective_HUD_Info(
 				id,
 				priority,
-				reinterpret_cast<char *>(textureNameHandle.ToPointer()),
+				reinterpret_cast<char*>(textureNameHandle.ToPointer()),
 				messageId);
 		}
 		finally
@@ -5595,7 +6068,7 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::SetObjectiveHUDInfoPosition(int id, float priority, String ^textureName, int messageId, Vector3 position)
+	void ScriptCommands::SetObjectiveHUDInfoPosition(int id, float priority, String^ textureName, int messageId, Vector3 position)
 	{
 		if (InternalScriptCommandsPointer->Set_Objective_HUD_Info_Position == nullptr)
 		{
@@ -5616,7 +6089,7 @@ namespace RenSharp
 			InternalScriptCommandsPointer->Set_Objective_HUD_Info_Position(
 				id,
 				priority,
-				reinterpret_cast<char *>(textureNameHandle.ToPointer()),
+				reinterpret_cast<char*>(textureNameHandle.ToPointer()),
 				messageId,
 				positionVec);
 		}
@@ -5650,7 +6123,7 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Enable_Spawner(id, enable);
 	}
 
-	IScriptableGameObj ^ScriptCommands::TriggerSpawner(int id)
+	IScriptableGameObj^ ScriptCommands::TriggerSpawner(int id)
 	{
 		if (InternalScriptCommandsPointer->Trigger_Spawner == nullptr)
 		{
@@ -5668,19 +6141,25 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::EnableEngine(IScriptableGameObj ^object, bool onoff)
+	void ScriptCommands::EnableEngine(IScriptableGameObj^ object, bool onoff)
 	{
 		if (InternalScriptCommandsPointer->Enable_Engine == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Enable_Engine(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			onoff);
 	}
 
@@ -5694,24 +6173,30 @@ namespace RenSharp
 		return InternalScriptCommandsPointer->Get_Difficulty_Level();
 	}
 
-	void ScriptCommands::GrantKey(IScriptableGameObj ^object, int key, bool grant)
+	void ScriptCommands::GrantKey(IScriptableGameObj^ object, int key, bool grant)
 	{
 		if (InternalScriptCommandsPointer->Grant_Key == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Grant_Key(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			key,
 			grant);
 	}
 
-	bool ScriptCommands::HasKey(IScriptableGameObj ^object, int key)
+	bool ScriptCommands::HasKey(IScriptableGameObj^ object, int key)
 	{
 		if (InternalScriptCommandsPointer->Has_Key == nullptr)
 		{
@@ -5719,42 +6204,54 @@ namespace RenSharp
 		}
 		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			return false; // Unsafe to call
 		}
 
 		return InternalScriptCommandsPointer->Has_Key(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer()),
 			key);
 	}
 
-	void ScriptCommands::EnableHibernation(IScriptableGameObj ^object, bool enable)
+	void ScriptCommands::EnableHibernation(IScriptableGameObj^ object, bool enable)
 	{
 		if (InternalScriptCommandsPointer->Enable_Hibernation == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Enable_Hibernation(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			enable);
 	}
 
-	void ScriptCommands::AttachToObjectBone(IScriptableGameObj ^object, IScriptableGameObj ^hostObject, String ^boneName)
+	void ScriptCommands::AttachToObjectBone(IScriptableGameObj^ object, IScriptableGameObj^ hostObject, String^ boneName)
 	{
 		if (InternalScriptCommandsPointer->Attach_To_Object_Bone == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		::ScriptableGameObj *hostObjectPtr;
+		::ScriptableGameObj* hostObjectPtr;
 
 		if (hostObject == nullptr || hostObject->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
@@ -5762,13 +6259,13 @@ namespace RenSharp
 		}
 		else
 		{
-			hostObjectPtr = reinterpret_cast<::ScriptableGameObj *>(hostObject->ScriptableGameObjPointer.ToPointer());
+			hostObjectPtr = reinterpret_cast<::ScriptableGameObj*>(hostObject->ScriptableGameObjPointer.ToPointer());
 		}
 
 		if (boneName == nullptr)
 		{
 			InternalScriptCommandsPointer->Attach_To_Object_Bone(
-				reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+				objPtr,
 				hostObjectPtr,
 				nullptr);
 		}
@@ -5778,9 +6275,9 @@ namespace RenSharp
 			try
 			{
 				InternalScriptCommandsPointer->Attach_To_Object_Bone(
-					reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+					objPtr,
 					hostObjectPtr,
-					reinterpret_cast<char *>(boneNameHandle.ToPointer()));
+					reinterpret_cast<char*>(boneNameHandle.ToPointer()));
 			}
 			finally
 			{
@@ -5789,7 +6286,7 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::CreateConversation(String ^conversationName, int priority, float maxDist, bool isInterruptable)
+	int ScriptCommands::CreateConversation(String^ conversationName, int priority, float maxDist, bool isInterruptable)
 	{
 		if (InternalScriptCommandsPointer->Create_Conversation == nullptr)
 		{
@@ -5804,7 +6301,7 @@ namespace RenSharp
 		try
 		{
 			return InternalScriptCommandsPointer->Create_Conversation(
-				reinterpret_cast<char *>(conversationNameHandle.ToPointer()),
+				reinterpret_cast<char*>(conversationNameHandle.ToPointer()),
 				priority,
 				maxDist,
 				isInterruptable);
@@ -5815,7 +6312,7 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::JoinConversation(IScriptableGameObj ^object, int activeConversationId, bool allowMove, bool allowHeadTurn, bool allowFace)
+	void ScriptCommands::JoinConversation(IScriptableGameObj^ object, int activeConversationId, bool allowMove, bool allowHeadTurn, bool allowFace)
 	{
 		if (InternalScriptCommandsPointer->Join_Conversation == nullptr)
 		{
@@ -5834,7 +6331,7 @@ namespace RenSharp
 		else
 		{
 			InternalScriptCommandsPointer->Join_Conversation(
-				reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+				reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer()),
 				activeConversationId,
 				allowMove,
 				allowHeadTurn,
@@ -5842,19 +6339,25 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::JoinConversationFacing(IScriptableGameObj ^object, int activeConversationId, int objIdToFace)
+	void ScriptCommands::JoinConversationFacing(IScriptableGameObj^ object, int activeConversationId, int objIdToFace)
 	{
 		if (InternalScriptCommandsPointer->Join_Conversation_Facing == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Join_Conversation_Facing(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			activeConversationId,
 			objIdToFace);
 	}
@@ -5869,35 +6372,46 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Start_Conversation(activeConversationId, actionID);
 	}
 
-	void ScriptCommands::MonitorConversation(IScriptableGameObj ^object, int activeConversationId)
+	void ScriptCommands::MonitorConversation(IScriptableGameObj^ object, int activeConversationId)
 	{
 		if (InternalScriptCommandsPointer->Monitor_Conversation == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Monitor_Conversation(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			activeConversationId);
 	}
 
-	void ScriptCommands::StartRandomConversation(IScriptableGameObj ^object)
+	void ScriptCommands::StartRandomConversation(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Start_Random_Conversation == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Start_Random_Conversation(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Start_Random_Conversation(objPtr);
 	}
 
 	void ScriptCommands::StopConversation(int activeConversationId)
@@ -5920,7 +6434,7 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Stop_All_Conversations();
 	}
 
-	void ScriptCommands::LockSoldierFacing(IScriptableGameObj ^object, IScriptableGameObj ^objectToFace, bool turnBody)
+	void ScriptCommands::LockSoldierFacing(IScriptableGameObj^ object, IScriptableGameObj^ objectToFace, bool turnBody)
 	{
 		if (InternalScriptCommandsPointer->Lock_Soldier_Facing == nullptr)
 		{
@@ -5930,47 +6444,58 @@ namespace RenSharp
 		if (objectToFace == nullptr || objectToFace->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
 			InternalScriptCommandsPointer->Lock_Soldier_Facing(
-				reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+				reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer()),
 				nullptr,
 				turnBody);
 		}
 		else
 		{
 			InternalScriptCommandsPointer->Lock_Soldier_Facing(
-				reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
-				reinterpret_cast<::ScriptableGameObj *>(objectToFace->ScriptableGameObjPointer.ToPointer()),
+				reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer()),
+				reinterpret_cast<::ScriptableGameObj*>(objectToFace->ScriptableGameObjPointer.ToPointer()),
 				turnBody);
 		}
 	}
 
-	void ScriptCommands::UnlockSoldierFacing(IScriptableGameObj ^object)
+	void ScriptCommands::UnlockSoldierFacing(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Unlock_Soldier_Facing == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Unlock_Soldier_Facing(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Unlock_Soldier_Facing(objPtr);
 	}
 
-	void ScriptCommands::ApplyDamage(IScriptableGameObj ^object, float amount, String ^warheadName, IScriptableGameObj ^damager)
+	void ScriptCommands::ApplyDamage(IScriptableGameObj^ object, float amount, String^ warheadName, IScriptableGameObj^ damager)
 	{
 		if (InternalScriptCommandsPointer->Apply_Damage == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("object");
-		}
 		else if (warheadName == nullptr)
 		{
 			throw gcnew ArgumentNullException("warheadName");
+		}
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		IntPtr warheadNameHandle = Marshal::StringToHGlobalAnsi(warheadName);
@@ -5979,18 +6504,18 @@ namespace RenSharp
 			if (damager == nullptr || damager->ScriptableGameObjPointer.ToPointer() == nullptr)
 			{
 				InternalScriptCommandsPointer->Apply_Damage(
-					reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+					objPtr,
 					amount,
-					reinterpret_cast<char *>(warheadNameHandle.ToPointer()),
+					reinterpret_cast<char*>(warheadNameHandle.ToPointer()),
 					nullptr);
 			}
 			else
 			{
 				InternalScriptCommandsPointer->Apply_Damage(
-					reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+					objPtr,
 					amount,
-					reinterpret_cast<char *>(warheadNameHandle.ToPointer()),
-					reinterpret_cast<::ScriptableGameObj *>(damager->ScriptableGameObjPointer.ToPointer()));
+					reinterpret_cast<char*>(warheadNameHandle.ToPointer()),
+					reinterpret_cast<::ScriptableGameObj*>(damager->ScriptableGameObjPointer.ToPointer()));
 			}
 		}
 		finally
@@ -5999,166 +6524,223 @@ namespace RenSharp
 		}
 	}
 
-	void ScriptCommands::SetLoitersAllowed(IScriptableGameObj ^object, bool allowed)
+	void ScriptCommands::SetLoitersAllowed(IScriptableGameObj^ object, bool allowed)
 	{
 		if (InternalScriptCommandsPointer->Set_Loiters_Allowed == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Loiters_Allowed(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			allowed);
 	}
 
-	void ScriptCommands::SetIsVisible(IScriptableGameObj ^object, bool visible)
+	void ScriptCommands::SetIsVisible(IScriptableGameObj^ object, bool visible)
 	{
 		if (InternalScriptCommandsPointer->Set_Is_Visible == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Is_Visible(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			visible);
 	}
 
-	void ScriptCommands::SetIsRendered(IScriptableGameObj ^object, bool rendered)
+	void ScriptCommands::SetIsRendered(IScriptableGameObj^ object, bool rendered)
 	{
 		if (InternalScriptCommandsPointer->Set_Is_Rendered == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Is_Rendered(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			rendered);
 	}
 
-	float ScriptCommands::GetPoints(IScriptableGameObj ^object)
+	float ScriptCommands::GetPoints(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Get_Points == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Points(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Points(objPtr);
 	}
 
-	void ScriptCommands::GivePoints(IScriptableGameObj ^object, float points, bool entireTeam)
+	void ScriptCommands::GivePoints(IScriptableGameObj^ object, float points, bool entireTeam)
 	{
 		if (InternalScriptCommandsPointer->Give_Points == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Give_Points(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			points,
 			entireTeam);
 	}
 
-	float ScriptCommands::GetMoney(IScriptableGameObj ^object)
+	float ScriptCommands::GetMoney(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Get_Money == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Money(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Money(objPtr);
 	}
 
-	void ScriptCommands::GiveMoney(IScriptableGameObj ^object, float money, bool entireTeam)
+	void ScriptCommands::GiveMoney(IScriptableGameObj^ object, float money, bool entireTeam)
 	{
 		if (InternalScriptCommandsPointer->Give_Money == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Give_Money(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			money,
 			entireTeam);
 	}
 
-	bool ScriptCommands::GetBuildingPower(IScriptableGameObj ^object)
+	bool ScriptCommands::GetBuildingPower(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Get_Building_Power == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		return InternalScriptCommandsPointer->Get_Building_Power(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		return InternalScriptCommandsPointer->Get_Building_Power(objPtr);
 	}
 
-	void ScriptCommands::SetBuildingPower(IScriptableGameObj ^object, bool onoff)
+	void ScriptCommands::SetBuildingPower(IScriptableGameObj^ object, bool onoff)
 	{
 		if (InternalScriptCommandsPointer->Set_Building_Power == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Set_Building_Power(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			onoff);
 	}
 
-	void ScriptCommands::PlayBuildingAnnouncement(IScriptableGameObj ^object, int textId)
+	void ScriptCommands::PlayBuildingAnnouncement(IScriptableGameObj^ object, int textId)
 	{
 		if (InternalScriptCommandsPointer->Play_Building_Announcement == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Play_Building_Announcement(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			textId);
 	}
 
-	IScriptableGameObj ^ScriptCommands::FindNearestBuildingToPos(Vector3 position, String ^meshPrefix)
+	IScriptableGameObj^ ScriptCommands::FindNearestBuildingToPos(Vector3 position, String^ meshPrefix)
 	{
 		if (InternalScriptCommandsPointer->Find_Nearest_Building_To_Pos == nullptr)
 		{
@@ -6178,7 +6760,7 @@ namespace RenSharp
 		{
 			auto result = InternalScriptCommandsPointer->Find_Nearest_Building_To_Pos(
 				positionVec,
-				reinterpret_cast<char *>(meshPrefixHandle.ToPointer()));
+				reinterpret_cast<char*>(meshPrefixHandle.ToPointer()));
 
 			if (result == nullptr)
 			{
@@ -6195,27 +6777,33 @@ namespace RenSharp
 		}
 	}
 
-	IScriptableGameObj ^ScriptCommands::FindNearestBuilding(IScriptableGameObj ^object, String ^meshPrefix)
+	IScriptableGameObj^ ScriptCommands::FindNearestBuilding(IScriptableGameObj^ object, String^ meshPrefix)
 	{
 		if (InternalScriptCommandsPointer->Find_Nearest_Building == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
-		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
-		{
-			throw gcnew ArgumentNullException("object");
 		}
 		else if (meshPrefix == nullptr)
 		{
 			throw gcnew ArgumentNullException("meshPrefix");
 		}
 
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+		{
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
+		}
+
 		IntPtr meshPrefixHandle = Marshal::StringToHGlobalAnsi(meshPrefix);
 		try
 		{
 			auto result = InternalScriptCommandsPointer->Find_Nearest_Building(
-				reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
-				reinterpret_cast<char *>(meshPrefixHandle.ToPointer()));
+				objPtr,
+				reinterpret_cast<char*>(meshPrefixHandle.ToPointer()));
 
 			if (result == nullptr)
 			{
@@ -6232,19 +6820,25 @@ namespace RenSharp
 		}
 	}
 
-	int ScriptCommands::TeamMembersInZone(IScriptableGameObj ^object, int playerType)
+	int ScriptCommands::TeamMembersInZone(IScriptableGameObj^ object, int playerType)
 	{
 		if (InternalScriptCommandsPointer->Team_Members_In_Zone == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		return InternalScriptCommandsPointer->Team_Members_In_Zone(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			playerType);
 	}
 
@@ -6350,19 +6944,25 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Set_Fog_Range(startDistance, endDistance, ramptime);
 	}
 
-	void ScriptCommands::EnableStealth(IScriptableGameObj ^object, bool onoff)
+	void ScriptCommands::EnableStealth(IScriptableGameObj^ object, bool onoff)
 	{
 		if (InternalScriptCommandsPointer->Enable_Stealth == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Enable_Stealth(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			onoff);
 	}
 
@@ -6376,7 +6976,7 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Cinematic_Sniper_Control(enabled, zoom);
 	}
 
-	int ScriptCommands::TextFileOpen(String ^filename)
+	int ScriptCommands::TextFileOpen(String^ filename)
 	{
 		if (InternalScriptCommandsPointer->Text_File_Open == nullptr)
 		{
@@ -6391,7 +6991,7 @@ namespace RenSharp
 		try
 		{
 			return InternalScriptCommandsPointer->Text_File_Open(
-				reinterpret_cast<char *>(filenameHandle.ToPointer()));
+				reinterpret_cast<char*>(filenameHandle.ToPointer()));
 		}
 		finally
 		{
@@ -6399,7 +6999,7 @@ namespace RenSharp
 		}
 	}
 
-	String ^ScriptCommands::TextFileGetString(int handle)
+	String^ ScriptCommands::TextFileGetString(int handle)
 	{
 		if (InternalScriptCommandsPointer->Text_File_Get_String == nullptr)
 		{
@@ -6431,19 +7031,25 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Text_File_Close(handle);
 	}
 
-	void ScriptCommands::EnableVehicleTransitions(IScriptableGameObj ^object, bool enable)
+	void ScriptCommands::EnableVehicleTransitions(IScriptableGameObj^ object, bool enable)
 	{
 		if (InternalScriptCommandsPointer->Enable_Vehicle_Transitions == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Enable_Vehicle_Transitions(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			enable);
 	}
 
@@ -6537,35 +7143,46 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Scale_AI_Awareness(sightScale, hearingScale);
 	}
 
-	void ScriptCommands::EnableCinematicFreeze(IScriptableGameObj ^object, bool enable)
+	void ScriptCommands::EnableCinematicFreeze(IScriptableGameObj^ object, bool enable)
 	{
 		if (InternalScriptCommandsPointer->Enable_Cinematic_Freeze == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Enable_Cinematic_Freeze(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			enable);
 	}
 
-	void ScriptCommands::ExpirePowerup(IScriptableGameObj ^object)
+	void ScriptCommands::ExpirePowerup(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Expire_Powerup == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Expire_Powerup(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Expire_Powerup(objPtr);
 	}
 
 	void ScriptCommands::SetHUDHelpText(int stringId, Color color)
@@ -6580,83 +7197,112 @@ namespace RenSharp
 		InternalScriptCommandsPointer->Set_HUD_Help_Text(stringId, colorVec);
 	}
 
-	void ScriptCommands::EnableHUDPokableIndicator(IScriptableGameObj ^object, bool enable)
+	void ScriptCommands::EnableHUDPokableIndicator(IScriptableGameObj^ object, bool enable)
 	{
 		if (InternalScriptCommandsPointer->Enable_HUD_Pokable_Indicator == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Enable_HUD_Pokable_Indicator(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			enable);
 	}
 
-	void ScriptCommands::EnableInnateConversations(IScriptableGameObj ^object, bool enable)
+	void ScriptCommands::EnableInnateConversations(IScriptableGameObj^ object, bool enable)
 	{
 		if (InternalScriptCommandsPointer->Enable_Innate_Conversations == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Enable_Innate_Conversations(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			enable);
 	}
 
-	void ScriptCommands::DisplayHealthBar(IScriptableGameObj ^object, bool display)
+	void ScriptCommands::DisplayHealthBar(IScriptableGameObj^ object, bool display)
 	{
 		if (InternalScriptCommandsPointer->Display_Health_Bar == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Display_Health_Bar(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			display);
 	}
 
-	void ScriptCommands::EnableShadow(IScriptableGameObj ^object, bool enable)
+	void ScriptCommands::EnableShadow(IScriptableGameObj^ object, bool enable)
 	{
 		if (InternalScriptCommandsPointer->Enable_Shadow == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
 		InternalScriptCommandsPointer->Enable_Shadow(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()),
+			objPtr,
 			enable);
 	}
 
-	void ScriptCommands::ClearWeapons(IScriptableGameObj ^object)
+	void ScriptCommands::ClearWeapons(IScriptableGameObj^ object)
 	{
 		if (InternalScriptCommandsPointer->Clear_Weapons == nullptr)
 		{
 			throw gcnew NotSupportedException("Pointer to function is null.");
 		}
-		else if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
+
+		::ScriptableGameObj* objPtr;
+		if (object == nullptr || object->ScriptableGameObjPointer.ToPointer() == nullptr)
 		{
-			throw gcnew ArgumentNullException("object");
+			objPtr = nullptr;
+		}
+		else
+		{
+			objPtr = reinterpret_cast<::ScriptableGameObj*>(object->ScriptableGameObjPointer.ToPointer());
 		}
 
-		InternalScriptCommandsPointer->Clear_Weapons(
-			reinterpret_cast<::ScriptableGameObj *>(object->ScriptableGameObjPointer.ToPointer()));
+		InternalScriptCommandsPointer->Clear_Weapons(objPtr);
 	}
 
 	void ScriptCommands::SetNumTertiaryObjectives(int count)
@@ -6731,7 +7377,7 @@ namespace RenSharp
 
 	void ScriptCommands::DebugMessagePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Debug_Message = reinterpret_cast<void(*)(char *format, ...)>(value.ToPointer());
+		InternalScriptCommandsPointer->Debug_Message = reinterpret_cast<void(*)(char* format, ...)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ActionResetPointer::get()
@@ -6741,7 +7387,7 @@ namespace RenSharp
 
 	void ScriptCommands::ActionResetPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Action_Reset = reinterpret_cast<void(*)(::ScriptableGameObj *, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Action_Reset = reinterpret_cast<void(*)(::ScriptableGameObj*, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ActionGotoPointer::get()
@@ -6751,7 +7397,7 @@ namespace RenSharp
 
 	void ScriptCommands::ActionGotoPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Action_Goto = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::ActionParamsStruct &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Action_Goto = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::ActionParamsStruct&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ActionAttackPointer::get()
@@ -6761,7 +7407,7 @@ namespace RenSharp
 
 	void ScriptCommands::ActionAttackPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Action_Attack = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::ActionParamsStruct &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Action_Attack = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::ActionParamsStruct&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ActionPlayAnimationPointer::get()
@@ -6771,7 +7417,7 @@ namespace RenSharp
 
 	void ScriptCommands::ActionPlayAnimationPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Action_Play_Animation = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::ActionParamsStruct &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Action_Play_Animation = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::ActionParamsStruct&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ActionEnterExitPointer::get()
@@ -6781,7 +7427,7 @@ namespace RenSharp
 
 	void ScriptCommands::ActionEnterExitPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Action_Enter_Exit = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::ActionParamsStruct &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Action_Enter_Exit = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::ActionParamsStruct&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ActionFaceLocationPointer::get()
@@ -6791,7 +7437,7 @@ namespace RenSharp
 
 	void ScriptCommands::ActionFaceLocationPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Action_Face_Location = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::ActionParamsStruct &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Action_Face_Location = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::ActionParamsStruct&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ActionDockPointer::get()
@@ -6801,7 +7447,7 @@ namespace RenSharp
 
 	void ScriptCommands::ActionDockPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Action_Dock = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::ActionParamsStruct &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Action_Dock = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::ActionParamsStruct&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ActionFollowInputPointer::get()
@@ -6811,7 +7457,7 @@ namespace RenSharp
 
 	void ScriptCommands::ActionFollowInputPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Action_Follow_Input = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::ActionParamsStruct &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Action_Follow_Input = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::ActionParamsStruct&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ModifyActionPointer::get()
@@ -6821,7 +7467,7 @@ namespace RenSharp
 
 	void ScriptCommands::ModifyActionPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Modify_Action = reinterpret_cast<void(*)(::ScriptableGameObj *, int, const ::ActionParamsStruct &, bool, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Modify_Action = reinterpret_cast<void(*)(::ScriptableGameObj*, int, const ::ActionParamsStruct&, bool, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetActionIDPointer::get()
@@ -6831,7 +7477,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetActionIDPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Action_ID = reinterpret_cast<int(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Action_ID = reinterpret_cast<int(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetActionParamsPointer::get()
@@ -6841,7 +7487,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetActionParamsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Action_Params = reinterpret_cast<bool(*)(::ScriptableGameObj *, ::ActionParamsStruct &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Action_Params = reinterpret_cast<bool(*)(::ScriptableGameObj*, ::ActionParamsStruct&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::IsPerformingPathfindActionPointer::get()
@@ -6851,7 +7497,7 @@ namespace RenSharp
 
 	void ScriptCommands::IsPerformingPathfindActionPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Is_Performing_Pathfind_Action = reinterpret_cast<bool(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Is_Performing_Pathfind_Action = reinterpret_cast<bool(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetPositionPointer::get()
@@ -6861,7 +7507,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetPositionPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Position = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Position = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetPositionPointer::get()
@@ -6871,7 +7517,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetPositionPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Position = reinterpret_cast<::Vector3(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Position = reinterpret_cast<::Vector3(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetBonePositionPointer::get()
@@ -6881,7 +7527,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetBonePositionPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Bone_Position = reinterpret_cast<::Vector3(*)(::ScriptableGameObj *, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Bone_Position = reinterpret_cast<::Vector3(*)(::ScriptableGameObj*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetFacingPointer::get()
@@ -6891,7 +7537,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetFacingPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Facing = reinterpret_cast<float(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Facing = reinterpret_cast<float(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetFacingPointer::get()
@@ -6901,7 +7547,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetFacingPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Facing = reinterpret_cast<void(*)(::ScriptableGameObj *, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Facing = reinterpret_cast<void(*)(::ScriptableGameObj*, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::DisableAllCollisionsPointer::get()
@@ -6911,7 +7557,7 @@ namespace RenSharp
 
 	void ScriptCommands::DisableAllCollisionsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Disable_All_Collisions = reinterpret_cast<void(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Disable_All_Collisions = reinterpret_cast<void(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::DisablePhysicalCollisionsPointer::get()
@@ -6921,7 +7567,7 @@ namespace RenSharp
 
 	void ScriptCommands::DisablePhysicalCollisionsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Disable_Physical_Collisions = reinterpret_cast<void(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Disable_Physical_Collisions = reinterpret_cast<void(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::EnableCollisionsPointer::get()
@@ -6931,7 +7577,7 @@ namespace RenSharp
 
 	void ScriptCommands::EnableCollisionsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Enable_Collisions = reinterpret_cast<void(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Enable_Collisions = reinterpret_cast<void(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::DestroyObjectPointer::get()
@@ -6941,7 +7587,7 @@ namespace RenSharp
 
 	void ScriptCommands::DestroyObjectPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Destroy_Object = reinterpret_cast<void(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Destroy_Object = reinterpret_cast<void(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::FindObjectPointer::get()
@@ -6961,7 +7607,7 @@ namespace RenSharp
 
 	void ScriptCommands::CreateObjectPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_Object = reinterpret_cast<::ScriptableGameObj * (*)(const char *, const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_Object = reinterpret_cast<::ScriptableGameObj * (*)(const char*, const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::CreateObjectAtBonePointer::get()
@@ -6971,7 +7617,7 @@ namespace RenSharp
 
 	void ScriptCommands::CreateObjectAtBonePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_Object_At_Bone = reinterpret_cast<::ScriptableGameObj *(*)(::ScriptableGameObj *, const char *, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_Object_At_Bone = reinterpret_cast<::ScriptableGameObj * (*)(::ScriptableGameObj*, const char*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetIDPointer::get()
@@ -6981,7 +7627,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetIDPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_ID = reinterpret_cast<int(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_ID = reinterpret_cast<int(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetPresetIDPointer::get()
@@ -6991,7 +7637,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetPresetIDPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Preset_ID = reinterpret_cast<int(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Preset_ID = reinterpret_cast<int(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetPresetNamePointer::get()
@@ -7001,7 +7647,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetPresetNamePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Preset_Name = reinterpret_cast<const char *(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Preset_Name = reinterpret_cast<const char* (*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::AttachScriptPointer::get()
@@ -7011,7 +7657,7 @@ namespace RenSharp
 
 	void ScriptCommands::AttachScriptPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Attach_Script = reinterpret_cast<void(*)(::ScriptableGameObj *, const char*, const char*)>(value.ToPointer());
+		InternalScriptCommandsPointer->Attach_Script = reinterpret_cast<void(*)(::ScriptableGameObj*, const char*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::AddToDirtyCullListPointer::get()
@@ -7031,7 +7677,7 @@ namespace RenSharp
 
 	void ScriptCommands::StartTimerPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Start_Timer = reinterpret_cast<void(*)(::ScriptableGameObj *, ::ScriptClass *, float, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Start_Timer = reinterpret_cast<void(*)(::ScriptableGameObj*, ::ScriptClass*, float, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::TriggerWeaponPointer::get()
@@ -7041,7 +7687,7 @@ namespace RenSharp
 
 	void ScriptCommands::TriggerWeaponPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Trigger_Weapon = reinterpret_cast<void(*)(::ScriptableGameObj *, bool, const ::Vector3 &, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Trigger_Weapon = reinterpret_cast<void(*)(::ScriptableGameObj*, bool, const ::Vector3&, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SelectWeaponPointer::get()
@@ -7051,7 +7697,7 @@ namespace RenSharp
 
 	void ScriptCommands::SelectWeaponPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Select_Weapon = reinterpret_cast<void(*)(::ScriptableGameObj *, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Select_Weapon = reinterpret_cast<void(*)(::ScriptableGameObj*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SendCustomEventPointer::get()
@@ -7061,7 +7707,7 @@ namespace RenSharp
 
 	void ScriptCommands::SendCustomEventPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Send_Custom_Event = reinterpret_cast<void(*)(::ScriptableGameObj *, ::ScriptableGameObj *, int, int, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Send_Custom_Event = reinterpret_cast<void(*)(::ScriptableGameObj*, ::ScriptableGameObj*, int, int, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SendDamagedEventPointer::get()
@@ -7071,7 +7717,7 @@ namespace RenSharp
 
 	void ScriptCommands::SendDamagedEventPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Send_Damaged_Event = reinterpret_cast<void(*)(::ScriptableGameObj *, ::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Send_Damaged_Event = reinterpret_cast<void(*)(::ScriptableGameObj*, ::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetRandomPointer::get()
@@ -7101,7 +7747,7 @@ namespace RenSharp
 
 	void ScriptCommands::FindRandomSimpleObjectPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Find_Random_Simple_Object = reinterpret_cast<::ScriptableGameObj *(*)(const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Find_Random_Simple_Object = reinterpret_cast<::ScriptableGameObj * (*)(const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetModelPointer::get()
@@ -7111,7 +7757,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetModelPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Model = reinterpret_cast<void(*)(::ScriptableGameObj *, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Model = reinterpret_cast<void(*)(::ScriptableGameObj*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetAnimationPointer::get()
@@ -7121,7 +7767,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetAnimationPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Animation = reinterpret_cast<void(*)(::ScriptableGameObj *, const char *, bool, const char *, float, float, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Animation = reinterpret_cast<void(*)(::ScriptableGameObj*, const char*, bool, const char*, float, float, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetAnimationFramePointer::get()
@@ -7131,7 +7777,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetAnimationFramePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Animation_Frame = reinterpret_cast<void(*)(::ScriptableGameObj *, const char *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Animation_Frame = reinterpret_cast<void(*)(::ScriptableGameObj*, const char*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::CreateSoundPointer::get()
@@ -7141,7 +7787,7 @@ namespace RenSharp
 
 	void ScriptCommands::CreateSoundPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_Sound = reinterpret_cast<int(*)(const char *, const ::Vector3 &, ::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_Sound = reinterpret_cast<int(*)(const char*, const ::Vector3&, ::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::Create2DSoundPointer::get()
@@ -7151,7 +7797,7 @@ namespace RenSharp
 
 	void ScriptCommands::Create2DSoundPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_2D_Sound = reinterpret_cast<int(*)(const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_2D_Sound = reinterpret_cast<int(*)(const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::Create2DWAVSoundPointer::get()
@@ -7161,7 +7807,7 @@ namespace RenSharp
 
 	void ScriptCommands::Create2DWAVSoundPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_2D_WAV_Sound = reinterpret_cast<int(*)(const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_2D_WAV_Sound = reinterpret_cast<int(*)(const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::Create3DWAVSoundAtBonePointer::get()
@@ -7171,7 +7817,7 @@ namespace RenSharp
 
 	void ScriptCommands::Create3DWAVSoundAtBonePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_3D_WAV_Sound_At_Bone = reinterpret_cast<int(*)(const char *, ::ScriptableGameObj *, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_3D_WAV_Sound_At_Bone = reinterpret_cast<int(*)(const char*, ::ScriptableGameObj*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::Create3DSoundAtBonePointer::get()
@@ -7181,7 +7827,7 @@ namespace RenSharp
 
 	void ScriptCommands::Create3DSoundAtBonePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_3D_Sound_At_Bone = reinterpret_cast<int(*)(const char *, ::ScriptableGameObj *, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_3D_Sound_At_Bone = reinterpret_cast<int(*)(const char*, ::ScriptableGameObj*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::CreateLogicalSoundPointer::get()
@@ -7191,7 +7837,7 @@ namespace RenSharp
 
 	void ScriptCommands::CreateLogicalSoundPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_Logical_Sound = reinterpret_cast<int(*)(::ScriptableGameObj *, int, const ::Vector3 &, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_Logical_Sound = reinterpret_cast<int(*)(::ScriptableGameObj*, int, const ::Vector3&, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::StartSoundPointer::get()
@@ -7221,7 +7867,7 @@ namespace RenSharp
 
 	void ScriptCommands::MonitorSoundPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Monitor_Sound = reinterpret_cast<void(*)(::ScriptableGameObj *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Monitor_Sound = reinterpret_cast<void(*)(::ScriptableGameObj*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetBackgroundMusicPointer::get()
@@ -7231,7 +7877,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetBackgroundMusicPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Background_Music = reinterpret_cast<void(*)(const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Background_Music = reinterpret_cast<void(*)(const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::FadeBackgroundMusicPointer::get()
@@ -7241,7 +7887,7 @@ namespace RenSharp
 
 	void ScriptCommands::FadeBackgroundMusicPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Fade_Background_Music = reinterpret_cast<void(*)(const char *, int, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Fade_Background_Music = reinterpret_cast<void(*)(const char*, int, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::StopBackgroundMusicPointer::get()
@@ -7261,9 +7907,9 @@ namespace RenSharp
 
 	void ScriptCommands::GetHealthPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Health = reinterpret_cast<float(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Health = reinterpret_cast<float(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
-	
+
 	IntPtr ScriptCommands::GetMaxHealthPointer::get()
 	{
 		return IntPtr(InternalScriptCommandsPointer->Get_Max_Health);
@@ -7271,7 +7917,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetMaxHealthPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Max_Health = reinterpret_cast<float(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Max_Health = reinterpret_cast<float(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetHealthPointer::get()
@@ -7281,7 +7927,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetHealthPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Health = reinterpret_cast<void(*)(::ScriptableGameObj *, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Health = reinterpret_cast<void(*)(::ScriptableGameObj*, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetShieldStrengthPointer::get()
@@ -7291,7 +7937,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetShieldStrengthPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Shield_Strength = reinterpret_cast<float(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Shield_Strength = reinterpret_cast<float(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetMaxShieldStrengthPointer::get()
@@ -7301,7 +7947,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetMaxShieldStrengthPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Max_Shield_Strength = reinterpret_cast<float(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Max_Shield_Strength = reinterpret_cast<float(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetShieldStrengthPointer::get()
@@ -7311,7 +7957,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetShieldStrengthPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Shield_Strength = reinterpret_cast<void(*)(::ScriptableGameObj *, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Shield_Strength = reinterpret_cast<void(*)(::ScriptableGameObj*, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetShieldTypePointer::get()
@@ -7321,7 +7967,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetShieldTypePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Shield_Type = reinterpret_cast<void(*)(::ScriptableGameObj *, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Shield_Type = reinterpret_cast<void(*)(::ScriptableGameObj*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetPlayerTypePointer::get()
@@ -7331,7 +7977,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetPlayerTypePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Player_Type = reinterpret_cast<int(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Player_Type = reinterpret_cast<int(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetPlayerTypePointer::get()
@@ -7341,7 +7987,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetPlayerTypePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Player_Type = reinterpret_cast<void(*)(::ScriptableGameObj *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Player_Type = reinterpret_cast<void(*)(::ScriptableGameObj*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetDistancePointer::get()
@@ -7351,7 +7997,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetDistancePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Distance = reinterpret_cast<float(*)(const ::Vector3 &, const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Distance = reinterpret_cast<float(*)(const ::Vector3&, const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetCameraHostPointer::get()
@@ -7361,7 +8007,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetCameraHostPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Camera_Host = reinterpret_cast<void(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Camera_Host = reinterpret_cast<void(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ForceCameraLookPointer::get()
@@ -7371,7 +8017,7 @@ namespace RenSharp
 
 	void ScriptCommands::ForceCameraLookPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Force_Camera_Look = reinterpret_cast<void(*)(const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Force_Camera_Look = reinterpret_cast<void(*)(const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetTheStarPointer::get()
@@ -7381,7 +8027,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetTheStarPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_The_Star = reinterpret_cast<::ScriptableGameObj *(*)()>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_The_Star = reinterpret_cast<::ScriptableGameObj * (*)()>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetAStarPointer::get()
@@ -7391,7 +8037,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetAStarPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_A_Star = reinterpret_cast<::ScriptableGameObj *(*)(const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_A_Star = reinterpret_cast<::ScriptableGameObj * (*)(const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::FindClosestSoldierPointer::get()
@@ -7401,7 +8047,7 @@ namespace RenSharp
 
 	void ScriptCommands::FindClosestSoldierPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Find_Closest_Soldier = reinterpret_cast<::ScriptableGameObj *(*)(const ::Vector3 &, float, float, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Find_Closest_Soldier = reinterpret_cast<::ScriptableGameObj * (*)(const ::Vector3&, float, float, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::IsAStarPointer::get()
@@ -7411,7 +8057,7 @@ namespace RenSharp
 
 	void ScriptCommands::IsAStarPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Is_A_Star = reinterpret_cast<bool(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Is_A_Star = reinterpret_cast<bool(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ControlEnablePointer::get()
@@ -7421,7 +8067,7 @@ namespace RenSharp
 
 	void ScriptCommands::ControlEnablePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Control_Enable = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Control_Enable = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetDamageBoneNamePointer::get()
@@ -7431,7 +8077,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetDamageBoneNamePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Damage_Bone_Name = reinterpret_cast<const char *(*)()>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Damage_Bone_Name = reinterpret_cast<const char* (*)()>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetDamageBoneDirectionPointer::get()
@@ -7451,7 +8097,7 @@ namespace RenSharp
 
 	void ScriptCommands::IsObjectVisiblePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Is_Object_Visible = reinterpret_cast<bool(*)(::ScriptableGameObj *, ::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Is_Object_Visible = reinterpret_cast<bool(*)(::ScriptableGameObj*, ::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::EnableEnemySeenPointer::get()
@@ -7461,7 +8107,7 @@ namespace RenSharp
 
 	void ScriptCommands::EnableEnemySeenPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Enable_Enemy_Seen = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Enable_Enemy_Seen = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetDisplayColorPointer::get()
@@ -7491,7 +8137,7 @@ namespace RenSharp
 
 	void ScriptCommands::DisplayFloatPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Display_Float = reinterpret_cast<void(*)(float, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Display_Float = reinterpret_cast<void(*)(float, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::DisplayIntPointer::get()
@@ -7501,7 +8147,7 @@ namespace RenSharp
 
 	void ScriptCommands::DisplayIntPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Display_Int = reinterpret_cast<void(*)(int, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Display_Int = reinterpret_cast<void(*)(int, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SaveDataPointer::get()
@@ -7511,7 +8157,7 @@ namespace RenSharp
 
 	void ScriptCommands::SaveDataPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Save_Data = reinterpret_cast<void(*)(::ScriptSaver &, int, int, void *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Save_Data = reinterpret_cast<void(*)(::ScriptSaver&, int, int, void*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SavePointerPointer::get()
@@ -7521,7 +8167,7 @@ namespace RenSharp
 
 	void ScriptCommands::SavePointerPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Save_Pointer = reinterpret_cast<void(*)(::ScriptSaver &, int, void *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Save_Pointer = reinterpret_cast<void(*)(::ScriptSaver&, int, void*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::LoadBeginPointer::get()
@@ -7531,7 +8177,7 @@ namespace RenSharp
 
 	void ScriptCommands::LoadBeginPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Load_Begin = reinterpret_cast<bool(*)(::ScriptLoader &, int *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Load_Begin = reinterpret_cast<bool(*)(::ScriptLoader&, int*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::LoadDataPointer::get()
@@ -7541,7 +8187,7 @@ namespace RenSharp
 
 	void ScriptCommands::LoadDataPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Load_Data = reinterpret_cast<void(*)(::ScriptLoader &, int, void *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Load_Data = reinterpret_cast<void(*)(::ScriptLoader&, int, void*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::LoadPointerPointer::get()
@@ -7551,7 +8197,7 @@ namespace RenSharp
 
 	void ScriptCommands::LoadPointerPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Load_Pointer = reinterpret_cast<void(*)(::ScriptLoader &, void **)>(value.ToPointer());
+		InternalScriptCommandsPointer->Load_Pointer = reinterpret_cast<void(*)(::ScriptLoader&, void**)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::LoadEndPointer::get()
@@ -7561,7 +8207,7 @@ namespace RenSharp
 
 	void ScriptCommands::LoadEndPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Load_End = reinterpret_cast<void(*)(::ScriptLoader &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Load_End = reinterpret_cast<void(*)(::ScriptLoader&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::BeginChunkPointer::get()
@@ -7641,7 +8287,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetObjRadarBlipShapePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Obj_Radar_Blip_Shape = reinterpret_cast<void(*)(::ScriptableGameObj *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Obj_Radar_Blip_Shape = reinterpret_cast<void(*)(::ScriptableGameObj*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetObjRadarBlipColorPointer::get()
@@ -7651,7 +8297,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetObjRadarBlipColorPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Obj_Radar_Blip_Color = reinterpret_cast<void(*)(::ScriptableGameObj *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Obj_Radar_Blip_Color = reinterpret_cast<void(*)(::ScriptableGameObj*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::EnableRadarPointer::get()
@@ -7681,7 +8327,7 @@ namespace RenSharp
 
 	void ScriptCommands::ClearMapCellByPosPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Clear_Map_Cell_By_Pos = reinterpret_cast<void(*)(const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Clear_Map_Cell_By_Pos = reinterpret_cast<void(*)(const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ClearMapCellByPixelPosPointer::get()
@@ -7701,7 +8347,7 @@ namespace RenSharp
 
 	void ScriptCommands::ClearMapRegionByPosPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Clear_Map_Region_By_Pos = reinterpret_cast<void(*)(const ::Vector3 &, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Clear_Map_Region_By_Pos = reinterpret_cast<void(*)(const ::Vector3&, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::RevealMapPointer::get()
@@ -7751,7 +8397,7 @@ namespace RenSharp
 
 	void ScriptCommands::CreateExplosionPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_Explosion = reinterpret_cast<void(*)(const char *, const ::Vector3 &, ::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_Explosion = reinterpret_cast<void(*)(const char*, const ::Vector3&, ::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::CreateExplosionAtBonePointer::get()
@@ -7761,7 +8407,7 @@ namespace RenSharp
 
 	void ScriptCommands::CreateExplosionAtBonePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_Explosion_At_Bone = reinterpret_cast<void(*)(const char *, ::ScriptableGameObj *, const char *, ::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_Explosion_At_Bone = reinterpret_cast<void(*)(const char*, ::ScriptableGameObj*, const char*, ::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::EnableHUDPointer::get()
@@ -7791,7 +8437,7 @@ namespace RenSharp
 
 	void ScriptCommands::GivePowerUpPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Give_PowerUp = reinterpret_cast<void(*)(::ScriptableGameObj *, const char *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Give_PowerUp = reinterpret_cast<void(*)(::ScriptableGameObj*, const char*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::InnateDisablePointer::get()
@@ -7821,7 +8467,7 @@ namespace RenSharp
 
 	void ScriptCommands::InnateSoldierEnableEnemySeenPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Innate_Soldier_Enable_Enemy_Seen = reinterpret_cast<bool(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Innate_Soldier_Enable_Enemy_Seen = reinterpret_cast<bool(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::InnateSoldierEnableGunshotHeardPointer::get()
@@ -7831,7 +8477,7 @@ namespace RenSharp
 
 	void ScriptCommands::InnateSoldierEnableGunshotHeardPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Innate_Soldier_Enable_Gunshot_Heard = reinterpret_cast<bool(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Innate_Soldier_Enable_Gunshot_Heard = reinterpret_cast<bool(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::InnateSoldierEnableFootstepsHeardPointer::get()
@@ -7841,7 +8487,7 @@ namespace RenSharp
 
 	void ScriptCommands::InnateSoldierEnableFootstepsHeardPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Innate_Soldier_Enable_Footsteps_Heard = reinterpret_cast<bool(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Innate_Soldier_Enable_Footsteps_Heard = reinterpret_cast<bool(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::InnateSoldierEnableBulletHeardPointer::get()
@@ -7851,7 +8497,7 @@ namespace RenSharp
 
 	void ScriptCommands::InnateSoldierEnableBulletHeardPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Innate_Soldier_Enable_Bullet_Heard = reinterpret_cast<bool(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Innate_Soldier_Enable_Bullet_Heard = reinterpret_cast<bool(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::InnateSoldierEnableActionsPointer::get()
@@ -7861,7 +8507,7 @@ namespace RenSharp
 
 	void ScriptCommands::InnateSoldierEnableActionsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Innate_Soldier_Enable_Actions = reinterpret_cast<bool(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Innate_Soldier_Enable_Actions = reinterpret_cast<bool(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetInnateSoldierHomeLocationPointer::get()
@@ -7871,7 +8517,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetInnateSoldierHomeLocationPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Innate_Soldier_Home_Location = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::Vector3&, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Innate_Soldier_Home_Location = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::Vector3&, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetInnateAggressivenessPointer::get()
@@ -7881,7 +8527,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetInnateAggressivenessPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Innate_Aggressiveness = reinterpret_cast<void(*)(::ScriptableGameObj *, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Innate_Aggressiveness = reinterpret_cast<void(*)(::ScriptableGameObj*, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetInnateTakeCoverProbabilityPointer::get()
@@ -7891,7 +8537,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetInnateTakeCoverProbabilityPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Innate_Take_Cover_Probability = reinterpret_cast<void(*)(::ScriptableGameObj *, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Innate_Take_Cover_Probability = reinterpret_cast<void(*)(::ScriptableGameObj*, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetInnateIsStationaryPointer::get()
@@ -7901,7 +8547,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetInnateIsStationaryPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Innate_Is_Stationary = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Innate_Is_Stationary = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::InnateForceStateBulletHeardPointer::get()
@@ -7911,7 +8557,7 @@ namespace RenSharp
 
 	void ScriptCommands::InnateForceStateBulletHeardPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Innate_Force_State_Bullet_Heard = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Innate_Force_State_Bullet_Heard = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::InnateForceStateFootstepsHeardPointer::get()
@@ -7921,7 +8567,7 @@ namespace RenSharp
 
 	void ScriptCommands::InnateForceStateFootstepsHeardPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Innate_Force_State_Footsteps_Heard = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Innate_Force_State_Footsteps_Heard = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::InnateForceStateGunshotsHeardPointer::get()
@@ -7931,7 +8577,7 @@ namespace RenSharp
 
 	void ScriptCommands::InnateForceStateGunshotsHeardPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Innate_Force_State_Gunshots_Heard = reinterpret_cast<void(*)(::ScriptableGameObj *, const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Innate_Force_State_Gunshots_Heard = reinterpret_cast<void(*)(::ScriptableGameObj*, const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::InnateForceStateEnemySeenPointer::get()
@@ -7941,7 +8587,7 @@ namespace RenSharp
 
 	void ScriptCommands::InnateForceStateEnemySeenPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Innate_Force_State_Enemy_Seen = reinterpret_cast<void(*)(::ScriptableGameObj *, ::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Innate_Force_State_Enemy_Seen = reinterpret_cast<void(*)(::ScriptableGameObj*, ::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::StaticAnimPhysGotoFramePointer::get()
@@ -7951,7 +8597,7 @@ namespace RenSharp
 
 	void ScriptCommands::StaticAnimPhysGotoFramePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Static_Anim_Phys_Goto_Frame = reinterpret_cast<void(*)(int, float, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Static_Anim_Phys_Goto_Frame = reinterpret_cast<void(*)(int, float, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::StaticAnimPhysGotoLastFramePointer::get()
@@ -7961,7 +8607,7 @@ namespace RenSharp
 
 	void ScriptCommands::StaticAnimPhysGotoLastFramePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Static_Anim_Phys_Goto_Last_Frame = reinterpret_cast<void(*)(int, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Static_Anim_Phys_Goto_Last_Frame = reinterpret_cast<void(*)(int, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetSyncTimePointer::get()
@@ -7981,7 +8627,7 @@ namespace RenSharp
 
 	void ScriptCommands::AddObjectivePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Add_Objective = reinterpret_cast<void(*)(int, int, int, int, char *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Add_Objective = reinterpret_cast<void(*)(int, int, int, int, char*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::RemoveObjectivePointer::get()
@@ -8021,7 +8667,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetObjectiveRadarBlipPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Objective_Radar_Blip = reinterpret_cast<void(*)(int, const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Objective_Radar_Blip = reinterpret_cast<void(*)(int, const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetObjectiveRadarBlipObjectPointer::get()
@@ -8031,7 +8677,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetObjectiveRadarBlipObjectPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Objective_Radar_Blip_Object = reinterpret_cast<void(*)(int, ::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Objective_Radar_Blip_Object = reinterpret_cast<void(*)(int, ::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetObjectiveHUDInfoPointer::get()
@@ -8041,7 +8687,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetObjectiveHUDInfoPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Objective_HUD_Info = reinterpret_cast<void(*)(int, float, const char *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Objective_HUD_Info = reinterpret_cast<void(*)(int, float, const char*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetObjectiveHUDInfoPositionPointer::get()
@@ -8051,7 +8697,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetObjectiveHUDInfoPositionPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Objective_HUD_Info_Position = reinterpret_cast<void(*)(int, float, const char *, int, const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Objective_HUD_Info_Position = reinterpret_cast<void(*)(int, float, const char*, int, const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ShakeCameraPointer::get()
@@ -8061,7 +8707,7 @@ namespace RenSharp
 
 	void ScriptCommands::ShakeCameraPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Shake_Camera = reinterpret_cast<void(*)(const ::Vector3 &, float, float, float)>(value.ToPointer());
+		InternalScriptCommandsPointer->Shake_Camera = reinterpret_cast<void(*)(const ::Vector3&, float, float, float)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::EnableSpawnerPointer::get()
@@ -8131,7 +8777,7 @@ namespace RenSharp
 
 	void ScriptCommands::EnableHibernationPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Enable_Hibernation = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Enable_Hibernation = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::AttachToObjectBonePointer::get()
@@ -8141,7 +8787,7 @@ namespace RenSharp
 
 	void ScriptCommands::AttachToObjectBonePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Attach_To_Object_Bone = reinterpret_cast<void(*)(::ScriptableGameObj *, ::ScriptableGameObj *, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Attach_To_Object_Bone = reinterpret_cast<void(*)(::ScriptableGameObj*, ::ScriptableGameObj*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::CreateConversationPointer::get()
@@ -8151,7 +8797,7 @@ namespace RenSharp
 
 	void ScriptCommands::CreateConversationPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Create_Conversation = reinterpret_cast<int(*)(const char *, int, float, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Create_Conversation = reinterpret_cast<int(*)(const char*, int, float, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::JoinConversationPointer::get()
@@ -8161,7 +8807,7 @@ namespace RenSharp
 
 	void ScriptCommands::JoinConversationPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Join_Conversation = reinterpret_cast<void(*)(::ScriptableGameObj *, int, bool, bool, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Join_Conversation = reinterpret_cast<void(*)(::ScriptableGameObj*, int, bool, bool, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::JoinConversationFacingPointer::get()
@@ -8171,7 +8817,7 @@ namespace RenSharp
 
 	void ScriptCommands::JoinConversationFacingPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Join_Conversation_Facing = reinterpret_cast<void(*)(::ScriptableGameObj *, int, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Join_Conversation_Facing = reinterpret_cast<void(*)(::ScriptableGameObj*, int, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::StartConversationPointer::get()
@@ -8191,7 +8837,7 @@ namespace RenSharp
 
 	void ScriptCommands::MonitorConversationPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Monitor_Conversation = reinterpret_cast<void(*)(::ScriptableGameObj *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Monitor_Conversation = reinterpret_cast<void(*)(::ScriptableGameObj*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::StartRandomConversationPointer::get()
@@ -8201,7 +8847,7 @@ namespace RenSharp
 
 	void ScriptCommands::StartRandomConversationPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Start_Random_Conversation = reinterpret_cast<void(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Start_Random_Conversation = reinterpret_cast<void(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::StopConversationPointer::get()
@@ -8231,7 +8877,7 @@ namespace RenSharp
 
 	void ScriptCommands::LockSoldierFacingPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Lock_Soldier_Facing = reinterpret_cast<void(*)(::ScriptableGameObj *, ::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Lock_Soldier_Facing = reinterpret_cast<void(*)(::ScriptableGameObj*, ::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::UnlockSoldierFacingPointer::get()
@@ -8241,7 +8887,7 @@ namespace RenSharp
 
 	void ScriptCommands::UnlockSoldierFacingPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Unlock_Soldier_Facing = reinterpret_cast<void(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Unlock_Soldier_Facing = reinterpret_cast<void(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ApplyDamagePointer::get()
@@ -8251,7 +8897,7 @@ namespace RenSharp
 
 	void ScriptCommands::ApplyDamagePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Apply_Damage = reinterpret_cast<void(*)(::ScriptableGameObj *, float, const char *, ::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Apply_Damage = reinterpret_cast<void(*)(::ScriptableGameObj*, float, const char*, ::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetLoitersAllowedPointer::get()
@@ -8261,7 +8907,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetLoitersAllowedPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Loiters_Allowed = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Loiters_Allowed = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetIsVisiblePointer::get()
@@ -8271,7 +8917,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetIsVisiblePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Is_Visible = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Is_Visible = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetIsRenderedPointer::get()
@@ -8281,7 +8927,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetIsRenderedPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Is_Rendered = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Is_Rendered = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetPointsPointer::get()
@@ -8291,7 +8937,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetPointsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Points = reinterpret_cast<float(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Points = reinterpret_cast<float(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GivePointsPointer::get()
@@ -8301,7 +8947,7 @@ namespace RenSharp
 
 	void ScriptCommands::GivePointsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Give_Points = reinterpret_cast<void(*)(::ScriptableGameObj *, float, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Give_Points = reinterpret_cast<void(*)(::ScriptableGameObj*, float, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetMoneyPointer::get()
@@ -8311,7 +8957,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetMoneyPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Money = reinterpret_cast<float(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Money = reinterpret_cast<float(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GiveMoneyPointer::get()
@@ -8321,7 +8967,7 @@ namespace RenSharp
 
 	void ScriptCommands::GiveMoneyPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Give_Money = reinterpret_cast<void(*)(::ScriptableGameObj *, float, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Give_Money = reinterpret_cast<void(*)(::ScriptableGameObj*, float, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::GetBuildingPowerPointer::get()
@@ -8331,7 +8977,7 @@ namespace RenSharp
 
 	void ScriptCommands::GetBuildingPowerPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Get_Building_Power = reinterpret_cast<bool(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Get_Building_Power = reinterpret_cast<bool(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetBuildingPowerPointer::get()
@@ -8341,7 +8987,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetBuildingPowerPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_Building_Power = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_Building_Power = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::PlayBuildingAnnouncementPointer::get()
@@ -8351,7 +8997,7 @@ namespace RenSharp
 
 	void ScriptCommands::PlayBuildingAnnouncementPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Play_Building_Announcement = reinterpret_cast<void(*)(::ScriptableGameObj *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Play_Building_Announcement = reinterpret_cast<void(*)(::ScriptableGameObj*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::FindNearestBuildingToPosPointer::get()
@@ -8361,7 +9007,7 @@ namespace RenSharp
 
 	void ScriptCommands::FindNearestBuildingToPosPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Find_Nearest_Building_To_Pos = reinterpret_cast<::ScriptableGameObj * (*)(const ::Vector3 &, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Find_Nearest_Building_To_Pos = reinterpret_cast<::ScriptableGameObj * (*)(const ::Vector3&, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::FindNearestBuildingPointer::get()
@@ -8371,7 +9017,7 @@ namespace RenSharp
 
 	void ScriptCommands::FindNearestBuildingPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Find_Nearest_Building = reinterpret_cast<::ScriptableGameObj * (*)(::ScriptableGameObj *, const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Find_Nearest_Building = reinterpret_cast<::ScriptableGameObj * (*)(::ScriptableGameObj*, const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::TeamMembersInZonePointer::get()
@@ -8381,7 +9027,7 @@ namespace RenSharp
 
 	void ScriptCommands::TeamMembersInZonePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Team_Members_In_Zone = reinterpret_cast<int(*)(::ScriptableGameObj *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Team_Members_In_Zone = reinterpret_cast<int(*)(::ScriptableGameObj*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetCloudsPointer::get()
@@ -8481,7 +9127,7 @@ namespace RenSharp
 
 	void ScriptCommands::EnableStealthPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Enable_Stealth = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Enable_Stealth = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::CinematicSniperControlPointer::get()
@@ -8501,7 +9147,7 @@ namespace RenSharp
 
 	void ScriptCommands::TextFileOpenPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Text_File_Open = reinterpret_cast<int(*)(const char *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Text_File_Open = reinterpret_cast<int(*)(const char*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::TextFileGetStringPointer::get()
@@ -8511,7 +9157,7 @@ namespace RenSharp
 
 	void ScriptCommands::TextFileGetStringPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Text_File_Get_String = reinterpret_cast<bool(*)(int, char *, int)>(value.ToPointer());
+		InternalScriptCommandsPointer->Text_File_Get_String = reinterpret_cast<bool(*)(int, char*, int)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::TextFileClosePointer::get()
@@ -8531,7 +9177,7 @@ namespace RenSharp
 
 	void ScriptCommands::EnableVehicleTransitionsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Enable_Vehicle_Transitions = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Enable_Vehicle_Transitions = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::DisplayGDIPlayerTerminalPointer::get()
@@ -8631,7 +9277,7 @@ namespace RenSharp
 
 	void ScriptCommands::EnableCinematicFreezePointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Enable_Cinematic_Freeze = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Enable_Cinematic_Freeze = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ExpirePowerupPointer::get()
@@ -8641,7 +9287,7 @@ namespace RenSharp
 
 	void ScriptCommands::ExpirePowerupPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Expire_Powerup = reinterpret_cast<void(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Expire_Powerup = reinterpret_cast<void(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetHUDHelpTextPointer::get()
@@ -8651,7 +9297,7 @@ namespace RenSharp
 
 	void ScriptCommands::SetHUDHelpTextPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Set_HUD_Help_Text = reinterpret_cast<void(*)(int, const ::Vector3 &)>(value.ToPointer());
+		InternalScriptCommandsPointer->Set_HUD_Help_Text = reinterpret_cast<void(*)(int, const ::Vector3&)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::EnableHUDPokableIndicatorPointer::get()
@@ -8661,7 +9307,7 @@ namespace RenSharp
 
 	void ScriptCommands::EnableHUDPokableIndicatorPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Enable_HUD_Pokable_Indicator = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Enable_HUD_Pokable_Indicator = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::EnableInnateConversationsPointer::get()
@@ -8671,7 +9317,7 @@ namespace RenSharp
 
 	void ScriptCommands::EnableInnateConversationsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Enable_Innate_Conversations = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Enable_Innate_Conversations = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::DisplayHealthBarPointer::get()
@@ -8681,7 +9327,7 @@ namespace RenSharp
 
 	void ScriptCommands::DisplayHealthBarPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Display_Health_Bar = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Display_Health_Bar = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::EnableShadowPointer::get()
@@ -8691,7 +9337,7 @@ namespace RenSharp
 
 	void ScriptCommands::EnableShadowPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Enable_Shadow = reinterpret_cast<void(*)(::ScriptableGameObj *, bool)>(value.ToPointer());
+		InternalScriptCommandsPointer->Enable_Shadow = reinterpret_cast<void(*)(::ScriptableGameObj*, bool)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::ClearWeaponsPointer::get()
@@ -8701,7 +9347,7 @@ namespace RenSharp
 
 	void ScriptCommands::ClearWeaponsPointer::set(IntPtr value)
 	{
-		InternalScriptCommandsPointer->Clear_Weapons = reinterpret_cast<void(*)(::ScriptableGameObj *)>(value.ToPointer());
+		InternalScriptCommandsPointer->Clear_Weapons = reinterpret_cast<void(*)(::ScriptableGameObj*)>(value.ToPointer());
 	}
 
 	IntPtr ScriptCommands::SetNumTertiaryObjectivesPointer::get()
