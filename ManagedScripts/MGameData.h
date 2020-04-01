@@ -259,12 +259,6 @@ namespace RenSharp
 
 		void ShowGameSettingsLimits();
 
-		IcGameDataSinglePlayer^ AsSinglePlayer();
-
-		IcGameDataSkirmish^ AsSkirmish();
-
-		IcGameDataCnC^ AsCnC();
-
 		bool IsValidSettings([Out] String^% errorString, bool b);
 
 		void ExportTier1Data(IntPtr packet);
@@ -700,6 +694,7 @@ namespace RenSharp
 		public:
 			cGameData(IntPtr pointer);
 
+			static IcGameData^ CreatecGameDataWrapper(IntPtr cGameDataPtr);
 			static int GetMissionNumberFromMapName(String^ mapName);
 
 			String^ ToString() override;
@@ -715,9 +710,6 @@ namespace RenSharp
 			virtual void SaveToServerConfig() sealed;
 			virtual void SoldierAdded(ISoldierGameObj^ obj) sealed;
 			virtual void ShowGameSettingsLimits() sealed;
-			virtual IcGameDataSinglePlayer^ AsSinglePlayer();
-			virtual IcGameDataSkirmish^ AsSkirmish();
-			virtual IcGameDataCnC^ AsCnC();
 			virtual bool IsValidSettings([Out] String^% errorString, bool b) sealed;
 			virtual void ExportTier1Data(IntPtr packet) sealed;
 			virtual void ImportTier1Data(IntPtr packet) sealed;
@@ -1149,6 +1141,9 @@ namespace RenSharp
 				virtual void set(array<unsigned long>^ value) sealed;
 			}
 
+		internal:
+			static IcGameData^ CreatecGameDataWrapper(::cGameData* cGameDataPtr);
+
 		protected:
 			property ::Signaler<::cGameDataEvent>* InternalcGameDataEventSignalerPointer
 			{
@@ -1209,8 +1204,6 @@ namespace RenSharp
 	{
 		public:
 			cGameDataCnC(IntPtr pointer);
-
-			IcGameDataCnC^ AsCnC() override;
 
 			property IntPtr cGameDataCnCPointer
 			{
@@ -1314,8 +1307,6 @@ namespace RenSharp
 		public:
 			cGameDataSkirmish(IntPtr pointer);
 
-			IcGameDataSkirmish^ AsSkirmish() override;
-
 			property IntPtr cGameDataSkirmishPointer
 			{
 				virtual IntPtr get() sealed;
@@ -1381,8 +1372,6 @@ namespace RenSharp
 	{
 		public:
 			cGameDataSinglePlayer(IntPtr pointer);
-
-			IcGameDataSinglePlayer^ AsSinglePlayer() override;
 
 			property IntPtr cGameDataSinglePlayerPointer
 			{

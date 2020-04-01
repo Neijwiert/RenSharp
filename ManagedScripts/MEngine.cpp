@@ -14928,10 +14928,9 @@ static ::cPlayer* NickSavePlayer = nullptr;
 		}
 		else
 		{
-			auto theGamePtr = IntPtr(result);
-			if (bufferedTheGame == nullptr || !bufferedTheGame->cGameDataPointer.Equals(theGamePtr))
+			if (bufferedTheGame == nullptr || !bufferedTheGame->cGameDataPointer.Equals(IntPtr(result)))
 			{
-				bufferedTheGame = gcnew cGameData(theGamePtr);
+				bufferedTheGame = cGameData::CreatecGameDataWrapper(result);
 			}
 
 			return bufferedTheGame;
@@ -14950,7 +14949,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			auto theSkirmishGamePtr = IntPtr(result);
 			if (bufferedTheSkirmishGame == nullptr || !bufferedTheSkirmishGame->cGameDataSkirmishPointer.Equals(theSkirmishGamePtr))
 			{
-				bufferedTheSkirmishGame = gcnew cGameDataSkirmish(theSkirmishGamePtr);
+				bufferedTheSkirmishGame = safe_cast<IcGameDataSkirmish^>(cGameData::CreatecGameDataWrapper(result));
 			}
 
 			return bufferedTheSkirmishGame;
@@ -14969,7 +14968,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			auto theCncGamePtr = IntPtr(result);
 			if (bufferedTheCncGame == nullptr || !bufferedTheCncGame->cGameDataCnCPointer.Equals(theCncGamePtr))
 			{
-				bufferedTheCncGame = gcnew cGameDataCnC(theCncGamePtr);
+				bufferedTheCncGame = safe_cast<IcGameDataCnC^>(cGameData::CreatecGameDataWrapper(result));
 			}
 
 			return  bufferedTheCncGame;
@@ -14988,7 +14987,7 @@ static ::cPlayer* NickSavePlayer = nullptr;
 			auto theSinglePlayerGamePtr = IntPtr(result);
 			if (bufferedTheSinglePlayerGame == nullptr || !bufferedTheSinglePlayerGame->cGameDataSinglePlayerPointer.Equals(theSinglePlayerGamePtr))
 			{
-				bufferedTheSinglePlayerGame = gcnew cGameDataSinglePlayer(theSinglePlayerGamePtr);
+				bufferedTheSinglePlayerGame = safe_cast<IcGameDataSinglePlayer^>(cGameData::CreatecGameDataWrapper(result));
 			}
 
 			return bufferedTheSinglePlayerGame;

@@ -211,6 +211,11 @@ namespace RenSharp
 
 	}
 
+	IcGameData^ cGameData::CreatecGameDataWrapper(IntPtr cGameDataPtr)
+	{
+		return CreatecGameDataWrapper(reinterpret_cast<::cGameData*>(cGameDataPtr.ToPointer()));
+	}
+
 	int cGameData::GetMissionNumberFromMapName(String^ mapName)
 	{
 		if (mapName == nullptr)
@@ -321,45 +326,6 @@ namespace RenSharp
 	void cGameData::ShowGameSettingsLimits()
 	{
 		InternalcGameDataPointer->Show_Game_Settings_Limits();
-	}
-
-	IcGameDataSinglePlayer^ cGameData::AsSinglePlayer()
-	{
-		auto result = InternalcGameDataPointer->As_Single_Player();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew cGameDataSinglePlayer(IntPtr(result));
-		}
-	}
-
-	IcGameDataSkirmish^ cGameData::AsSkirmish()
-	{
-		auto result = InternalcGameDataPointer->As_Skirmish();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew cGameDataSkirmish(IntPtr(result));
-		}
-	}
-
-	IcGameDataCnC^ cGameData::AsCnC()
-	{
-		auto result = InternalcGameDataPointer->As_Cnc();
-		if (result == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			return gcnew cGameDataCnC(IntPtr(result));
-		}
 	}
 
 	bool cGameData::IsValidSettings([Out] String^% errorString, bool b)
@@ -1340,6 +1306,34 @@ namespace RenSharp
 		std::memcpy(InternalcGameDataPointer->Clans, clansPtr, sizeof(InternalcGameDataPointer->Clans));
 	}
 
+	IcGameData^ cGameData::CreatecGameDataWrapper(::cGameData* cGameDataPtr)
+	{
+		if (cGameDataPtr == nullptr)
+		{
+			throw gcnew ArgumentNullException("cGameDataPtr");
+		}
+
+		::cGameDataSkirmish* skirmishGameData = nullptr;
+		::cGameDataCnc* cncGameData = nullptr;
+		::cGameDataSinglePlayer* singlePlayerGameData = nullptr;
+		if ((skirmishGameData = cGameDataPtr->As_Skirmish()) != nullptr)
+		{
+			return gcnew cGameDataSkirmish(IntPtr(skirmishGameData));
+		}
+		else if ((cncGameData = cGameDataPtr->As_Cnc()) != nullptr)
+		{
+			return gcnew cGameDataCnC(IntPtr(cncGameData));
+		}
+		else if ((singlePlayerGameData = cGameDataPtr->As_Single_Player()) != nullptr)
+		{
+			return gcnew cGameDataSinglePlayer(IntPtr(singlePlayerGameData));
+		}
+		else
+		{
+			return gcnew cGameData(IntPtr(cGameDataPtr));
+		}
+	}
+
 	::Signaler<::cGameDataEvent>* cGameData::InternalcGameDataEventSignalerPointer::get()
 	{
 		return InternalcGameDataPointer;
@@ -1354,11 +1348,6 @@ namespace RenSharp
 		: cGameData(pointer)
 	{
 
-	}
-
-	IcGameDataCnC^ cGameDataCnC::AsCnC()
-	{
-		return this;
 	}
 
 	IntPtr cGameDataCnC::cGameDataCnCPointer::get()
@@ -1452,11 +1441,6 @@ namespace RenSharp
 
 	}
 
-	IcGameDataSkirmish^ cGameDataSkirmish::AsSkirmish()
-	{
-		return this;
-	}
-
 	IntPtr cGameDataSkirmish::cGameDataSkirmishPointer::get()
 	{
 		return IntPtr(InternalcGameDataSkirmishPointer);
@@ -1546,11 +1530,6 @@ namespace RenSharp
 		: cGameData(pointer)
 	{
 
-	}
-
-	IcGameDataSinglePlayer^ cGameDataSinglePlayer::AsSinglePlayer()
-	{
-		return this;
 	}
 
 	IntPtr cGameDataSinglePlayer::cGameDataSinglePlayerPointer::get()
